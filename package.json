@@ -1,0 +1,59 @@
+{
+	"name": "@rihana/frontend",
+	"description": "RIHANA - Radiological Image and History Acquisition for Neurocomputing Analysis",
+	"version": "0.1.0-alpha.1",
+	"license": "GPL-3.0",
+	"author": {
+		"name": "David A. Ruano Ordás",
+		"email": "drordas@uvigo.es"
+	},
+	"contributors": [
+		"José Ramón Méndez Reboredo",
+		"Miguel Ferreiro Díaz"
+	],
+	"repository": "https://github.com/miferreiro/rihana-frontend.git",
+	"scripts": {
+		"ng": "./node_modules/@angular/cli/bin/ng",
+		"start": "./node_modules/.bin/ng serve --open --host 0.0.0.0",
+		"start-develop": "./node_modules/@angular/cli/bin/ng serve --open --host 0.0.0.0 --configuration development",
+		"start-production": "./node_modules/@angular/cli/bin/ng serve --open --host 0.0.0.0 --configuration production",
+		"build": "./node_modules/@angular/cli/bin/ng build",
+		"test": "./node_modules/@angular/cli/bin/ng test",
+		"e2e": "./node_modules/@angular/cli/bin/ng e2e"
+	},
+	"private": true,
+	"files": [
+		"dist"
+	],
+	"dependencies": {
+		"@angular/animations": "~12.0.3",
+		"@angular/common": "~12.0.3",
+		"@angular/compiler": "~12.0.3",
+		"@angular/core": "~12.0.3",
+		"@angular/forms": "~12.0.3",
+		"@angular/platform-browser": "~12.0.3",
+		"@angular/platform-browser-dynamic": "~12.0.3",
+		"@angular/router": "~12.0.3",
+		"rxjs": "~6.6.0",
+		"tslib": "^2.1.0",
+		"zone.js": "~0.11.4"
+	},
+	"devDependencies": {
+		"@angular-devkit/build-angular": "~12.0.3",
+		"@angular/cli": "~12.0.3",
+		"@angular/compiler-cli": "~12.0.3",
+		"@types/jasmine": "~3.6.0",
+		"@types/jasminewd2": "~2.0.3",
+		"@types/node": "^12.20.15",
+		"jasmine-core": "~3.7.0",
+		"jasmine-spec-reporter": "~4.2.1",
+		"karma": "~6.3.0",
+		"karma-chrome-launcher": "~3.1.0",
+		"karma-coverage": "~2.0.3",
+		"karma-jasmine": "~4.0.0",
+		"karma-jasmine-html-reporter": "^1.5.0",
+		"protractor": "^5.4.0",
+		"ts-node": "~7.0.0",
+		"typescript": "~4.2.3"
+	}
+}
