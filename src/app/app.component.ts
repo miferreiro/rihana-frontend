@@ -19,13 +19,43 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {NotificationService} from './modules/notification/services/notification.service';
+import {NotificationsService} from 'angular2-notifications';
+import {Severity} from './modules/notification/entities';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-	title = 'rihana-frontend';
+export class AppComponent implements OnInit {
+	title = 'RIHANA';
+
+	constructor(
+		private notificationService: NotificationService,
+		private notificationsService: NotificationsService
+	) {
+	}
+
+	ngOnInit() {
+		this.notificationService.getMessages().subscribe(
+			message => {
+				switch (message.severity) {
+					case Severity.ERROR:
+						this.notificationsService.error(message.summary, message.detail);
+						break;
+					case Severity.SUCCESS:
+						this.notificationsService.success(message.summary, message.detail);
+						break;
+					case Severity.INFO:
+						this.notificationsService.info(message.summary, message.detail);
+						break;
+					case Severity.WARNING:
+						this.notificationsService.warn(message.summary, message.detail);
+						break;
+				}
+			}
+		);
+	}
 }

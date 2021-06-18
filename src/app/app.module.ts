@@ -19,19 +19,39 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {ErrorHandler, NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
+import {HttpClientModule} from '@angular/common/http';
+import {NotificationModule} from './modules/notification/notification.module';
+import {SimpleNotificationsModule} from 'angular2-notifications';
+import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
 
 @NgModule({
 	declarations: [
 		AppComponent
 	],
 	imports: [
-		BrowserModule
+		BrowserModule,
+		FormsModule,
+		HttpClientModule,
+		NotificationModule,	
+		SimpleNotificationsModule.forRoot({
+			timeOut: 10000,
+			preventDuplicates: true,
+			pauseOnHover: true,
+			clickToClose: true
+		})
   	],
-  	providers: [],
+	  
+  	providers: [
+		{
+			provide: ErrorHandler,
+			useClass: ErrorNotificationHandler
+		}	
+	],
   	bootstrap: [AppComponent]
 })
 export class AppModule { }
