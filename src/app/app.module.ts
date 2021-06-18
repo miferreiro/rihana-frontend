@@ -24,16 +24,23 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
-import {HttpClientModule} from '@angular/common/http';
+import {AppRoutingModule} from './app-routing.module';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NotificationModule} from './modules/notification/notification.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
+import {LoginComponent} from './components/login/login.component';
+import {AuthenticationInterceptor} from './helpers/authentication.interceptor';
+import {HomeComponent} from './components/home/home.component';
 
 @NgModule({
 	declarations: [
-		AppComponent
+		AppComponent,
+  		LoginComponent,
+		HomeComponent
 	],
 	imports: [
+		AppRoutingModule,
 		BrowserModule,
 		FormsModule,
 		HttpClientModule,
@@ -50,6 +57,10 @@ import {ErrorNotificationHandler} from './modules/notification/handlers/error-no
 		{
 			provide: ErrorHandler,
 			useClass: ErrorNotificationHandler
+		},
+	    {
+			provide: HTTP_INTERCEPTORS,
+			useClass: AuthenticationInterceptor, multi: true
 		}	
 	],
   	bootstrap: [AppComponent]

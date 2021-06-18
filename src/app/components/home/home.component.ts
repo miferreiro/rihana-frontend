@@ -19,7 +19,24 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-export const environment = {
-	production: true,
-	restApi: 'https://sing-group.org/rihana-backend/rest/api'
-};
+import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from '../../services/authentication.service';
+
+@Component({
+	selector: 'app-home',
+	templateUrl: './home.component.html',
+	styleUrls: ['./home.component.css']
+})
+export class HomeComponent implements OnInit {
+
+	loggedUser: string;
+
+	constructor(private authenticationService: AuthenticationService) { 
+  	}
+
+	ngOnInit() {
+		if (this.authenticationService.getUser().authenticated) {
+			this.loggedUser = this.authenticationService.getUser().login;
+		}
+	}
+}

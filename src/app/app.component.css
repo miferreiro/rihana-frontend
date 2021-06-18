@@ -18,3 +18,10 @@
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
+ 
+ nav {
+	 height: 3.5rem;
+ }
+ main {
+	padding-top: 3.5rem;
+ }

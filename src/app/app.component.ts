@@ -23,6 +23,10 @@ import {Component, OnInit} from '@angular/core';
 import {NotificationService} from './modules/notification/services/notification.service';
 import {NotificationsService} from 'angular2-notifications';
 import {Severity} from './modules/notification/entities';
+import {AuthenticationService} from './services/authentication.service';
+import {Router} from '@angular/router';
+
+import {Role} from './models/User';
 
 @Component({
 	selector: 'app-root',
@@ -32,9 +36,13 @@ import {Severity} from './modules/notification/entities';
 export class AppComponent implements OnInit {
 	title = 'RIHANA';
 
+	role = Role;
+
 	constructor(
 		private notificationService: NotificationService,
-		private notificationsService: NotificationsService
+		private notificationsService: NotificationsService,
+		public authenticationService: AuthenticationService,
+		private router: Router
 	) {
 	}
 
@@ -57,5 +65,10 @@ export class AppComponent implements OnInit {
 				}
 			}
 		);
+	}
+
+	logOut() {
+		this.authenticationService.logOut();
+		this.router.navigateByUrl('/login');
 	}
 }

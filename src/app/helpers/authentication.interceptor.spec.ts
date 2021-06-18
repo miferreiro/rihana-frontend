@@ -19,7 +19,18 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-export const environment = {
-	production: true,
-	restApi: 'https://sing-group.org/rihana-backend/rest/api'
-};
+import { TestBed, inject } from '@angular/core/testing';
+
+import { AuthenticationInterceptor } from './authentication.interceptor';
+
+describe('AuthenticationInterceptor', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			providers: [AuthenticationInterceptor]
+		});
+	});
+
+	it('should be created', inject([AuthenticationInterceptor], (service: AuthenticationInterceptor) => {
+		expect(service).toBeTruthy();
+	}));
+});

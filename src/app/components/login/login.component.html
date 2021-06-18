@@ -1,0 +1,49 @@
+<!--
+  ~ RIHANA Frontend
+  ~
+  ~ Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
+  ~ Miguel Ferreiro Díaz
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public
+  ~ License along with this program.  If not, see
+  ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
+-->
+
+<div class="row form-div">
+	<form class="form-signin" (submit)="logIn()" ngNativeValidate #loginForm="ngForm">
+		<h2 class="title"><h5>Welcome to</h5> RIHANA</h2>
+
+		<div class="form-floating">
+			<input type="text" class="form-input" id="login_username" placeholder="Username" name="username"
+				pattern="[a-zA-ZñÑ0-9_-]{1,100}" title="Must be an alphanumeric"
+				[(ngModel)]="login" required #usernameForm="ngModel">
+			<div *ngIf="loginForm.submitted && usernameForm.invalid" class="alert alert-danger">
+				<div *ngIf="usernameForm.errors.required">Username is required.</div>
+				<div *ngIf="usernameForm.errors.pattern">Username can only contain letters, numbers or underscore and should
+					have a length between 1 and 100.
+				</div>
+			</div>
+		</div>
+		<div class="form-floating">
+			<input type="password" class="form-input" id="login_password" placeholder="Password" name="password"
+				[(ngModel)]="password" required #passwordForm="ngModel" minlength="6">
+			<div *ngIf="loginForm.submitted && passwordForm.invalid" class="alert alert-danger">
+				<div *ngIf="passwordForm.errors.required">Password is required.</div>
+				<div *ngIf="passwordForm.errors.minlength">Password can't be shorter than 6 characters.</div>
+			</div>
+		</div>
+		<button type="submit" class="w-100 btn btn-lg">LOGIN</button>				
+	</form>
+</div> 
+
+<simple-notifications></simple-notifications>
