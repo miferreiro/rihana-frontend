@@ -32,7 +32,7 @@
 						<a class="nav-link active" aria-current="page" routerLink="/">Home</a>
 					</li>
 				</ul>
-				<a *ngIf="authenticationService.getUser().authenticated == true" class="nav-link active" aria-current="page" (click)="logOut()"><i class="bi bi-box-arrow-right" style="font-size: 1.5rem; color: black;"></i></a>
+				<a *ngIf="authenticationService.getUser().authenticated == true" class="nav-link active" aria-current="page" (click)="logOut()"><i class="bi bi-box-arrow-right" style="font-size: 1.5rem; color: black; cursor: pointer;"></i></a>
 			</div>			
 		</div>
 	</nav>
