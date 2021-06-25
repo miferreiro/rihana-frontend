@@ -23,11 +23,11 @@ import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
-	selector: 'app-home',
-	templateUrl: './home.component.html',
-	styleUrls: ['./home.component.css']
+	selector: 'app-explorations',
+	templateUrl: './explorations.component.html',
+	styleUrls: ['./explorations.component.css']
 })
-export class HomeComponent implements OnInit {
+export class ExplorationsComponent implements OnInit {
 
 	loggedUser: string;
 

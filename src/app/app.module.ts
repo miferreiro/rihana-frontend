@@ -31,13 +31,13 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
 import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
 import {LoginComponent} from './components/login/login.component';
 import {AuthenticationInterceptor} from './helpers/authentication.interceptor';
-import {HomeComponent} from './components/home/home.component';
+import {ExplorationsComponent} from './components/explorations/explorations.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
   		LoginComponent,
-		HomeComponent
+		ExplorationsComponent,
 	],
 	imports: [
 		AppRoutingModule,
