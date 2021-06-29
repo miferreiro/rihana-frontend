@@ -1,0 +1,190 @@
+<!--
+  ~ RIHANA Frontend
+  ~
+  ~ Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
+  ~ Miguel Ferreiro Díaz
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public
+  ~ License along with this program.  If not, see
+  ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
+-->
+
+<div class="row">
+	<div class="col-xl-6 col-md-12 col-sm-12">
+		<div class="row">		
+			<h2 class="mt-3 text-center">Informe de Radioloxía</h2>			
+			<form>
+				<div class="file-drop-zone" file-drop-zone [control]="controlReport" name="report">	
+					<label class="upload-input ng-trigger ng-trigger-zoomAnimation">
+						<div class="col text-center">
+							<i class="bi bi-upload" style="font-size: 1rem; color: black; cursor: pointer;"></i>
+						</div>
+						<div *ngIf="controlReport.size === 0" class="col text text-center">
+							Arrastrar e Soltar o ficheiro ou prema aqui
+						</div>							
+						<input type="file" tabindex="-1" multiple="" class="files-input" accept=".pdf" (change)="addFile($event)">
+					</label>
+
+					<ng-template #placeholder>
+						<div class="overlayCustom">
+							<div class="text-center">
+								<i class="bi bi-upload" style="font-size: 1rem; color: black; cursor: pointer;"></i>
+							</div>
+							<div class="dragover-text">
+								Soltalo aquí 
+							</div>
+						</div>
+					</ng-template>
+
+					<div class="file-list" *ngIf="controlReport.value.length > 0">
+						<div class="upload-list ng-trigger ng-trigger-insertAnimation">
+							<div>
+								<div class="file-upload-icon">
+									<i class="bi bi-file-earmark-pdf " style="font-size: 1rem; color: black;"></i>
+								</div>
+								<div class="file-info">
+									{{controlReport.value[0].name}} ({{this.humanFileSize(controlReport.value[0].size)}})
+								</div>
+								<div class="file-buttons">
+									<span class="remove-btn" (click)="controlReport.removeFile(controlReport.value[0])">
+										<i class="bi bi-trash-fill" style="color: black; cursor: pointer;"></i>
+										Eliminar
+									</span>
+								</div>
+							</div>
+						</div>						
+					</div>
+				</div>	
+			</form>
+			<div class="mb-3 mt-3">
+				<div class="dataReport">
+					<div class="row align-items-center">
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<p class="fw-bold">Data realización</p>		
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<p>{{fieldsReport.hasOwnProperty("completionDate") ? fieldsReport.completionDate : ""}}</p>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<p class="fw-bold">Informe Nº</p>		
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<p>{{fieldsReport.hasOwnProperty("reportN") ? fieldsReport.reportN : ""}}</p>
+						</div>							
+					</div>					
+					<div class="row align-items-center">
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<p class="fw-bold">SOLICITANTE  Centro/Servizo</p>		
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<p>{{fieldsReport.hasOwnProperty("applicant") ? fieldsReport.applicant : ""}}</p>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<p class="fw-bold">Médico</p>		
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<p>{{fieldsReport.hasOwnProperty("doctor") ? fieldsReport.doctor : ""}}</p>
+						</div>		
+					</div>
+					<div class="row align-items-center">
+						<div class="col-md-3 col-sm-12 col-xs-12">
+							<p class="fw-bold text-nowrap">ESTADO PACIENTE:</p>		
+						</div>
+						<div class="col-md-3 col-sm-4 col-xs-12">
+							<p><span class="fw-bold">Prioridade</span> {{fieldsReport.hasOwnProperty("priority") ? fieldsReport.priority : ""}}</p>
+						</div>
+						<div class="col-md-3 col-sm-4 col-xs-12">
+							<p class="fw-bold">Ingresado</p>		
+						</div>
+						<div class="col-md-3 col-sm-4 col-xs-12">
+							<p><span class="fw-bold">Cama</span> {{fieldsReport.hasOwnProperty("bed") ? fieldsReport.bed : ""}}</p>
+						</div>	
+					</div>
+
+					<div class="row">
+						<p class="fw-bold">EXPLORACIÓNS SOLICITADAS</p>
+						<div class="table-responsive-md text-nowrap">
+							<table class="table table-borderless text-center">
+								<thead>
+									<tr>
+										<th scope="col">Código</th>
+										<th scope="col">Descrición</th>
+										<th scope="col">Data</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let exploration of fieldsReport.requestedExplorations;">
+										<td>{{exploration.code}}</td>
+										<td>{{exploration.description}}</td>
+										<td>{{exploration.date}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>								
+					</div>
+
+					<div class="row">
+						<p class="fw-bold">DATOS CLÍNICOS/SOSPEITA DIAGNÓSTICA DA SOLICITUDE</p>		
+						<p>{{fieldsReport.hasOwnProperty("clinicalData") ? fieldsReport.clinicalData : ""}}</p>						
+					</div>
+
+					<div class="row">
+						<p class="fw-bold">EXPLORACIÓNS REALIZADAS</p>	
+						<div class="table-responsive-md text-nowrap">
+							<table class="table table-borderless text-center">
+								<thead>
+									<tr>
+										<th scope="col">Código</th>
+										<th scope="col">Descrición</th>
+										<th scope="col">Data</th>
+										<th scope="col">Portátil</th>
+										<th scope="col">Quirofano</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let exploration of fieldsReport.performedExplorations;">
+										<td>{{exploration.code}}</td>
+										<td>{{exploration.description}}</td>
+										<td>{{exploration.date}}</td>
+										<td>{{exploration.portable}}</td>
+										<td>{{exploration.surgery}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>							
+					</div>
+
+					<div class="row">
+						<p class="fw-bold">ACHADOS</p>		
+						<p>{{fieldsReport.hasOwnProperty("findings") ? fieldsReport.findings : ""}}</p>						
+					</div>
+
+					<div class="row">
+						<p class="fw-bold">CONCLUSIÓNS</p>		
+						<p>{{fieldsReport.hasOwnProperty("conclusions") ? fieldsReport.conclusions : ""}}</p>						
+					</div>
+
+					<div class="row">
+						<p class="fw-bold">RADIÓLOGO/A</p>		
+						<p>{{fieldsReport.hasOwnProperty("radiologist") ? fieldsReport.radiologist : ""}}</p>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-6 col-md-12 col-sm-12">
+		<div class="row">
+			<h2 class="mt-3 text-center">Radiology</h2>
+		</div>
+	</div>
+</div>

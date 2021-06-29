@@ -21,6 +21,8 @@
 
 import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FileUploadModule} from '@iplab/ngx-file-upload';
 import {FormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
@@ -32,17 +34,21 @@ import {ErrorNotificationHandler} from './modules/notification/handlers/error-no
 import {LoginComponent} from './components/login/login.component';
 import {AuthenticationInterceptor} from './helpers/authentication.interceptor';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
+import {ExplorationComponent} from './components/exploration/exploration.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
   		LoginComponent,
 		ExplorationsComponent,
+  		ExplorationComponent
 	],
 	imports: [
 		AppRoutingModule,
 		BrowserModule,
-		FormsModule,
+		BrowserAnimationsModule,
+		FileUploadModule,
+		FormsModule,		
 		HttpClientModule,
 		NotificationModule,	
 		SimpleNotificationsModule.forRoot({

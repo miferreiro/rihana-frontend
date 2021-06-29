@@ -23,11 +23,15 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from './components/login/login.component';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
+import {ExplorationComponent} from './components/exploration/exploration.component';
 import {AuthGuard} from './guards/authGuard';
 
 const routes: Routes = [
 	{
 		path: 'explorations', component: ExplorationsComponent, canActivate: [AuthGuard]
+	},
+	{
+		path: 'exploration', component: ExplorationComponent, canActivate: [AuthGuard]
 	},
 	{
 		path: 'login', component: LoginComponent
