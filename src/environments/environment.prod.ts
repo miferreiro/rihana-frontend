@@ -21,5 +21,5 @@
 
 export const environment = {
 	production: true,
-	restApi: 'https://sing-group.org/rihana-backend/rest/api'
+	restApi: 'https://rihana.drordas.info/rihana-backend/rest/api'
 };
