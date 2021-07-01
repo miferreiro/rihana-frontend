@@ -19,7 +19,67 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-div[name="report"] {
+.explorations-tabs {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.explorations-tabs button {
+	background-color: transparent;
+	width: auto;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	margin-left: 1rem;
+	margin-right: 1rem;
+	background-color: #f1f1f1;
+	border: 1px solid #ccc;
+	border-radius: .2rem;	
+	color: lightgray;
+	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out
+}
+
+.explorations-tabs button:hover {
+	background-color: #ddd;
+}
+
+.explorations-tabs button.active {
+	background-color: #ccc;
+	color: black;	
+}
+
+.explorations-tabs button h4 {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+	.explorations-tabs button h4 {
+		width: 100%;
+		max-width: 9rem;
+		font-size: 24px;
+	}
+}
+
+@media (max-width: 576px) {
+
+	.explorations-tabs button {		
+		width: 100%;
+		margin-bottom: 0.5rem;
+	}
+
+	.explorations-tabs button h4 {		
+		margin-left: auto;
+		margin-right: auto;
+		font-size: 18px;
+	}
+}
+
+#report {
+	max-width: 50rem;
+	margin: auto;
+}
+
+ div[name="report"] {
 	width: 100%;
 	font-size: 0.8rem;
 	display: block;

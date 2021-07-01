@@ -34,6 +34,7 @@ export class ExplorationComponent implements OnInit, OnDestroy {
 
 	private subscriptionReport: Subscription;
 	
+	public activeTab = 'report';
 	public readonly controlReport = new FileUploadControl(
 		{listVisible: true, accept: ['.pdf'], discardInvalid: true, multiple: false},
 		[FileUploadValidators.accept(['.pdf']), FileUploadValidators.filesLimit(1)]
@@ -47,6 +48,10 @@ export class ExplorationComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.fieldsReport = {};		
 		this.subscriptionReport = this.controlReport.valueChanges.subscribe((values: Array<File>) =>{this.fieldsReport = {}; this.loadReport(values[0]) });				
+	}
+
+	public changeActiveTab(activeTab: string): void{
+		this.activeTab = activeTab;
 	}
 
 	public addFile(event: Event): void{
