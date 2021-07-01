@@ -184,3 +184,18 @@ div[name="report"] .remove-btn {
 	margin-left:1rem;
 	margin-right:1rem;
 }
+
+.dataReport .patient-info {
+	border: 1px solid lightgray;
+	border-radius: .2rem;
+}
+
+.dataReport .patient-info legend {
+	width: max-content;
+	transform: translatey(-50%);	
+	padding: .1rem;
+	margin-left: 1rem;
+	margin-bottom: 0;
+	background: white;
+	font-size: 0.7rem;
+}

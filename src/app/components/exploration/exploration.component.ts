@@ -107,7 +107,6 @@ export class ExplorationComponent implements OnInit, OnDestroy {
 		this.fieldsReport.completionDate = report.match(regexCompletionDate)[1];
 		this.fieldsReport.reportN = report.match(regexReportN)[1];
 		this.fieldsReport.applicant = report.match(regexApplicant)[1];
-		this.fieldsReport.doctor = report.match(regexDoctor)[1];
 		this.fieldsReport.priority = report.match(regexPriority)[1];
 		this.fieldsReport.status = report.match(regexStatus)[1];
 		this.fieldsReport.bed = report.match(regexBed)[1];
@@ -147,16 +146,9 @@ export class ExplorationComponent implements OnInit, OnDestroy {
 		this.fieldsReport.performedExplorations = performedExplorations;
 		this.fieldsReport.findings = report.match(regexFindings)[1];
 		this.fieldsReport.conclusions = report.match(regexConclusions)[1];
-		this.fieldsReport.radiologist = report.match(regexRadiologist)[1];
 
-		this.fieldsReport.patient = report.match(regexPatient)[1];
 		this.fieldsReport.birthDate = report.match(regexBirthDate)[1];
 		this.fieldsReport.gender = report.match(regexGender)[1];
-		this.fieldsReport.NHC = report.match(regexNHC)[1];
-		this.fieldsReport.CIP = report.match(regexCIP)[1];
-		this.fieldsReport.NSS = report.match(regexNSS)[1];
-		this.fieldsReport.address = report.match(regexAddress)[1];
-		this.fieldsReport.phoneNumber = report.match(regexPhoneNumber)[1];		
 	}
 
 	private getDocument(pdfBase64: string): Promise<string> {

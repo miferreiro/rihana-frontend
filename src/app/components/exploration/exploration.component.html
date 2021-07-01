@@ -82,6 +82,23 @@
 				</form>
 				<div class="mb-3 mt-3">
 					<div class="dataReport">
+						<div class="align-items-center patient-info">
+							<legend class="fw-bold">Información do paciente</legend>
+							<div class="row">
+								<div class="col-md-3 col-sm-6 col-xs-12">
+									<p class="text-nowrap fw-bold">Data de nacemento</p>		
+								</div>
+								<div class="col-md-3 col-sm-6 col-xs-12">
+									<p>{{fieldsReport.hasOwnProperty("birthDate") ? fieldsReport.birthDate : ""}}</p>
+								</div>
+								<div class="col-md-3 col-sm-6 col-xs-12">
+									<p class="fw-bold">Sexo</p>		
+								</div>
+								<div class="col-md-3 col-sm-6 col-xs-12">
+									<p>{{fieldsReport.hasOwnProperty("gender") ? fieldsReport.gender : ""}}</p>
+								</div>
+							</div>
+						</div>
 						<div class="row align-items-center">
 							<div class="col-md-3 col-sm-6 col-xs-12">
 								<p class="fw-bold">Data realización</p>		
@@ -97,25 +114,19 @@
 							</div>							
 						</div>					
 						<div class="row align-items-center">
-							<div class="col-md-3 col-sm-6 col-xs-12">
+							<div class="col-md-6 col-sm-6 col-xs-12">
 								<p class="fw-bold">SOLICITANTE  Centro/Servizo</p>		
 							</div>
-							<div class="col-md-3 col-sm-6 col-xs-12">
+							<div class="col-md-6 col-sm-6 col-xs-12">
 								<p>{{fieldsReport.hasOwnProperty("applicant") ? fieldsReport.applicant : ""}}</p>
 							</div>
-							<div class="col-md-3 col-sm-6 col-xs-12">
-								<p class="fw-bold">Médico</p>		
-							</div>
-							<div class="col-md-3 col-sm-6 col-xs-12">
-								<p>{{fieldsReport.hasOwnProperty("doctor") ? fieldsReport.doctor : ""}}</p>
-							</div>		
 						</div>
 						<div class="row align-items-center">
 							<div class="col-md-3 col-sm-12 col-xs-12">
 								<p class="fw-bold text-nowrap">ESTADO PACIENTE:</p>		
 							</div>
 							<div class="col-md-3 col-sm-4 col-xs-12">
-								<p><span class="fw-bold">Prioridade</span> 
+								<p class="text-nowrap"><span class="fw-bold">Prioridade</span> 
 									{{fieldsReport.hasOwnProperty("priority") ? fieldsReport.priority : ""}}
 								</p>
 							</div>
@@ -164,7 +175,7 @@
 											<th scope="col">Descrición</th>
 											<th scope="col">Data</th>
 											<th scope="col">Portátil</th>
-											<th scope="col">Quirofano</th>
+											<th scope="col">Quirófano</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -188,11 +199,6 @@
 						<div class="row">
 							<p class="fw-bold">CONCLUSIÓNS</p>		
 							<p>{{fieldsReport.hasOwnProperty("conclusions") ? fieldsReport.conclusions : ""}}</p>						
-						</div>
-
-						<div class="row">
-							<p class="fw-bold">RADIÓLOGO/A</p>		
-							<p>{{fieldsReport.hasOwnProperty("radiologist") ? fieldsReport.radiologist : ""}}</p>						
 						</div>
 					</div>
 				</div>
