@@ -21,193 +21,25 @@
 
 <div class="row ">
 	<div class="row explorations-tabs justify-content-center mx-auto" id="myTab" role="tablist">
-		<button id="report-tab" data-bs-toggle="tab" data-bs-target="#report" type="button" 
-				role="tab" aria-controls="report" aria-selected="true"	
+		<button id="report-tab" data-bs-toggle="tab" data-bs-target="#report" type="button"
+				role="tab" aria-controls="report" aria-selected="true"
 				[ngClass]="{'active':activeTab==='report'}" (click)="changeActiveTab('report')">
 				<h4>Informe de Radioloxía</h4>
 		</button>
-		<button id="radiology-tab" data-bs-toggle="tab" data-bs-target="#radiology" type="button" 
+		<button id="radiology-tab" data-bs-toggle="tab" data-bs-target="#radiology" type="button"
 				role="tab" aria-controls="radiology" aria-selected="false"
 				[ngClass]="{'active':activeTab==='radiology'}" (click)="changeActiveTab('radiology')">
 				<h4>Análise Radiolóxico</h4>
 		</button>
 	</div>
 	<div class="tab-content" id="myTabContent">
-		<div class="tab-pane fade show active " id="report" role="tabpanel" 
+		<div class="tab-pane fade show active " id="report" role="tabpanel"
 			 aria-labelledby="report-tab" [ngClass]="{'active':activeTab==='report'}">
-			<div class="row">		
-				<form>
-					<div class="file-drop-zone" file-drop-zone [control]="controlReport" name="report">	
-						<label class="upload-input ng-trigger ng-trigger-zoomAnimation">
-							<div class="col text-center">
-								<i class="bi bi-upload" style="font-size: 1rem; color: black; cursor: pointer;"></i>
-							</div>
-							<div *ngIf="controlReport.size === 0" class="col text text-center">
-								Arrastrar e Soltar o ficheiro ou prema aqui
-							</div>							
-							<input type="file" tabindex="-1" multiple="" class="files-input" accept=".pdf" 
-								   (change)="addFile($event)">
-						</label>
-
-						<ng-template #placeholder>
-							<div class="overlayCustom">
-								<div class="text-center">
-									<i class="bi bi-upload" style="font-size: 1rem; color: black; cursor: pointer;"></i>
-								</div>
-								<div class="dragover-text">
-									Soltalo aquí 
-								</div>
-							</div>
-						</ng-template>
-
-						<div class="file-list" *ngIf="controlReport.value.length > 0">
-							<div class="upload-list ng-trigger ng-trigger-insertAnimation">
-								<div>
-									<div class="file-upload-icon">
-										<i class="bi bi-file-earmark-pdf " style="font-size: 1rem; color: black;"></i>
-									</div>
-									<div class="file-info">
-										{{controlReport.value[0].name}} ({{this.humanFileSize(controlReport.value[0].size)}})
-									</div>
-									<div class="file-buttons">
-										<span class="remove-btn" (click)="controlReport.removeFile(controlReport.value[0])">
-											<i class="bi bi-trash-fill" style="color: black; cursor: pointer;"></i>
-											Eliminar
-										</span>
-									</div>
-								</div>
-							</div>						
-						</div>
-					</div>	
-				</form>
-				<div class="mb-3 mt-3">
-					<div class="dataReport">
-						<div class="align-items-center patient-info">
-							<legend class="fw-bold">Información do paciente</legend>
-							<div class="row">
-								<div class="col-md-3 col-sm-6 col-xs-12">
-									<p class="text-nowrap fw-bold">Data de nacemento</p>		
-								</div>
-								<div class="col-md-3 col-sm-6 col-xs-12">
-									<p>{{fieldsReport.hasOwnProperty("birthDate") ? fieldsReport.birthDate : ""}}</p>
-								</div>
-								<div class="col-md-3 col-sm-6 col-xs-12">
-									<p class="fw-bold">Sexo</p>		
-								</div>
-								<div class="col-md-3 col-sm-6 col-xs-12">
-									<p>{{fieldsReport.hasOwnProperty("gender") ? fieldsReport.gender : ""}}</p>
-								</div>
-							</div>
-						</div>
-						<div class="row align-items-center">
-							<div class="col-md-3 col-sm-6 col-xs-12">
-								<p class="fw-bold">Data realización</p>		
-							</div>
-							<div class="col-md-3 col-sm-6 col-xs-12">
-								<p>{{fieldsReport.hasOwnProperty("completionDate") ? fieldsReport.completionDate : ""}}</p>
-							</div>
-							<div class="col-md-3 col-sm-6 col-xs-12">
-								<p class="fw-bold">Informe Nº</p>		
-							</div>
-							<div class="col-md-3 col-sm-6 col-xs-12">
-								<p>{{fieldsReport.hasOwnProperty("reportN") ? fieldsReport.reportN : ""}}</p>
-							</div>							
-						</div>					
-						<div class="row align-items-center">
-							<div class="col-md-6 col-sm-6 col-xs-12">
-								<p class="fw-bold">SOLICITANTE  Centro/Servizo</p>		
-							</div>
-							<div class="col-md-6 col-sm-6 col-xs-12">
-								<p>{{fieldsReport.hasOwnProperty("applicant") ? fieldsReport.applicant : ""}}</p>
-							</div>
-						</div>
-						<div class="row align-items-center">
-							<div class="col-md-3 col-sm-12 col-xs-12">
-								<p class="fw-bold text-nowrap">ESTADO PACIENTE:</p>		
-							</div>
-							<div class="col-md-3 col-sm-4 col-xs-12">
-								<p class="text-nowrap"><span class="fw-bold">Prioridade</span> 
-									{{fieldsReport.hasOwnProperty("priority") ? fieldsReport.priority : ""}}
-								</p>
-							</div>
-							<div class="col-md-3 col-sm-4 col-xs-12">
-								<p class="fw-bold">Ingresado</p>		
-							</div>
-							<div class="col-md-3 col-sm-4 col-xs-12">
-								<p><span class="fw-bold">Cama</span> {{fieldsReport.hasOwnProperty("bed") ? fieldsReport.bed : ""}}</p>
-							</div>	
-						</div>
-
-						<div class="row">
-							<p class="fw-bold">EXPLORACIÓNS SOLICITADAS</p>
-							<div class="table-responsive-md text-nowrap">
-								<table class="table table-borderless text-center">
-									<thead>
-										<tr>
-											<th scope="col">Código</th>
-											<th scope="col">Descrición</th>
-											<th scope="col">Data</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr *ngFor="let exploration of fieldsReport.requestedExplorations;">
-											<td>{{exploration.code}}</td>
-											<td>{{exploration.description}}</td>
-											<td>{{exploration.date}}</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>								
-						</div>
-
-						<div class="row">
-							<p class="fw-bold">DATOS CLÍNICOS/SOSPEITA DIAGNÓSTICA DA SOLICITUDE</p>		
-							<p>{{fieldsReport.hasOwnProperty("clinicalData") ? fieldsReport.clinicalData : ""}}</p>						
-						</div>
-
-						<div class="row">
-							<p class="fw-bold">EXPLORACIÓNS REALIZADAS</p>	
-							<div class="table-responsive-md text-nowrap">
-								<table class="table table-borderless text-center">
-									<thead>
-										<tr>
-											<th scope="col">Código</th>
-											<th scope="col">Descrición</th>
-											<th scope="col">Data</th>
-											<th scope="col">Portátil</th>
-											<th scope="col">Quirófano</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr *ngFor="let exploration of fieldsReport.performedExplorations;">
-											<td>{{exploration.code}}</td>
-											<td>{{exploration.description}}</td>
-											<td>{{exploration.date}}</td>
-											<td>{{exploration.portable}}</td>
-											<td>{{exploration.surgery}}</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>							
-						</div>
-
-						<div class="row">
-							<p class="fw-bold">ACHADOS</p>		
-							<p>{{fieldsReport.hasOwnProperty("findings") ? fieldsReport.findings : ""}}</p>						
-						</div>
-
-						<div class="row">
-							<p class="fw-bold">CONCLUSIÓNS</p>		
-							<p>{{fieldsReport.hasOwnProperty("conclusions") ? fieldsReport.conclusions : ""}}</p>						
-						</div>
-					</div>
-				</div>
-			</div>
+			 <app-report></app-report>
 		</div>
 		<div class="tab-pane fade" id="radiology" role="tabpanel" aria-labelledby="radiology-tab"
-			 [ngClass]="{'show active':activeTab==='radiology'}">			 
+			 [ngClass]="{'show active':activeTab==='radiology'}">
 			<div class="row">
-			</div>
 		</div>
 	</div>
 </div>
