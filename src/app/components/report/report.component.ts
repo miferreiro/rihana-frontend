@@ -55,9 +55,9 @@ export class ReportComponent implements OnInit, OnDestroy {
 		if (!input.files?.length) {
 			return;
 		}
+
 		const file = input.files[0];
-		this.controlReport.setValue([]);
-		this.controlReport.addFile(file);
+		this.controlReport.setValue([file]);
 	}
 
 	private loadReport(file: File): void {

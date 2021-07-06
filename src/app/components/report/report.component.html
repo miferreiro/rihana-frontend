@@ -29,8 +29,8 @@
 				<div *ngIf="controlReport.size === 0" class="col text text-center">
 					Arrastrar e Soltar o ficheiro ou prema aqui
 				</div>
-				<input type="file" tabindex="-1" multiple="" class="files-input" accept=".pdf"
-					   (change)="addFile($event)">
+				<input type="file" class="files-input" accept=".pdf"
+					   (change)="addFile($event)" onclick="this.value = null">
 			</label>
 
 			<ng-template #placeholder>
