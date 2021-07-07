@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component,OnDestroy,OnInit} from '@angular/core';
+import {Component,EventEmitter,OnDestroy,OnInit,Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {Subscription} from 'rxjs';
 import * as pdfjsLib from 'pdfjs-dist';
@@ -31,6 +31,8 @@ import * as pdfjsLib from 'pdfjs-dist';
   styleUrls: ['./report.component.css']
 })
 export class ReportComponent implements OnInit, OnDestroy {
+
+	@Output() reportEvent = new EventEmitter<{ [key: string]: any }>();
 
 	private subscriptionReport: Subscription;
 
@@ -144,6 +146,8 @@ export class ReportComponent implements OnInit, OnDestroy {
 
 		this.fieldsReport.birthDate = report.match(regexBirthDate)[1];
 		this.fieldsReport.gender = report.match(regexGender)[1];
+
+		this.reportEvent.emit(this.fieldsReport);
 	}
 
 	private getDocument(pdfBase64: string): Promise<string> {

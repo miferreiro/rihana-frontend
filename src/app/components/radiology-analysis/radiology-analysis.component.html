@@ -1,0 +1,229 @@
+<!--
+  ~ RIHANA Frontend
+  ~
+  ~ Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
+  ~ Miguel Ferreiro Díaz
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public
+  ~ License along with this program.  If not, see
+  ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
+-->
+
+<div class="row">
+	<div class="col-xl-6 col-sm-12 mb-5">
+		<ng-template [ngIf]="typeExploration === 'PA-LAT'" [ngIfElse]="PP">
+			<h3 class="text-center fw-bold">Radiografía Postero-anterior (PA)</h3>
+		</ng-template>
+		<ng-template #PP>
+			<h3 class="text-center fw-bold">Radiografía Postero-posterior (PP)</h3>
+		</ng-template>
+
+		<form>
+			<div class="file-drop-zone" file-drop-zone [control]="controlRadiologyMain" name="radiology">
+				<label *ngIf="controlRadiologyMain.size === 0" class="upload-input">
+					<div class="col text-center">
+						<i class="bi bi-upload" style="font-size: 1rem; color: black; cursor: pointer;"></i>
+					</div>
+					<div class="col text text-center">
+						Arrastrar e Soltar a imaxe ou prema aqui
+					</div>
+					<input name="inputRadiologyMain" type="file" tabindex="-1" multiple="" class="image-input" accept=".png" (change)="addRadiology($event)">
+				</label>
+
+				<ng-template #placeholder>
+					<div class="overlayCustom">
+						<div class="text-center">
+							<i class="bi bi-upload" style="font-size: 1rem; color: black; cursor: pointer;"></i>
+						</div>
+						<div class="dragover-text">
+							Soltala aquí
+						</div>
+					</div>
+				</ng-template>
+
+				<div *ngIf="controlRadiologyMain.value.length > 0">
+					<div class="row align-items-center">
+						<div class="col-xl-12 col-lg-7 col-md-7 col-sm-12">
+							<div class="row img-controls">
+								<p class="img-zoom">
+									<input name="radiologyMain" type="range" min="0" max="300" value="{{zoomMain}}" class="slider" (input)="changeZoom($event)">
+									<span>
+										<input name="radiologyMain" type="number" min="0" max="300" value="{{zoomMain}}" (input)="changeZoom($event)">
+										%
+									</span>
+								</p>
+
+							</div>
+							<div class="row">
+								<div class="ml-1 mr-1">
+									<span class="control-options">
+										<i name="radiologyMain" class="bi bi-arrow-clockwise" style="font-size: 1rem; color: black;" (click)="resetRadiology($event)"></i>
+										<i class="bi bi-trash" style="font-size: 1rem; color: black;" (click)="controlRadiologyMain.removeFile(controlRadiologyMain.value[0])"></i>
+									</span>
+									<div class="img-div">
+										<img id="img-radiologyMain" class="img-fluid" *ngIf="controlRadiologyMain.valid" [src]="uploadedFileMain | async">
+										<div class="spinner-border text-dark+" role="status" *ngIf="isLoadingInitialDataMain">
+											<span class="visually-hidden">Loading...</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row img-controls">
+								<p class="img-brightness">
+									<input name="radiologyMain" type="range" min="0" max="200" value="{{brightnessMain}}" class="slider" (input)="changeBrightness($event)">
+									<span>
+										<input name="radiologyMain" type="number" min="0" max="200" value="{{brightnessMain}}" (input)="changeBrightness($event)">
+										%
+									</span>
+								</p>
+								<p class="img-contrast">
+									<input name="radiologyMain" type="range" min="0" max="200" value="{{contrastMain}}" class="slider" (input)="changeContrast($event)">
+									<span id="contrast-number">
+										<input name="radiologyMain" type="number" min="0" max="200" value="{{contrastMain}}" (input)="changeContrast($event)">
+										%
+									</span>
+								</p>
+							</div>
+
+						</div>
+						<div class="col-xl-12 col-lg-5 col-md-5 col-sm-12">
+							<div class="row">
+								<h6 class="text-center fw-bold text-dark">Detección de signos</h6>
+							</div>
+							<div class="row radiologicalSigns d-flex justify-content-center">
+								<select class="col-auto signs-select" aria-label=".form-select-sm">
+									<option value="noFindings">No encontrado</option>
+									<option value="cardiomegaly">Cardiomegalia</option>
+									<option value="pleuralEffusion">Derrame pleural</option>
+									<option value="condensation">Condensación</option>
+									<option value="redistribution">Redistribución</option>
+									<option value="nodules">Nódulos</option>
+									<option value="infiltrations">Infiltraciones</option>
+									<option value="masses">Masas</option>
+									<option value="pneumothorax">Neumotórax</option>
+								</select>
+								<div class="col-auto text-center">
+									<i class="bi bi-pencil-square" style="font-size: 1rem; color: black; cursor: pointer;"></i>
+									<span class="dot"></span>
+								</div>
+							</div>
+							<div class="row text-center mt-2">
+								<i class="bi bi-plus-circle" style="font-size: 1.5rem; color: black; cursor: pointer;"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="col-xl-6 col-sm-12 mb-5" *ngIf="typeExploration === 'PA-LAT'">
+		<h3 class="text-center fw-bold">Radiografía Lateral (LAT)</h3>
+		<form>
+			<div class="file-drop-zone" file-drop-zone [control]="controlRadiologyLAT" name="radiology">
+				<label *ngIf="controlRadiologyLAT.size === 0" class="upload-input">
+					<div class="col text-center">
+						<i class="bi bi-upload" style="font-size: 1rem; color: black; cursor: pointer;"></i>
+					</div>
+					<div class="col text text-center">
+						Arrastrar e Soltar a imaxe ou prema aqui
+					</div>
+					<input name="inputRadiologyLAT" type="file" tabindex="-1" multiple="" class="image-input" accept=".png" (change)="addRadiology($event)">
+				</label>
+
+				<ng-template #placeholder>
+					<div class="overlayCustom">
+						<div class="text-center">
+							<i class="bi bi-upload" style="font-size: 1rem; color: black; cursor: pointer;"></i>
+						</div>
+						<div class="dragover-text">
+							Soltala aquí
+						</div>
+					</div>
+				</ng-template>
+
+				<div *ngIf="controlRadiologyLAT.value.length > 0">
+					<div class="row align-items-center">
+						<div class="col-xl-12 col-lg-7 col-md-7 col-sm-12">
+							<div class="row img-controls">
+								<p class="img-zoom">
+									<input name="radiologyLAT" type="range" min="0" max="400" value="{{zoomLAT}}" class="slider" (input)="changeZoom($event)">
+									<span>
+										<input name="radiologyLAT" type="number" min="0" max="400" value="{{zoomLAT}}" (input)="changeZoom($event)">
+										%
+									</span>
+								</p>
+
+							</div>
+							<div class="row">
+								<div class="ml-1 mr-1">
+									<span class="control-options">
+										<i name="radiologyLAT" class="bi bi-arrow-clockwise" style="font-size: 1rem; color: black;" (click)="resetRadiology($event)"></i>
+										<i class="bi bi-trash" style="font-size: 1rem; color: black;" (click)="controlRadiologyLAT.removeFile(controlRadiologyLAT.value[0])"></i>
+									</span>
+									<div class="img-div">
+										<img id="img-radiologyLAT" class="img-fluid" *ngIf="controlRadiologyLAT.valid" [src]="uploadedFileLAT | async">
+										<div class="spinner-border text-dark" role="status" *ngIf="isLoadingInitialDataLAT">
+											<span class="visually-hidden">Loading...</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row img-controls">
+								<p class="img-brightness">
+									<input name="radiologyLAT" type="range" min="0" max="200" value="{{brightnessLAT}}" class="slider" (input)="changeBrightness($event)">
+									<span>
+										<input name="radiologyLAT" type="number" min="0" max="200" value="{{brightnessLAT}}" (input)="changeBrightness($event)">
+										%
+									</span>
+								</p>
+								<p class="img-contrast">
+									<input name="radiologyLAT" type="range" min="0" max="200" value="{{contrastLAT}}" class="slider" (input)="changeContrast($event)">
+									<span id="contrast-number">
+										<input name="radiologyLAT" type="number" min="0" max="200" value="{{contrastLAT}}" (input)="changeContrast($event)">
+										%
+									</span>
+								</p>
+							</div>
+
+						</div>
+						<div class="col-xl-12 col-lg-5 col-md-5 col-sm-12">
+							<div class="row">
+								<h6 class="text-center fw-bold text-dark">Detección de signos</h6>
+							</div>
+							<div class="row radiologicalSigns d-flex justify-content-center">
+								<select class="col-auto signs-select" aria-label=".form-select-sm">
+									<option value="noFindings">No encontrado</option>
+									<option value="cardiomegaly">Cardiomegalia</option>
+									<option value="pleuralEffusion">Derrame pleural</option>
+									<option value="condensation">Condensación</option>
+									<option value="redistribution">Redistribución</option>
+									<option value="nodules">Nódulos</option>
+									<option value="infiltrations">Infiltraciones</option>
+									<option value="masses">Masas</option>
+									<option value="pneumothorax">Neumotórax</option>
+								</select>
+								<div class="col-auto text-center">
+									<i class="bi bi-pencil-square" style="font-size: 1rem; color: black; cursor: pointer;"></i>
+									<span class="dot"></span>
+								</div>
+							</div>
+							<div class="row text-center mt-2">
+								<i class="bi bi-plus-circle" style="font-size: 1.5rem; color: black; cursor: pointer;"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

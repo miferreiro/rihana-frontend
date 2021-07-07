@@ -35,6 +35,7 @@ import {LoginComponent} from './components/login/login.component';
 import {AuthenticationInterceptor} from './helpers/authentication.interceptor';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
 import {ExplorationComponent} from './components/exploration/exploration.component';
+import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiology-analysis.component';
 import {ReportComponent} from './components/report/report.component';
 
 @NgModule({
@@ -43,6 +44,7 @@ import {ReportComponent} from './components/report/report.component';
   		LoginComponent,
 		ExplorationsComponent,
   		ExplorationComponent,
+		RadiologyAnalysisComponent,
 		ReportComponent
 	],
 	imports: [

@@ -19,26 +19,28 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component} from '@angular/core';
+import {ComponentFixture,TestBed} from '@angular/core/testing';
 
-@Component({
-	selector: 'app-exploration',
-	templateUrl: './exploration.component.html',
-	styleUrls: ['./exploration.component.css']
-})
-export class ExplorationComponent {
+import {RadiologyAnalysisComponent} from './radiology-analysis.component';
 
-	public activeTab = 'report';
+describe('RadiologyAnalysisComponent', () => {
+	let component: RadiologyAnalysisComponent;
+	let fixture: ComponentFixture<RadiologyAnalysisComponent>;
 
-	public fieldsReport: { [key: string]: any } = {};
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [ RadiologyAnalysisComponent ]
+		})
+		.compileComponents();
+	});
 
-	constructor() { }
+	beforeEach(() => {
+		fixture = TestBed.createComponent(RadiologyAnalysisComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-	public changeActiveTab(activeTab: string): void {
-		this.activeTab = activeTab;
-	}
-
-	public eventHandler(event:{ [key: string]: any }) {
-		this.fieldsReport = event;
-	}
-}
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});
