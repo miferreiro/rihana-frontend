@@ -1,0 +1,197 @@
+/*
+ * RIHANA Frontend
+ *
+ * Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
+ * Miguel Ferreiro Díaz
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ */
+
+label {
+	display: block;
+}
+
+.has-files label > div {
+	float: right;
+}
+
+img {
+	width: auto;
+	height: auto;
+}
+
+div[name="radiography"] {
+	width: 100%;
+	height: 100%;
+	display: block;
+	position: relative;
+	padding: 1rem;
+	box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+	color: #646464;
+	font-size: 1rem;
+}
+
+.upload-input {
+	width: 100%;
+	display: block;
+	position: relative;
+	color: #646464;
+	cursor: pointer;
+	outline: none;
+}
+
+.upload-input .text:hover {
+	color: #80a9d2;
+	cursor: pointer;
+}
+
+.image-input {
+	width: .1px;
+	height: .1px;
+	top: -100%;
+	left: -100%;
+	position: absolute;
+	opacity: 0;
+	overflow: hidden;
+}
+
+.overlayCustom {
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	background-color: white;
+}
+
+.dragover-text {
+	color: black;
+}
+
+.reset-button {
+	font-size: 0.7rem;
+	cursor: pointer;
+	text-align: right;
+	width: 100%;
+}
+
+.control-options {
+	font-size: 0.7rem;
+	cursor: pointer;
+	text-align: right;
+	width: 100%;
+}
+
+.img-controls {
+	margin-top: 1rem;
+	font-size: .8rem;
+}
+
+.slider {
+	-webkit-appearance: none;
+	width: calc(100% - 100px);
+	height: 10px;
+	border-radius: 5px;
+	background: #d3d3d3;
+	outline: none;
+	opacity: 0.7;
+	-webkit-transition: .2s;
+	transition: opacity .2s;
+}
+
+.slider:hover {
+	opacity: 1;
+}
+
+.img-div {
+	overflow:hidden;
+	padding: 0;
+	text-align: center;
+}
+
+.img-contrast .slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 23px;
+	height: 24px;
+	border: 0;
+	background: url('/assets/images/contrasticon.png');
+	cursor: pointer;
+}
+
+.img-contrast .slider::-moz-range-thumb {
+	width: 23px;
+	height: 25px;
+	border: 0;
+	background: url('/assets/images/contrasticon.png');
+	cursor: pointer;
+}
+
+.img-brightness .slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 24px;
+	height: 24px;
+	border: 0;
+	background: url('/assets/images/brightness.png');
+	cursor: pointer;
+}
+
+.img-brightness .slider::-moz-range-thumb {
+	width: 24px;
+	height: 24px;
+	border: 0;
+	background: url('/assets/images/brightness.png');
+	cursor: pointer;
+}
+
+.img-zoom .slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 24px;
+	height: 24px;
+	border: 0;
+	background: url('/assets/images/magnifying_glass.png');
+	cursor: pointer;
+}
+
+.img-zoom .slider::-moz-range-thumb {
+	width: 24px;
+	height: 24px;
+	border: 0;
+	background: url('/assets/images/magnifying_glass.png');
+	cursor: pointer;
+}
+
+span {
+	width: 100px;
+	display: inline-block;
+	position: relative;
+	padding-left: .5rem;
+}
+
+span input {
+	width: 70px;
+	border: none;
+	border-bottom: 1px solid black;
+	text-align: center;
+	text-rendering: auto;
+	-moz-appearance: textfield;
+}
+
+span input:hover {
+	-moz-appearance: initial
+}
+span input:focus {
+	outline: none;
+}

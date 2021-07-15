@@ -18,3 +18,29 @@
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
+
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+
+import {RadiographyComponent} from './radiography.component';
+
+describe('RadiographyComponent', () => {
+	let component: RadiographyComponent;
+	let fixture: ComponentFixture<RadiographyComponent>;
+
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [ RadiographyComponent ]
+		})
+		.compileComponents();
+	});
+
+	beforeEach(() => {
+		fixture = TestBed.createComponent(RadiographyComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});
