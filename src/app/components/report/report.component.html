@@ -24,7 +24,7 @@
 		<div class="file-drop-zone" file-drop-zone [control]="controlReport" name="report">
 			<label class="upload-input ng-trigger ng-trigger-zoomAnimation">
 				<div class="col text-center">
-					<i class="bi bi-upload" style="font-size: 1rem; color: black; cursor: pointer;"></i>
+					<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 				</div>
 				<div *ngIf="controlReport.size === 0" class="col text text-center">
 					Arrastrar e Soltar o ficheiro ou prema aqui
@@ -36,7 +36,7 @@
 			<ng-template #placeholder>
 				<div class="overlayCustom">
 					<div class="text-center">
-						<i class="bi bi-upload" style="font-size: 1rem; color: black; cursor: pointer;"></i>
+						<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 					</div>
 					<div class="dragover-text">
 						Soltalo aquí
@@ -55,7 +55,7 @@
 						</div>
 						<div class="file-buttons">
 							<span class="remove-btn" (click)="controlReport.removeFile(controlReport.value[0])">
-								<i class="bi bi-trash-fill" style="color: black; cursor: pointer;"></i>
+								<i class="bi bi-trash-fill" style="color: black;"></i>
 								Eliminar
 							</span>
 						</div>

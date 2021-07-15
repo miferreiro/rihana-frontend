@@ -1,8 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
-body, html{
+body, html {
 	font-family: Metropolis, "Avenir Next", "Helvetica Neue", Arial, sans-serif;
 	color: black;
-	height: 100vh;	
+	height: 100vh;
 	font-size: 20px;
 	font-weight: 200;
+}
+
+i {
+	cursor: pointer;
 }
