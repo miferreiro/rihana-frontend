@@ -20,6 +20,7 @@
  */
 
 import {Component,Input,OnInit} from '@angular/core';
+import {Report} from '../../models/Report';
 
 @Component({
 	selector: 'app-radiology-analysis',
@@ -30,12 +31,12 @@ export class RadiologyAnalysisComponent implements OnInit {
 
 	public typeExploration: string;
 
-	public report: { [key: string]: any } = {};
+	public report: Report = new Report();
 
-	@Input() set reportFields(report: { [key: string]: any }) {
+	@Input() set reportFields(report: Report) {
 		this.report = report;
 		if (this.report.hasOwnProperty("performedExplorations")) {
-			let codes = this.report.performedExplorations.map(function(a) { return a.code;});
+			let codes = this.report.performedExplorations.map(function(exploration) { return exploration.code;});
 			if (codes.includes('70102')) {
 				this.typeExploration = 'PA-LAT';
 			} else {

@@ -19,27 +19,13 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component} from '@angular/core';
-import {Report} from '../../models/Report';
+export class Patient {
+	id: string;
+	patientID: string;
+	sex: SEX;
+	birthdate: Date;
+}
 
-@Component({
-	selector: 'app-exploration',
-	templateUrl: './exploration.component.html',
-	styleUrls: ['./exploration.component.css']
-})
-export class ExplorationComponent {
-
-	public activeTab = 'report';
-
-	public report: Report = new Report();
-
-	constructor() { }
-
-	public changeActiveTab(activeTab: string): void {
-		this.activeTab = activeTab;
-	}
-
-	public eventHandler(event: Report): void {
-		this.report = event;
-	}
+export enum SEX {
+	MALE = 'Male', FEMALE = 'Female'
 }

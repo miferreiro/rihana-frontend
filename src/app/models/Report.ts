@@ -19,27 +19,34 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component} from '@angular/core';
-import {Report} from '../../models/Report';
+import {Patient} from "./Patient";
 
-@Component({
-	selector: 'app-exploration',
-	templateUrl: './exploration.component.html',
-	styleUrls: ['./exploration.component.css']
-})
-export class ExplorationComponent {
+export class Report {
+	id: string;
+	patient: Patient;
+	completionDate: Date;
+	reportNumber: string;
+	applicant: string;
+	priority: string;
+	status: string;
+	bed: string;
+	requestedExplorations: RequestedExploration[];
+	clinicalData: string;
+	performedExplorations: PerformedExploration[];
+	findings: string;
+	conclusions: string;
+}
 
-	public activeTab = 'report';
+export class RequestedExploration {
+	code: string;
+	description: string;
+	date: Date;
+}
 
-	public report: Report = new Report();
-
-	constructor() { }
-
-	public changeActiveTab(activeTab: string): void {
-		this.activeTab = activeTab;
-	}
-
-	public eventHandler(event: Report): void {
-		this.report = event;
-	}
+export class PerformedExploration {
+	code: string;
+	description: string;
+	date: Date;
+	portable: string;
+	surgery: string;
 }

@@ -54,7 +54,7 @@
 							{{controlReport.value[0].name}} ({{this.humanFileSize(controlReport.value[0].size)}})
 						</div>
 						<div class="file-buttons">
-							<span class="remove-btn" (click)="controlReport.removeFile(controlReport.value[0])">
+							<span class="remove-btn" (click)="removeFile()">
 								<i class="bi bi-trash-fill" style="color: black;"></i>
 								Eliminar
 							</span>
@@ -73,13 +73,13 @@
 						<p class="text-nowrap fw-bold">Data de nacemento</p>
 					</div>
 					<div class="col-md-3 col-sm-6 col-xs-12">
-						<p>{{fieldsReport.hasOwnProperty("birthDate") ? fieldsReport.birthDate : ""}}</p>
+						<p>{{report.hasOwnProperty("patient") && report.patient.hasOwnProperty("birthdate") ? (report.patient.birthdate | date:'dd/MM/yyyy') : ""}}</p>
 					</div>
 					<div class="col-md-3 col-sm-6 col-xs-12">
 						<p class="fw-bold">Sexo</p>
 					</div>
 					<div class="col-md-3 col-sm-6 col-xs-12">
-						<p>{{fieldsReport.hasOwnProperty("gender") ? fieldsReport.gender : ""}}</p>
+						<p>{{report.hasOwnProperty("patient") && report.patient.hasOwnProperty("sex") ? report.patient.sex : ""}}</p>
 					</div>
 				</div>
 			</div>
@@ -88,13 +88,13 @@
 					<p class="fw-bold">Data realización</p>
 				</div>
 				<div class="col-md-3 col-sm-6 col-xs-12">
-					<p>{{fieldsReport.hasOwnProperty("completionDate") ? fieldsReport.completionDate : ""}}</p>
+					<p>{{report.hasOwnProperty("completionDate") ? (report.completionDate | date:'dd/MM/yyyy') : ""}}</p>
 				</div>
 				<div class="col-md-3 col-sm-6 col-xs-12">
 					<p class="fw-bold">Informe Nº</p>
 				</div>
 				<div class="col-md-3 col-sm-6 col-xs-12">
-					<p>{{fieldsReport.hasOwnProperty("reportN") ? fieldsReport.reportN : ""}}</p>
+					<p>{{report.hasOwnProperty("reportNumber") ? report.reportNumber : ""}}</p>
 				</div>
 			</div>
 			<div class="row align-items-center">
@@ -102,7 +102,7 @@
 					<p class="fw-bold">SOLICITANTE  Centro/Servizo</p>
 				</div>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<p>{{fieldsReport.hasOwnProperty("applicant") ? fieldsReport.applicant : ""}}</p>
+					<p>{{report.hasOwnProperty("applicant") ? report.applicant : ""}}</p>
 				</div>
 			</div>
 			<div class="row align-items-center">
@@ -111,14 +111,14 @@
 				</div>
 				<div class="col-md-3 col-sm-4 col-xs-12">
 					<p class="text-nowrap"><span class="fw-bold">Prioridade</span>
-						{{fieldsReport.hasOwnProperty("priority") ? fieldsReport.priority : ""}}
+						{{report.hasOwnProperty("priority") ? report.priority : ""}}
 					</p>
 				</div>
 				<div class="col-md-3 col-sm-4 col-xs-12">
 					<p class="fw-bold">Ingresado</p>
 				</div>
 				<div class="col-md-3 col-sm-4 col-xs-12">
-					<p><span class="fw-bold">Cama</span> {{fieldsReport.hasOwnProperty("bed") ? fieldsReport.bed : ""}}</p>
+					<p><span class="fw-bold">Cama</span> {{report.hasOwnProperty("bed") ? report.bed : ""}}</p>
 				</div>
 			</div>
 
@@ -134,10 +134,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr *ngFor="let exploration of fieldsReport.requestedExplorations;">
+							<tr *ngFor="let exploration of report.requestedExplorations;">
 								<td>{{exploration.code}}</td>
 								<td>{{exploration.description}}</td>
-								<td>{{exploration.date}}</td>
+								<td>{{exploration.date | date:'dd/MM/yyyy'}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -146,7 +146,7 @@
 
 			<div class="row">
 				<p class="fw-bold">DATOS CLÍNICOS/SOSPEITA DIAGNÓSTICA DA SOLICITUDE</p>
-				<p>{{fieldsReport.hasOwnProperty("clinicalData") ? fieldsReport.clinicalData : ""}}</p>
+				<p>{{report.hasOwnProperty("clinicalData") ? report.clinicalData : ""}}</p>
 			</div>
 
 			<div class="row">
@@ -163,10 +163,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr *ngFor="let exploration of fieldsReport.performedExplorations;">
+							<tr *ngFor="let exploration of report.performedExplorations;">
 								<td>{{exploration.code}}</td>
 								<td>{{exploration.description}}</td>
-								<td>{{exploration.date}}</td>
+								<td>{{exploration.date | date:'dd/MM/yyyy'}}</td>
 								<td>{{exploration.portable}}</td>
 								<td>{{exploration.surgery}}</td>
 							</tr>
@@ -177,12 +177,12 @@
 
 			<div class="row">
 				<p class="fw-bold">ACHADOS</p>
-				<p>{{fieldsReport.hasOwnProperty("findings") ? fieldsReport.findings : ""}}</p>
+				<p>{{report.hasOwnProperty("findings") ? report.findings : ""}}</p>
 			</div>
 
 			<div class="row">
 				<p class="fw-bold">CONCLUSIÓNS</p>
-				<p>{{fieldsReport.hasOwnProperty("conclusions") ? fieldsReport.conclusions : ""}}</p>
+				<p>{{report.hasOwnProperty("conclusions") ? report.conclusions : ""}}</p>
 			</div>
 		</div>
 	</div>
