@@ -19,9 +19,9 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {FileUploadModule} from '@iplab/ngx-file-upload';
 import {FormsModule} from '@angular/forms';
 
@@ -31,10 +31,11 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NotificationModule} from './modules/notification/notification.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
-import {LoginComponent} from './components/login/login.component';
 import {AuthenticationInterceptor} from './helpers/authentication.interceptor';
-import {ExplorationsComponent} from './components/explorations/explorations.component';
+
 import {ExplorationComponent} from './components/exploration/exploration.component';
+import {ExplorationsComponent} from './components/explorations/explorations.component';
+import {LoginComponent} from './components/login/login.component';
 import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiology-analysis.component';
 import {RadiographyComponent} from './components/radiology-analysis/radiography/radiography.component';
 import {ReportComponent} from './components/report/report.component';
@@ -42,9 +43,9 @@ import {ReportComponent} from './components/report/report.component';
 @NgModule({
 	declarations: [
 		AppComponent,
-  		LoginComponent,
+		ExplorationComponent,
 		ExplorationsComponent,
-  		ExplorationComponent,
+		LoginComponent,
 		RadiologyAnalysisComponent,
 		RadiographyComponent,
 		ReportComponent
@@ -70,7 +71,7 @@ import {ReportComponent} from './components/report/report.component';
 			provide: ErrorHandler,
 			useClass: ErrorNotificationHandler
 		},
-	    {
+		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AuthenticationInterceptor, multi: true
 		}

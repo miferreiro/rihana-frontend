@@ -55,27 +55,31 @@
 
 		<div *ngIf="controlRadiography.value.length > 0">
 			<div class="row align-items-center">
-				<div class="col-xl-12 col-lg-7 col-md-7 col-sm-12">
+				<div>
 					<div class="row img-controls">
 						<p class="img-zoom">
 							<input name="radiography" class="slider" type="range" min="0" max="300" value="{{zoom}}"
 									(input)="changeZoom($event)">
 							<span>
-								<input name="radiography" type="number" min="0" max="300" value="{{zoom}}" (input)="changeZoom($event)">
+								<input name="radiography" type="number" min="0" max="300" value="{{zoom}}"
+										(input)="changeZoom($event)">
 								%
 							</span>
 						</p>
 					</div>
 					<div class="row">
-						<div class="ml-1 mr-1">
+						<span class="options">
 							<span class="control-options">
 								<i name="radiography" class="bi bi-arrow-clockwise" style="font-size: 1rem; color: black;"
 									(click)="resetRadiography()"></i>
 								<i class="bi bi-trash" style="font-size: 1rem; color: black;"
 									(click)="controlRadiography.removeFile(controlRadiography.value[0])"></i>
 							</span>
-							<div class="img-div">
-								<img *ngIf="controlRadiography.valid" id="img-radiography" class="img-fluid" [src]="uploadedFile | async">
+						</span>
+						<div class="img-div">
+							<div>
+								<img *ngIf="controlRadiography.valid" id="img-radiography" class="img-fluid"
+										[src]="uploadedFile | async">
 								<div *ngIf="isLoadingRadiography" class="spinner-border text-dark+" role="status">
 									<span class="visually-hidden">Loading...</span>
 								</div>

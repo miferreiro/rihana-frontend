@@ -19,34 +19,8 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component} from '@angular/core';
-import {Radiography} from '../../models/Radiography';
-import {Report} from '../../models/Report';
-
-@Component({
-	selector: 'app-exploration',
-	templateUrl: './exploration.component.html',
-	styleUrls: ['./exploration.component.css']
-})
-export class ExplorationComponent {
-
-	public activeTab = 'report';
-
-	public report: Report = new Report();
-
-	public radiographies: Radiography[] = [null, null];
-
-	constructor() { }
-
-	public changeActiveTab(activeTab: string): void {
-		this.activeTab = activeTab;
-	}
-
-	public eventHandler(event: Report): void {
-		this.report = event;
-	}
-
-	public radiographiesHandler(event: Radiography[]): void {
-		this.radiographies = event;
-	}
+export class Radiography {
+	id: string;
+	type: string;
+	source: string;
 }

@@ -19,9 +19,10 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {BehaviorSubject, Subscription} from 'rxjs';
+import {Radiography} from '../../../models/Radiography';
 
 @Component({
   selector: 'app-radiography',
@@ -30,7 +31,10 @@ import {BehaviorSubject, Subscription} from 'rxjs';
 })
 export class RadiographyComponent implements OnInit {
 
+	@Output() radiography = new EventEmitter<Radiography>();
 	@Input() typeExploration: string;
+
+	private _radiography: Radiography;
 
 	private subscription: Subscription;
 
@@ -45,7 +49,8 @@ export class RadiographyComponent implements OnInit {
 	public contrast: string;
 	public zoom: string;
 
-	public isLoadingRadiography = false;
+	public isLoadingRadiography: boolean = false;
+	public showImageDialog: boolean = false;
 
 	ngOnInit(): void {
 		this.isLoadingRadiography = true;
@@ -75,10 +80,17 @@ export class RadiographyComponent implements OnInit {
 		let uploadedFile: BehaviorSubject<string> = new BehaviorSubject(null);
 		if (file != undefined) {
 			const fr = new FileReader();
-			fr.onload = async (e) => uploadedFile.next(e.target.result.toString());
+			fr.onload = async (e) =>  {
+				uploadedFile.next(e.target.result.toString());
+				let radiography = new Radiography();
+				radiography.type = this.typeExploration;
+				radiography.source = e.target.result.toString();
+				this.radiography.emit(radiography);
+			};
 			fr.readAsDataURL(file);
 		} else {
 			uploadedFile.next(null);
+			this.radiography.emit(null);
 		}
 		return uploadedFile;
 	}

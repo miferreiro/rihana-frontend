@@ -39,7 +39,9 @@
 		</div>
 		<div class="tab-pane fade" id="radiology" role="tabpanel" aria-labelledby="radiology-tab"
 			 [ngClass]="{'show active':activeTab==='radiology'}">
-			 <app-radiology-analysis [reportFields]="report"></app-radiology-analysis>
+			<app-radiology-analysis [reportFields]="report"
+									(radiographies)="radiographiesHandler($event)">
+			</app-radiology-analysis>
 		</div>
 	</div>
 </div>

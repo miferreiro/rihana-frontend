@@ -19,7 +19,8 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component,Input,OnInit} from '@angular/core';
+import {Component,EventEmitter,Input,OnInit,Output} from '@angular/core';
+import {Radiography} from '../../models/Radiography';
 import {Report} from '../../models/Report';
 
 @Component({
@@ -30,6 +31,7 @@ import {Report} from '../../models/Report';
 export class RadiologyAnalysisComponent implements OnInit {
 
 	public typeExploration: string;
+	public showImageDialog = false;
 
 	public report: Report = new Report();
 
@@ -47,7 +49,29 @@ export class RadiologyAnalysisComponent implements OnInit {
 		}
 	};
 
+	@Output() radiographies = new EventEmitter<Radiography[]>();
+
+	private _radiographies: Radiography[] = [null, null];
+
 	ngOnInit(): void {
 		this.typeExploration = 'PA-LAT';
+	}
+
+	public radiographyHandler(event: Radiography, type: string): void {
+		if (event != undefined) {
+			if (type != 'LAT') {
+				this._radiographies[0] = event;
+			} else {
+				this._radiographies[1] = event;
+			}
+			this.radiographies.emit(this._radiographies);
+		} else {
+			if (type != 'LAT') {
+				this._radiographies[0] = null;
+			} else {
+				this._radiographies[1] = null;
+			}
+			this.radiographies.emit(this._radiographies);
+		}
 	}
 }

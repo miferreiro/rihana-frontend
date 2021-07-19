@@ -85,6 +85,12 @@ div[name="radiography"] {
 	width: 100%;
 }
 
+.options {
+	width: 100%;
+	display: flex;
+	font-size: 1.5rem !important;
+}
+
 .control-options {
 	font-size: 0.7rem;
 	cursor: pointer;
@@ -101,8 +107,8 @@ div[name="radiography"] {
 	-webkit-appearance: none;
 	width: calc(100% - 100px);
 	height: 10px;
+	background-color: #d3d3d3;
 	border-radius: 5px;
-	background: #d3d3d3;
 	outline: none;
 	opacity: 0.7;
 	-webkit-transition: .2s;
@@ -114,9 +120,11 @@ div[name="radiography"] {
 }
 
 .img-div {
-	overflow:hidden;
-	padding: 0;
 	text-align: center;
+}
+
+.img-div>div {
+	overflow:hidden;
 }
 
 .img-contrast .slider::-webkit-slider-thumb {
@@ -124,16 +132,16 @@ div[name="radiography"] {
 	appearance: none;
 	width: 23px;
 	height: 24px;
-	border: 0;
 	background: url('/assets/images/contrasticon.png');
+	border: 0;
 	cursor: pointer;
 }
 
 .img-contrast .slider::-moz-range-thumb {
 	width: 23px;
 	height: 25px;
-	border: 0;
 	background: url('/assets/images/contrasticon.png');
+	border: 0;
 	cursor: pointer;
 }
 
@@ -142,16 +150,16 @@ div[name="radiography"] {
 	appearance: none;
 	width: 24px;
 	height: 24px;
-	border: 0;
 	background: url('/assets/images/brightness.png');
+	border: 0;
 	cursor: pointer;
 }
 
 .img-brightness .slider::-moz-range-thumb {
 	width: 24px;
 	height: 24px;
-	border: 0;
 	background: url('/assets/images/brightness.png');
+	border: 0;
 	cursor: pointer;
 }
 
@@ -160,27 +168,27 @@ div[name="radiography"] {
 	appearance: none;
 	width: 24px;
 	height: 24px;
-	border: 0;
 	background: url('/assets/images/magnifying_glass.png');
+	border: 0;
 	cursor: pointer;
 }
 
 .img-zoom .slider::-moz-range-thumb {
 	width: 24px;
 	height: 24px;
-	border: 0;
 	background: url('/assets/images/magnifying_glass.png');
+	border: 0;
 	cursor: pointer;
 }
 
-span {
+.img-controls span {
 	width: 100px;
 	display: inline-block;
 	position: relative;
 	padding-left: .5rem;
 }
 
-span input {
+.img-controls span input {
 	width: 70px;
 	border: none;
 	border-bottom: 1px solid black;
@@ -189,9 +197,10 @@ span input {
 	-moz-appearance: textfield;
 }
 
-span input:hover {
+.img-controls span input:hover {
 	-moz-appearance: initial
 }
-span input:focus {
+
+.img-controls span input:focus{
 	outline: none;
 }
