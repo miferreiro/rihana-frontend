@@ -1,7 +1,7 @@
 {
   "name": "@rihana/frontend",
   "description": "RIHANA - Radiological Image and History Acquisition for Neurocomputing Analysis",
-  "version": "0.1.0-alpha.18",
+  "version": "0.1.0-alpha.19",
   "license": "GPL-3.0",
   "author": {
     "name": "David A. Ruano Ordás",
@@ -13,14 +13,14 @@
   ],
   "repository": "https://github.com/miferreiro/rihana-frontend.git",
   "scripts": {
-    "ng": "./node_modules/@angular/cli/bin/ng",
+    "ng": "./node_modules/.bin/ng",
     "start": "./node_modules/.bin/ng serve --open --host 0.0.0.0",
-    "start-develop": "./node_modules/@angular/cli/bin/ng serve --open --host 0.0.0.0 --configuration development",
-    "start-production": "./node_modules/@angular/cli/bin/ng serve --open --host 0.0.0.0 --configuration production",
-    "build-develop": "./node_modules/@angular/cli/bin/ng build --configuration development",
-    "build-production": "./node_modules/@angular/cli/bin/ng build --configuration production --output-hashing none",
-    "test": "./node_modules/@angular/cli/bin/ng test",
-    "e2e": "./node_modules/@angular/cli/bin/ng e2e"
+    "start-develop": "./node_modules/.bin/ng serve --open --host 0.0.0.0 --configuration development",
+    "start-production": "./node_modules/.bin/ng serve --open --host 0.0.0.0 --configuration production",
+    "build-develop": "./node_modules/.bin/ng build --configuration development",
+    "build-production": "./node_modules/.bin/ng build --configuration production --output-hashing none",
+    "test": "./node_modules/.bin/ng test",
+    "e2e": "./node_modules/.bin/ng e2e"
   },
   "private": true,
   "files": [
