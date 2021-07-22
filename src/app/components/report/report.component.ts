@@ -39,7 +39,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 
 	public readonly controlReport = new FileUploadControl(
 		{listVisible: true, accept: ['.pdf'], discardInvalid: true, multiple: false},
-		[FileUploadValidators.accept(['.pdf']), FileUploadValidators.filesLimit(1)]
+		[FileUploadValidators.accept(['.pdf']), FileUploadValidators.filesLimit(2)]
 	);
 
 	public report: Report = new Report();
@@ -50,7 +50,14 @@ export class ReportComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.report = new Report();
-		this.subscriptionReport = this.controlReport.valueChanges.subscribe((values: Array<File>) =>{this.report = new Report(); this.loadReport(values[0]) });
+		this.subscriptionReport = this.controlReport.valueChanges.subscribe((values: Array<File>) => {
+			if (values.length == 2) {
+				this.controlReport.setValue([values[1]]);
+			} else {
+				this.report = new Report();
+				this.loadReport(values[0])
+			}
+		});
 	}
 
 	public addFile(event: Event): void {

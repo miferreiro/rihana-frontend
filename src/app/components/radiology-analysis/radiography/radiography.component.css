@@ -72,17 +72,42 @@ div[name="radiography"] {
 	height: 100%;
 	z-index: 1;
 	background-color: white;
+	padding-top: .5rem;
+	padding-bottom: .5rem;
+	margin-left: 1rem;
+	margin-right: 1rem;
+	border-radius: 1rem;
+}
+
+.has-files .overlayCustom {
+	width: 100%;
+	height: 100%;
+	margin-left: 1rem;
+	margin-right: 1rem;
+	padding-top: .5rem;
+	padding-bottom: .5rem;
+	border-radius: 1rem;
+	z-index: 1;
+	background-color: lightgrey;
+	box-shadow:
+	0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+	0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+	0 12.5px 10px rgba(0, 0, 0, 0.06),
+	0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+	0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+	0 100px 80px rgba(0, 0, 0, 0.12)
 }
 
 .dragover-text {
 	color: black;
+	text-align: center!important;
 }
 
 .reset-button {
-	font-size: 0.7rem;
-	cursor: pointer;
-	text-align: right;
 	width: 100%;
+	font-size: 0.7rem;
+	text-align: right;
+	cursor: pointer;
 }
 
 .options {
@@ -93,13 +118,11 @@ div[name="radiography"] {
 
 .control-options {
 	font-size: 0.7rem;
-	cursor: pointer;
 	text-align: right;
 	width: 100%;
 }
 
 .img-controls {
-	margin-top: 1rem;
 	font-size: .8rem;
 }
 
@@ -111,6 +134,7 @@ div[name="radiography"] {
 	border-radius: 5px;
 	outline: none;
 	opacity: 0.7;
+	cursor: pointer;
 	-webkit-transition: .2s;
 	transition: opacity .2s;
 }
@@ -125,6 +149,11 @@ div[name="radiography"] {
 
 .img-div>div {
 	overflow:hidden;
+}
+
+
+.img-contrast, .img-brightness {
+	padding-top: 1rem;
 }
 
 .img-contrast .slider::-webkit-slider-thumb {

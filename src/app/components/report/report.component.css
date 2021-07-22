@@ -100,12 +100,18 @@ div[name="report"] .file-drop-zone.dragover label {
 div[name="report"] .overlayCustom {
 	width: 100%;
 	height: 100%;
+	margin-left: 1rem;
+	margin-right: 1rem;
+	padding-top: .5rem;
+	padding-bottom: .5rem;
+	border-radius: 1rem;
 	z-index: 1;
 	background-color: white;
 }
 
 div[name="report"] .dragover-text {
 	color: black;
+	text-align: center!important;
 }
 
 .dataReport {

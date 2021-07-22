@@ -39,7 +39,8 @@
 			<div class="col text text-center">
 				Arrastrar e Soltar a imaxe ou prema aqui
 			</div>
-			<input name="inputRadiography" class="image-input" type="file" tabindex="-1" multiple="" accept=".png" (change)="addRadiography($event)">
+			<input name="inputRadiography" class="image-input" type="file" tabindex="-1" multiple="" accept=".png"
+					(change)="addRadiography($event)">
 		</label>
 
 		<ng-template #placeholder>
@@ -87,7 +88,7 @@
 						</div>
 					</div>
 					<div class="row img-controls">
-						<p class="img-brightness">
+						<div class="img-brightness">
 							<input name="radiography" class="slider" type="range" min="0" max="200" value="{{brightness}}"
 									(input)="changeBrightness($event)">
 							<span>
@@ -95,8 +96,8 @@
 									(input)="changeBrightness($event)">
 								%
 							</span>
-						</p>
-						<p class="img-contrast">
+						</div>
+						<div class="img-contrast">
 							<input name="radiography" class="slider" type="range" min="0" max="200" value="{{contrast}}"
 								(input)="changeContrast($event)">
 							<span id="contrast-number">
@@ -104,7 +105,7 @@
 									(input)="changeContrast($event)">
 								%
 							</span>
-						</p>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -34,13 +34,11 @@ export class RadiographyComponent implements OnInit {
 	@Output() radiography = new EventEmitter<Radiography>();
 	@Input() typeExploration: string;
 
-	private _radiography: Radiography;
-
 	private subscription: Subscription;
 
 	public readonly controlRadiography = new FileUploadControl(
 		{listVisible: true, accept: ['image/png'], discardInvalid: true, multiple: false},
-		[FileUploadValidators.accept(['image/png']), FileUploadValidators.filesLimit(1)]
+		[FileUploadValidators.accept(['image/png']), FileUploadValidators.filesLimit(2)]
 	);
 
 	public uploadedFile: BehaviorSubject<string> = new BehaviorSubject(null);
@@ -55,10 +53,14 @@ export class RadiographyComponent implements OnInit {
 	ngOnInit(): void {
 		this.isLoadingRadiography = true;
 		this.subscription = this.controlRadiography.valueChanges.subscribe((values: Array<File>) => {
-			this.uploadedFile = this.loadRadiography(values[0]);
-			this.uploadedFile.subscribe(event => {
-				this.isLoadingRadiography = (event == null);
-			});
+			if (values.length == 2) {
+				this.controlRadiography.setValue([values[1]]);
+			} else {
+				this.uploadedFile = this.loadRadiography(values[0]);
+				this.uploadedFile.subscribe(event => {
+					this.isLoadingRadiography = (event == null);
+				});
+			}
 		});
 		this.brightness = '100';
 		this.contrast = '100';
@@ -72,8 +74,7 @@ export class RadiographyComponent implements OnInit {
 			return;
 		}
 		const file = input.files[0];
-		this.controlRadiography.setValue([]);
-		this.controlRadiography.addFile(file);
+		this.controlRadiography.setValue([file]);
 	}
 
 	private loadRadiography(file: File): BehaviorSubject<string> {
