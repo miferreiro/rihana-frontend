@@ -19,58 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-nav {
-	min-height: 3.5rem;
-}
+import {Injectable} from '@angular/core';
 
-.navbar-toggler-custom {
-	padding: .25rem .75rem;
-	background-color: transparent;
-	border: none;
-}
-
-.navbar-toggler-custom:hover {
-	text-decoration: none;
-}
-
-@media (min-width: 768px) {
-	.navbar-expand-md .navbar-toggler-custom {
-		display: none;
-	}
-}
-
-#dropdownLang::first-letter {
-	text-transform: uppercase;
-}
-
-#dropdownLang::after {
-	content: none;
-}
-
-#dropdownLang span {
-	vertical-align: middle;
-	font-size: 1.5rem;
-}
-
-.dropdown-menu {
-	min-width: 0;
-	max-width: min-content;
-}
-
-.dropdown-item {
-	cursor: pointer;
-}
-
-.dropdown-item::first-letter {
-	text-transform: uppercase;
-}
-
-.dropdown-item:hover {
-	color: inherit;
-	background-color: transparent;
-}
-
-.dropdown-item.active, .dropdown-item:active {
-	color: inherit;
-	background-color: transparent;
+/**
+ * Class representing the localization config
+ */
+@Injectable()
+export class LocalizationServiceConfig {
+	public locale_id: string = '';
 }

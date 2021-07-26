@@ -19,25 +19,25 @@
   ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
 -->
 
-<div class="row ">
-	<div class="row explorations-tabs justify-content-center mx-auto" id="myTab" role="tablist">
+<div class="row">
+	<div id="myTab" class="row explorations-tabs justify-content-center mx-auto" role="tablist">
 		<button id="report-tab" data-bs-toggle="tab" data-bs-target="#report" type="button"
 				role="tab" aria-controls="report" aria-selected="true"
 				[ngClass]="{'active':activeTab==='report'}" (click)="changeActiveTab('report')">
-				<h4>Informe de Radioloxía</h4>
+				<h4>{{'Radiology report' | translate}}</h4>
 		</button>
 		<button id="radiology-tab" data-bs-toggle="tab" data-bs-target="#radiology" type="button"
 				role="tab" aria-controls="radiology" aria-selected="false"
 				[ngClass]="{'active':activeTab==='radiology'}" (click)="changeActiveTab('radiology')">
-				<h4>Análise Radiolóxico</h4>
+				<h4>{{'Radiology analysis' | translate}}</h4>
 		</button>
 	</div>
-	<div class="tab-content" id="myTabContent">
-		<div class="tab-pane fade show active " id="report" role="tabpanel"
+	<div id="myTabContent" class="tab-content">
+		<div id="report" class="tab-pane fade show active" role="tabpanel"
 			 aria-labelledby="report-tab" [ngClass]="{'active':activeTab==='report'}">
-			 <app-report (reportEvent)="eventHandler($event)"></app-report>
+			<app-report (reportEvent)="eventHandler($event)"></app-report>
 		</div>
-		<div class="tab-pane fade" id="radiology" role="tabpanel" aria-labelledby="radiology-tab"
+		<div id="radiology" class="tab-pane fade" role="tabpanel" aria-labelledby="radiology-tab"
 			 [ngClass]="{'show active':activeTab==='radiology'}">
 			<app-radiology-analysis [reportFields]="report"
 									(radiographies)="radiographiesHandler($event)">

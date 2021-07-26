@@ -24,10 +24,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ErrorHandler, NgModule} from '@angular/core';
 import {FileUploadModule} from '@iplab/ngx-file-upload';
 import {FormsModule} from '@angular/forms';
+import {InternationalizationModule} from './modules/internationalization/internationalization.module';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {NotificationModule} from './modules/notification/notification.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
@@ -40,6 +43,11 @@ import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiol
 import {RadiographyComponent} from './components/radiology-analysis/radiography/radiography.component';
 import {ReportComponent} from './components/report/report.component';
 
+import {LangPipe} from './pipes/lang.pipe';
+import {registerLocaleData} from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import localeGl from '@angular/common/locales/gl';
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -48,7 +56,8 @@ import {ReportComponent} from './components/report/report.component';
 		LoginComponent,
 		RadiologyAnalysisComponent,
 		RadiographyComponent,
-		ReportComponent
+		ReportComponent,
+  		LangPipe
 	],
 	imports: [
 		AppRoutingModule,
@@ -63,6 +72,14 @@ import {ReportComponent} from './components/report/report.component';
 			preventDuplicates: true,
 			pauseOnHover: true,
 			clickToClose: true
+		}),
+		InternationalizationModule.forRoot({locale_id: 'gl'}),
+		TranslateModule.forRoot({
+		  loader: {
+			provide: TranslateLoader,
+			useFactory: HttpLoaderFactory,
+			deps: [HttpClient]
+		  }
 		})
   	],
 
@@ -79,3 +96,16 @@ import {ReportComponent} from './components/report/report.component';
   	bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+/**
+* The http loader factory : Loads the files from define path.
+* @param {HttpClient} http
+* @returns {TranslateHttpLoader}
+* @constructor
+*/
+export function HttpLoaderFactory(http: HttpClient) {
+	return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
+}
+
+registerLocaleData(localeEs)
+registerLocaleData(localeGl)

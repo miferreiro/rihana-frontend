@@ -20,6 +20,7 @@
  */
 
 import {Component, OnInit} from '@angular/core';
+import {LocalizationService} from './modules/internationalization/localization.service';
 import {NotificationService} from './modules/notification/services/notification.service';
 import {NotificationsService} from 'angular2-notifications';
 import {Severity} from './modules/notification/entities';
@@ -42,8 +43,12 @@ export class AppComponent implements OnInit {
 		private notificationService: NotificationService,
 		private notificationsService: NotificationsService,
 		public authenticationService: AuthenticationService,
+		public localizationService: LocalizationService,
 		private router: Router
 	) {
+		if (localStorage.getItem('language')) {
+			this.localizationService.useLanguage(localStorage.getItem('language'));
+		}
 	}
 
 	ngOnInit() {
@@ -51,20 +56,29 @@ export class AppComponent implements OnInit {
 			message => {
 				switch (message.severity) {
 					case Severity.ERROR:
-						this.notificationsService.error(message.summary, message.detail);
+						this.notificationsService.error(this.localizationService.translate(message.summary),
+														this.localizationService.translate(message.detail));
 						break;
 					case Severity.SUCCESS:
-						this.notificationsService.success(message.summary, message.detail);
+						this.notificationsService.success(this.localizationService.translate(message.summary),
+														  this.localizationService.translate(message.detail));
 						break;
 					case Severity.INFO:
-						this.notificationsService.info(message.summary, message.detail);
+						this.notificationsService.info(this.localizationService.translate(message.summary),
+													   this.localizationService.translate(message.detail));
 						break;
 					case Severity.WARNING:
-						this.notificationsService.warn(message.summary, message.detail);
+						this.notificationsService.warn(this.localizationService.translate(message.summary),
+													   this.localizationService.translate(message.detail));
 						break;
 				}
 			}
 		);
+	}
+
+	switchLang(lang: string) {
+		this.localizationService.useLanguage(lang);
+		localStorage.setItem('language', lang);
 	}
 
 	logOut() {

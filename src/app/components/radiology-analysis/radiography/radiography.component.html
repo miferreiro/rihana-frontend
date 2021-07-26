@@ -21,13 +21,13 @@
 -->
 
 <ng-template [ngIf]="typeExploration === 'PA'">
-	<h3 class="text-center fw-bold">Radiografía Postero-anterior (PA)</h3>
+	<h3 class="text-center fw-bold">{{'Postero-anterior radiography (PA)' | translate}}</h3>
 </ng-template>
 <ng-template #PP [ngIf]="typeExploration === 'PP'">
-	<h3 class="text-center fw-bold">Radiografía Postero-posterior (PP)</h3>
+	<h3 class="text-center fw-bold">{{'Postero-posterior radiography (PP)' | translate}}</h3>
 </ng-template>
 <ng-template [ngIf]="typeExploration === 'LAT'">
-	<h3 class="text-center fw-bold">Radiografía Lateral (LAT)</h3>
+	<h3 class="text-center fw-bold">{{'Lateral radiography (LAT)' | translate}}</h3>
 </ng-template>
 
 <form>
@@ -37,7 +37,7 @@
 				<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 			</div>
 			<div class="col text text-center">
-				Arrastrar e Soltar a imaxe ou prema aqui
+				{{'Drag and Drop the image or click here' | translate}}
 			</div>
 			<input name="inputRadiography" class="image-input" type="file" tabindex="-1" multiple="" accept=".png"
 					(change)="addRadiography($event)">
@@ -49,7 +49,7 @@
 					<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 				</div>
 				<div class="dragover-text">
-					Soltala aquí
+					{{'Drop it here' | translate}}
 				</div>
 			</div>
 		</ng-template>
@@ -82,7 +82,7 @@
 								<img *ngIf="controlRadiography.valid" id="img-radiography" class="img-fluid"
 										[src]="uploadedFile | async">
 								<div *ngIf="isLoadingRadiography" class="spinner-border text-dark+" role="status">
-									<span class="visually-hidden">Loading...</span>
+									<span class="visually-hidden">{{'Loading' | translate}}...</span>
 								</div>
 							</div>
 						</div>

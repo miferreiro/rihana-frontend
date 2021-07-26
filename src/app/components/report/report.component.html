@@ -21,13 +21,13 @@
 
 <div class="row">
 	<form>
-		<div class="file-drop-zone" file-drop-zone [control]="controlReport" name="report">
+		<div name="report" class="file-drop-zone" file-drop-zone [control]="controlReport">
 			<label class="upload-input ng-trigger ng-trigger-zoomAnimation">
 				<div class="col text-center">
 					<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 				</div>
 				<div *ngIf="controlReport.size === 0" class="col text text-center">
-					Arrastrar e Soltar o ficheiro ou prema aqui
+					{{'Drag and Drop the file or click here' | translate}}
 				</div>
 				<input type="file" class="files-input" accept=".pdf"
 					   (change)="addFile($event)" onclick="this.value = null">
@@ -39,7 +39,7 @@
 						<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 					</div>
 					<div class="dragover-text">
-						Soltalo aquí
+						{{'Drop it here' | translate}}
 					</div>
 				</div>
 			</ng-template>
@@ -56,7 +56,7 @@
 						<div class="file-buttons">
 							<span class="remove-btn" (click)="removeFile()">
 								<i class="bi bi-trash-fill" style="color: black;"></i>
-								Eliminar
+								{{'Remove' | translate}}
 							</span>
 						</div>
 					</div>
@@ -67,16 +67,16 @@
 	<div class="mb-3 mt-3">
 		<div class="dataReport">
 			<div class="align-items-center patient-info">
-				<legend class="fw-bold">Información do paciente</legend>
+				<legend class="fw-bold">{{'Patient information' | translate}}</legend>
 				<div class="row">
 					<div class="col-md-3 col-sm-6 col-xs-12">
-						<p class="text-nowrap fw-bold">Data de nacemento</p>
+						<p class="text-nowrap fw-bold">{{'Birthdate' | translate}}</p>
 					</div>
 					<div class="col-md-3 col-sm-6 col-xs-12">
 						<p>{{report.hasOwnProperty("patient") && report.patient.hasOwnProperty("birthdate") ? (report.patient.birthdate | date:'dd/MM/yyyy') : ""}}</p>
 					</div>
 					<div class="col-md-3 col-sm-6 col-xs-12">
-						<p class="fw-bold">Sexo</p>
+						<p class="fw-bold">{{'Sex' | translate}}</p>
 					</div>
 					<div class="col-md-3 col-sm-6 col-xs-12">
 						<p>{{report.hasOwnProperty("patient") && report.patient.hasOwnProperty("sex") ? report.patient.sex : ""}}</p>
@@ -85,13 +85,13 @@
 			</div>
 			<div class="row align-items-center">
 				<div class="col-md-3 col-sm-6 col-xs-12">
-					<p class="fw-bold">Data realización</p>
+					<p class="fw-bold">{{'Completion date' | translate}}</p>
 				</div>
 				<div class="col-md-3 col-sm-6 col-xs-12">
 					<p>{{report.hasOwnProperty("completionDate") ? (report.completionDate | date:'dd/MM/yyyy') : ""}}</p>
 				</div>
 				<div class="col-md-3 col-sm-6 col-xs-12">
-					<p class="fw-bold">Informe Nº</p>
+					<p class="fw-bold">{{'Report number' | translate}}</p>
 				</div>
 				<div class="col-md-3 col-sm-6 col-xs-12">
 					<p>{{report.hasOwnProperty("reportNumber") ? report.reportNumber : ""}}</p>
@@ -99,7 +99,10 @@
 			</div>
 			<div class="row align-items-center">
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<p class="fw-bold">SOLICITANTE  Centro/Servizo</p>
+					<p class="fw-bold">
+						<span class="text-uppercase">{{'Applicant' | translate}}</span>
+						{{'Center/Service' | translate}}
+					</p>
 				</div>
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<p>{{report.hasOwnProperty("applicant") ? report.applicant : ""}}</p>
@@ -107,34 +110,40 @@
 			</div>
 			<div class="row align-items-center">
 				<div class="col-md-3 col-sm-12 col-xs-12">
-					<p class="fw-bold text-nowrap">ESTADO PACIENTE:</p>
+					<p class="fw-bold text-nowrap">
+						<span class="text-uppercase">{{'Patient status' | translate}}</span>:
+					</p>
 				</div>
 				<div class="col-md-3 col-sm-4 col-xs-12">
-					<p class="text-nowrap"><span class="fw-bold">Prioridade</span>
+					<p class="text-nowrap">
+						<span class="fw-bold">{{'Priority' | translate}}</span>
 						{{report.hasOwnProperty("priority") ? report.priority : ""}}
 					</p>
 				</div>
 				<div class="col-md-3 col-sm-4 col-xs-12">
-					<p class="fw-bold">Ingresado</p>
+					<p class="fw-bold">{{'Admitted' | translate}}</p>
 				</div>
 				<div class="col-md-3 col-sm-4 col-xs-12">
-					<p><span class="fw-bold">Cama</span> {{report.hasOwnProperty("bed") ? report.bed : ""}}</p>
+					<p>
+						<span class="fw-bold">{{'Bed' | translate}}</span>
+						{{report.hasOwnProperty("bed") ? report.bed : ""}}
+					</p>
 				</div>
 			</div>
 
 			<div class="row">
-				<p class="fw-bold">EXPLORACIÓNS SOLICITADAS</p>
+				<p class="fw-bold text-uppercase">{{'Requested explorations' | translate}}</p>
 				<div class="table-responsive-md text-nowrap">
 					<table class="table table-borderless text-center">
 						<thead>
 							<tr>
-								<th scope="col">Código</th>
-								<th scope="col">Descrición</th>
-								<th scope="col">Data</th>
+								<th scope="col">{{'Code' | translate}}</th>
+								<th scope="col">{{'Description' | translate}}</th>
+								<th scope="col">{{'Date' | translate}}</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr *ngFor="let exploration of report.requestedExplorations;">
+							<tr *ngFor="let exploration of report.requestedExplorations">
 								<td>{{exploration.code}}</td>
 								<td>{{exploration.description}}</td>
 								<td>{{exploration.date | date:'dd/MM/yyyy'}}</td>
@@ -145,21 +154,21 @@
 			</div>
 
 			<div class="row">
-				<p class="fw-bold">DATOS CLÍNICOS/SOSPEITA DIAGNÓSTICA DA SOLICITUDE</p>
+				<p class="fw-bold text-uppercase">{{'Clinical data/Diagnostic suspicion of the application' | translate}}</p>
 				<p>{{report.hasOwnProperty("clinicalData") ? report.clinicalData : ""}}</p>
 			</div>
 
 			<div class="row">
-				<p class="fw-bold">EXPLORACIÓNS REALIZADAS</p>
+				<p class="fw-bold text-uppercase">{{'Performed explorations' | translate}}</p>
 				<div class="table-responsive-md text-nowrap">
 					<table class="table table-borderless text-center">
 						<thead>
 							<tr>
-								<th scope="col">Código</th>
-								<th scope="col">Descrición</th>
-								<th scope="col">Data</th>
-								<th scope="col">Portátil</th>
-								<th scope="col">Quirófano</th>
+								<th scope="col">{{'Code' | translate}}</th>
+								<th scope="col">{{'Description' | translate}}</th>
+								<th scope="col">{{'Date' | translate}}</th>
+								<th scope="col">{{'Portable' | translate}}</th>
+								<th scope="col">{{'Surgery' | translate}}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -176,12 +185,12 @@
 			</div>
 
 			<div class="row">
-				<p class="fw-bold">ACHADOS</p>
+				<p class="fw-bold text-uppercase">{{'Findings' | translate}}</p>
 				<p>{{report.hasOwnProperty("findings") ? report.findings : ""}}</p>
 			</div>
 
 			<div class="row">
-				<p class="fw-bold">CONCLUSIÓNS</p>
+				<p class="fw-bold text-uppercase">{{'Conclusions' | translate}}</p>
 				<p>{{report.hasOwnProperty("conclusions") ? report.conclusions : ""}}</p>
 			</div>
 		</div>
