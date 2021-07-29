@@ -25,8 +25,9 @@ import {ErrorHandler, NgModule} from '@angular/core';
 import {FileUploadModule} from '@iplab/ngx-file-upload';
 import {FormsModule} from '@angular/forms';
 import {InternationalizationModule} from './modules/internationalization/internationalization.module';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateCompiler, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {TranslateMessageFormatCompiler} from 'ngx-translate-messageformat-compiler';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -77,13 +78,16 @@ import localeGl from '@angular/common/locales/gl';
 		TranslateModule.forRoot({
 		  loader: {
 			provide: TranslateLoader,
-			useFactory: HttpLoaderFactory,
-			deps: [HttpClient]
-		  }
+				useFactory: HttpLoaderFactory,
+				deps: [HttpClient]
+			},
+			compiler: {
+				provide: TranslateCompiler,
+				useClass: TranslateMessageFormatCompiler
+			}
 		})
-  	],
-
-  	providers: [
+	],
+	providers: [
 		{
 			provide: ErrorHandler,
 			useClass: ErrorNotificationHandler
