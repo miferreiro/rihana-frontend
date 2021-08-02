@@ -22,7 +22,7 @@
 import {Component,EventEmitter,OnDestroy,OnInit,Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {Subscription} from 'rxjs';
-import * as pdfjsLib from 'pdfjs-dist';
+import {getDocument, GlobalWorkerOptions, version} from 'pdfjs-dist';
 import {PerformedExploration, Report, RequestedExploration} from '../../models/Report';
 import {Patient, SEX} from '../../models/Patient';
 
@@ -45,7 +45,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 	public report: Report = new Report();
 
 	constructor() {
-		pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
+		GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.js`;
 	}
 
 	ngOnInit(): void {
@@ -186,7 +186,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 	}
 
 	private getDocument(pdfBase64: string): Promise<string> {
-		return pdfjsLib.getDocument({data: pdfBase64}).promise.then(function(pdf) {
+		return getDocument({data: pdfBase64}).promise.then(function(pdf) {
 			var maxPages = pdf.numPages;
 
 			var countPromises = [];
