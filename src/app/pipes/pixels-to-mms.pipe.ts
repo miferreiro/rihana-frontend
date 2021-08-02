@@ -19,11 +19,16 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Sign} from "./Sign";
+import {Pipe, PipeTransform} from '@angular/core';
 
-export class Radiography {
-	id: string;
-	type: string;
-	source: string;
-	sings: Sign[];
+@Pipe({
+	name: 'pixelsToMms'
+})
+export class PixelsToMmsPipe implements PipeTransform {
+
+	private _convertionPixelsToMms: number = 0.26458333333719;
+
+	transform(pixels: number): number {
+		return pixels * this._convertionPixelsToMms;
+	}
 }

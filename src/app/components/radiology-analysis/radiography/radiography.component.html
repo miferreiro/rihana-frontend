@@ -70,6 +70,10 @@
 					</div>
 					<div class="row">
 						<span class="options">
+							<span class="annotation-options">
+								<i name="radiographyDialog" class="bi bi-brush" style="font-size: 1rem; color: black;"
+									(click)="openDialogImage()"></i>
+							</span>
 							<span class="control-options">
 								<i name="radiography" class="bi bi-arrow-clockwise" style="font-size: 1rem; color: black;"
 									(click)="resetRadiography()"></i>
@@ -81,7 +85,7 @@
 							<div>
 								<img *ngIf="controlRadiography.valid" id="img-radiography" class="img-fluid"
 										[src]="uploadedFile | async">
-								<div *ngIf="isLoadingRadiography" class="spinner-border text-dark+" role="status">
+								<div *ngIf="isLoadingRadiography" class="spinner-border text-dark" role="status">
 									<span class="visually-hidden">{{'Loading' | translate}}...</span>
 								</div>
 							</div>
@@ -112,3 +116,9 @@
 		</div>
 	</div>
 </form>
+
+<app-locate-signs-in-image-dialog
+	*ngIf="showImageDialog"
+	(close)="closeDialogImage($event)"
+	[src]="uploadedFile | async">
+</app-locate-signs-in-image-dialog>

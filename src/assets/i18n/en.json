@@ -45,5 +45,22 @@
 	"Loading": "Loading",
 	"Postero-anterior radiography (PA)": "Postero-anterior radiography (PA)",
 	"Postero-posterior radiography (PP)": "Postero-posterior radiography (PP)",
-	"Lateral radiography (LAT)": "Lateral radiography (LAT)"
+	"Lateral radiography (LAT)": "Lateral radiography (LAT)",
+	"Finding and storing radiological signs": "Finding and storing radiological signs",
+	"sign": "sign",
+	"signs": "signs",
+	"Cardiomegaly": "Cardiomegaly",
+	"Condensation": "Condensation",
+	"Masses": "Masses",
+	"Nodules": "Nodules",
+	"Pleural effusion": "Pleural effusion",
+	"Pneumothorax": "Pneumothorax",
+	"Redistribution": "Redistribution",
+	"No finding": "No finding",
+	"Area": "Area",
+	"Location": "Location",
+	"Width": "Width",
+	"Height": "Height",
+	"Select the type of sign": "Select the type of sign",
+	"ModalTitleFindingsSigns": "Finding {count} {count, plural, =0{radiological sign} one{radiological sign} other{radiological signs}}"
 }

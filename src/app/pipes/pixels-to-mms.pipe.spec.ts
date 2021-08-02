@@ -19,11 +19,11 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Sign} from "./Sign";
+import {PixelsToMmsPipe} from './pixels-to-mms.pipe';
 
-export class Radiography {
-	id: string;
-	type: string;
-	source: string;
-	sings: Sign[];
-}
+describe('PixelsToMmsPipe', () => {
+	it('create an instance', () => {
+		const pipe = new PixelsToMmsPipe();
+		expect(pipe).toBeTruthy();
+	});
+});

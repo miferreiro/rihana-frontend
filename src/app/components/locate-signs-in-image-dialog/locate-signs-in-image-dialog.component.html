@@ -1,0 +1,165 @@
+<!--
+  ~ RIHANA Frontend
+  ~
+  ~ Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
+  ~ Miguel Ferreiro Díaz
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public
+  ~ License along with this program.  If not, see
+  ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
+-->
+
+<div id="image-dialog" class="modal fade show" tabindex="-1" aria-labelledby="imageDialogLabel" aria-hidden="false">
+	<div id="modal" class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header-custom">
+				<h5 class="modal-title" id="exampleModalLabel">{{'Finding and storing radiological signs' | translate}} </h5>
+			</div>
+			<div class="row modal-body-custom">
+				<div class="col-auto align-self-start m-auto section-radiography">
+					<div class="img-controls">
+						<div class="img-zoom">
+							<input name="radiography" type="range" min="0" max="400" value="{{zoom}}" class="slider"
+									(input)="changeZoom($event)">
+							<span>
+								<input name="radiography" type="number" min="0" max="400" value="{{zoom}}"
+										(input)="changeZoom($event)">
+								%
+							</span>
+						</div>
+					</div>
+					<span class="options">
+						<span class="control-options">
+							<i name="radiography" class="bi bi-arrow-clockwise" style="font-size: 1rem; color: black;"
+								(click)="resetRadiography()"></i>
+						</span>
+					</span>
+					<div class="img-div">
+						<div>
+							<app-image-annotator id="image-annotator" [src]="src" [signs]="signs"
+													(newSign)="setLocationNewSign($event)"
+													[contrast]="contrast" [brightness]="brightness" [zoom]="zoom"
+													(newSetScaleFactorImage)="setScaleFactorImage($event)">
+							</app-image-annotator>
+						</div>
+					</div>
+					<div class="img-controls">
+						<div class="img-brightness">
+							<input name="radiography" type="range" min="0" max="200" value="{{brightness}}" class="slider"
+									(input)="changeBrightness($event)">
+							<span>
+								<input name="radiography" type="number" min="0" max="200" value="{{brightness}}"
+										(input)="changeBrightness($event)">
+								%
+							</span>
+						</div>
+						<div class="img-contrast">
+							<input name="radiography" type="range" min="0" max="200" value="{{contrast}}" class="slider"
+									(input)="changeContrast($event)">
+							<span id="contrast-number">
+								<input name="radiography" type="number" min="0" max="200" value="{{contrast}}"
+										(input)="changeContrast($event)">
+								%
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="col section-signs">
+					<div class="row">
+						<h5 class="text-center fw-bold text-dark mt-4 mb-4">
+							{{'ModalTitleFindingsSigns' | translate:"{count:" + signs.length + "}"}}
+						</h5>
+					</div>
+					<div class="row signs">
+						<div class="col">
+							<div class="row">
+								<div *ngFor="let signType of listSignTypes()" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-6">
+									<div class="card">
+										<div class="card-header-custom">
+											<div class="header d-flex justify-content-between">
+												<h6>{{signType | translate}}</h6>
+												<div>
+													<i *ngIf="signsType(signType).length > 0" class="bi bi-eraser"
+														(click)="cleanSignType(signType)"></i>
+													<i *ngIf="signsType(signType).length > 0"
+														[ngClass]="{'bi bi-eye': checkRenderSomeSingType(signType), 'bi bi-eye-slash': !checkRenderSomeSingType(signType)}"
+														(click)="showSignType(signType, $event)"></i>
+												</div>
+											</div>
+										</div>
+										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill"
+												[ngStyle]="{'background-color': assignColorTypeSign(signType)}">
+												{{signsType(signType).length}}
+										</span>
+										<div *ngIf="signsType(signType).length > 0" class="card-body-custom">
+											<ul class="list-group">
+												<li *ngFor="let sign of signsType(signType); let indexSign = index"
+													class="d-flex justify-content-between">
+													<details>
+														<summary>
+															{{sign.id}} (<var>{{'Area' | translate}}</var>: {{sign.location?.area() | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm²)
+														</summary>
+														<span>
+															{{'Location' | translate}}:
+															<ul>
+																<li>
+																	<var>x</var>: {{sign.location?.x | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
+																	<var>y</var>: {{sign.location?.y | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
+																</li>
+																<li>
+																	<var>{{'Width' | translate}}</var>: {{sign.location?.width | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
+																	<var>{{'Height' | translate}}</var>: {{sign.location?.height | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
+																</li>
+															</ul>
+														</span>
+													</details>
+													<span class="col-auto text-center">
+														<i class="bi bi-eraser" (click)="cleanSign(sign)"></i>
+														<i [ngClass]="{'bi bi-eye': sign.render, 'bi bi-eye-slash': !sign.render}"
+															(click)="showSign(sign, $event)"></i>
+													</span>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer-custom">
+				<i class="bi bi-check-circle" style="color: green;" (click)="onSave()"></i>
+				<i class="bi bi-x-circle" style="color: red;" (click)="onCancel()"></i>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div *ngIf="showSelectSignType" id="selectSigns" class="modal fade show" data-bs-backdrop="static" aria-hidden="true"
+		aria-labelledby="selectSigns" tabindex="-1">
+	<div class="modal-dialog modal-dialog-centered modal-md">
+		<div class="modal-content">
+			<div class="modal-header justify-content-center">
+				<h5 class="modal-title">{{'Select the sign type' | translate}}</h5>
+			</div>
+			<div class="modal-body">
+				<ul class="list-group list-group-flush">
+					<li *ngFor="let signType of listSignTypes()" (click)="addSign(signType)" class="list-group-item">
+						{{signType}}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

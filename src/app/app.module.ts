@@ -39,13 +39,17 @@ import {AuthenticationInterceptor} from './helpers/authentication.interceptor';
 
 import {ExplorationComponent} from './components/exploration/exploration.component';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
+import {ImageAnnotatorComponent} from './components/image-annotator/image-annotator.component';
 import {LoginComponent} from './components/login/login.component';
+import {LocateSignsInImageDialogComponent} from './components/locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
 import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiology-analysis.component';
 import {RadiographyComponent} from './components/radiology-analysis/radiography/radiography.component';
 import {ReportComponent} from './components/report/report.component';
 
 import {LangPipe} from './pipes/lang.pipe';
-import {registerLocaleData} from '@angular/common';
+import {PixelsToMmsPipe} from './pipes/pixels-to-mms.pipe';
+
+import {DecimalPipe, registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeGl from '@angular/common/locales/gl';
 
@@ -54,11 +58,14 @@ import localeGl from '@angular/common/locales/gl';
 		AppComponent,
 		ExplorationComponent,
 		ExplorationsComponent,
+		ImageAnnotatorComponent,
 		LoginComponent,
+		LocateSignsInImageDialogComponent,
 		RadiologyAnalysisComponent,
 		RadiographyComponent,
 		ReportComponent,
-  		LangPipe
+		LangPipe,
+		PixelsToMmsPipe
 	],
 	imports: [
 		AppRoutingModule,
@@ -76,8 +83,8 @@ import localeGl from '@angular/common/locales/gl';
 		}),
 		InternationalizationModule.forRoot({locale_id: 'gl'}),
 		TranslateModule.forRoot({
-		  loader: {
-			provide: TranslateLoader,
+			loader: {
+				provide: TranslateLoader,
 				useFactory: HttpLoaderFactory,
 				deps: [HttpClient]
 			},
@@ -95,9 +102,11 @@ import localeGl from '@angular/common/locales/gl';
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AuthenticationInterceptor, multi: true
-		}
+		},
+		DecimalPipe,
+		PixelsToMmsPipe
 	],
-  	bootstrap: [AppComponent]
+	bootstrap: [AppComponent]
 })
 export class AppModule { }
 

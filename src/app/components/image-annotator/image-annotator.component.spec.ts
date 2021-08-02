@@ -19,11 +19,28 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Sign} from "./Sign";
+import {ComponentFixture,TestBed} from '@angular/core/testing';
 
-export class Radiography {
-	id: string;
-	type: string;
-	source: string;
-	sings: Sign[];
-}
+import {ImageAnnotatorComponent} from './image-annotator.component';
+
+describe('ImageAnnotatorComponent', () => {
+	let component: ImageAnnotatorComponent;
+	let fixture: ComponentFixture<ImageAnnotatorComponent>;
+
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [ ImageAnnotatorComponent ]
+		})
+		.compileComponents();
+	});
+
+	beforeEach(() => {
+		fixture = TestBed.createComponent(ImageAnnotatorComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

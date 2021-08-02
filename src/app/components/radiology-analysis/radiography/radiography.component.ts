@@ -22,7 +22,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {BehaviorSubject, Subscription} from 'rxjs';
+import {Sign, SIGNTYPE} from '../../../models/Sign';
 import {Radiography} from '../../../models/Radiography';
+import {AnnotationResult} from '../../locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
 
 @Component({
   selector: 'app-radiography',
@@ -33,6 +35,8 @@ export class RadiographyComponent implements OnInit {
 
 	@Output() radiography = new EventEmitter<Radiography>();
 	@Input() typeExploration: string;
+
+	private _radiography: Radiography;
 
 	private subscription: Subscription;
 
@@ -83,10 +87,10 @@ export class RadiographyComponent implements OnInit {
 			const fr = new FileReader();
 			fr.onload = async (e) =>  {
 				uploadedFile.next(e.target.result.toString());
-				let radiography = new Radiography();
-				radiography.type = this.typeExploration;
-				radiography.source = e.target.result.toString();
-				this.radiography.emit(radiography);
+				this._radiography = new Radiography();
+				this._radiography.type = this.typeExploration;
+				this._radiography.source = e.target.result.toString();
+				this.radiography.emit(this._radiography);
 			};
 			fr.readAsDataURL(file);
 		} else {
@@ -151,6 +155,26 @@ export class RadiographyComponent implements OnInit {
 						 		  '-moz-filter:brightness(' + Number(this.brightness) /  100 + ') ' +
 								  'contrast(' + Number(this.contrast) / 100 + ');' +
 						 		  'transform:scale(' + ((Number(this.zoom) + 100) / 100) + ');');
+	}
+
+	public openDialogImage(): void {
+		this.showImageDialog = true;
+		document.getElementsByTagName("body")[0].style.overflow = "hidden";
+	}
+
+	public closeDialogImage(location: AnnotationResult): void {
+		this.showImageDialog = false;
+		if (!location.cancelled) {
+			if (location.signs.length > 0) {
+				this._radiography.sings = location.signs;
+			} else {
+				let sign = new Sign();
+				sign.type = SIGNTYPE.NO_FINDING;
+				this._radiography.sings = [sign];
+			}
+			this.radiography.emit(this._radiography);
+		}
+		document.getElementsByTagName("body")[0].style.overflow = "auto";
 	}
 
 	public ngOnDestroy(): void {

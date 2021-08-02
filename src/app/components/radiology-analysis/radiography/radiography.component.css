@@ -116,14 +116,24 @@ div[name="radiography"] {
 	font-size: 1.5rem !important;
 }
 
+.options span {
+	display: flex;
+	position: relative;
+}
+
 .control-options {
 	font-size: 0.7rem;
 	text-align: right;
+}
+
+.annotation-options {
 	width: 100%;
+	text-align: left;
 }
 
 .img-controls {
 	font-size: .8rem;
+	cursor: pointer;
 }
 
 .slider {

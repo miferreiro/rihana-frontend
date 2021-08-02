@@ -19,11 +19,22 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Sign} from "./Sign";
+canvas {
+	cursor: url(/assets/images/cursor.png) 12 12, auto;
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+}
 
-export class Radiography {
-	id: string;
-	type: string;
-	source: string;
-	sings: Sign[];
+img {
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+	display: block;
+}
+
+.spinner-border {
+	font-size: 1rem;
 }
