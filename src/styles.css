@@ -48,7 +48,6 @@ i {
 
 .hoverZone:hover > .hoverZoneIcon {
 	visibility: visible !important;
-	opacity: .8 !important;
 }
 
 .hoverZoneIcon:hover {

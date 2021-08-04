@@ -40,29 +40,65 @@ export enum SIGNTYPE {
 	REDISTRIBUTION = 'Redistribution'
 }
 
-export function assignColorTypeSign(signType: SIGNTYPE): string {
+export function assignColorTypeSign(signType: SIGNTYPE, colorSecondary: boolean = false): string {
 	let color: string;
 	switch (signType) {
 		case SIGNTYPE.CARDIOMEGALY:
-			color = 'red';
+			// Color family: red
+			if (!colorSecondary) {
+				color = '#E6B8B8';
+
+			} else {
+				color = '#990F0B';
+			}
 			break;
 		case SIGNTYPE.CONDENSATION:
-			color = 'lightgreen';
+			// Color family: lightgreen
+			if (!colorSecondary) {
+				color = '#A4FFAF';
+			} else {
+				color = '#0E5102';
+			}
 			break;
 		case SIGNTYPE.MASSES:
-			color = 'lightblue';
+			// Color family: lightblue
+			if (!colorSecondary) {
+				color = '#B5FCFF';
+			} else {
+				color = '#024045';
+			}
 			break;
 		case SIGNTYPE.NODULES:
-			color = 'darkblue';
+			// Color family: darkblue
+			if (!colorSecondary) {
+				color = '#70ACFF';
+			} else {
+				color = '#091365';
+			}
 			break;
 		case SIGNTYPE.PLEURAL_EFFUSION:
-			color = 'purple';
+			// Color family: purple
+			if (!colorSecondary) {
+				color = '#F6A9FF';
+			} else {
+				color = '#5609A9';
+			}
 			break;
 		case SIGNTYPE.PNEUMOTHORAX:
-			color = 'fuchsia';
+			// Color family: brown
+			if (!colorSecondary) {
+				color = '#a1887f';
+			} else {
+				color = '#4e342e';
+			}
 			break;
 		case SIGNTYPE.REDISTRIBUTION:
-			color = 'orange';
+			// Color family: orange
+			if (!colorSecondary) {
+				color = '#FFC37D';
+			} else {
+				color = '#843E04';
+			}
 			break;
 		default:
 			color = 'yellow';

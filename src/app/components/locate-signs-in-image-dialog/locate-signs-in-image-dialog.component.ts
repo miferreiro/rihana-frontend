@@ -219,7 +219,8 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 				}
 
 				signIdDiv.setAttribute("style", "left:" + (left - 1) + "px;top:" + top + "px;width: fit-content;" +
-												"background-color:" + assignColorTypeSign(sign.type) + ";color:white");
+												"background-color:" + assignColorTypeSign(sign.type) +
+												";color:" + assignColorTypeSign(sign.type, true));
 				div.appendChild(signIdDiv);
 
 				let widthDiv = Math.max((loc.width * this.scaleFactorImage + 2), signIdDiv.clientWidth);
@@ -262,15 +263,16 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 					}
 
 					x.setAttribute("style", "left:" + xWidth +  "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
-											"position:absolute;font-size:1rem;color: white;visibility:hidden");
+											"position:absolute;font-size:1rem;visibility:hidden;color:" +
+											assignColorTypeSign(sign.type, true));
 
 					hoverZone.append(x);
 
 					let question = document.createElement("i");
 					question.className = "bi bi-question-circle hoverZoneIcon";
 					question.setAttribute("style", "left:" + questionWidth + "px;top:" + questionHeight + "px;" +
-												   "position:absolute;width:1rem;height:1rem;color:white;font-size:1rem;" +
-												   "visibility:hidden");
+												   "position:absolute;width:1rem;height:1rem;font-size:1rem;color:" +
+												   assignColorTypeSign(sign.type, true) + ";visibility:hidden");
 
 					hoverZone.setAttribute("data-bs-toggle", "popover");
 					hoverZone.setAttribute("data-bs-placement", "top");
@@ -306,8 +308,8 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		}
 	}
 
-	public assignColorTypeSign(signType: SIGNTYPE): string {
-		return assignColorTypeSign(signType);
+	public assignColorTypeSign(signType: SIGNTYPE, colorSecondary: boolean = false): string {
+		return assignColorTypeSign(signType, colorSecondary);
 	}
 
 	private checkPopovers(): void {
