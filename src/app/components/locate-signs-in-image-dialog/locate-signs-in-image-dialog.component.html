@@ -26,7 +26,7 @@
 				<h5 class="modal-title" id="exampleModalLabel">{{'Finding and storing radiological signs' | translate}} </h5>
 			</div>
 			<div class="row modal-body-custom">
-				<div class="col-auto align-self-start m-auto section-radiography">
+				<div id="section-radiography" class="col-xxl-6 col-lg-12 col-md-12 col-sm-12 align-self-start m-auto">
 					<div class="img-controls">
 						<div class="img-zoom">
 							<input name="radiography" type="range" min="0" max="400" value="{{zoom}}" class="slider"
@@ -74,7 +74,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col section-signs">
+				<div id="section-signs" class="col-xxl-6 col-lg-12 col-md-12 col-sm-12">
 					<div class="row">
 						<h5 class="text-center fw-bold text-dark mt-4 mb-4">
 							{{'ModalTitleFindingsSigns' | translate:"{count:" + signs.length + "}"}}
@@ -89,11 +89,11 @@
 											<div class="header d-flex justify-content-between">
 												<h6>{{signType | translate}}</h6>
 												<div>
-													<i *ngIf="signsType(signType).length > 0" class="bi bi-eraser"
-														(click)="cleanSignType(signType)"></i>
 													<i *ngIf="signsType(signType).length > 0"
 														[ngClass]="{'bi bi-eye': checkRenderSomeSingType(signType), 'bi bi-eye-slash': !checkRenderSomeSingType(signType)}"
 														(click)="showSignType(signType, $event)"></i>
+													<i *ngIf="signsType(signType).length > 0" class="bi bi-trash"
+														(click)="cleanSignType(signType)"></i>
 												</div>
 											</div>
 										</div>
@@ -124,9 +124,9 @@
 														</span>
 													</details>
 													<span class="col-auto text-center">
-														<i class="bi bi-eraser" (click)="cleanSign(sign)"></i>
 														<i [ngClass]="{'bi bi-eye': sign.render, 'bi bi-eye-slash': !sign.render}"
 															(click)="showSign(sign, $event)"></i>
+														<i class="bi bi-trash" (click)="cleanSign(sign)"></i>
 													</span>
 												</li>
 											</ul>

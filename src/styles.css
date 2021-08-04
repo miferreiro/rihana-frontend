@@ -36,3 +36,30 @@ i {
 	padding: .5rem;
 	color: black;
 }
+
+.hoverZone:hover {
+	opacity: .8 !important;
+	transition: all .5s;
+}
+
+.hoverZoneIcon::before {
+	vertical-align: 0 !important;
+}
+
+.hoverZone:hover > .hoverZoneIcon {
+	visibility: visible !important;
+	opacity: .8 !important;
+}
+
+.hoverZoneIcon:hover {
+	visibility: visible !important;
+}
+
+.signIdDiv {
+	height: .8rem;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	font-size: .7rem;
+}

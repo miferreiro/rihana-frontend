@@ -155,12 +155,11 @@ export class ImageAnnotatorComponent implements OnInit {
 				context.filter = 'brightness(1) contrast(1)';
 				context.rect(location.x * this.scaleFactorImage, location.y * this.scaleFactorImage,
 							 location.width * this.scaleFactorImage, location.height * this.scaleFactorImage);
-
-				context.fillStyle = assignColorTypeSign(sign.type);
-				context.fillText(sign.id, location.x * this.scaleFactorImage,
-										  ((location.y + location.height) * this.scaleFactorImage) + 15,
-										  location.width * this.scaleFactorImage);
-
+				// Draws sign ID
+				// context.fillStyle = assignColorTypeSign(sign.type);
+				// context.fillText(sign.id, location.x * this.scaleFactorImage,
+				// 						  ((location.y + location.height) * this.scaleFactorImage) + 15,
+				// 						  location.width * this.scaleFactorImage);
 				context.stroke();
 			}
 		}
@@ -207,14 +206,8 @@ export class ImageAnnotatorComponent implements OnInit {
 		x: number, y: number
 	} {
 		const bounds = this.canvasElement.getBoundingClientRect();
-		let x = event.clientX - Math.round(bounds.left);
-		let y = event.clientY - Math.round(bounds.top);
-		if (x < 0) {
-			x = 0;
-		}
-		if (y < 0) {
-			y = 0;
-		}
+		let x = Math.max(0, event.clientX - Math.round(bounds.left));
+		let y = Math.max(0, event.clientY - Math.round(bounds.top));
 		return {
 			x: x,
 			y: y

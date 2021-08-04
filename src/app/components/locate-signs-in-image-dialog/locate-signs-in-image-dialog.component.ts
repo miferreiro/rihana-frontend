@@ -188,60 +188,144 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	}
 
 	private refreshContextOptions(): void {
+		this.checkPopovers();
 		let div = document.getElementById("image-annotator");
-		let nodes = div.getElementsByTagName("i");
-		for (var i = nodes.length; i--; ){
-			nodes[i].remove();
-		}
-		nodes = div.getElementsByTagName("i");
+
+		let removeElements = (elements: HTMLCollectionOf<Element>) => {
+			for (var i = elements.length; i--; ){
+				elements[i].remove();
+			}
+		};
+		removeElements(div.getElementsByTagName("i"));
+		removeElements(div.getElementsByClassName("hoverZone"));
+		removeElements(div.getElementsByClassName("signIdDiv"));
+
 		for (let sign of this.signs) {
 			if (sign.render) {
-				let x = document.createElement("i");
-				let loc = sign.location;
 				let canvasDim = document.querySelector("canvas");
+				let loc = sign.location;
 
-				x.className = "bi bi-x";
-				x.addEventListener('click', (e:Event) => this.cleanSign(sign));
-				x.setAttribute("style", "font-size:1rem;width:1rem;height:1rem;color:" +
-										assignColorTypeSign(sign.type) + ";position:absolute;left:calc(" +
-										(canvasDim.offsetLeft + window?.scrollX + (loc.x * this.scaleFactorImage) +
-										(loc.width * this.scaleFactorImage)) + "px - .8rem);top:calc(" +
-										(canvasDim.offsetTop + window?.scrollY + (loc.y * this.scaleFactorImage)) + "px - 1.1rem)");
+				let signIdDiv = document.createElement("div");
+				signIdDiv.className = "signIdDiv text-wrap";
+				signIdDiv.textContent = sign.id;
 
-				div.appendChild(x);
+				let top: number;
+				let left = (canvasDim.parentElement.offsetLeft + (loc.x * this.scaleFactorImage));
 
-				let question = document.createElement("i");
+				if (((loc.y + loc.height) * this.scaleFactorImage + 16 ) > canvasDim.height) {
+					top = (canvasDim.offsetTop + (loc.y * this.scaleFactorImage) - 16);
+				} else {
+					top = (canvasDim.offsetTop + (loc.y * this.scaleFactorImage) + (loc.height * this.scaleFactorImage));
+				}
 
-				question.className = "bi bi-question";
-				question.setAttribute("style", "font-size:1rem;width:1rem;height:1rem;color:" +
-												assignColorTypeSign(sign.type) + ";position:absolute;left:calc(" +
-												(canvasDim.offsetLeft + window?.scrollX + (loc.x * this.scaleFactorImage) +
-												(loc.width * this.scaleFactorImage)) + "px - 1.5rem);top:calc(" +
-												(canvasDim.offsetTop + window?.scrollY + (loc.y * this.scaleFactorImage)) + "px - 1.1rem)");
+				signIdDiv.setAttribute("style", "left:" + (left - 1) + "px;top:" + top + "px;width: fit-content;" +
+												"background-color:" + assignColorTypeSign(sign.type) + ";color:white");
+				div.appendChild(signIdDiv);
 
-				question.setAttribute("data-bs-toggle", "popover");
-				question.setAttribute("data-bs-placement", "top");
-				question.setAttribute("data-bs-title", sign.id);
+				let widthDiv = Math.max((loc.width * this.scaleFactorImage + 2), signIdDiv.clientWidth);
 
-				question.setAttribute("data-bs-content",
-										this.localizationService.translate("Area") + ": " +
-										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.area()), '1.0-0', this.localizationService.getCurrentLocaleId()) +
-										"mm²<br>x: " +
-										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.x), '1.0-0', this.localizationService.getCurrentLocaleId()) +
-										"mm<br>y: " +
-										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.y), '1.0-0', this.localizationService.getCurrentLocaleId()) +
-										"mm<br>" + this.localizationService.translate("Width") + ": " +
-										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.width), '1.0-0', this.localizationService.getCurrentLocaleId()) +
-										"mm<br>" + this.localizationService.translate("Height") + ": " +
-										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.height), '1.0-0', this.localizationService.getCurrentLocaleId()) +
-										"mm");
-				div.appendChild(question);
+				if ((loc.width * this.scaleFactorImage) < signIdDiv.clientWidth) {
+					signIdDiv.style.left = (canvasDim.parentElement.offsetLeft +
+											(loc.x * this.scaleFactorImage) -
+											(widthDiv - (loc.width * this.scaleFactorImage)) / 2) + "px";
+					signIdDiv.style.width = (widthDiv + 2) + "px";
+				} else {
+					signIdDiv.style.width = widthDiv + "px";
+				}
+
+				if (((sign.location.width * this.scaleFactorImage  > 60 && sign.location.height * this.scaleFactorImage > 30) ||
+					(sign.location.width * this.scaleFactorImage > 30 && sign.location.height * this.scaleFactorImage > 60))) {
+
+					let hoverZone = document.createElement("div");
+					hoverZone.className = "hoverZone";
+					hoverZone.setAttribute("style", "left:" + left + "px;" +
+													"top:" + (canvasDim.offsetTop + (loc.y * this.scaleFactorImage)) + "px;" +
+													"width: " + (loc.width * this.scaleFactorImage) + "px;" +
+													"height: " + (loc.height * this.scaleFactorImage) + "px;" +
+													"position:absolute;background-color:" + assignColorTypeSign(sign.type) +
+													";opacity:0")
+
+					let x = document.createElement("i");
+					x.className = "bi bi-trash hoverZoneIcon";
+					x.onclick = () => this.cleanSign(sign);
+
+					let xWidth: number, xHeight: number, questionWidth: number, questionHeight: number;
+
+					if (loc.width >= loc.height) {
+						xWidth = loc.width * 3 * this.scaleFactorImage / 4 - 10;
+						xHeight = questionHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
+						questionWidth = (loc.width * this.scaleFactorImage) / 4 - 10;
+					} else {
+						xWidth = questionWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
+						xHeight = (loc.height * this.scaleFactorImage) / 4 - 10;
+						questionHeight = (loc.height * 3 * this.scaleFactorImage) / 4 - 10;
+					}
+
+					x.setAttribute("style", "left:" + xWidth +  "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
+											"position:absolute;font-size:1rem;color: white;visibility:hidden");
+
+					hoverZone.append(x);
+
+					let question = document.createElement("i");
+					question.className = "bi bi-question-circle hoverZoneIcon";
+					question.setAttribute("style", "left:" + questionWidth + "px;top:" + questionHeight + "px;" +
+												   "position:absolute;width:1rem;height:1rem;color:white;font-size:1rem;" +
+												   "visibility:hidden");
+
+					hoverZone.setAttribute("data-bs-toggle", "popover");
+					hoverZone.setAttribute("data-bs-placement", "top");
+					hoverZone.setAttribute("data-bs-title", sign.id);
+					hoverZone.setAttribute("data-bs-content",
+										  this.localizationService.translate("Area") + ": " +
+										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.area()),
+																	  '1.0-0',
+																	  this.localizationService.getCurrentLocaleId()) +
+										  "mm²<br>x: " +
+										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.x),
+																	  '1.0-0',
+																	  this.localizationService.getCurrentLocaleId()) +
+										  "mm<br>y: " +
+										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.y),
+																	  '1.0-0',
+																	  this.localizationService.getCurrentLocaleId()) +
+										  "mm<br>" + this.localizationService.translate("Width") + ": " +
+										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.width),
+																	  '1.0-0',
+																	  this.localizationService.getCurrentLocaleId()) +
+										  "mm<br>" + this.localizationService.translate("Height") + ": " +
+										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.height),
+																	  '1.0-0',
+																	  this.localizationService.getCurrentLocaleId()) +
+										  "mm");
+
+					hoverZone.append(question);
+
+					div.appendChild(hoverZone);
+				}
 			}
 		}
 	}
 
 	public assignColorTypeSign(signType: SIGNTYPE): string {
 		return assignColorTypeSign(signType);
+	}
+
+	private checkPopovers(): void {
+		let popovers = document.getElementsByClassName("popover");
+		for (var i = popovers.length; i--; ){
+			if (!this.signs.some(s => s.id == popovers[i].getElementsByClassName("popover-header")[0].textContent && s.render)) {
+				popovers[i].remove();
+			}
+		}
+	}
+
+	public closePopover(signId: string): void {
+		let popovers = document.getElementsByClassName("popover");
+		for (var i = popovers.length; i--; ){
+			if (!this.signs.some(s => s.id == signId)) {
+				popovers[i].remove();
+			}
+		}
 	}
 
 	private closePopovers(): void {

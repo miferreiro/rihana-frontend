@@ -52,6 +52,7 @@ i {
 @media (max-width: 1400px) {
 	#image-dialog .modal-dialog {
 		height: auto;
+		margin: 1.75rem auto;
 	}
 
 	#image-dialog .modal-body-custom {
@@ -77,7 +78,6 @@ i {
 
 #image-dialog .modal-body-custom {
 	max-height: 85%;
-	--bs-gutter-x:k 0;
 	height: inherit;
 }
 
@@ -97,7 +97,7 @@ i {
 	margin: .25rem;
 }
 
-.section-radiography {
+ #section-radiography {
 	max-height: 100%;
 	padding-left: 2rem !important;
 	padding-right: 2rem !important;
@@ -228,7 +228,7 @@ i {
 	overflow:hidden;
 }
 
-.section-signs {
+#section-signs {
 	max-height: 100%;
 	padding-left: 2rem !important;
 	padding-right: 2rem !important;
@@ -374,6 +374,10 @@ i {
 
 .card-footer-custom:last-child {
 	border-radius: 0 0 calc(.25rem - 1px) calc(.25rem - 1px);
+}
+
+#selectSigns {
+	z-index: 1080;
 }
 
 #selectSigns .modal-body {
