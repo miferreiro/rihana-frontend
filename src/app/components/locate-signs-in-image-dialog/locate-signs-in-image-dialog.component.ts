@@ -116,6 +116,8 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.newSign.id = signKey.substr(0, 3) + index;
 		this.newSign.type = SIGNTYPE[signKey];
 		this.newSign.render = true;
+		this.newSign.brightness = Number(this.brightness) / 100;
+		this.newSign.contrast = Number(this.contrast) / 100;
 
 		this.signs.push(this.newSign);
 		this.signs = [...this.signs];

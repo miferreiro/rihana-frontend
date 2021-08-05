@@ -27,6 +27,8 @@ export class Sign {
 	location: SignLocation;
 	type: SIGNTYPE;
 	render: boolean;
+	brightness: number;
+	contrast: number;
 }
 
 export enum SIGNTYPE {
