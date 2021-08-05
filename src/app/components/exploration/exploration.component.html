@@ -21,12 +21,12 @@
 
 <div class="row">
 	<div id="myTab" class="row explorations-tabs justify-content-center mx-auto" role="tablist">
-		<button id="report-tab" data-bs-toggle="tab" data-bs-target="#report" type="button"
+		<button id="report-tab" data-bs-target="#report" type="button"
 				role="tab" aria-controls="report" aria-selected="true"
 				[ngClass]="{'active':activeTab==='report'}" (click)="changeActiveTab('report')">
 				<h4>{{'Radiology report' | translate}}</h4>
 		</button>
-		<button id="radiology-tab" data-bs-toggle="tab" data-bs-target="#radiology" type="button"
+		<button id="radiology-tab" data-bs-target="#radiology" type="button"
 				role="tab" aria-controls="radiology" aria-selected="false"
 				[ngClass]="{'active':activeTab==='radiology'}" (click)="changeActiveTab('radiology')">
 				<h4>{{'Radiology analysis' | translate}}</h4>
