@@ -79,16 +79,11 @@ export class AppComponent implements OnInit {
 		$("body").popover({
 			html: true,
 			selector: '[data-bs-toggle=popover]'
-        });
-
-		$('body').on('click', function (e: { target: any; }): void {
-			$('[data-bs-toggle="popover"]').each(function (): void {
-				if (!$(this).is(e.target) &&
-					 $(this).has(e.target).length === 0 &&
-					 $('.popover').has(e.target).length === 0) {
-					$(this).popover('hide');
-				}
-			});
+        }).on("show.bs.popover", function() {
+			let popovers = document.getElementsByClassName("popover");
+			for (var i = popovers.length; i--; ) {
+				popovers[i].remove();
+			}
 		});
 	}
 

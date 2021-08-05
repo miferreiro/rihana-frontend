@@ -49,7 +49,8 @@
 							<app-image-annotator id="image-annotator" [src]="src" [signs]="signs"
 													(newSign)="setLocationNewSign($event)"
 													[contrast]="contrast" [brightness]="brightness" [zoom]="zoom"
-													(newSetScaleFactorImage)="setScaleFactorImage($event)">
+													(newSetScaleFactorImage)="setScaleFactorImage($event)"
+													(cleanSign)="cleanSign($event)">
 							</app-image-annotator>
 						</div>
 					</div>
@@ -83,7 +84,7 @@
 					<div class="row signs">
 						<div class="col">
 							<div class="row">
-								<div *ngFor="let signType of listSignTypes()" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-6">
+								<div *ngFor="let signType of listSignTypes()" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
 									<div class="card">
 										<div class="card-header-custom">
 											<div class="header d-flex justify-content-between">

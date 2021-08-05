@@ -20,8 +20,6 @@
  */
 
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
-import {DecimalPipe} from '@angular/common';
-import {PixelsToMmsPipe} from '../../pipes/pixels-to-mms.pipe';
 import {EnumUtils} from '../../utils/enum.utils';
 import {assignColorTypeSign, Sign, SIGNTYPE} from '../../models/Sign';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
@@ -54,9 +52,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	public signs: Sign[];
 	public newSign: Sign;
 
-	constructor(public localizationService: LocalizationService,
-				private _decimalPipe: DecimalPipe,
-				private _pixelsToMms: PixelsToMmsPipe) { }
+	constructor(public localizationService: LocalizationService) { }
 
 	ngOnInit(): void {
 		this.brightness = '100';
@@ -122,7 +118,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.signs.push(this.newSign);
 		this.signs = [...this.signs];
 
-		this.onResize();
 		this.newSign = new Sign();
 
 		this.showSelectSignType = false;
@@ -130,7 +125,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 
 	public cleanSignType(signType: string): void {
 		this.signs = this.signs.filter(sign => sign.type !== signType);
-		this.refreshContextOptions();
 	}
 
 	public showSignType(signType: string, event: Event): void {
@@ -144,12 +138,10 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 			}
 			return sign;
 		});
-		this.onResize();
 	}
 
 	public cleanSign(sign: Sign): void {
 		this.signs = this.signs.filter(s => s !== sign);
-		this.refreshContextOptions();
 	}
 
 	public showSign(sign: Sign, event: Event): void {
@@ -162,7 +154,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 			}
 			return s;
 		});
-		this.onResize();
 	}
 
 	public onSave(): void {
@@ -180,147 +171,12 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		});
 	}
 
-	@HostListener('window:resize')
-	onResize() {
-		this.refreshContextOptions();
-	}
-
 	public setScaleFactorImage(scaleFactorImage: number): void {
 		this.scaleFactorImage = scaleFactorImage;
 	}
 
-	private refreshContextOptions(): void {
-		this.checkPopovers();
-		let div = document.getElementById("image-annotator");
-
-		let removeElements = (elements: HTMLCollectionOf<Element>) => {
-			for (var i = elements.length; i--; ){
-				elements[i].remove();
-			}
-		};
-		removeElements(div.getElementsByTagName("i"));
-		removeElements(div.getElementsByClassName("hoverZone"));
-		removeElements(div.getElementsByClassName("signIdDiv"));
-
-		for (let sign of this.signs) {
-			if (sign.render) {
-				let canvasDim = document.querySelector("canvas");
-				let loc = sign.location;
-
-				let signIdDiv = document.createElement("div");
-				signIdDiv.className = "signIdDiv text-wrap";
-				signIdDiv.textContent = sign.id;
-
-				let top: number;
-				let left = (canvasDim.parentElement.offsetLeft + (loc.x * this.scaleFactorImage));
-
-				if (((loc.y + loc.height) * this.scaleFactorImage + 16 ) > canvasDim.height) {
-					top = (canvasDim.offsetTop + (loc.y * this.scaleFactorImage) - 16);
-				} else {
-					top = (canvasDim.offsetTop + (loc.y * this.scaleFactorImage) + (loc.height * this.scaleFactorImage));
-				}
-
-				signIdDiv.setAttribute("style", "left:" + (left - 1) + "px;top:" + top + "px;width: fit-content;" +
-												"background-color:" + assignColorTypeSign(sign.type) +
-												";color:" + assignColorTypeSign(sign.type, true));
-				div.appendChild(signIdDiv);
-
-				let widthDiv = Math.max((loc.width * this.scaleFactorImage + 2), signIdDiv.clientWidth);
-
-				if ((loc.width * this.scaleFactorImage) < signIdDiv.clientWidth) {
-					signIdDiv.style.left = (canvasDim.parentElement.offsetLeft +
-											(loc.x * this.scaleFactorImage) -
-											(widthDiv - (loc.width * this.scaleFactorImage)) / 2) + "px";
-					signIdDiv.style.width = (widthDiv + 2) + "px";
-				} else {
-					signIdDiv.style.width = widthDiv + "px";
-				}
-
-				if (((sign.location.width * this.scaleFactorImage  > 60 && sign.location.height * this.scaleFactorImage > 30) ||
-					(sign.location.width * this.scaleFactorImage > 30 && sign.location.height * this.scaleFactorImage > 60))) {
-
-					let hoverZone = document.createElement("div");
-					hoverZone.className = "hoverZone";
-					hoverZone.setAttribute("style", "left:" + left + "px;" +
-													"top:" + (canvasDim.offsetTop + (loc.y * this.scaleFactorImage)) + "px;" +
-													"width: " + (loc.width * this.scaleFactorImage) + "px;" +
-													"height: " + (loc.height * this.scaleFactorImage) + "px;" +
-													"position:absolute;background-color:" + assignColorTypeSign(sign.type) +
-													";opacity:0")
-
-					let x = document.createElement("i");
-					x.className = "bi bi-trash hoverZoneIcon";
-					x.onclick = () => this.cleanSign(sign);
-
-					let xWidth: number, xHeight: number, questionWidth: number, questionHeight: number;
-
-					if (loc.width >= loc.height) {
-						xWidth = loc.width * 3 * this.scaleFactorImage / 4 - 10;
-						xHeight = questionHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
-						questionWidth = (loc.width * this.scaleFactorImage) / 4 - 10;
-					} else {
-						xWidth = questionWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
-						xHeight = (loc.height * this.scaleFactorImage) / 4 - 10;
-						questionHeight = (loc.height * 3 * this.scaleFactorImage) / 4 - 10;
-					}
-
-					x.setAttribute("style", "left:" + xWidth +  "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
-											"position:absolute;font-size:1rem;visibility:hidden;color:" +
-											assignColorTypeSign(sign.type, true));
-
-					hoverZone.append(x);
-
-					let question = document.createElement("i");
-					question.className = "bi bi-question-circle hoverZoneIcon";
-					question.setAttribute("style", "left:" + questionWidth + "px;top:" + questionHeight + "px;" +
-												   "position:absolute;width:1rem;height:1rem;font-size:1rem;color:" +
-												   assignColorTypeSign(sign.type, true) + ";visibility:hidden");
-
-					hoverZone.setAttribute("data-bs-toggle", "popover");
-					hoverZone.setAttribute("data-bs-placement", "top");
-					hoverZone.setAttribute("data-bs-title", sign.id);
-					hoverZone.setAttribute("data-bs-content",
-										  this.localizationService.translate("Area") + ": " +
-										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.area()),
-																	  '1.0-0',
-																	  this.localizationService.getCurrentLocaleId()) +
-										  "mm²<br>x: " +
-										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.x),
-																	  '1.0-0',
-																	  this.localizationService.getCurrentLocaleId()) +
-										  "mm<br>y: " +
-										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.y),
-																	  '1.0-0',
-																	  this.localizationService.getCurrentLocaleId()) +
-										  "mm<br>" + this.localizationService.translate("Width") + ": " +
-										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.width),
-																	  '1.0-0',
-																	  this.localizationService.getCurrentLocaleId()) +
-										  "mm<br>" + this.localizationService.translate("Height") + ": " +
-										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.height),
-																	  '1.0-0',
-																	  this.localizationService.getCurrentLocaleId()) +
-										  "mm");
-
-					hoverZone.append(question);
-
-					div.appendChild(hoverZone);
-				}
-			}
-		}
-	}
-
 	public assignColorTypeSign(signType: SIGNTYPE, colorSecondary: boolean = false): string {
 		return assignColorTypeSign(signType, colorSecondary);
-	}
-
-	private checkPopovers(): void {
-		let popovers = document.getElementsByClassName("popover");
-		for (var i = popovers.length; i--; ){
-			if (!this.signs.some(s => s.id == popovers[i].getElementsByClassName("popover-header")[0].textContent && s.render)) {
-				popovers[i].remove();
-			}
-		}
 	}
 
 	public closePopover(signId: string): void {

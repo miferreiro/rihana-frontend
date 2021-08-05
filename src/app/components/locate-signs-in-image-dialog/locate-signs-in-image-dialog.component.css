@@ -49,7 +49,7 @@ i {
 	height: 80%;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1399px) {
 	#image-dialog .modal-dialog {
 		height: auto;
 		margin: 1.75rem auto;
@@ -111,6 +111,7 @@ i {
 }
 
 .options {
+	margin: .2rem auto;
 	display: flex;
 }
 
@@ -120,7 +121,7 @@ i {
 }
 
 .img-controls {
-	margin-top: .5rem;
+	margin: .5rem auto;
 	font-size: .8rem;
 	cursor: pointer;
 }
@@ -241,7 +242,7 @@ i {
 	scrollbar-width: thin;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1399px) {
 	.signs {
 		max-height: 100%;
 		overflow-y: unset;

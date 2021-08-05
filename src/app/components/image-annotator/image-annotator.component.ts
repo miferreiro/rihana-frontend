@@ -19,9 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
+import {DecimalPipe} from '@angular/common';
+import {PixelsToMmsPipe} from '../../pipes/pixels-to-mms.pipe';
 import {Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {assignColorTypeSign, Sign} from '../../models/Sign';
 import {SignLocation} from '../../models/SignLocation';
+import {LocalizationService} from '../../modules/internationalization/localization.service';
 
 @Component({
 	selector: 'app-image-annotator',
@@ -34,6 +37,7 @@ export class ImageAnnotatorComponent implements OnInit {
 
 	@Output() newSign = new EventEmitter<Sign>();
 	@Output() newSetScaleFactorImage = new EventEmitter<number>();
+	@Output() cleanSign = new EventEmitter<Sign>();
 
 	@ViewChild('canvasElement') private canvasElementRef: ElementRef<HTMLCanvasElement>;
 	@ViewChild('imageElement') private imageElementRef: ElementRef<HTMLImageElement>;
@@ -47,6 +51,10 @@ export class ImageAnnotatorComponent implements OnInit {
 	private _brightness: string;
 	private _contrast: string;
 	private _zoom: string;
+
+	constructor(private localizationService: LocalizationService,
+				private _decimalPipe: DecimalPipe,
+				private _pixelsToMms: PixelsToMmsPipe) { }
 
 	ngOnInit(): void {
 		this.isLoadingImage = true;
@@ -95,11 +103,7 @@ export class ImageAnnotatorComponent implements OnInit {
 	@Input() set signs(signs: Sign[]) {
 		this._signs = signs;
 		if (this.canvasElement !== null) {
-			if (this._signs.length > 0) {
-				this.repaint();
-			} else {
-				this.paintImage();
-			}
+			this.repaint();
 		}
 	}
 
@@ -141,26 +145,134 @@ export class ImageAnnotatorComponent implements OnInit {
 	}
 
 	private paintSigns(): void {
-		const context = this.context2D;
+		this.checkPopovers();
+		let div = document.getElementById("image-annotator");
+		let removeElements = (elements: HTMLCollectionOf<Element>) => {
+			for (var i = elements.length; i--; ){
+				elements[i].remove();
+			}
+		};
+		removeElements(div.getElementsByTagName("i"));
+		removeElements(div.getElementsByClassName("hoverZone"));
+		removeElements(div.getElementsByClassName("signIdDiv"));
 
+		const context = this.context2D;
 		context.lineWidth = ImageAnnotatorComponent.STROKE_SIZE;
 		context.font = ".7rem Arial";
 
 		for (let sign of this.signs) {
-			let location: SignLocation = sign.location.regularize();
-			if (Boolean(location) && location.isValid() && sign.render) {
-				context.beginPath();
+			if (sign.render) {
+				let loc = sign.location;
 
+				context.beginPath();
 				context.strokeStyle = assignColorTypeSign(sign.type);;
 				context.filter = 'brightness(1) contrast(1)';
-				context.rect(location.x * this.scaleFactorImage, location.y * this.scaleFactorImage,
-							 location.width * this.scaleFactorImage, location.height * this.scaleFactorImage);
-				// Draws sign ID
-				// context.fillStyle = assignColorTypeSign(sign.type);
-				// context.fillText(sign.id, location.x * this.scaleFactorImage,
-				// 						  ((location.y + location.height) * this.scaleFactorImage) + 15,
-				// 						  location.width * this.scaleFactorImage);
+				context.rect(loc.x * this.scaleFactorImage, loc.y * this.scaleFactorImage,
+					loc.width * this.scaleFactorImage, loc.height * this.scaleFactorImage);
 				context.stroke();
+
+				let canvasDim = document.querySelector("canvas");
+
+				let signIdDiv = document.createElement("div");
+				signIdDiv.className = "signIdDiv text-wrap";
+				signIdDiv.textContent = sign.id;
+
+				let top: number;
+				let left = (canvasDim.parentElement.offsetLeft + (loc.x * this.scaleFactorImage));
+
+				if (((loc.y + loc.height) * this.scaleFactorImage + 16 ) > canvasDim.height) {
+					top = (canvasDim.offsetTop + (loc.y * this.scaleFactorImage) - 16);
+				} else {
+					top = (canvasDim.offsetTop + (loc.y * this.scaleFactorImage) + (loc.height * this.scaleFactorImage));
+				}
+
+				signIdDiv.setAttribute("style", "left:" + (left - 1) + "px;top:" + top + "px;width: fit-content;" +
+												"background-color:" + assignColorTypeSign(sign.type) +
+												";color:" + assignColorTypeSign(sign.type, true));
+				div.appendChild(signIdDiv);
+
+				let widthDiv = Math.max((loc.width * this.scaleFactorImage + 2), signIdDiv.clientWidth);
+
+				if ((loc.width * this.scaleFactorImage) < signIdDiv.clientWidth) {
+					signIdDiv.style.left = (canvasDim.parentElement.offsetLeft +
+											(loc.x * this.scaleFactorImage) -
+											(widthDiv - (loc.width * this.scaleFactorImage)) / 2) + "px";
+					signIdDiv.style.width = (widthDiv + 2) + "px";
+				} else {
+					signIdDiv.style.width = widthDiv + "px";
+				}
+
+				if (((sign.location.width * this.scaleFactorImage  > 60 && sign.location.height * this.scaleFactorImage > 30) ||
+					(sign.location.width * this.scaleFactorImage > 30 && sign.location.height * this.scaleFactorImage > 60))) {
+
+					let hoverZone = document.createElement("div");
+					hoverZone.className = "hoverZone";
+					hoverZone.setAttribute("style", "left:" + left + "px;" +
+													"top:" + (canvasDim.offsetTop + (loc.y * this.scaleFactorImage)) + "px;" +
+													"width: " + (loc.width * this.scaleFactorImage) + "px;" +
+													"height: " + (loc.height * this.scaleFactorImage) + "px;" +
+													"position:absolute;background-color:" + assignColorTypeSign(sign.type) +
+													";opacity:0")
+
+					let x = document.createElement("i");
+					x.className = "bi bi-trash hoverZoneIcon";
+					x.onclick = () => this.cleanSign.emit(sign);
+
+					let xWidth: number, xHeight: number, questionWidth: number, questionHeight: number;
+
+					if (loc.width >= loc.height) {
+						xWidth = loc.width * 3 * this.scaleFactorImage / 4 - 10;
+						xHeight = questionHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
+						questionWidth = (loc.width * this.scaleFactorImage) / 4 - 10;
+					} else {
+						xWidth = questionWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
+						xHeight = (loc.height * this.scaleFactorImage) / 4 - 10;
+						questionHeight = (loc.height * 3 * this.scaleFactorImage) / 4 - 10;
+					}
+
+					x.setAttribute("style", "left:" + xWidth +  "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
+											"position:absolute;font-size:1rem;visibility:hidden;color:" +
+											assignColorTypeSign(sign.type, true));
+
+					hoverZone.append(x);
+
+					let question = document.createElement("i");
+					question.className = "bi bi-question-circle hoverZoneIcon";
+					question.setAttribute("style", "left:" + questionWidth + "px;top:" + questionHeight + "px;" +
+												   "position:absolute;width:1rem;height:1rem;font-size:1rem;color:" +
+												   assignColorTypeSign(sign.type, true) + ";visibility:hidden");
+
+					question.setAttribute("data-bs-toggle", "popover");
+					question.setAttribute("data-bs-placement", "top");
+					question.setAttribute("data-bs-trigger", "focus");
+					question.setAttribute("data-bs-title", sign.id);
+					question.setAttribute("data-bs-content",
+										  this.localizationService.translate("Area") + ": " +
+										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.area()),
+																	  '1.0-0',
+																	  this.localizationService.getCurrentLocaleId()) +
+										  "mm²<br>x: " +
+										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.x),
+																	  '1.0-0',
+																	  this.localizationService.getCurrentLocaleId()) +
+										  "mm<br>y: " +
+										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.y),
+																	  '1.0-0',
+																	  this.localizationService.getCurrentLocaleId()) +
+										  "mm<br>" + this.localizationService.translate("Width") + ": " +
+										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.width),
+																	  '1.0-0',
+																	  this.localizationService.getCurrentLocaleId()) +
+										  "mm<br>" + this.localizationService.translate("Height") + ": " +
+										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.height),
+																	  '1.0-0',
+																	  this.localizationService.getCurrentLocaleId()) +
+										  "mm");
+
+					hoverZone.append(question);
+
+					div.appendChild(hoverZone);
+				}
 			}
 		}
 	}
@@ -252,27 +364,41 @@ export class ImageAnnotatorComponent implements OnInit {
 
 	@HostListener('window:resize', ['$event'])
 	private resizeCanvas(): void {
-
-		if(this.imageElement.height > this.getMaxHeight())
+		if (this.getMaxWidth() > this.getMaxHeight()) {
 			this.scaleFactorImage = this.getMaxHeight() / this.imageElement.height;
-		else if(this.imageElement.width > this.getMaxWidth())
+			if (this.imageElement.width * this.scaleFactorImage > this.getMaxWidth()) {
+				this.scaleFactorImage = this.getMaxWidth() / this.imageElement.width;
+			}
+		} else {
 			this.scaleFactorImage = this.getMaxWidth() / this.imageElement.width;
+			if (this.imageElement.height * this.scaleFactorImage > this.getMaxHeight()) {
+				this.scaleFactorImage = this.getMaxHeight() / this.imageElement.height;
+			}
+		}
 
 		this.canvasElement.width = this.imageElement.width * this.scaleFactorImage;
 		this.canvasElement.height = this.imageElement.height * this.scaleFactorImage;
 
-		this.newSetScaleFactorImage.emit(this.scaleFactorImage);
+		let imgControls = document.querySelectorAll("#image-dialog .img-controls");
+		for (let i = imgControls.length; i--; ) {
+			let slide = imgControls[i] as HTMLElement;
+			slide.style.maxWidth = this.canvasElement.width.toString() + 'px';
+		}
+		let controls = document.querySelectorAll("#image-dialog .options");
+		for (let i = controls.length; i--; ) {
+			let slide = controls[i] as HTMLElement;
+			slide.style.maxWidth = this.canvasElement.width.toString() + 'px';
+		}
 		this.repaint();
+		this.newSetScaleFactorImage.emit(this.scaleFactorImage);
 	}
 
 	private getMaxWidth(): number {
-		let widthHeader = 	parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).width) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).marginLeft) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).marginRight) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).paddingLeft) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).paddingRight);
+		let widthRadiographySection = parseInt(getComputedStyle(document.getElementById("section-radiography")).width) -
+									  parseInt(getComputedStyle(document.getElementById("section-radiography")).paddingLeft) -
+		 							  parseInt(getComputedStyle(document.getElementById("section-radiography")).paddingRight);
 
-		return widthHeader;
+		return widthRadiographySection;
 	}
 
 	private getMaxHeight(): number {
@@ -312,6 +438,15 @@ export class ImageAnnotatorComponent implements OnInit {
 		if (this.canvasElement){
 			this.canvasElement.setAttribute("style", "transform:scale(" + ((Number(this.zoom) + 100) / 100) + ")");
 			this.repaint();
+		}
+	}
+
+	private checkPopovers(): void {
+		let popovers = document.getElementsByClassName("popover");
+		for (var i = popovers.length; i--; ){
+			if (!this.signs.some(s => s.id == popovers[i].getElementsByClassName("popover-header")[0].textContent && s.render)) {
+				popovers[i].remove();
+			}
 		}
 	}
 }
