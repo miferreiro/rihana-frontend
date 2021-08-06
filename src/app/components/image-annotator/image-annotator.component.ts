@@ -37,7 +37,7 @@ export class ImageAnnotatorComponent implements OnInit {
 
 	@Output() newSign = new EventEmitter<Sign>();
 	@Output() newSetScaleFactorImage = new EventEmitter<number>();
-	@Output() cleanSign = new EventEmitter<Sign>();
+	@Output() removeSign = new EventEmitter<Sign>();
 
 	@ViewChild('canvasElement') private canvasElementRef: ElementRef<HTMLCanvasElement>;
 	@ViewChild('imageElement') private imageElementRef: ElementRef<HTMLImageElement>;
@@ -216,7 +216,7 @@ export class ImageAnnotatorComponent implements OnInit {
 
 					let x = document.createElement("i");
 					x.className = "bi bi-trash hoverZoneIcon";
-					x.onclick = () => this.cleanSign.emit(sign);
+					x.onclick = () => this.removeSign.emit(sign);
 
 					let xWidth: number, xHeight: number, questionWidth: number, questionHeight: number;
 

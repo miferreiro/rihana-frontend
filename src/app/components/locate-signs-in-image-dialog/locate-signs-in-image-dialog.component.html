@@ -50,7 +50,7 @@
 													(newSign)="setLocationNewSign($event)"
 													[contrast]="contrast" [brightness]="brightness" [zoom]="zoom"
 													(newSetScaleFactorImage)="setScaleFactorImage($event)"
-													(cleanSign)="cleanSign($event)">
+													(removeSign)="removeSign($event)">
 							</app-image-annotator>
 						</div>
 					</div>
@@ -94,7 +94,7 @@
 														[ngClass]="{'bi bi-eye': checkRenderSomeSingType(signType), 'bi bi-eye-slash': !checkRenderSomeSingType(signType)}"
 														(click)="showSignType(signType, $event)"></i>
 													<i *ngIf="signsType(signType).length > 0" class="bi bi-trash"
-														(click)="cleanSignType(signType)"></i>
+														(click)="removeSignType(signType)"></i>
 												</div>
 											</div>
 										</div>
@@ -128,7 +128,7 @@
 													<span class="col-auto text-center">
 														<i [ngClass]="{'bi bi-eye': sign.render, 'bi bi-eye-slash': !sign.render}"
 															(click)="showSign(sign, $event)"></i>
-														<i class="bi bi-trash" (click)="cleanSign(sign)"></i>
+														<i class="bi bi-trash" (click)="removeSign(sign)"></i>
 													</span>
 												</li>
 											</ul>

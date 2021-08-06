@@ -123,7 +123,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.showSelectSignType = false;
 	}
 
-	public cleanSignType(signType: string): void {
+	public removeSignType(signType: string): void {
 		this.signs = this.signs.filter(sign => sign.type !== signType);
 	}
 
@@ -140,7 +140,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		});
 	}
 
-	public cleanSign(sign: Sign): void {
+	public removeSign(sign: Sign): void {
 		this.signs = this.signs.filter(s => s !== sign);
 	}
 
