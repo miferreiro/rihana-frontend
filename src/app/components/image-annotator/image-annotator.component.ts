@@ -269,6 +269,16 @@ export class ImageAnnotatorComponent implements OnInit {
 																	  this.localizationService.getCurrentLocaleId()) +
 										  "mm");
 
+					question.addEventListener("inserted.bs.popover", function() {
+						let popover = document.getElementById(question.getAttribute("aria-describedby"));
+						if (popover) {
+							let popoverHeader = popover.querySelectorAll("h3")[0] as HTMLElement;
+							popoverHeader.style.backgroundColor = assignColorTypeSign(sign.type);
+							popoverHeader.style.borderColor = assignColorTypeSign(sign.type);
+							popoverHeader.style.color = assignColorTypeSign(sign.type, true);
+						}
+					});
+
 					hoverZone.append(question);
 
 					div.appendChild(hoverZone);

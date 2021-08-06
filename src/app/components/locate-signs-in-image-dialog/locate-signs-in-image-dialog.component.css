@@ -283,8 +283,8 @@ i {
 }
 
 .card-header-custom {
-	padding-top: .5rem;
-	padding-bottom: .25rem;
+	padding-top: .2rem;
+	padding-bottom: .2rem;
 	padding-left: .75rem;
 	padding-right: .75rem;
 	margin-bottom: 0;
@@ -293,6 +293,10 @@ i {
 
 .card-header-custom .header {
 	display: inline-flex;
+}
+
+h6 {
+	margin-bottom: 0;
 }
 
 .card-header-custom i {
@@ -306,7 +310,7 @@ i {
 
 .card-body-custom {
 	max-height: 8rem;
-	min-height: 2rem; /**/
+	min-height: 2rem;
 	padding-top: .5rem;
 	padding-bottom: .25rem;
 	padding-left: .75rem;
