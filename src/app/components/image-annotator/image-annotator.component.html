@@ -20,12 +20,6 @@
 -->
 
 <div class="image-annotator-div">
-	<canvas #canvasElement (mousedown)="onMouseDown($event)" (mousemove)="onMouseMove($event)">
-	</canvas>
-
+	<canvas #canvasElement (mousedown)="onMouseDown($event)" (mousemove)="onMouseMove($event)"></canvas>
 	<img #imageElement [src]="src" alt="hidden-image" hidden="true" (load)="onImageLoad()"/>
-
-	<div *ngIf="isLoadingImage" class="spinner-border text-dark" role="status">
-		<span class="visually-hidden">{{'Loading' | translate}}...</span>
-	</div>
 </div>

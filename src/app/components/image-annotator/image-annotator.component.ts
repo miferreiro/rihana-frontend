@@ -21,7 +21,7 @@
 
 import {DecimalPipe} from '@angular/common';
 import {PixelsToMmsPipe} from '../../pipes/pixels-to-mms.pipe';
-import {Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
 import {assignColorTypeSign, Sign} from '../../models/Sign';
 import {SignLocation} from '../../models/SignLocation';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
@@ -31,7 +31,7 @@ import {LocalizationService} from '../../modules/internationalization/localizati
 	templateUrl: './image-annotator.component.html',
 	styleUrls: ['./image-annotator.component.css']
 })
-export class ImageAnnotatorComponent implements OnInit {
+export class ImageAnnotatorComponent {
 
 	private static readonly STROKE_SIZE = 2;
 
@@ -44,7 +44,6 @@ export class ImageAnnotatorComponent implements OnInit {
 
 	private newSignLocation: SignLocation = null;
 	private scaleFactorImage: number;
-	public isLoadingImage: boolean = false;
 
 	private _src: string;
 	private _signs: Sign[];
@@ -55,11 +54,6 @@ export class ImageAnnotatorComponent implements OnInit {
 	constructor(private localizationService: LocalizationService,
 				private _decimalPipe: DecimalPipe,
 				private _pixelsToMms: PixelsToMmsPipe) { }
-
-	ngOnInit(): void {
-		this.isLoadingImage = true;
-		this.scaleFactorImage = 1;
-	}
 
 	get src(): string {
 		return this._src;
@@ -338,8 +332,6 @@ export class ImageAnnotatorComponent implements OnInit {
 
 	onImageLoad() {
 		this.resizeCanvas();
-		this.repaint();
-		this.isLoadingImage = false;
 	}
 
 	onMouseDown(event: MouseEvent) {
@@ -374,6 +366,7 @@ export class ImageAnnotatorComponent implements OnInit {
 
 	@HostListener('window:resize', ['$event'])
 	private resizeCanvas(): void {
+		this.closePopovers();
 		if (this.getMaxWidth() > this.getMaxHeight()) {
 			this.scaleFactorImage = this.getMaxHeight() / this.imageElement.height;
 			if (this.imageElement.width * this.scaleFactorImage > this.getMaxWidth()) {
@@ -457,6 +450,13 @@ export class ImageAnnotatorComponent implements OnInit {
 			if (!this.signs.some(s => s.id == popovers[i].getElementsByClassName("popover-header")[0].textContent && s.render)) {
 				popovers[i].remove();
 			}
+		}
+	}
+
+	private closePopovers(): void {
+		let popovers = document.getElementsByClassName("popover");
+		for (var i = popovers.length; i--; ){
+			popovers[i].remove();
 		}
 	}
 }
