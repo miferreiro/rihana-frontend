@@ -105,6 +105,10 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		}
 	}
 
+	public closeNewSign(): void {
+		this.showSelectSignType = false;
+	}
+
 	public addSign(signType: string): void {
 		let signKey = EnumUtils.findKeyForValue(SIGNTYPE, signType);
 

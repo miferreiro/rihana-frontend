@@ -385,6 +385,10 @@ h6 {
 	z-index: 1080;
 }
 
+#selectSigns .modal-header button:focus {
+	box-shadow: none;
+}
+
 #selectSigns .modal-body {
 	max-height: 50%;
 	overflow-y: auto;
