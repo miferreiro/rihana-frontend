@@ -79,7 +79,7 @@
 						<p class="fw-bold">{{'Sex' | translate}}</p>
 					</div>
 					<div class="col-md-3 col-sm-6 col-xs-12">
-						<p>{{report.hasOwnProperty("patient") && report.patient.hasOwnProperty("sex") ? report.patient.sex : ""}}</p>
+						<p>{{report.hasOwnProperty("patient") && report.patient.hasOwnProperty("sex") ? (report.patient.sex | translate) : ""}}</p>
 					</div>
 				</div>
 			</div>
@@ -130,7 +130,6 @@
 					</p>
 				</div>
 			</div>
-
 			<div class="row">
 				<p class="fw-bold text-uppercase">{{'Requested explorations' | translate}}</p>
 				<div class="table-responsive-md text-nowrap">
@@ -152,12 +151,10 @@
 					</table>
 				</div>
 			</div>
-
 			<div class="row">
 				<p class="fw-bold text-uppercase">{{'Clinical data/Diagnostic suspicion of the application' | translate}}</p>
 				<p>{{report.hasOwnProperty("clinicalData") ? report.clinicalData : ""}}</p>
 			</div>
-
 			<div class="row">
 				<p class="fw-bold text-uppercase">{{'Performed explorations' | translate}}</p>
 				<div class="table-responsive-md text-nowrap">
@@ -183,12 +180,10 @@
 					</table>
 				</div>
 			</div>
-
 			<div class="row">
 				<p class="fw-bold text-uppercase">{{'Findings' | translate}}</p>
 				<p>{{report.hasOwnProperty("findings") ? report.findings : ""}}</p>
 			</div>
-
 			<div class="row">
 				<p class="fw-bold text-uppercase">{{'Conclusions' | translate}}</p>
 				<p>{{report.hasOwnProperty("conclusions") ? report.conclusions : ""}}</p>
