@@ -185,7 +185,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 		this.reportEvent.emit(this.report);
 	}
 
-	private getDocument(pdfBase64: string): Promise<string> {
+	private async getDocument(pdfBase64: string): Promise<string> {
 		return getDocument({data: pdfBase64}).promise.then(function(pdf) {
 			var maxPages = pdf.numPages;
 
@@ -206,35 +206,21 @@ export class ReportComponent implements OnInit, OnDestroy {
 		});
 	}
 
+	public expandReport() {
+		if (document.getElementById("dataReport").className.includes("open")) {
+			document.getElementById("dataReport").className = document.getElementById("dataReport").className.replace("open", "");
+			document.getElementById("left-bar").className = document.getElementById("left-bar").className.replace("open", "");
+			document.getElementById("right-bar").className = document.getElementById("right-bar").className.replace("open", "");
+			document.getElementById("desc-fade").className = document.getElementById("desc-fade").className.replace("open", "");
+		} else {
+			document.getElementById("dataReport").className += "open";
+			document.getElementById("left-bar").className += "open";
+			document.getElementById("right-bar").className += "open";
+			document.getElementById("desc-fade").className += "open";
+		}
+	}
 
 	public ngOnDestroy(): void {
 		this.subscriptionReport.unsubscribe();
-	}
-
-	/**
-	 * Format bytes as human-readable text.
-	 *
-	 * @param bytes Number of bytes.
-	 * @param dp Number of decimal places to display.
-	 *
-	 * @return Formatted string.
-	 */
-	public humanFileSize(bytes, dp = 2) {
-		const thresh = 1024;
-
-		if (Math.abs(bytes) < thresh) {
-			return bytes + ' B';
-		}
-
-		const units = ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-		let u = -1;
-		const r = 10**dp;
-
-		do {
-			bytes /= thresh;
-			++u;
-		} while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
-
-		return bytes.toFixed(dp) + ' ' + units[u];
 	}
 }

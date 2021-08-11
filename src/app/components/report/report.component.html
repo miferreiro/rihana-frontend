@@ -19,53 +19,58 @@
   ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
 -->
 
-<div class="row">
-	<form>
-		<div name="report" class="file-drop-zone" file-drop-zone [control]="controlReport">
-			<label class="upload-input ng-trigger ng-trigger-zoomAnimation">
-				<div class="col text-center">
-					<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
-				</div>
-				<div *ngIf="controlReport.size === 0" class="col text text-center">
-					{{'Drag and Drop the file or click here' | translate}}
-				</div>
-				<input type="file" class="files-input" accept=".pdf"
-					   (change)="addFile($event)" onclick="this.value = null">
-			</label>
-
-			<ng-template #placeholder>
-				<div class="overlayCustom">
-					<div class="text-center">
+<div class="row mt-4 mb-4">
+	<div class="row align-items-center">
+		<div class="col-lg-6 col-12">
+			<h3 class="text-center fw-bold">{{'Radiology report' | translate}}</h3>
+		</div>
+		<form class="col-lg-6 col-12">
+			<div class="file-drop-zone" file-drop-zone [control]="controlReport">
+				<label class="upload-input ng-trigger ng-trigger-zoomAnimation">
+					<div class="col text-center">
 						<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 					</div>
-					<div class="dragover-text">
-						{{'Drop it here' | translate}}
+					<div *ngIf="controlReport.size === 0" class="col text text-center">
+						{{'Drag and Drop the file or click here' | translate}}
 					</div>
-				</div>
-			</ng-template>
+					<input class="files-input" type="file" accept=".pdf"
+						(change)="addFile($event)" onclick="this.value = null">
+				</label>
 
-			<div class="file-list" *ngIf="controlReport.value.length > 0">
-				<div class="upload-list ">
-					<div>
-						<div class="file-upload-icon">
-							<i class="bi bi-file-earmark-pdf " style="font-size: 1rem; color: black;"></i>
+				<ng-template #placeholder>
+					<div class="overlayCustom">
+						<div class="text-center">
+							<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 						</div>
-						<div class="file-info">
-							{{controlReport.value[0].name}} ({{this.humanFileSize(controlReport.value[0].size)}})
+						<div class="dragover-text">
+							{{'Drop it here' | translate}}
 						</div>
-						<div class="file-buttons">
-							<span class="remove-btn" (click)="removeFile()">
-								<i class="bi bi-trash-fill" style="color: black;"></i>
-								{{'Remove' | translate}}
-							</span>
+					</div>
+				</ng-template>
+
+				<div *ngIf="controlReport.value.length > 0">
+					<div class="upload-list">
+						<div>
+							<div class="file-upload-icon">
+								<i class="bi bi-file-earmark-pdf " style="font-size: 1rem; color: black;"></i>
+							</div>
+							<div class="file-info">
+								{{controlReport.value[0].name}} ({{controlReport.value[0].size | humanFileSize}})
+							</div>
+							<div class="file-buttons">
+								<span class="remove-btn" (click)="removeFile()">
+									<i class="bi bi-trash-fill" style="color: black;"></i>
+									{{'Remove' | translate}}
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</form>
-	<div class="mb-3 mt-3">
-		<div class="dataReport">
+		</form>
+	</div>
+	<div *ngIf="report.hasOwnProperty('patient')" class="row mb-3 mt-3">
+		<div id="dataReport">
 			<div class="align-items-center patient-info">
 				<legend class="fw-bold">{{'Patient information' | translate}}</legend>
 				<div class="row">
@@ -187,6 +192,14 @@
 			<div class="row">
 				<p class="fw-bold text-uppercase">{{'Conclusions' | translate}}</p>
 				<p>{{report.hasOwnProperty("conclusions") ? report.conclusions : ""}}</p>
+			</div>
+		</div>
+		<div id="desc-fade">
+			<div (click)="expandReport()" >
+				<a class="arrow-icon">
+					<span id="left-bar"></span>
+					<span id="right-bar"></span>
+				</a>
 			</div>
 		</div>
 	</div>

@@ -25,5 +25,5 @@ export class Radiography {
 	id: string;
 	type: string;
 	source: string;
-	sings: Sign[];
+	signs: Sign[];
 }

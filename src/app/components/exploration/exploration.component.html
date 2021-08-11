@@ -19,29 +19,15 @@
   ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
 -->
 
-<div class="row">
-	<div id="myTab" class="row explorations-tabs justify-content-center mx-auto" role="tablist">
-		<button id="report-tab" data-bs-target="#report" type="button"
-				role="tab" aria-controls="report" aria-selected="true"
-				[ngClass]="{'active':activeTab==='report'}" (click)="changeActiveTab('report')">
-				<h4>{{'Radiology report' | translate}}</h4>
-		</button>
-		<button id="radiology-tab" data-bs-target="#radiology" type="button"
-				role="tab" aria-controls="radiology" aria-selected="false"
-				[ngClass]="{'active':activeTab==='radiology'}" (click)="changeActiveTab('radiology')">
-				<h4>{{'Radiology analysis' | translate}}</h4>
-		</button>
-	</div>
-	<div id="myTabContent" class="tab-content">
-		<div id="report" class="tab-pane fade show active" role="tabpanel"
-			 aria-labelledby="report-tab" [ngClass]="{'active':activeTab==='report'}">
-			<app-report (reportEvent)="eventHandler($event)"></app-report>
-		</div>
-		<div id="radiology" class="tab-pane fade" role="tabpanel" aria-labelledby="radiology-tab"
-			 [ngClass]="{'show active':activeTab==='radiology'}">
-			<app-radiology-analysis [reportFields]="report"
-									(radiographies)="radiographiesHandler($event)">
-			</app-radiology-analysis>
-		</div>
-	</div>
+<div class="container pb-5">
+	<app-report (reportEvent)="reportHandler($event)"></app-report>
+	<app-radiology-analysis [reportFields]="report" (radiographies)="radiographiesHandler($event)"></app-radiology-analysis>
 </div>
+<footer class="footer mt-auto py-1 fixed-bottom bg-light">
+	<div class="container">
+		<div class="row justify-content-between text-center">
+			<i class="col bi bi-arrow-left-circle" style="color:steelblue;" (click)="closeExploration()"></i>
+			<i class="col bi bi-check-circle" style="color: green;" (click)="saveExploration()"></i>
+		</div>
+	</div>
+</footer>

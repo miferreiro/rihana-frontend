@@ -37,6 +37,7 @@ export class AnnotationResult {
 export class LocateSignsInImageDialogComponent implements OnInit {
 
 	@Input() src: string;
+	@Input() signs: Sign[];
 	@Output() close = new EventEmitter<AnnotationResult>();
 
 	public showSelectSignType: boolean = false;
@@ -49,7 +50,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	public zoom: string = '0';
 
 	public SIGNValues: SIGNTYPE[];
-	public signs: Sign[];
 	public newSign: Sign;
 
 	constructor(public localizationService: LocalizationService) { }
@@ -58,10 +58,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.brightness = '100';
 		this.contrast = '100';
 		this.zoom = '0';
-
 		this.SIGNValues = EnumUtils.enumValues(SIGNTYPE);
-		this.signs = [];
-		this.scaleFactorImage = 1;
 	}
 
 	public changeBrightness(event: Event): void {

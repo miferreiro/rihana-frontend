@@ -42,10 +42,10 @@ export class RadiologyAnalysisComponent implements OnInit {
 			if (codes.includes('70102')) {
 				this.typeExploration = 'PA-LAT';
 			} else {
-				this.typeExploration = 'PP';
+				this.typeExploration = null;
 			}
 		} else {
-			this.typeExploration = 'PA-LAT';
+			this.typeExploration = null;
 		}
 	};
 
@@ -54,7 +54,7 @@ export class RadiologyAnalysisComponent implements OnInit {
 	private _radiographies: Radiography[] = [null, null];
 
 	ngOnInit(): void {
-		this.typeExploration = 'PA-LAT';
+		this.typeExploration = null;
 	}
 
 	public radiographyHandler(event: Radiography, type: string): void {

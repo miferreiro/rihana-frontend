@@ -20,105 +20,84 @@
   ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
 -->
 
-<ng-template [ngIf]="typeExploration === 'PA'">
-	<h3 class="text-center fw-bold">{{'Postero-anterior radiography (PA)' | translate}}</h3>
-</ng-template>
-<ng-template #PP [ngIf]="typeExploration === 'PP'">
-	<h3 class="text-center fw-bold">{{'Postero-posterior radiography (PP)' | translate}}</h3>
-</ng-template>
-<ng-template [ngIf]="typeExploration === 'LAT'">
-	<h3 class="text-center fw-bold">{{'Lateral radiography (LAT)' | translate}}</h3>
-</ng-template>
-
-<form>
-	<div name="radiography" class="file-drop-zone" file-drop-zone [control]="controlRadiography">
-		<label *ngIf="controlRadiography.size === 0" class="upload-input">
-			<div class="col text-center">
-				<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
-			</div>
-			<div class="col text text-center">
-				{{'Drag and Drop the image or click here' | translate}}
-			</div>
-			<input name="inputRadiography" class="image-input" type="file" tabindex="-1" multiple="" accept=".png"
-					(change)="addRadiography($event)">
-		</label>
-
-		<ng-template #placeholder>
-			<div class="overlayCustom">
-				<div class="text-center">
+<div class="row align-items-center">
+	<div class="col-lg-6 col-12">
+		<ng-template [ngIf]="typeExploration === 'PA'">
+			<h3 class="text-center fw-bold">{{'Postero-anterior radiography (PA)' | translate}}</h3>
+		</ng-template>
+		<ng-template #PP [ngIf]="typeExploration === 'PP'">
+			<h3 class="text-center fw-bold">{{'Postero-posterior radiography (PP)' | translate}}</h3>
+		</ng-template>
+		<ng-template [ngIf]="typeExploration === 'LAT'">
+			<h3 class="text-center fw-bold">{{'Lateral radiography (LAT)' | translate}}</h3>
+		</ng-template>
+	</div>
+	<form class="col-lg-6 col-12">
+		<div class="file-drop-zone" file-drop-zone [control]="controlRadiography">
+			<label class="upload-input">
+				<div class="col text-center">
 					<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 				</div>
-				<div class="dragover-text">
-					{{'Drop it here' | translate}}
+				<div *ngIf="controlRadiography.size === 0" class="col text text-center">
+					{{'Drag and Drop the image or click here' | translate}}
 				</div>
-			</div>
-		</ng-template>
+				<input name="inputRadiography" class="files-input" type="file" accept="image/*"
+						(change)="addRadiography($event)" onclick="this.value = null">
+			</label>
 
-		<div *ngIf="controlRadiography.value.length > 0">
-			<div class="row align-items-center">
-				<div>
-					<div class="row img-controls">
-						<p class="img-zoom">
-							<input name="radiography" class="slider" type="range" min="0" max="300" value="{{zoom}}"
-									(input)="changeZoom($event)">
-							<span>
-								<input name="radiography" type="number" min="0" max="300" value="{{zoom}}"
-										(input)="changeZoom($event)">
-								%
-							</span>
-						</p>
+			<ng-template #placeholder>
+				<div class="overlayCustom">
+					<div class="text-center">
+						<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 					</div>
-					<div class="row">
-						<span class="options">
-							<span class="annotation-options">
-								<i name="radiographyDialog" class="bi bi-brush" style="font-size: 1rem; color: black;"
-									(click)="openDialogImage()"></i>
-							</span>
-							<span class="control-options">
-								<i name="radiography" class="bi bi-arrow-clockwise" style="font-size: 1rem; color: black;"
-									(click)="resetRadiography()"></i>
-								<i class="bi bi-trash" style="font-size: 1rem; color: black;"
-									(click)="controlRadiography.removeFile(controlRadiography.value[0])"></i>
-							</span>
-						</span>
-						<div class="img-div">
-							<div>
-								<img *ngIf="controlRadiography.valid" id="img-radiography" class="img-fluid"
-										[src]="uploadedFile | async">
-								<div *ngIf="isLoadingRadiography" class="spinner-border text-dark" role="status">
-									<span class="visually-hidden">{{'Loading' | translate}}...</span>
-								</div>
-							</div>
-						</div>
+					<div class="dragover-text">
+						{{'Drop it here' | translate}}
 					</div>
-					<div class="row img-controls">
-						<div class="img-brightness">
-							<input name="radiography" class="slider" type="range" min="0" max="200" value="{{brightness}}"
-									(input)="changeBrightness($event)">
-							<span>
-								<input name="radiography" type="number" min="0" max="200" value="{{brightness}}"
-									(input)="changeBrightness($event)">
-								%
-							</span>
+				</div>
+			</ng-template>
+
+			<div *ngIf="controlRadiography.value.length > 0">
+				<div class="upload-list">
+					<div>
+						<div class="file-upload-icon">
+							<i class="bi bi-file-image " style="font-size: 1rem; color: black;"></i>
 						</div>
-						<div class="img-contrast">
-							<input name="radiography" class="slider" type="range" min="0" max="200" value="{{contrast}}"
-								(input)="changeContrast($event)">
-							<span id="contrast-number">
-								<input name="radiography" type="number" min="0" max="200" value="{{contrast}}"
-									(input)="changeContrast($event)">
-								%
+						<div class="file-info">
+							{{controlRadiography.value[0].name}} ({{controlRadiography.value[0].size | humanFileSize}})
+						</div>
+						<div class="file-buttons">
+							<span class="remove-btn" (click)="controlRadiography.removeFile(controlRadiography.value[0])">
+								<i class="bi bi-trash-fill" style="color: black;"></i>
+								{{'Remove' | translate}}
 							</span>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</form>
+</div>
+<div *ngIf="controlRadiography.value.length > 0" id="radiographyInfo" class="row mb-3 mt-3">
+	<div class="row">
+		<h4 class="col">Signos detectados: {{radiography.signs ? radiography.signs.length : '0' }}</h4>
+		<span class="col text-end">
+			<i class="bi bi-brush" (click)="openDialogImage()"></i>
+		</span>
 	</div>
-</form>
+	<div *ngIf="radiography.signs != undefined" class="row signs">
+		<ul>
+			<li *ngFor="let sign of radiography.signs" class="col-lg-4 col-md-6 col-12">
+				<p [ngStyle]="{'border-color': assignColorTypeSign(sign.type)}">
+					{{sign.id}} (<var>{{'Area' | translate}}</var>: {{sign.location?.area() | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm²)
+				</p>
+			</li>
+		</ul>
+	</div>
+</div>
 
 <app-locate-signs-in-image-dialog
 	*ngIf="showImageDialog"
 	(close)="closeDialogImage($event)"
-	[src]="uploadedFile | async">
+	[src]="uploadedFile | async"
+	[signs]="radiography.signs">
 </app-locate-signs-in-image-dialog>

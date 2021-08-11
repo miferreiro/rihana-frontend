@@ -20,6 +20,7 @@
  */
 
 import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 import {Radiography} from '../../models/Radiography';
 import {Report} from '../../models/Report';
 
@@ -30,23 +31,28 @@ import {Report} from '../../models/Report';
 })
 export class ExplorationComponent {
 
-	public activeTab = 'report';
+	readonly return: string = '';
 
 	public report: Report = new Report();
 
-	public radiographies: Radiography[] = [null, null];
+	public radiographies: Radiography[] = [null, null, null];
 
-	constructor() { }
-
-	public changeActiveTab(activeTab: string): void {
-		this.activeTab = activeTab;
+	constructor(private router: Router) {
 	}
 
-	public eventHandler(event: Report): void {
-		this.report = event;
+	public reportHandler(report: Report): void {
+		this.report = report;
 	}
 
-	public radiographiesHandler(event: Radiography[]): void {
-		this.radiographies = event;
+	public radiographiesHandler(radiographies: Radiography[]): void {
+		this.radiographies = radiographies;
+	}
+
+	public saveExploration(): void {
+		this.router.navigateByUrl(this.return);
+	}
+
+	public closeExploration(): void {
+		this.router.navigateByUrl(this.return);
 	}
 }

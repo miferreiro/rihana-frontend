@@ -48,6 +48,7 @@ import {ReportComponent} from './components/report/report.component';
 
 import {LangPipe} from './pipes/lang.pipe';
 import {PixelsToMmsPipe} from './pipes/pixels-to-mms.pipe';
+import {BytesToHumanReadablePipe} from './pipes/bytes-to-human-readable.pipe';
 
 import {DecimalPipe, registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
@@ -65,7 +66,8 @@ import localeGl from '@angular/common/locales/gl';
 		RadiographyComponent,
 		ReportComponent,
 		LangPipe,
-		PixelsToMmsPipe
+		PixelsToMmsPipe,
+		BytesToHumanReadablePipe
 	],
 	imports: [
 		AppRoutingModule,

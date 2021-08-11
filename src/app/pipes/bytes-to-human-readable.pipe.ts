@@ -19,10 +19,39 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-i {
-	font-size: 1.5rem;
-}
+import {Pipe, PipeTransform} from '@angular/core';
 
-app-radiology-analysis {
-	margin-bottom: 100rem;
+@Pipe({
+	name: 'humanFileSize'
+})
+export class BytesToHumanReadablePipe implements PipeTransform {
+
+	private units = ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+
+	/**
+	 * Format bytes as human-readable text.
+	 *
+	 * @param bytes Number of bytes.
+	 * @param dp Number of decimal places to display.
+	 *
+	 * @return Formatted string.
+	 */
+	transform(bytes: number, dp = 2): string {
+		const thresh = 1024;
+
+		if (Math.abs(bytes) < thresh) {
+			return bytes + ' B';
+		}
+
+		let u = -1;
+		const r = 10**dp;
+
+		do {
+			bytes /= thresh;
+			++u;
+		} while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < this.units.length - 1);
+
+		return bytes.toFixed(dp) + ' ' + this.units[u];
+	}
 }

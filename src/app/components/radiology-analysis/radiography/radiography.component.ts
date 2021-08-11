@@ -22,9 +22,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import {Sign, SIGNTYPE} from '../../../models/Sign';
+import {assignColorTypeSign, Sign, SIGNTYPE} from '../../../models/Sign';
 import {Radiography} from '../../../models/Radiography';
 import {AnnotationResult} from '../../locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
+import {LocalizationService} from '../../../modules/internationalization/localization.service';
 
 @Component({
   selector: 'app-radiography',
@@ -33,10 +34,10 @@ import {AnnotationResult} from '../../locate-signs-in-image-dialog/locate-signs-
 })
 export class RadiographyComponent implements OnInit {
 
-	@Output() radiography = new EventEmitter<Radiography>();
+	@Output() radiographyHandler = new EventEmitter<Radiography>();
 	@Input() typeExploration: string;
 
-	private _radiography: Radiography;
+	public radiography: Radiography;
 
 	private subscription: Subscription;
 
@@ -47,12 +48,10 @@ export class RadiographyComponent implements OnInit {
 
 	public uploadedFile: BehaviorSubject<string> = new BehaviorSubject(null);
 
-	public brightness: string;
-	public contrast: string;
-	public zoom: string;
-
 	public isLoadingRadiography: boolean = false;
 	public showImageDialog: boolean = false;
+
+	constructor(public localizationService: LocalizationService) { }
 
 	ngOnInit(): void {
 		this.isLoadingRadiography = true;
@@ -66,9 +65,7 @@ export class RadiographyComponent implements OnInit {
 				});
 			}
 		});
-		this.brightness = '100';
-		this.contrast = '100';
-		this.zoom = '0';
+		this.radiography = new Radiography();
 	}
 
 	public addRadiography(event: Event): void {
@@ -87,78 +84,24 @@ export class RadiographyComponent implements OnInit {
 			const fr = new FileReader();
 			fr.onload = async (e) =>  {
 				uploadedFile.next(e.target.result.toString());
-				this._radiography = new Radiography();
-				this._radiography.type = this.typeExploration;
-				this._radiography.source = e.target.result.toString();
-				this.radiography.emit(this._radiography);
+				this.radiography = new Radiography();
+				this.radiography.type = this.typeExploration;
+				this.radiography.source = e.target.result.toString();
+				this.radiographyHandler.emit(this.radiography);
 			};
 			fr.readAsDataURL(file);
 		} else {
 			uploadedFile.next(null);
-			this.radiography.emit(null);
+			this.radiographyHandler.emit(null);
 		}
 		return uploadedFile;
 	}
 
-	public changeBrightness(event: Event): void {
-		const input = event.target as HTMLInputElement;
-		this.brightness = input.value;
-
-		let img = document.getElementById('img-radiography');
-		img.setAttribute('style', 'filter:brightness(' + Number(this.brightness) / 100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  '-webkit-filter:brightness(' + Number(this.brightness) / 100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  '-moz-filter:brightness(' + Number(this.brightness) /  100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  'transform:scale(' + ((Number(this.zoom) + 100) / 100) + ');');
-	}
-
-	public changeContrast(event: Event): void {
-		const input = event.target as HTMLInputElement;
-		this.contrast = input.value;
-
-		let img = document.getElementById('img-radiography');
-		img.setAttribute('style', 'filter:brightness(' + Number(this.brightness) / 100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  '-webkit-filter:brightness(' + Number(this.brightness) / 100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  '-moz-filter:brightness(' + Number(this.brightness) /  100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  'transform:scale(' + ((Number(this.zoom) + 100) / 100) + ');');
-	}
-
-	public changeZoom(event: Event): void {
-		const input = event.target as HTMLInputElement;
-		this.zoom = input.value;
-
-		let img = document.getElementById('img-radiography');
-		img.setAttribute('style', 'filter:brightness(' + Number(this.brightness) / 100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  '-webkit-filter:brightness(' + Number(this.brightness) / 100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  '-moz-filter:brightness(' + Number(this.brightness) /  100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  'transform:scale(' + ((Number(this.zoom) + 100) / 100) + ');');
-	}
-
-	public resetRadiography(): void {
-		this.brightness = '100';
-		this.contrast = '100';
-		this.zoom = '0';
-
-		let img = document.getElementById('img-radiography');
-		img.setAttribute('style', 'filter:brightness(' + Number(this.brightness) / 100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  '-webkit-filter:brightness(' + Number(this.brightness) / 100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  '-moz-filter:brightness(' + Number(this.brightness) /  100 + ') ' +
-								  'contrast(' + Number(this.contrast) / 100 + ');' +
-						 		  'transform:scale(' + ((Number(this.zoom) + 100) / 100) + ');');
-	}
-
 	public openDialogImage(): void {
 		this.showImageDialog = true;
+		if (!this.radiography.signs) {
+			this.radiography.signs = [];
+		}
 		document.getElementsByTagName("body")[0].style.overflow = "hidden";
 	}
 
@@ -166,18 +109,22 @@ export class RadiographyComponent implements OnInit {
 		this.showImageDialog = false;
 		if (!location.cancelled) {
 			if (location.signs.length > 0) {
-				this._radiography.sings = location.signs;
+				this.radiography.signs = location.signs;
 			} else {
 				let sign = new Sign();
 				sign.type = SIGNTYPE.NO_FINDING;
-				this._radiography.sings = [sign];
+				this.radiography.signs = [sign];
 			}
-			this.radiography.emit(this._radiography);
+			this.radiographyHandler.emit(this.radiography);
 		}
 		document.getElementsByTagName("body")[0].style.overflow = "auto";
 	}
 
 	public ngOnDestroy(): void {
 		this.subscription.unsubscribe();
+	}
+
+	public assignColorTypeSign(signType: SIGNTYPE, colorSecondary: boolean = false): string {
+		return assignColorTypeSign(signType, colorSecondary);
 	}
 }

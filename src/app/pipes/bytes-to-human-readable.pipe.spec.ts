@@ -19,10 +19,11 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-i {
-	font-size: 1.5rem;
-}
+import {BytesToHumanReadablePipe} from './bytes-to-human-readable.pipe';
 
-app-radiology-analysis {
-	margin-bottom: 100rem;
-}
+describe('BytesToHumanReadablePipe', () => {
+	it('create an instance', () => {
+		const pipe = new BytesToHumanReadablePipe();
+		expect(pipe).toBeTruthy();
+	});
+});
