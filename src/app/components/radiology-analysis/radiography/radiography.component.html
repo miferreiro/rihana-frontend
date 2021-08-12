@@ -79,7 +79,7 @@
 </div>
 <div *ngIf="controlRadiography.value.length > 0" id="radiographyInfo" class="row mb-3 mt-3">
 	<div class="row">
-		<h4 class="col">Signos detectados: {{radiography.signs ? radiography.signs.length : '0' }}</h4>
+		<h4 class="col">{{'Signs detected' | translate}}: {{radiography.signs ? radiography.signs.length : '0' }}</h4>
 		<span class="col text-end">
 			<i class="bi bi-brush" (click)="openDialogImage()"></i>
 			<i class="bi bi-info-lg" (click)="openDialogImage(true)"></i>
