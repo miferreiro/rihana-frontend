@@ -19,15 +19,12 @@
   ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
 -->
 
-<!-- <div *ngIf="typeExploration === null || typeExploration === 'PA-LAT'" class="row mt-4 mb-4"> -->
 <div class="row mt-4 mb-4">
 	<app-radiography [typeExploration]="'PA'" (radiographyHandler)="radiographyHandler($event, 'PA')"></app-radiography>
 </div>
-<!-- <div *ngIf="typeExploration === null || typeExploration === 'PA-LAT'" class="row mt-4 mb-4"> -->
 <div class="row mt-4 mb-4">
 	<app-radiography [typeExploration]="'LAT'" (radiographyHandler)="radiographyHandler($event, 'LAT')"></app-radiography>
 </div>
-<!-- <div *ngIf="typeExploration === null || typeExploration === 'PP'" class="row mt-4 mb-4"> -->
 <div class="row mt-4 mb-4">
-	<app-radiography [typeExploration]="'PP'" (radiographyHandler)="radiographyHandler($event, 'PP')"></app-radiography>
+	<app-radiography [typeExploration]="'AP'" (radiographyHandler)="radiographyHandler($event, 'AP')"></app-radiography>
 </div>
