@@ -168,7 +168,7 @@ export class ImageAnnotatorComponent {
 				context.strokeStyle = assignColorTypeSign(sign.type);;
 				context.filter = 'brightness(1) contrast(1)';
 				context.rect(loc.x * this.scaleFactorImage, loc.y * this.scaleFactorImage,
-					loc.width * this.scaleFactorImage, loc.height * this.scaleFactorImage);
+							 loc.width * this.scaleFactorImage, loc.height * this.scaleFactorImage);
 				context.stroke();
 
 				let canvasDim = document.querySelector("canvas");
@@ -202,15 +202,15 @@ export class ImageAnnotatorComponent {
 					signIdDiv.style.width = widthDiv + "px";
 				}
 
-				if (((sign.location.width * this.scaleFactorImage  > 60 && sign.location.height * this.scaleFactorImage > 30) ||
+				if (((sign.location.width * this.scaleFactorImage > 60 && sign.location.height * this.scaleFactorImage > 30) ||
 					(sign.location.width * this.scaleFactorImage > 30 && sign.location.height * this.scaleFactorImage > 60))) {
 
 					let hoverZone = document.createElement("div");
 					hoverZone.className = "hoverZone";
 					hoverZone.setAttribute("style", "left:" + left + "px;" +
 													"top:" + (canvasDim.offsetTop + (loc.y * this.scaleFactorImage)) + "px;" +
-													"width: " + (loc.width * this.scaleFactorImage) + "px;" +
-													"height: " + (loc.height * this.scaleFactorImage) + "px;" +
+													"width:" + (loc.width * this.scaleFactorImage) + "px;" +
+													"height:" + (loc.height * this.scaleFactorImage) + "px;" +
 													"position:absolute;background-color:" + assignColorTypeSign(sign.type) +
 													";opacity:0")
 
@@ -236,7 +236,7 @@ export class ImageAnnotatorComponent {
 						x.className = "bi bi-trash hoverZoneIcon";
 						x.onclick = () => this.removeSign.emit(sign);
 
-						x.setAttribute("style", "left:" + xWidth +  "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
+						x.setAttribute("style", "left:" + xWidth + "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
 												"position:absolute;font-size:1rem;visibility:hidden;color:" +
 												assignColorTypeSign(sign.type, true));
 
@@ -288,6 +288,32 @@ export class ImageAnnotatorComponent {
 					});
 
 					hoverZone.append(question);
+
+					div.appendChild(hoverZone);
+				} else if (sign.location.width * this.scaleFactorImage > 25 && sign.location.height * this.scaleFactorImage > 25) {
+					let hoverZone = document.createElement("div");
+					hoverZone.className = "hoverZone";
+					hoverZone.setAttribute("style", "left:" + left + "px;" +
+													"top:" + (canvasDim.offsetTop + (loc.y * this.scaleFactorImage)) + "px;" +
+													"width:" + (loc.width * this.scaleFactorImage) + "px;" +
+													"height:" + (loc.height * this.scaleFactorImage) + "px;" +
+													"position:absolute;background-color:" + assignColorTypeSign(sign.type) +
+													";opacity:0")
+
+					let xWidth: number, xHeight: number;
+
+					xWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
+					xHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
+
+					let x = document.createElement("i");
+					x.className = "bi bi-trash hoverZoneIcon";
+					x.onclick = () => this.removeSign.emit(sign);
+
+					x.setAttribute("style", "left:" + xWidth + "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
+											"position:absolute;font-size:1rem;visibility:hidden;color:" +
+											assignColorTypeSign(sign.type, true));
+
+					hoverZone.append(x);
 
 					div.appendChild(hoverZone);
 				}
