@@ -24,6 +24,10 @@
 	margin: auto;
 }
 
+.disabled {
+	cursor: not-allowed;
+}
+
 canvas {
 	cursor: url(/assets/images/cursor.png) 12 12, auto;
 	width: auto;

@@ -82,6 +82,7 @@
 		<h4 class="col">Signos detectados: {{radiography.signs ? radiography.signs.length : '0' }}</h4>
 		<span class="col text-end">
 			<i class="bi bi-brush" (click)="openDialogImage()"></i>
+			<i class="bi bi-info-lg" (click)="openDialogImage(true)"></i>
 		</span>
 	</div>
 	<div *ngIf="radiography.signs != undefined" class="row signs">
@@ -99,5 +100,6 @@
 	*ngIf="showImageDialog"
 	(close)="closeDialogImage($event)"
 	[src]="uploadedFile | async"
-	[signs]="radiography.signs">
+	[signs]="radiography.signs"
+	[disabled]="disabled">
 </app-locate-signs-in-image-dialog>

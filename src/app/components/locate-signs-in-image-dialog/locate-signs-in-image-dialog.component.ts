@@ -38,6 +38,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 
 	@Input() src: string;
 	@Input() signs: Sign[];
+	@Input() disabled: boolean;
 	@Output() close = new EventEmitter<AnnotationResult>();
 
 	public showSelectSignType: boolean = false;

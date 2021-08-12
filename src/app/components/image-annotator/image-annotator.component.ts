@@ -35,6 +35,8 @@ export class ImageAnnotatorComponent {
 
 	private static readonly STROKE_SIZE = 2;
 
+	@Input() disabled = false;
+
 	@Output() newSign = new EventEmitter<Sign>();
 	@Output() newSetScaleFactorImage = new EventEmitter<number>();
 	@Output() removeSign = new EventEmitter<Sign>();
@@ -125,6 +127,10 @@ export class ImageAnnotatorComponent {
 		return this.newSignLocation;
 	}
 
+	private canLocate(): boolean {
+		return !this.disabled;
+	}
+
 	private repaint(): void {
 		this.paintImage();
 		this.paintSigns();
@@ -208,60 +214,68 @@ export class ImageAnnotatorComponent {
 													"position:absolute;background-color:" + assignColorTypeSign(sign.type) +
 													";opacity:0")
 
-					let x = document.createElement("i");
-					x.className = "bi bi-trash hoverZoneIcon";
-					x.onclick = () => this.removeSign.emit(sign);
-
-					let xWidth: number, xHeight: number, questionWidth: number, questionHeight: number;
-
-					if (loc.width >= loc.height) {
-						xWidth = loc.width * 3 * this.scaleFactorImage / 4 - 10;
-						xHeight = questionHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
-						questionWidth = (loc.width * this.scaleFactorImage) / 4 - 10;
-					} else {
-						xWidth = questionWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
-						xHeight = (loc.height * this.scaleFactorImage) / 4 - 10;
-						questionHeight = (loc.height * 3 * this.scaleFactorImage) / 4 - 10;
-					}
-
-					x.setAttribute("style", "left:" + xWidth +  "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
-											"position:absolute;font-size:1rem;visibility:hidden;color:" +
-											assignColorTypeSign(sign.type, true));
-
-					hoverZone.append(x);
-
 					let question = document.createElement("i");
 					question.className = "bi bi-question-circle hoverZoneIcon";
+
+					let questionWidth: number, questionHeight: number;
+					if (this.canLocate()) {
+
+						let xWidth: number, xHeight: number;
+
+						if (loc.width >= loc.height) {
+							xWidth = loc.width * 3 * this.scaleFactorImage / 4 - 10;
+							xHeight = questionHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
+							questionWidth = (loc.width * this.scaleFactorImage) / 4 - 10;
+						} else {
+							xWidth = questionWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
+							xHeight = (loc.height * this.scaleFactorImage) / 4 - 10;
+							questionHeight = (loc.height * 3 * this.scaleFactorImage) / 4 - 10;
+						}
+
+						let x = document.createElement("i");
+						x.className = "bi bi-trash hoverZoneIcon";
+						x.onclick = () => this.removeSign.emit(sign);
+
+						x.setAttribute("style", "left:" + xWidth +  "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
+												"position:absolute;font-size:1rem;visibility:hidden;color:" +
+												assignColorTypeSign(sign.type, true));
+
+						hoverZone.append(x);
+					} else {
+						questionWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
+						questionHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
+					}
+
 					question.setAttribute("style", "left:" + questionWidth + "px;top:" + questionHeight + "px;" +
-												   "position:absolute;width:1rem;height:1rem;font-size:1rem;color:" +
-												   assignColorTypeSign(sign.type, true) + ";visibility:hidden");
+											"position:absolute;width:1rem;height:1rem;font-size:1rem;color:" +
+											assignColorTypeSign(sign.type, true) + ";visibility:hidden");
 
 					question.setAttribute("data-bs-toggle", "popover");
 					question.setAttribute("data-bs-placement", "top");
 					question.setAttribute("data-bs-trigger", "focus");
 					question.setAttribute("data-bs-title", sign.id);
 					question.setAttribute("data-bs-content",
-										  this.localizationService.translate("Area") + ": " +
-										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.area()),
-																	  '1.0-0',
-																	  this.localizationService.getCurrentLocaleId()) +
-										  "mm²<br>x: " +
-										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.x),
-																	  '1.0-0',
-																	  this.localizationService.getCurrentLocaleId()) +
-										  "mm<br>y: " +
-										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.y),
-																	  '1.0-0',
-																	  this.localizationService.getCurrentLocaleId()) +
-										  "mm<br>" + this.localizationService.translate("Width") + ": " +
-										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.width),
-																	  '1.0-0',
-																	  this.localizationService.getCurrentLocaleId()) +
-										  "mm<br>" + this.localizationService.translate("Height") + ": " +
-										  this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.height),
-																	  '1.0-0',
-																	  this.localizationService.getCurrentLocaleId()) +
-										  "mm");
+										this.localizationService.translate("Area") + ": " +
+										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.area()),
+																	'1.0-0',
+																	this.localizationService.getCurrentLocaleId()) +
+										"mm²<br>x: " +
+										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.x),
+																	'1.0-0',
+																	this.localizationService.getCurrentLocaleId()) +
+										"mm<br>y: " +
+										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.y),
+																	'1.0-0',
+																	this.localizationService.getCurrentLocaleId()) +
+										"mm<br>" + this.localizationService.translate("Width") + ": " +
+										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.width),
+																	'1.0-0',
+																	this.localizationService.getCurrentLocaleId()) +
+										"mm<br>" + this.localizationService.translate("Height") + ": " +
+										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.height),
+																	'1.0-0',
+																	this.localizationService.getCurrentLocaleId()) +
+										"mm");
 
 					question.addEventListener("inserted.bs.popover", function() {
 						let popover = document.getElementById(question.getAttribute("aria-describedby"));
@@ -335,13 +349,15 @@ export class ImageAnnotatorComponent {
 	}
 
 	onMouseDown(event: MouseEvent) {
-		const location = this.adjustMouseLocation(event);
-		this.clearLocation();
-		this.newSignLocation = new SignLocation(location.x / this.scaleFactorImage, location.y / this.scaleFactorImage, 0, 0);
+		if (this.canLocate()) {
+			const location = this.adjustMouseLocation(event);
+			this.clearLocation();
+			this.newSignLocation = new SignLocation(location.x / this.scaleFactorImage, location.y / this.scaleFactorImage, 0, 0);
+		}
 	}
 
 	onMouseMove(event: MouseEvent) {
-		if (this.isDrawing) {
+		if (this.canLocate() && this.isDrawing) {
 			const location = this.adjustMouseLocation(event);
 			this.clearLocation();
 			this.newSignLocation.width = (location.x / this.scaleFactorImage) - this.newSignLocation.x;
@@ -354,7 +370,7 @@ export class ImageAnnotatorComponent {
 	// Global listener is used to detect mouse up outside the canvas
 	@HostListener('window:mouseup')
 	onMouseUp() {
-		if (this.isDrawing) {
+		if (this.canLocate() && this.isDrawing) {
 			let sign = new Sign();
 			sign.location = this.newSignLocation.regularize();
 			sign.type = null;

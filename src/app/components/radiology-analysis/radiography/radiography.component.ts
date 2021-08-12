@@ -37,9 +37,10 @@ export class RadiographyComponent implements OnInit {
 	@Output() radiographyHandler = new EventEmitter<Radiography>();
 	@Input() typeExploration: string;
 
-	public radiography: Radiography;
-
+	public disabled: boolean = false;
 	private subscription: Subscription;
+
+	public radiography: Radiography;
 
 	public readonly controlRadiography = new FileUploadControl(
 		{listVisible: true, accept: ['image/png'], discardInvalid: true, multiple: false},
@@ -97,8 +98,9 @@ export class RadiographyComponent implements OnInit {
 		return uploadedFile;
 	}
 
-	public openDialogImage(): void {
+	public openDialogImage(disabled : boolean = false): void {
 		this.showImageDialog = true;
+		this.disabled  = disabled;
 		if (!this.radiography.signs) {
 			this.radiography.signs = [];
 		}
@@ -108,13 +110,7 @@ export class RadiographyComponent implements OnInit {
 	public closeDialogImage(location: AnnotationResult): void {
 		this.showImageDialog = false;
 		if (!location.cancelled) {
-			if (location.signs.length > 0) {
-				this.radiography.signs = location.signs;
-			} else {
-				let sign = new Sign();
-				sign.type = SIGNTYPE.NO_FINDING;
-				this.radiography.signs = [sign];
-			}
+			this.radiography.signs = location.signs;
 			this.radiographyHandler.emit(this.radiography);
 		}
 		document.getElementsByTagName("body")[0].style.overflow = "auto";

@@ -46,7 +46,7 @@
 					</span>
 					<div class="img-div">
 						<div>
-							<app-image-annotator id="image-annotator" [src]="src" [signs]="signs"
+							<app-image-annotator id="image-annotator" [src]="src" [signs]="signs" [disabled]="disabled"
 													(newSign)="setLocationNewSign($event)"
 													[contrast]="contrast" [brightness]="brightness" [zoom]="zoom"
 													(newSetScaleFactorImage)="setScaleFactorImage($event)"
@@ -93,7 +93,7 @@
 													<i *ngIf="signsType(signType).length > 0"
 														[ngClass]="{'bi bi-eye': checkRenderSomeSingType(signType), 'bi bi-eye-slash': !checkRenderSomeSingType(signType)}"
 														(click)="showSignType(signType, $event)"></i>
-													<i *ngIf="signsType(signType).length > 0" class="bi bi-trash"
+													<i *ngIf="signsType(signType).length > 0 && !disabled" class="bi bi-trash"
 														(click)="removeSignType(signType)"></i>
 												</div>
 											</div>
@@ -128,7 +128,7 @@
 													<span class="col-auto text-center">
 														<i [ngClass]="{'bi bi-eye': sign.render, 'bi bi-eye-slash': !sign.render}"
 															(click)="showSign(sign, $event)"></i>
-														<i class="bi bi-trash" (click)="removeSign(sign)"></i>
+														<i *ngIf="!disabled" class="bi bi-trash" (click)="removeSign(sign)"></i>
 													</span>
 												</li>
 											</ul>
@@ -141,7 +141,7 @@
 				</div>
 			</div>
 			<div class="modal-footer-custom">
-				<i class="bi bi-check-circle" style="color: green;" (click)="onSave()"></i>
+				<i *ngIf="!disabled" class="bi bi-check-circle" style="color: green;" (click)="onSave()"></i>
 				<i class="bi bi-x-circle" style="color: red;" (click)="onCancel()"></i>
 			</div>
 		</div>
