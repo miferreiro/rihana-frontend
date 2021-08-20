@@ -48,7 +48,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 
 	public brightness: string = '100';
 	public contrast: string = '100';
-	public zoom: string = '0';
 
 	public SIGNValues: SIGNTYPE[];
 	public newSign: Sign;
@@ -58,7 +57,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	ngOnInit(): void {
 		this.brightness = '100';
 		this.contrast = '100';
-		this.zoom = '0';
 		this.SIGNValues = EnumUtils.enumValues(SIGNTYPE);
 	}
 
@@ -72,15 +70,9 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.contrast = input.value;
 	}
 
-	public changeZoom(event: Event): void {
-		const input = event.target as HTMLInputElement;
-		this.zoom = input.value;
-	}
-
 	public resetRadiography(): void {
 		this.brightness = '100';
 		this.contrast = '100';
-		this.zoom = '0';
 	}
 
 	public listSignTypes(): SIGNTYPE[] {

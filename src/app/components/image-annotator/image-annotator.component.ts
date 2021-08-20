@@ -51,7 +51,6 @@ export class ImageAnnotatorComponent {
 	private _signs: Sign[];
 	private _brightness: string;
 	private _contrast: string;
-	private _zoom: string;
 
 	constructor(private localizationService: LocalizationService,
 				private _decimalPipe: DecimalPipe,
@@ -80,15 +79,6 @@ export class ImageAnnotatorComponent {
 
 	@Input() set contrast(contrast: string) {
 		this._contrast = contrast;
-		this.changeFilterImg();
-	}
-
-	get zoom(): string {
-		return this._zoom;
-	}
-
-	@Input() set zoom(zoom: string) {
-		this._zoom = zoom;
 		this.changeFilterImg();
 	}
 
@@ -480,8 +470,7 @@ export class ImageAnnotatorComponent {
 	}
 
 	private changeFilterImg(): void {
-		if (this.canvasElement){
-			this.canvasElement.setAttribute("style", "transform:scale(" + ((Number(this.zoom) + 100) / 100) + ")");
+		if (this.canvasElement) {
 			this.repaint();
 		}
 	}

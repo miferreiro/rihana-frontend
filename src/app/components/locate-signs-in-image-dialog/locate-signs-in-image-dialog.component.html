@@ -27,17 +27,6 @@
 			</div>
 			<div class="row modal-body-custom">
 				<div id="section-radiography" class="col-xxl-6 col-lg-12 col-md-12 col-sm-12 align-self-start m-auto">
-					<div class="img-controls">
-						<div class="img-zoom">
-							<input name="radiography" type="range" min="0" max="400" value="{{zoom}}" class="slider"
-									(input)="changeZoom($event)">
-							<span>
-								<input name="radiography" type="number" min="0" max="400" value="{{zoom}}"
-										(input)="changeZoom($event)">
-								%
-							</span>
-						</div>
-					</div>
 					<span class="options">
 						<span class="control-options">
 							<i name="radiography" class="bi bi-arrow-clockwise" style="font-size: 1rem; color: black;"
@@ -48,7 +37,7 @@
 						<div>
 							<app-image-annotator id="image-annotator" [src]="src" [signs]="signs" [disabled]="disabled"
 													(newSign)="setLocationNewSign($event)"
-													[contrast]="contrast" [brightness]="brightness" [zoom]="zoom"
+													[contrast]="contrast" [brightness]="brightness"
 													(newSetScaleFactorImage)="setScaleFactorImage($event)"
 													(removeSign)="removeSign($event)">
 							</app-image-annotator>
