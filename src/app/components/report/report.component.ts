@@ -25,6 +25,7 @@ import {Subscription} from 'rxjs';
 import {getDocument, GlobalWorkerOptions, version} from 'pdfjs-dist';
 import {PerformedExploration, Report, RequestedExploration} from '../../models/Report';
 import {Patient, SEX} from '../../models/Patient';
+import {NotificationService} from '../../modules/notification/services/notification.service';
 
 @Component({
   selector: 'app-report',
@@ -33,18 +34,20 @@ import {Patient, SEX} from '../../models/Patient';
 })
 export class ReportComponent implements OnInit, OnDestroy {
 
+	private readonly extensionValid = ['pdf'];
+
 	@Output() reportEvent = new EventEmitter<Report>();
 
 	private subscriptionReport: Subscription;
 
 	public readonly controlReport = new FileUploadControl(
-		{listVisible: true, accept: ['.pdf'], discardInvalid: true, multiple: false},
-		[FileUploadValidators.accept(['.pdf']), FileUploadValidators.filesLimit(2)]
+		{listVisible: true, discardInvalid: true, multiple: false},
+		[FileUploadValidators.filesLimit(2)]
 	);
 
 	public report: Report = new Report();
 
-	constructor() {
+	constructor(private notificationService: NotificationService) {
 		GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.js`;
 	}
 
@@ -52,10 +55,21 @@ export class ReportComponent implements OnInit, OnDestroy {
 		this.report = new Report();
 		this.subscriptionReport = this.controlReport.valueChanges.subscribe((values: Array<File>) => {
 			if (values.length == 2) {
-				this.controlReport.setValue([values[1]]);
+				if (this.extensionValid.includes(values[1].name.split('.').pop())) {
+					this.controlReport.setValue([values[1]]);
+				} else {
+					this.notificationService.error("The file does not have the correct extension (.pdf)", "File upload failed");
+				}
 			} else {
-				this.report = new Report();
-				this.loadReport(values[0])
+				if (values[0] != undefined) {
+					if (this.extensionValid.includes(values[0].name.split('.').pop())) {
+						this.report = new Report();
+						this.loadReport(values[0])
+					} else {
+						this.notificationService.error("The file does not have the correct extension (.pdf)", "File upload failed");
+						this.controlReport.setValue([]);
+					}
+				}
 			}
 		});
 	}
@@ -68,7 +82,12 @@ export class ReportComponent implements OnInit, OnDestroy {
 		}
 
 		const file = input.files[0];
-		this.controlReport.setValue([file]);
+		if (this.extensionValid.includes(file.name.split('.').pop())) {
+			this.controlReport.setValue([file]);
+		} else {
+			this.notificationService.error("The file does not have the correct extension (.pdf)", "File upload failed");
+		}
+
 	}
 
 	public removeFile(): void {

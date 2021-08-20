@@ -26,6 +26,7 @@ import {assignColorTypeSign, Sign, SIGNTYPE} from '../../../models/Sign';
 import {Radiography} from '../../../models/Radiography';
 import {AnnotationResult} from '../../locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
 import {LocalizationService} from '../../../modules/internationalization/localization.service';
+import {NotificationService} from '../../../modules/notification/services/notification.service';
 
 @Component({
   selector: 'app-radiography',
@@ -33,6 +34,8 @@ import {LocalizationService} from '../../../modules/internationalization/localiz
   styleUrls: ['./radiography.component.css']
 })
 export class RadiographyComponent implements OnInit {
+
+	private readonly extensionValid = ['png', 'jpg', 'jpeg'];
 
 	@Output() radiographyHandler = new EventEmitter<Radiography>();
 	@Input() typeExploration: string;
@@ -43,8 +46,8 @@ export class RadiographyComponent implements OnInit {
 	public radiography: Radiography;
 
 	public readonly controlRadiography = new FileUploadControl(
-		{listVisible: true, accept: ['image/png'], discardInvalid: true, multiple: false},
-		[FileUploadValidators.accept(['image/png']), FileUploadValidators.filesLimit(2)]
+		{listVisible: true, discardInvalid: true, multiple: false},
+		[FileUploadValidators.filesLimit(2)]
 	);
 
 	public uploadedFile: BehaviorSubject<string> = new BehaviorSubject(null);
@@ -52,18 +55,31 @@ export class RadiographyComponent implements OnInit {
 	public isLoadingRadiography: boolean = false;
 	public showImageDialog: boolean = false;
 
-	constructor(public localizationService: LocalizationService) { }
+	constructor(public localizationService: LocalizationService,
+				private notificationService: NotificationService
+		) { }
 
 	ngOnInit(): void {
 		this.isLoadingRadiography = true;
 		this.subscription = this.controlRadiography.valueChanges.subscribe((values: Array<File>) => {
 			if (values.length == 2) {
-				this.controlRadiography.setValue([values[1]]);
+				if (this.extensionValid.includes(values[1].name.split('.').pop())) {
+					this.controlRadiography.setValue([values[1]]);
+				} else {
+					this.notificationService.error("The file does not have the correct extension (.png, .jpg or .jpeg)", "File upload failed");
+				}
 			} else {
-				this.uploadedFile = this.loadRadiography(values[0]);
-				this.uploadedFile.subscribe(event => {
-					this.isLoadingRadiography = (event == null);
-				});
+				if (values[0] != undefined) {
+					if (this.extensionValid.includes(values[0].name.split('.').pop())) {
+						this.uploadedFile = this.loadRadiography(values[0]);
+						this.uploadedFile.subscribe(event => {
+							this.isLoadingRadiography = (event == null);
+						});
+					} else {
+						this.notificationService.error("The file does not have the correct extension (.png, .jpg or .jpeg)", "File upload failed");
+						this.controlRadiography.setValue([]);
+					}
+				}
 			}
 		});
 		this.radiography = new Radiography();
@@ -76,7 +92,11 @@ export class RadiographyComponent implements OnInit {
 			return;
 		}
 		const file = input.files[0];
-		this.controlRadiography.setValue([file]);
+		if (this.extensionValid.includes(file.name.split('.').pop())) {
+			this.controlRadiography.setValue([file]);
+		} else {
+			this.notificationService.error("The file does not have the correct extension (.png, .jpg or .jpeg)", "File upload failed");
+		}
 	}
 
 	private loadRadiography(file: File): BehaviorSubject<string> {

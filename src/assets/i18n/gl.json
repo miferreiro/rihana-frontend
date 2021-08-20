@@ -65,5 +65,8 @@
 	"Width": "Ancho",
 	"Height": "Altura",
 	"Select the type of sign": "Selecciona o tipo de signo",
-	"ModalTitleFindingsSigns": "{count, plural, one{Detectado} other{Detectados}} {count} {count, plural, one{signo radiolóxico} other{signos radiolóxicos}}"
+	"ModalTitleFindingsSigns": "{count, plural, one{Detectado} other{Detectados}} {count} {count, plural, one{signo radiolóxico} other{signos radiolóxicos}}",
+	"File upload failed": "Error na carga do arquivo",
+	"The file does not have the correct extension (.pdf)": "O arquivo non ten a extensión correcta (.pdf)",
+	"The file does not have the correct extension (.png, .jpg or .jpeg)": "O arquivo non ten a extensión correcta(.png, .jpg or .jpeg)"
 }

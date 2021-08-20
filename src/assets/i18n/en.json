@@ -65,5 +65,8 @@
 	"Width": "Width",
 	"Height": "Height",
 	"Select the type of sign": "Select the type of sign",
-	"ModalTitleFindingsSigns": "Finding {count} {count, plural, =0{radiological sign} one{radiological sign} other{radiological signs}}"
+	"ModalTitleFindingsSigns": "Finding {count} {count, plural, =0{radiological sign} one{radiological sign} other{radiological signs}}",
+	"File upload failed": "File upload failed",
+	"The file does not have the correct extension (.pdf)": "The file does not have the correct extension (.pdf)",
+	"The file does not have the correct extension (.png, .jpg or .jpeg)": "The file does not have the correct extension (.png, .jpg or .jpeg)"
 }
