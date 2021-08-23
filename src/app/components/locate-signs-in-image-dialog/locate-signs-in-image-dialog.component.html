@@ -148,7 +148,7 @@
 			<div class="modal-body">
 				<ul class="list-group list-group-flush">
 					<li *ngFor="let signType of listSignTypes()" (click)="addSign(signType)" class="list-group-item">
-						{{signType}}
+						{{signType | translate}}
 					</li>
 				</ul>
 			</div>
