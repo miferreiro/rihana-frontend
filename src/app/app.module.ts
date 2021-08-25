@@ -37,6 +37,8 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
 import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
 import {AuthenticationInterceptor} from './helpers/authentication.interceptor';
 
+import {PatientsService} from './services/patients.service';
+
 import {ExplorationComponent} from './components/exploration/exploration.component';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
 import {ImageAnnotatorComponent} from './components/image-annotator/image-annotator.component';
@@ -97,6 +99,7 @@ import localeGl from '@angular/common/locales/gl';
 		})
 	],
 	providers: [
+		PatientsService,
 		{
 			provide: ErrorHandler,
 			useClass: ErrorNotificationHandler
