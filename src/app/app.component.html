@@ -23,12 +23,12 @@
 	<nav class="navbar navbar-expand-md navbar-light bg-light">
 		<div class="container-fluid">
 			<span></span>
-			<a class="navbar-brand">RIHANA</a>
+			<a class="navbar-brand" routerLink="/explorations">RIHANA</a>
 			<button class="navbar-toggler-custom" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
 					aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="navbar">
+			<div id="navbar" class="collapse navbar-collapse">
 				<div class="me-auto mb-lg-0">
 					<ul *ngIf="authenticationService.getUser().authenticated == true" class="navbar-nav ">
 						<li class="nav-item">
@@ -38,9 +38,18 @@
 						</li>
 					</ul>
 				</div>
-				<ul class="navbar-nav">
+				<div *ngIf="authenticationService.getUser().authenticated == true" class="nav-item user border-end">
+					<div>
+						<i class="bi bi-person-circle"></i>
+					</div>
+					<div class="login">
+						<span>{{'Hello' | translate}}, </span>
+						<span class="text-capitalize">{{ authenticationService.getUser().login }}</span>
+					</div>
+				</div>
+				<ul class="navbar-nav border-end">
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle active" id="dropdownLang" role="button"
+						<a id="dropdownLang" class="nav-link dropdown-toggle active" role="button"
 							data-bs-toggle="dropdown" aria-expanded="false">
 							{{localizationService.getCurrentLocaleId() | lang | translate}}
 							<span class="bi bi-globe"></span>

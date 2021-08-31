@@ -20,7 +20,11 @@
  */
 
 nav {
-	min-height: 3.5rem;
+	padding: 0;
+}
+
+.nav-link {
+	padding: 0 1rem;
 }
 
 .navbar-toggler-custom {
@@ -39,6 +43,26 @@ nav {
 	}
 }
 
+.user {
+	padding: 0rem 1rem;
+	display: flex;
+}
+
+.user i {
+	font-size: 1.5rem;
+}
+
+.user .login {
+	padding-left: .875rem;
+	display: grid;
+	align-self: center;
+	line-height: 1rem;
+}
+
+.user .login span:first-child {
+	font-size: .7rem;
+}
+
 #dropdownLang::first-letter {
 	text-transform: uppercase;
 }
@@ -49,7 +73,7 @@ nav {
 
 #dropdownLang span {
 	vertical-align: middle;
-	font-size: 1.5rem;
+	font-size: 1.3rem;
 }
 
 .dropdown-menu {
@@ -73,4 +97,8 @@ nav {
 .dropdown-item.active, .dropdown-item:active {
 	color: inherit;
 	background-color: transparent;
+}
+
+.border-end {
+    border-right: 1px solid #dee2e6 !important;
 }
