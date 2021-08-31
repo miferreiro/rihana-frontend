@@ -68,5 +68,11 @@
 	"ModalTitleFindingsSigns": "{count, plural, one{Detectado} other{Detectados}} {count} {count, plural, one{signo radiológico} other{signos radiológicos}}",
 	"File upload failed": "Error en la carga del archivo",
 	"The file does not have the correct extension (.pdf)": "El archivo no tiene la extensión correcta (.pdf)",
-	"The file does not have the correct extension (.png, .jpg or .jpeg)": "El archivo no tiene la extensión correcta (.png, .jpg or .jpeg)"
+	"The file does not have the correct extension (.png, .jpg or .jpeg)": "El archivo no tiene la extensión correcta (.png, .jpg or .jpeg)",
+	"Search": "Buscar",
+	"Latest explorations": "Últimas exploraciones",
+	"Title": "Título",
+	"Data": "Fecha",
+	"Options": "Opciones",
+	"No data to display": "No hay datos que mostrar"
 }

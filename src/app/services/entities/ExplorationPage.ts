@@ -19,15 +19,9 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-.summary {
-	padding-bottom: 1rem;
-	border-bottom: 1px solid lightgray;
-}
+import {Exploration} from '../../models/Exploration';
 
-.form-control:focus {
-	box-shadow: none;
-}
-
-.btn:focus {
-	box-shadow: none;
+export interface ExplorationPage {
+	totalItems: number;
+	explorations: Exploration[];
 }

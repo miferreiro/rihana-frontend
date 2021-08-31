@@ -32,13 +32,17 @@ import {TranslateMessageFormatCompiler} from 'ngx-translate-messageformat-compil
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
+import {NgxPaginationModule} from 'ngx-pagination';
 import {NotificationModule} from './modules/notification/notification.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
 import {AuthenticationInterceptor} from './helpers/authentication.interceptor';
 
+import {ExplorationsService} from './services/explorations.service';
 import {PatientsService} from './services/patients.service';
+import {SignsService} from './services/signs.service';
 
+import {BarChartComponent} from './components/explorations/bar-chart/bar-chart.component';
 import {ExplorationComponent} from './components/exploration/exploration.component';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
 import {ImageAnnotatorComponent} from './components/image-annotator/image-annotator.component';
@@ -47,6 +51,7 @@ import {LocateSignsInImageDialogComponent} from './components/locate-signs-in-im
 import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiology-analysis.component';
 import {RadiographyComponent} from './components/radiology-analysis/radiography/radiography.component';
 import {ReportComponent} from './components/report/report.component';
+import {PieChartComponent} from './components/explorations/pie-chart/pie-chart.component';
 
 import {LangPipe} from './pipes/lang.pipe';
 import {PixelsToMmsPipe} from './pipes/pixels-to-mms.pipe';
@@ -55,6 +60,8 @@ import {BytesToHumanReadablePipe} from './pipes/bytes-to-human-readable.pipe';
 import {DecimalPipe, registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeGl from '@angular/common/locales/gl';
+
+import {ChartsModule} from 'ng2-charts';
 
 @NgModule({
 	declarations: [
@@ -69,16 +76,20 @@ import localeGl from '@angular/common/locales/gl';
 		ReportComponent,
 		LangPipe,
 		PixelsToMmsPipe,
-		BytesToHumanReadablePipe
+		BytesToHumanReadablePipe,
+		PieChartComponent,
+		BarChartComponent
 	],
 	imports: [
 		AppRoutingModule,
 		BrowserModule,
 		BrowserAnimationsModule,
+		ChartsModule,
 		FileUploadModule,
 		FormsModule,
 		HttpClientModule,
 		NotificationModule,
+		NgxPaginationModule,
 		SimpleNotificationsModule.forRoot({
 			timeOut: 10000,
 			preventDuplicates: true,
@@ -99,7 +110,9 @@ import localeGl from '@angular/common/locales/gl';
 		})
 	],
 	providers: [
+		ExplorationsService,
 		PatientsService,
+		SignsService,
 		{
 			provide: ErrorHandler,
 			useClass: ErrorNotificationHandler

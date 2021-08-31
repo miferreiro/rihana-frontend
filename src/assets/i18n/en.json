@@ -68,5 +68,11 @@
 	"ModalTitleFindingsSigns": "Finding {count} {count, plural, =0{radiological sign} one{radiological sign} other{radiological signs}}",
 	"File upload failed": "File upload failed",
 	"The file does not have the correct extension (.pdf)": "The file does not have the correct extension (.pdf)",
-	"The file does not have the correct extension (.png, .jpg or .jpeg)": "The file does not have the correct extension (.png, .jpg or .jpeg)"
+	"The file does not have the correct extension (.png, .jpg or .jpeg)": "The file does not have the correct extension (.png, .jpg or .jpeg)",
+	"Search": "Search",
+	"Latest explorations": "Latest explorations",
+	"Title": "Title",
+	"Data": "Data",
+	"Options": "Options",
+	"No data to display": "No data to display"
 }

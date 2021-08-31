@@ -19,15 +19,28 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-.summary {
-	padding-bottom: 1rem;
-	border-bottom: 1px solid lightgray;
-}
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-.form-control:focus {
-	box-shadow: none;
-}
+import {BarChartComponent} from './bar-chart.component';
 
-.btn:focus {
-	box-shadow: none;
-}
+describe('BarChartComponent', () => {
+	let component: BarChartComponent;
+	let fixture: ComponentFixture<BarChartComponent>;
+
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [ BarChartComponent ]
+		})
+		.compileComponents();
+	});
+
+	beforeEach(() => {
+		fixture = TestBed.createComponent(BarChartComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

@@ -19,15 +19,13 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-.summary {
-	padding-bottom: 1rem;
-	border-bottom: 1px solid lightgray;
-}
+import {Patient} from "./Patient";
+import {Users} from "./Users";
 
-.form-control:focus {
-	box-shadow: none;
-}
-
-.btn:focus {
-	box-shadow: none;
+export class Exploration {
+	id: string;
+	title: string;
+	explorationDate: Date;
+	user: Users;
+	patient: Patient;
 }

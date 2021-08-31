@@ -1,19 +1,19 @@
 /*
  * RIHANA Frontend
- * 
+ *
  * Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
  * Miguel Ferreiro Díaz
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -21,6 +21,9 @@
 
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
+import {ExplorationsService} from '../../services/explorations.service';
+import {Exploration} from '../../models/Exploration';
+import {Subject} from 'rxjs';
 
 @Component({
 	selector: 'app-explorations',
@@ -29,14 +32,53 @@ import {AuthenticationService} from '../../services/authentication.service';
 })
 export class ExplorationsComponent implements OnInit {
 
-	loggedUser: string;
+	private _currentPage: number;
+	public loggedUser: string;
 
-	constructor(private authenticationService: AuthenticationService) { 
-  	}
+	public explorations: Exploration[] = [];
+
+	public paginationTotalItems: number;
+	public pageSize: number;
+	public pageChangeEvent = new Subject<string>();
+
+	constructor(private authenticationService: AuthenticationService,
+				private explorationsService: ExplorationsService) { }
 
 	ngOnInit() {
 		if (this.authenticationService.getUser().authenticated) {
 			this.loggedUser = this.authenticationService.getUser().login;
 		}
+
+		this.pageSize = 5;
+		this.currentPage = 1;
+		this.getPageExplorations();
+	}
+
+	getPageExplorations() {
+		this.explorationsService.getTotalExplorations(this.loggedUser, this.currentPage, this.pageSize).subscribe(explorationPage => {
+			this.paginationTotalItems = explorationPage.totalItems;
+			this.explorations = explorationPage.explorations;
+		});
+	}
+
+	public get currentPage(): number {
+		return this._currentPage;
+	}
+
+	public set currentPage(page: number) {
+		if (typeof page === 'number') {
+			this._currentPage = page;
+		}
+	}
+
+	public handlePageChange(event: number) {
+		this.currentPage = event;
+		this.getPageExplorations();
+	}
+
+	public handlePageSizeChange(event: any): void {
+		this.pageSize = event.target.value;
+		this.currentPage = 1;
+		this.getPageExplorations();
 	}
 }

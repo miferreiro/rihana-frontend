@@ -19,15 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-.summary {
-	padding-bottom: 1rem;
-	border-bottom: 1px solid lightgray;
-}
+import {IdAndUri} from './IdAndUri';
 
-.form-control:focus {
-	box-shadow: none;
-}
-
-.btn:focus {
-	box-shadow: none;
+export interface ExplorationInfo {
+	id: string;
+	title: string;
+	explorationDate: Date;
+	user: string;
+	patient: string | IdAndUri;
 }

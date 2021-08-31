@@ -19,15 +19,18 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-.summary {
-	padding-bottom: 1rem;
-	border-bottom: 1px solid lightgray;
-}
+import {inject, TestBed} from '@angular/core/testing';
 
-.form-control:focus {
-	box-shadow: none;
-}
+import {ExplorationsService} from './explorations.service';
 
-.btn:focus {
-	box-shadow: none;
-}
+describe('ExplorationsService', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			providers: [ExplorationsService]
+		});
+	});
+
+	it('should be created', inject([ExplorationsService], (service: ExplorationsService) => {
+		expect(service).toBeTruthy();
+	}));
+});

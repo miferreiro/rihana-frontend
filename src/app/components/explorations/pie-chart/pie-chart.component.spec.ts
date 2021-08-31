@@ -19,15 +19,28 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-.summary {
-	padding-bottom: 1rem;
-	border-bottom: 1px solid lightgray;
-}
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-.form-control:focus {
-	box-shadow: none;
-}
+import {PieChartComponent} from './pie-chart.component';
 
-.btn:focus {
-	box-shadow: none;
-}
+describe('PieChartComponent', () => {
+	let component: PieChartComponent;
+	let fixture: ComponentFixture<PieChartComponent>;
+
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [ PieChartComponent ]
+		})
+		.compileComponents();
+	});
+
+	beforeEach(() => {
+		fixture = TestBed.createComponent(PieChartComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

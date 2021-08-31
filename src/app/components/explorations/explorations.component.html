@@ -19,8 +19,71 @@
   ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
 -->
 
-<div class="row">
-	<button type="button" class="btn btn-primary btn-sm" routerLink="/exploration">
-		{{'Add exploration' | translate}}
-	</button>
+<div class="container pt-4 pb-4">
+	<div class="row summary mt-2 mb-3 text-center">
+		<h2>{{'Signs detected' | translate}}</h2>
+		<div class="col-6">
+			<app-pie-chart></app-pie-chart>
+		</div>
+		<div class="col-6">
+			<app-bar-chart></app-bar-chart>
+		</div>
+	</div>
+
+	<h2 class="text-center m-4">{{'Latest explorations' | translate}}</h2>
+
+	<div class="row">
+		<div class="col">
+			<button type="button" class="input-group-text btn btn-success" routerLink="/exploration">
+				<i class="bi bi-plus-lg me-3"></i> {{'Add exploration' | translate}}
+			</button>
+		</div>
+		<form action="" class="col">
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" placeholder="{{'Search' | translate}}...">
+				<button type="submit" class="input-group-text btn btn-success"><i class="bi bi-search me-3"></i> {{'Search' | translate}}</button>
+			</div>
+		</form>
+	</div>
+	<div class="row explorations">
+		<table class="table text-center align-middle">
+			<thead>
+				<tr >
+					<th scope="col"></th>
+					<th scope="col">{{'Title' | translate}}</th>
+					<th scope="col">{{'Date' | translate}}</th>
+					<th scope="col">{{'Options' | translate}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let exploration of explorations | paginate : {
+								currentPage: currentPage,
+								itemsPerPage: pageSize,
+								totalItems: paginationTotalItems
+							};
+							let index=index">
+					<th scope="row">{{(index + 1 + ((currentPage - 1) * pageSize))}}</th>
+					<td>{{exploration.title}}</td>
+					<td>{{exploration.explorationDate | date:'dd/MM/yyyy'}}</td>
+					<td>
+						<div class="btn-group" role="group" aria-label="Basic example">
+							<button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
+							<button class="btn btn-info"><i class="bi bi-info-lg"></i></button>
+							<button class="btn btn-danger"><i class="bi bi-trash-fill" style="color: black;"></i></button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class ="row text-center">
+			<pagination-controls
+				previousLabel=""
+				nextLabel=""
+				[directionLinks]="true"
+				[autoHide]="true"
+				[responsive]="true"
+				(pageChange)="handlePageChange($event)">
+			</pagination-controls>
+		</div>
+	</div>
 </div>
