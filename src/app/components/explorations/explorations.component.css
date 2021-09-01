@@ -28,6 +28,11 @@
 	box-shadow: none;
 }
 
+.btn-group .btn {
+	font-size: 1.3rem;
+	color: black;
+}
+
 .btn:focus {
 	box-shadow: none;
 }
