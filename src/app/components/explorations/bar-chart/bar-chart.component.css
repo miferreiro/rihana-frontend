@@ -26,6 +26,12 @@
 	position: relative;
 }
 
+@media (max-width: 768px) {
+	.wrapper {
+		height: 250px;
+	}
+}
+
 #no-data-bar-chart {
 	width: 100%;
 	height: 100%;

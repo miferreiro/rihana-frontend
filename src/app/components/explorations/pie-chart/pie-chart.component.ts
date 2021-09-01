@@ -51,7 +51,7 @@ export class PieChartComponent implements OnInit {
 		tooltips: {
 			callbacks: {
 				label: function (tooltipItems, data) {
-					return data.datasets[0].data[tooltipItems.index] +
+					return " " + data.datasets[0].data[tooltipItems.index] +
 					" (" +
 					(Number.parseInt(data.datasets[0].data[tooltipItems.index].toString()) * 100 / data.datasets[0].data.length).toFixed(0) +
 					' %)';
