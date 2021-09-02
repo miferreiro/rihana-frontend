@@ -20,9 +20,10 @@
  */
 
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
-import {EnumUtils} from '../../utils/enum.utils';
-import {assignColorTypeSign, Sign, SIGNTYPE} from '../../models/Sign';
+import {Sign} from '../../models/Sign';
+import {assignColorTypeSign, SignType} from '../../models/SignType';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
+import {SignsService} from '../../services/signs.service';
 
 export class AnnotationResult {
 	readonly cancelled: boolean;
@@ -49,15 +50,18 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	public brightness: string = '100';
 	public contrast: string = '100';
 
-	public SIGNValues: SIGNTYPE[];
+	public signTypes: SignType[];
 	public newSign: Sign;
 
-	constructor(public localizationService: LocalizationService) { }
+	constructor(public localizationService: LocalizationService,
+				private signService: SignsService) { }
 
 	ngOnInit(): void {
 		this.brightness = '100';
 		this.contrast = '100';
-		this.SIGNValues = EnumUtils.enumValues(SIGNTYPE);
+		this.signService.getSignTypes().subscribe(signTypes => {
+			this.signTypes = signTypes;
+		})
 	}
 
 	public changeBrightness(event: Event): void {
@@ -75,16 +79,15 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.contrast = '100';
 	}
 
-	public listSignTypes(): SIGNTYPE[] {
-		return Object.values(SIGNTYPE).filter (x => x !== SIGNTYPE.NO_FINDING);
+	public listSignTypes(): SignType[] {
+		return this.signTypes;
 	}
 
-	public signsType(signType: string): Sign[] {
-		let signKey = EnumUtils.findKeyForValue(SIGNTYPE, signType);
-		return this.signs.filter(sign => sign.type === SIGNTYPE[signKey]);
+	public signsType(signType: SignType): Sign[] {
+		return this.signs.filter(sign => sign.type.code === signType.code);
 	}
 
-	public checkRenderSomeSingType(signType: string): boolean {
+	public checkRenderSomeSingType(signType: SignType): boolean {
 		return this.signsType(signType).some(s => s.render)
 	}
 
@@ -99,12 +102,10 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.showSelectSignType = false;
 	}
 
-	public addSign(signType: string): void {
-		let signKey = EnumUtils.findKeyForValue(SIGNTYPE, signType);
-
+	public addSign(signType: SignType): void {
 		let index = this.signsType(signType).length;
-		this.newSign.id = signKey.substr(0, 3) + index;
-		this.newSign.type = SIGNTYPE[signKey];
+		this.newSign.id = signType.code + index;
+		this.newSign.type = signType;
 		this.newSign.render = true;
 		this.newSign.brightness = Number(this.brightness) / 100;
 		this.newSign.contrast = Number(this.contrast) / 100;
@@ -117,17 +118,16 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.showSelectSignType = false;
 	}
 
-	public removeSignType(signType: string): void {
-		this.signs = this.signs.filter(sign => sign.type !== signType);
+	public removeSignType(signType: SignType): void {
+		this.signs = this.signs.filter(sign => sign.type.code !== signType.code);
 	}
 
-	public showSignType(signType: string, event: Event): void {
+	public showSignType(signType: SignType, event: Event): void {
 		const show = event.target as HTMLInputElement;
-		let signKey = EnumUtils.findKeyForValue(SIGNTYPE, signType);
 		let render = (show.className === "bi bi-eye-slash");
 
 		this.signs = this.signs.map(sign => {
-			if (sign.type === SIGNTYPE[signKey]) {
+			if (sign.type.code === signType.code) {
 				sign.render = render;
 			}
 			return sign;
@@ -169,7 +169,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.scaleFactorImage = scaleFactorImage;
 	}
 
-	public assignColorTypeSign(signType: SIGNTYPE, colorSecondary: boolean = false): string {
+	public assignColorTypeSign(signType: SignType, colorSecondary: boolean = false): string {
 		return assignColorTypeSign(signType, colorSecondary);
 	}
 

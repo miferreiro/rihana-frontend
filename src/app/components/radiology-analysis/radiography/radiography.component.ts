@@ -22,7 +22,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import {assignColorTypeSign, Sign, SIGNTYPE} from '../../../models/Sign';
+import {assignColorTypeSign, SignType} from '../../../models/SignType';
 import {Radiography} from '../../../models/Radiography';
 import {AnnotationResult} from '../../locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
 import {LocalizationService} from '../../../modules/internationalization/localization.service';
@@ -140,7 +140,7 @@ export class RadiographyComponent implements OnInit {
 		this.subscription.unsubscribe();
 	}
 
-	public assignColorTypeSign(signType: SIGNTYPE, colorSecondary: boolean = false): string {
+	public assignColorTypeSign(signType: SignType, colorSecondary: boolean = false): string {
 		return assignColorTypeSign(signType, colorSecondary);
 	}
 }

@@ -19,92 +19,14 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-
 import {SignLocation} from "./SignLocation";
+import {SignType} from "./SignType";
 
 export class Sign {
 	id: string;
 	location: SignLocation;
-	type: SIGNTYPE;
+	type: SignType;
 	render: boolean;
 	brightness: number;
 	contrast: number;
-}
-
-export enum SIGNTYPE {
-	NO_FINDING = 'No finding',
-	CARDIOMEGALY = 'Cardiomegaly',
-	CONDENSATION = 'Condensation',
-	MASSES = 'Masses',
-	NODULES = 'Nodules',
-	PLEURAL_EFFUSION = 'Pleural effusion',
-	PNEUMOTHORAX = 'Pneumothorax',
-	REDISTRIBUTION = 'Redistribution'
-}
-
-export function assignColorTypeSign(signType: SIGNTYPE, colorSecondary: boolean = false): string {
-	let color: string;
-	switch (signType) {
-		case SIGNTYPE.CARDIOMEGALY:
-			// Color family: red
-			if (!colorSecondary) {
-				color = '#E6B8B8';
-
-			} else {
-				color = '#990F0B';
-			}
-			break;
-		case SIGNTYPE.CONDENSATION:
-			// Color family: lightgreen
-			if (!colorSecondary) {
-				color = '#A4FFAF';
-			} else {
-				color = '#0E5102';
-			}
-			break;
-		case SIGNTYPE.MASSES:
-			// Color family: lightblue
-			if (!colorSecondary) {
-				color = '#B5FCFF';
-			} else {
-				color = '#024045';
-			}
-			break;
-		case SIGNTYPE.NODULES:
-			// Color family: darkblue
-			if (!colorSecondary) {
-				color = '#70ACFF';
-			} else {
-				color = '#091365';
-			}
-			break;
-		case SIGNTYPE.PLEURAL_EFFUSION:
-			// Color family: purple
-			if (!colorSecondary) {
-				color = '#F6A9FF';
-			} else {
-				color = '#5609A9';
-			}
-			break;
-		case SIGNTYPE.PNEUMOTHORAX:
-			// Color family: brown
-			if (!colorSecondary) {
-				color = '#a1887f';
-			} else {
-				color = '#4e342e';
-			}
-			break;
-		case SIGNTYPE.REDISTRIBUTION:
-			// Color family: orange
-			if (!colorSecondary) {
-				color = '#FFC37D';
-			} else {
-				color = '#843E04';
-			}
-			break;
-		default:
-			color = 'yellow';
-			break;
-	}
-	return color;
 }

@@ -23,7 +23,7 @@ import {Component, OnInit} from '@angular/core';
 import {ChartOptions, ChartType} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {AuthenticationService} from '../../../services/authentication.service';
-import {assignColorTypeSign} from '../../../models/Sign';
+import {assignColorTypeSign, SignType} from '../../../models/SignType';
 import {SignsService} from '../../../services/signs.service';
 
 @Component({
@@ -51,9 +51,12 @@ export class PieChartComponent implements OnInit {
 		tooltips: {
 			callbacks: {
 				label: function (tooltipItems, data) {
+					let array:number[] = [];
+					data.datasets[0].data.forEach((x:any)=> array.push(x));
+					let total = array.reduce((a, b) => a + b, 0);
 					return " " + data.datasets[0].data[tooltipItems.index] +
 					" (" +
-					(Number.parseInt(data.datasets[0].data[tooltipItems.index].toString()) * 100 / data.datasets[0].data.length).toFixed(0) +
+					(Number.parseInt(data.datasets[0].data[tooltipItems.index].toString()) * 100 / total).toFixed(0) +
 					' %)';
 				}
 			},
@@ -85,11 +88,11 @@ export class PieChartComponent implements OnInit {
 
 		this.signsService.getSignsByUser(this.loggedUser).subscribe(signs => {
 
-			let signTypes = [... new Set(signs.map(sign => sign.type))];
-			let signTypesLabels = [... new Set(signs.map(sign => sign.type.substr(0, 3).toUpperCase()))];
+			let signTypes: SignType[] = [... new Map(signs.map(sign => [sign.type.code, sign.type])).values()];
+			let signTypesLabels: string[] = [... new Set(signs.map(sign => sign.type.code))];
 
 			let signNum: number[] = signTypes.map(
-				signType => signs.filter(sign => sign.type == signType).length
+				signType => signs.filter(sign => sign.type.code === signType.code).length
 			);
 
 			const setOpacity = (hex: string, alpha: number) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2)}`;

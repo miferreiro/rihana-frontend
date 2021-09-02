@@ -22,7 +22,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
 import {Label} from 'ng2-charts';
-import {assignColorTypeSign} from '../../../models/Sign';
+import {assignColorTypeSign, SignType} from '../../../models/SignType';
 import {SignsService} from '../../../services/signs.service';
 
 @Component({
@@ -43,11 +43,21 @@ export class BarChartComponent implements OnInit {
 		},
 		maintainAspectRatio: false,
 		responsive: true,
+		tooltips: {
+			callbacks: {
+				label: function (tooltipItems, data) {
+					return " " + Number.parseInt(data.datasets[0].data[tooltipItems.index].toString()) + ' %';
+				}
+			},
+			enabled: true,
+			mode: 'single'
+		},
 		scales: {
 			yAxes: [{
 				ticks: {
 					beginAtZero: true,
-					precision: 0
+					precision: 0,
+					suggestedMax: 100
 				}
 			}]
 		},
@@ -59,6 +69,26 @@ export class BarChartComponent implements OnInit {
 				} else {
 					document.getElementById('barChart').style.display = 'block';
 				}
+
+				var chartInstance = this.chart;
+				var	ctx = chartInstance.ctx;
+				ctx.font = '16px "Helvetica Neue", Helvetica, Arial, sans-serif';
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'bottom';
+
+				this.data.datasets.forEach(function (dataset) {
+					for (var i = 0; i < dataset.data.length; i++) {
+						var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+						var scale_max = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._yScale.maxHeight;
+						var y_pos = model.y;
+						if ((scale_max - model.y) / scale_max >= 0.9)
+							y_pos = model.y + 20;
+						else {
+							y_pos = model.y - 2;
+						}
+						ctx.fillText(dataset.label.split(',')[i], model.x, y_pos);
+					}
+				});
 			},
 			onComplete: function(animation) {
 				var firstSet = animation.chart.config.data.datasets[0].data;
@@ -74,6 +104,26 @@ export class BarChartComponent implements OnInit {
 					document.getElementById('no-data-bar-chart').style.visibility = 'hidden';
 					document.getElementById('barChart').style.display = 'block';
 				}
+
+				var chartInstance = this.chart;
+				var	ctx = chartInstance.ctx;
+				ctx.font = '16px "Helvetica Neue", Helvetica, Arial, sans-serif';
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'bottom';
+
+				this.data.datasets.forEach(function (dataset) {
+					for (var i = 0; i < dataset.data.length; i++) {
+						var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+						var scale_max = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._yScale.maxHeight;
+						var y_pos = model.y;
+						if ((scale_max - model.y) / scale_max >= 0.9)
+							y_pos = model.y + 20;
+						else {
+							y_pos = model.y - 2;
+						}
+						ctx.fillText(dataset.label.split(',')[i], model.x, y_pos);
+					}
+				});
 			}
 		}
 	};
@@ -84,19 +134,26 @@ export class BarChartComponent implements OnInit {
 
 		this.signsService.getSigns().subscribe(signs => {
 
-			let signTypes = [... new Set(signs.map(sign => sign.type))];
-			let signTypesLabels = [... new Set(signs.map(sign => sign.type.substr(0, 3).toUpperCase()))];
+			let signTypes: SignType[] = [... new Map(signs.map(sign => [sign.type.code, sign.type])).values()];
+			let signTypesTarget: number[] = [... new Map(signTypes.map(signType => [signType.code, signType.target])).values()];
+			let signTypesLabels: string[] = [... new Set(signs.map(sign => sign.type.code))];
 
-			let signNum: number[] = signTypes.map(
-				signType => signs.filter(sign => sign.type == signType).length
+			let signNum = signTypes.map(
+				signType => signs.filter(sign => sign.type.code === signType.code).length
 			);
 
 			const setOpacity = (hex: string, alpha: number) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2)}`;
 			let signColors = signTypes.map(signType => setOpacity(assignColorTypeSign(signType, false), 0.8))
 
+			let signNumPercentages: number[] = signNum.map((n, i) => Math.ceil((n / signTypesTarget[i])));
+
+			signTypesLabels = signTypesLabels.map((signTypLabel, i) => signTypLabel + ' (' + signTypesTarget[i] + ')')
+
 			this.barChartLabels = signTypesLabels;
+
 			this.barChartData = [{
-				data: signNum
+				data: signNumPercentages,
+				label: signNum.toString()
 			}];
 			this.barChartColors = [{
 				backgroundColor: signColors

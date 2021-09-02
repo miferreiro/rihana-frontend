@@ -24,9 +24,10 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
-import {Sign, SIGNTYPE} from "../models/Sign";
-import { EnumUtils } from "../utils/enum.utils";
+import {Sign} from "../models/Sign";
+import {SignType} from "../models/SignType";
 import {SignInfo} from "./entities/SignInfo";
+import {SignTypeInfo} from "./entities/SignTypeInfo";
 
 @Injectable()
 export class SignsService {
@@ -41,19 +42,39 @@ export class SignsService {
 	}
 
 	getSignsByUser(user: string): Observable<Sign[]> {
-		return this.http.get<SignInfo[]>(`${environment.restApi}/sign/${user}`).pipe(
+		return this.http.get<SignInfo[]>(`${environment.restApi}/sign?user=${user}`).pipe(
 			map((signs) => signs.map(this.mapSignInfo.bind(this)))
+		);
+	}
+
+	getSignTypes(): Observable<SignType[]> {
+		return this.http.get<SignInfo[]>(`${environment.restApi}/sign/type`).pipe(
+			map((signTypes) => signTypes.map(this.mapSignTypeInfo.bind(this)))
 		);
 	}
 
 	private mapSignInfo(signInfo: SignInfo): Sign {
 		return {
 			id: signInfo.id,
-			type: SIGNTYPE[EnumUtils.findKeyForValue(SIGNTYPE, signInfo.type.name)],
+			type: {
+				code: signInfo.type.code,
+				name: signInfo.type.name,
+				description: signInfo.type.description,
+				target: signInfo.type.target
+			},
 			location: signInfo.location,
 			brightness: signInfo.brightness,
 			contrast: signInfo.contrast,
 			render: true
+		};
+	}
+
+	private mapSignTypeInfo(signTypeInfo: SignTypeInfo): SignType {
+		return  {
+				code: signTypeInfo.code,
+				name: signTypeInfo.name,
+				description: signTypeInfo.description,
+				target: signTypeInfo.target
 		};
 	}
 }

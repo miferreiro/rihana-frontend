@@ -22,7 +22,8 @@
 import {DecimalPipe} from '@angular/common';
 import {PixelsToMmsPipe} from '../../pipes/pixels-to-mms.pipe';
 import {Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
-import {assignColorTypeSign, Sign} from '../../models/Sign';
+import {Sign} from '../../models/Sign';
+import {assignColorTypeSign} from '../../models/SignType';
 import {SignLocation} from '../../models/SignLocation';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
 

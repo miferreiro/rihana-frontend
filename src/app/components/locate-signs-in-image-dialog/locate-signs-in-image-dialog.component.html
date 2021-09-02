@@ -77,7 +77,7 @@
 									<div class="card">
 										<div class="card-header-custom">
 											<div class="header d-flex justify-content-between">
-												<h6>{{signType | translate}}</h6>
+												<h6>{{signType.name | translate}}</h6>
 												<div>
 													<i *ngIf="signsType(signType).length > 0"
 														[ngClass]="{'bi bi-eye': checkRenderSomeSingType(signType), 'bi bi-eye-slash': !checkRenderSomeSingType(signType)}"
@@ -148,7 +148,7 @@
 			<div class="modal-body">
 				<ul class="list-group list-group-flush">
 					<li *ngFor="let signType of listSignTypes()" (click)="addSign(signType)" class="list-group-item">
-						{{signType | translate}}
+						{{signType.name | translate}}
 					</li>
 				</ul>
 			</div>
