@@ -46,6 +46,8 @@ export class ExplorationsComponent implements OnInit {
 
 	public deletingExploration:boolean = false;
 
+	public updateChart: Subject<void> = new Subject<void>();
+
 	constructor(private authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
 				private locationService: LocalizationService,
@@ -75,6 +77,7 @@ export class ExplorationsComponent implements OnInit {
 			this.notificationService.success(this.locationService.translate('Exploration removed successfully') + ".",
 											 this.locationService.translate('Exploration removed'));
 			this.getPageExplorations();
+			this.updateChart.next();
 		});
 	}
 

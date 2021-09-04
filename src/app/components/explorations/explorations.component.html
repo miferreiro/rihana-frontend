@@ -23,10 +23,14 @@
 	<div class="row summary mt-2 mb-3 text-center">
 		<h2>{{'Signs detected' | translate}}</h2>
 		<div class="col-6">
-			<app-pie-chart></app-pie-chart>
+			<app-pie-chart
+				[updateChart]="updateChart.asObservable()">
+			</app-pie-chart>
 		</div>
 		<div class="col-6">
-			<app-bar-chart></app-bar-chart>
+			<app-bar-chart
+				[updateChart]="updateChart.asObservable()">
+			</app-bar-chart>
 		</div>
 	</div>
 

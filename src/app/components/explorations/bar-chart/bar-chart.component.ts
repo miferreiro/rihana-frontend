@@ -19,9 +19,10 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
 import {Label} from 'ng2-charts';
+import {Observable} from 'rxjs';
 import {assignColorTypeSign, SignType} from '../../../models/SignType';
 import {SignsService} from '../../../services/signs.service';
 
@@ -31,6 +32,8 @@ import {SignsService} from '../../../services/signs.service';
 	styleUrls: ['./bar-chart.component.css']
 })
 export class BarChartComponent implements OnInit {
+
+	@Input() updateChart: Observable<void>;
 
 	public barChartType: ChartType = 'bar';
 	public barChartLabels: Label[] = [];
@@ -131,7 +134,11 @@ export class BarChartComponent implements OnInit {
 	constructor(private signsService: SignsService) { }
 
 	ngOnInit(): void {
+		this.getSigns();
+		this.updateChart.subscribe(() => this.getSigns());
+	}
 
+	private getSigns() {
 		this.signsService.getSigns().subscribe(signs => {
 
 			let signTypes: SignType[] = [... new Map(signs.map(sign => [sign.type.code, sign.type])).values()];

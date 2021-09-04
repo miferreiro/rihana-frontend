@@ -19,9 +19,10 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ChartOptions, ChartType} from 'chart.js';
 import {Label} from 'ng2-charts';
+import {Observable} from 'rxjs';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {assignColorTypeSign, SignType} from '../../../models/SignType';
 import {SignsService} from '../../../services/signs.service';
@@ -32,6 +33,8 @@ import {SignsService} from '../../../services/signs.service';
 	styleUrls: ['./pie-chart.component.css']
 })
 export class PieChartComponent implements OnInit {
+
+	@Input() updateChart: Observable<void>;
 
 	public loggedUser: string;
 
@@ -86,6 +89,11 @@ export class PieChartComponent implements OnInit {
 			this.loggedUser = this.authenticationService.getUser().login;
 		}
 
+		this.getSigns();
+		this.updateChart.subscribe(() => this.getSigns());
+	}
+
+	private getSigns() {
 		this.signsService.getSignsByUser(this.loggedUser).subscribe(signs => {
 
 			let signTypes: SignType[] = [... new Map(signs.map(sign => [sign.type.code, sign.type])).values()];
