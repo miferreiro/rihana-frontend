@@ -43,6 +43,7 @@ import {PatientsService} from './services/patients.service';
 import {SignsService} from './services/signs.service';
 
 import {BarChartComponent} from './components/explorations/bar-chart/bar-chart.component';
+import {DeleteConfirmationComponent} from './components/delete-confirmation/delete-confirmation.component';
 import {ExplorationComponent} from './components/exploration/exploration.component';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
 import {ImageAnnotatorComponent} from './components/image-annotator/image-annotator.component';
@@ -66,6 +67,7 @@ import {ChartsModule} from 'ng2-charts';
 @NgModule({
 	declarations: [
 		AppComponent,
+		DeleteConfirmationComponent,
 		ExplorationComponent,
 		ExplorationsComponent,
 		ImageAnnotatorComponent,

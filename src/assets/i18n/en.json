@@ -75,5 +75,12 @@
 	"Data": "Data",
 	"Options": "Options",
 	"No data to display": "No data to display",
-	"Hello": "Hello"
+	"Hello": "Hello",
+	"Exploration removed successfully": "Exploration removed successfully",
+	"Exploration removed": "Exploration removed",
+	"Cancel": "Cancel",
+	"Delete": "Delete",
+	"Are you sure you want to delete": "Are you sure you want to delete",
+	"This action is permanent and cannot be undone": "This action is permanent and cannot be undone",
+	"exploration": "exploration"
 }

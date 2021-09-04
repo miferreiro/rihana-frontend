@@ -1,0 +1,45 @@
+<!--
+  ~ RIHANA Frontend
+  ~
+  ~ Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
+  ~ Miguel Ferreiro Díaz
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public
+  ~ License along with this program.  If not, see
+  ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
+-->
+
+<div id="removeModal" class="modal fade shadow" [ngClass]="{'show': open}" [ngStyle]="{'display':open ? 'block' : 'none'}"
+		aria-hidden="true"
+		aria-labelledby="removeModal" tabindex="-1">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content">
+			<div class="modal-header justify-content-center">
+				<h5 class="modal-title">{{'Delete' | translate}} {{modelName | translate}}</h5>
+				<button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+			</div>
+			<div class="modal-body">
+				{{'Are you sure you want to delete' | translate}} <strong><b>{{name}}</b></strong>?
+				<div class="warning">{{'This action is permanent and cannot be undone' | translate}}.</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+					{{'Cancel' | translate}}
+				</button>
+				<button type="button" class="btn btn-outline-danger" (click)="onConfirm()">
+					{{'Delete' | translate}}
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

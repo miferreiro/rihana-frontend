@@ -75,5 +75,12 @@
 	"Data": "Fecha",
 	"Options": "Opciones",
 	"No data to display": "No hay datos que mostrar",
-	"Hello": "Hola"
+	"Hello": "Hola",
+	"Exploration removed successfully": "Exploración eliminada con éxito",
+	"Exploration removed": "Exploración eliminada",
+	"Cancel": "Cancelar",
+	"Delete": "Eliminar",
+	"Are you sure you want to delete": "Estás seguro de que quieres eliminar",
+	"This action is permanent and cannot be undone": "Esta acción es permanente y no se puede deshacer",
+	"exploration": "exploración"
 }

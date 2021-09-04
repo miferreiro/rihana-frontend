@@ -22,6 +22,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ExplorationsService} from '../../services/explorations.service';
+import {NotificationService} from '../../modules/notification/services/notification.service';
+import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {Exploration} from '../../models/Exploration';
 import {Subject} from 'rxjs';
 
@@ -36,12 +38,17 @@ export class ExplorationsComponent implements OnInit {
 	public loggedUser: string;
 
 	public explorations: Exploration[] = [];
+	public exploration: Exploration = new Exploration();
 
 	public paginationTotalItems: number;
 	public pageSize: number;
 	public pageChangeEvent = new Subject<string>();
 
+	public deletingExploration:boolean = false;
+
 	constructor(private authenticationService: AuthenticationService,
+				private notificationService: NotificationService,
+				private locationService: LocalizationService,
 				private explorationsService: ExplorationsService) { }
 
 	ngOnInit() {
@@ -59,6 +66,21 @@ export class ExplorationsComponent implements OnInit {
 			this.paginationTotalItems = explorationPage.totalItems;
 			this.explorations = explorationPage.explorations;
 		});
+	}
+
+	public cancel() { }
+
+	public delete(id: string) {
+		this.explorationsService.delete(id).subscribe(() => {
+			this.notificationService.success(this.locationService.translate('Exploration removed successfully') + ".",
+											 this.locationService.translate('Exploration removed'));
+			this.getPageExplorations();
+		});
+	}
+
+	public remove(id: string) {
+		this.deletingExploration = true;
+		this.exploration = this.explorations.find((exploration) => exploration.id === id);
 	}
 
 	public get currentPage(): number {

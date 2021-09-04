@@ -45,6 +45,10 @@ export class ExplorationsService {
 		return this.getExplorations(user, page, pageSize, new HttpParams());
 	}
 
+	delete(id: string) {
+		return this.http.delete(`${environment.restApi}/exploration/` + id);
+	}
+
 	private getExplorations(user: string, page: number, pageSize: number, params: HttpParams): Observable<ExplorationPage> {
 		params = params.append('user', user).append('page', page.toString()).append('pageSize', pageSize.toString());
 		return this.http.get<ExplorationInfo[]>(`${environment.restApi}/exploration/`, {params, observe: 'response'}).pipe(
