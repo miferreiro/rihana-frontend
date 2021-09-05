@@ -33,12 +33,8 @@
 				<div class="warning">{{'This action is permanent and cannot be undone' | translate}}.</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
-					{{'Cancel' | translate}}
-				</button>
-				<button type="button" class="btn btn-outline-danger" (click)="onConfirm()">
-					{{'Delete' | translate}}
-				</button>
+				<i class="bi bi-x-circle" style="color: red;" (click)="onCancel()"></i>
+				<i class="bi bi-check-circle" style="color: green;" (click)="onConfirm()"></i>
 			</div>
 		</div>
 	</div>

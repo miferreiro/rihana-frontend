@@ -19,6 +19,10 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
+i {
+	font-size: 1.5rem;
+}
+
 .modal {
 	max-width: 100vw;
 	background: rgba(255,255,255,0.5);
@@ -63,4 +67,9 @@
 
 #removeModal .modal-footer {
 	padding: .2rem .75rem;
+}
+
+.warning {
+	color: #c92100;
+	font-weight: bold;
 }
