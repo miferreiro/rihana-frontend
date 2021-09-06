@@ -21,7 +21,7 @@
 
 import {Sign} from "./Sign";
 
-export class Radiography {
+export class Radiograph {
 	id: string;
 	type: string;
 	source: string;

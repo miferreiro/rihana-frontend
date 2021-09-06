@@ -21,21 +21,21 @@
 
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {RadiographyComponent} from './radiography.component';
+import {RadiographComponent} from './radiograph.component';
 
-describe('RadiographyComponent', () => {
-	let component: RadiographyComponent;
-	let fixture: ComponentFixture<RadiographyComponent>;
+describe('RadiographComponent', () => {
+	let component: RadiographComponent;
+	let fixture: ComponentFixture<RadiographComponent>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ RadiographyComponent ]
+			declarations: [ RadiographComponent ]
 		})
 		.compileComponents();
 	});
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(RadiographyComponent);
+		fixture = TestBed.createComponent(RadiographComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

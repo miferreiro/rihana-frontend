@@ -430,9 +430,9 @@ export class ImageAnnotatorComponent {
 	}
 
 	private getMaxWidth(): number {
-		let widthRadiographySection = parseInt(getComputedStyle(document.getElementById("section-radiography")).width) -
-									  parseInt(getComputedStyle(document.getElementById("section-radiography")).paddingLeft) -
-		 							  parseInt(getComputedStyle(document.getElementById("section-radiography")).paddingRight);
+		let widthRadiographySection = parseInt(getComputedStyle(document.getElementById("section-radiograph")).width) -
+									  parseInt(getComputedStyle(document.getElementById("section-radiograph")).paddingLeft) -
+		 							  parseInt(getComputedStyle(document.getElementById("section-radiograph")).paddingRight);
 
 		return widthRadiographySection;
 	}

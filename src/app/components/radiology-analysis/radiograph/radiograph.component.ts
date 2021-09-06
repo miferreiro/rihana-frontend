@@ -23,27 +23,27 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {assignColorTypeSign, SignType} from '../../../models/SignType';
-import {Radiography} from '../../../models/Radiography';
+import {Radiograph} from '../../../models/Radiograph';
 import {AnnotationResult} from '../../locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
 import {LocalizationService} from '../../../modules/internationalization/localization.service';
 import {NotificationService} from '../../../modules/notification/services/notification.service';
 
 @Component({
-  selector: 'app-radiography',
-  templateUrl: './radiography.component.html',
-  styleUrls: ['./radiography.component.css']
+  selector: 'app-radiograph',
+  templateUrl: './radiograph.component.html',
+  styleUrls: ['./radiograph.component.css']
 })
-export class RadiographyComponent implements OnInit {
+export class RadiographComponent implements OnInit {
 
 	private readonly extensionValid = ['png', 'jpg', 'jpeg'];
 
-	@Output() radiographyHandler = new EventEmitter<Radiography>();
+	@Output() radiographHandler = new EventEmitter<Radiograph>();
 	@Input() typeExploration: string;
 
 	public disabled: boolean = false;
 	private subscription: Subscription;
 
-	public radiography: Radiography;
+	public radiograph: Radiograph;
 
 	public readonly controlRadiography = new FileUploadControl(
 		{listVisible: true, discardInvalid: true, multiple: false},
@@ -52,7 +52,7 @@ export class RadiographyComponent implements OnInit {
 
 	public uploadedFile: BehaviorSubject<string> = new BehaviorSubject(null);
 
-	public isLoadingRadiography: boolean = false;
+	public isLoadingRadiograph: boolean = false;
 	public showImageDialog: boolean = false;
 
 	constructor(public localizationService: LocalizationService,
@@ -60,7 +60,7 @@ export class RadiographyComponent implements OnInit {
 		) { }
 
 	ngOnInit(): void {
-		this.isLoadingRadiography = true;
+		this.isLoadingRadiograph = true;
 		this.subscription = this.controlRadiography.valueChanges.subscribe((values: Array<File>) => {
 			if (values.length == 2) {
 				if (this.extensionValid.includes(values[1].name.split('.').pop())) {
@@ -73,7 +73,7 @@ export class RadiographyComponent implements OnInit {
 					if (this.extensionValid.includes(values[0].name.split('.').pop())) {
 						this.uploadedFile = this.loadRadiography(values[0]);
 						this.uploadedFile.subscribe(event => {
-							this.isLoadingRadiography = (event == null);
+							this.isLoadingRadiograph = (event == null);
 						});
 					} else {
 						this.notificationService.error("The file does not have the correct extension (.png, .jpg or .jpeg)", "File upload failed");
@@ -82,7 +82,7 @@ export class RadiographyComponent implements OnInit {
 				}
 			}
 		});
-		this.radiography = new Radiography();
+		this.radiograph = new Radiograph();
 	}
 
 	public addRadiography(event: Event): void {
@@ -105,15 +105,15 @@ export class RadiographyComponent implements OnInit {
 			const fr = new FileReader();
 			fr.onload = async (e) =>  {
 				uploadedFile.next(e.target.result.toString());
-				this.radiography = new Radiography();
-				this.radiography.type = this.typeExploration;
-				this.radiography.source = e.target.result.toString();
-				this.radiographyHandler.emit(this.radiography);
+				this.radiograph = new Radiograph();
+				this.radiograph.type = this.typeExploration;
+				this.radiograph.source = e.target.result.toString();
+				this.radiographHandler.emit(this.radiograph);
 			};
 			fr.readAsDataURL(file);
 		} else {
 			uploadedFile.next(null);
-			this.radiographyHandler.emit(null);
+			this.radiographHandler.emit(null);
 		}
 		return uploadedFile;
 	}
@@ -121,8 +121,8 @@ export class RadiographyComponent implements OnInit {
 	public openDialogImage(disabled : boolean = false): void {
 		this.showImageDialog = true;
 		this.disabled  = disabled;
-		if (!this.radiography.signs) {
-			this.radiography.signs = [];
+		if (!this.radiograph.signs) {
+			this.radiograph.signs = [];
 		}
 		document.getElementsByTagName("body")[0].style.overflow = "hidden";
 	}
@@ -130,8 +130,8 @@ export class RadiographyComponent implements OnInit {
 	public closeDialogImage(location: AnnotationResult): void {
 		this.showImageDialog = false;
 		if (!location.cancelled) {
-			this.radiography.signs = location.signs;
-			this.radiographyHandler.emit(this.radiography);
+			this.radiograph.signs = location.signs;
+			this.radiographHandler.emit(this.radiograph);
 		}
 		document.getElementsByTagName("body")[0].style.overflow = "auto";
 	}

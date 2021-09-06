@@ -21,7 +21,7 @@
 
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {Radiography} from '../../models/Radiography';
+import {Radiograph} from '../../models/Radiograph';
 import {Report} from '../../models/Report';
 
 @Component({
@@ -35,7 +35,7 @@ export class ExplorationComponent {
 
 	public report: Report = new Report();
 
-	public radiographies: Radiography[] = [null, null, null];
+	public radiographs: Radiograph[] = [null, null, null];
 
 	constructor(private router: Router) {
 	}
@@ -44,8 +44,8 @@ export class ExplorationComponent {
 		this.report = report;
 	}
 
-	public radiographiesHandler(radiographies: Radiography[]): void {
-		this.radiographies = radiographies;
+	public radiographsHandler(radiographs: Radiograph[]): void {
+		this.radiographs = radiographs;
 	}
 
 	public saveExploration(): void {

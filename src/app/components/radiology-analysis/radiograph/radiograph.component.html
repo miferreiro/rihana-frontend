@@ -23,13 +23,13 @@
 <div class="row align-items-center">
 	<div class="col-lg-6 col-12">
 		<ng-template [ngIf]="typeExploration === 'PA'">
-			<h3 class="text-center fw-bold">{{'Postero-anterior radiography (PA)' | translate}}</h3>
+			<h3 class="text-center fw-bold">{{'Postero-anterior radiograph (PA)' | translate}}</h3>
 		</ng-template>
 		<ng-template [ngIf]="typeExploration === 'AP'">
-			<h3 class="text-center fw-bold">{{'Antero-posterior radiography (AP)' | translate}}</h3>
+			<h3 class="text-center fw-bold">{{'Antero-posterior radiograph (AP)' | translate}}</h3>
 		</ng-template>
 		<ng-template [ngIf]="typeExploration === 'LAT'">
-			<h3 class="text-center fw-bold">{{'Lateral radiography (LAT)' | translate}}</h3>
+			<h3 class="text-center fw-bold">{{'Lateral radiograph (LAT)' | translate}}</h3>
 		</ng-template>
 	</div>
 	<form class="col-lg-6 col-12">
@@ -77,17 +77,17 @@
 		</div>
 	</form>
 </div>
-<div *ngIf="controlRadiography.value.length > 0" id="radiographyInfo" class="row mb-3 mt-3">
+<div *ngIf="controlRadiography.value.length > 0" id="radiographInfo" class="row mb-3 mt-3">
 	<div class="row">
-		<h4 class="col">{{'Signs detected' | translate}}: {{radiography.signs ? radiography.signs.length : '0' }}</h4>
+		<h4 class="col">{{'Signs detected' | translate}}: {{radiograph.signs ? radiograph.signs.length : '0' }}</h4>
 		<span class="col text-end">
 			<i class="bi bi-brush" (click)="openDialogImage()"></i>
 			<i class="bi bi-info-lg" (click)="openDialogImage(true)"></i>
 		</span>
 	</div>
-	<div *ngIf="radiography.signs != undefined" class="row signs">
+	<div *ngIf="radiograph.signs != undefined" class="row signs">
 		<ul>
-			<li *ngFor="let sign of radiography.signs" class="col-lg-4 col-md-6 col-12">
+			<li *ngFor="let sign of radiograph.signs" class="col-lg-4 col-md-6 col-12">
 				<p [ngStyle]="{'border-color': assignColorTypeSign(sign.type)}">
 					{{sign.id}} (<var>{{'Area' | translate}}</var>: {{sign.location?.area() | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm²)
 				</p>
@@ -100,7 +100,7 @@
 	*ngIf="showImageDialog"
 	(close)="closeDialogImage($event)"
 	[src]="uploadedFile | async"
-	[signs]="radiography.signs"
+	[signs]="radiograph.signs"
 	[disabled]="disabled">
 </app-locate-signs-in-image-dialog>
 

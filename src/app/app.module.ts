@@ -50,7 +50,7 @@ import {ImageAnnotatorComponent} from './components/image-annotator/image-annota
 import {LoginComponent} from './components/login/login.component';
 import {LocateSignsInImageDialogComponent} from './components/locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
 import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiology-analysis.component';
-import {RadiographyComponent} from './components/radiology-analysis/radiography/radiography.component';
+import {RadiographComponent} from './components/radiology-analysis/radiograph/radiograph.component';
 import {ReportComponent} from './components/report/report.component';
 import {PieChartComponent} from './components/explorations/pie-chart/pie-chart.component';
 
@@ -74,7 +74,7 @@ import {ChartsModule} from 'ng2-charts';
 		LoginComponent,
 		LocateSignsInImageDialogComponent,
 		RadiologyAnalysisComponent,
-		RadiographyComponent,
+		RadiographComponent,
 		ReportComponent,
 		LangPipe,
 		PixelsToMmsPipe,

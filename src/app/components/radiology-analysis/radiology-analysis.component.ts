@@ -20,7 +20,7 @@
  */
 
 import {Component,EventEmitter,Input,OnInit,Output} from '@angular/core';
-import {Radiography} from '../../models/Radiography';
+import {Radiograph} from '../../models/Radiograph';
 import {Report} from '../../models/Report';
 
 @Component({
@@ -49,29 +49,29 @@ export class RadiologyAnalysisComponent implements OnInit {
 		}
 	};
 
-	@Output() radiographies = new EventEmitter<Radiography[]>();
+	@Output() radiographs = new EventEmitter<Radiograph[]>();
 
-	private _radiographies: Radiography[] = [null, null];
+	private _radiographs: Radiograph[] = [null, null];
 
 	ngOnInit(): void {
 		this.typeExploration = null;
 	}
 
-	public radiographyHandler(event: Radiography, type: string): void {
+	public radiographHandler(event: Radiograph, type: string): void {
 		if (event != undefined) {
 			if (type != 'LAT') {
-				this._radiographies[0] = event;
+				this._radiographs[0] = event;
 			} else {
-				this._radiographies[1] = event;
+				this._radiographs[1] = event;
 			}
-			this.radiographies.emit(this._radiographies);
+			this.radiographs.emit(this._radiographs);
 		} else {
 			if (type != 'LAT') {
-				this._radiographies[0] = null;
+				this._radiographs[0] = null;
 			} else {
-				this._radiographies[1] = null;
+				this._radiographs[1] = null;
 			}
-			this.radiographies.emit(this._radiographies);
+			this.radiographs.emit(this._radiographs);
 		}
 	}
 }
