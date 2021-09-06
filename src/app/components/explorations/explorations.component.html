@@ -72,7 +72,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<div *ngIf="pageSize != paginationTotalItems" class ="row text-center">
+		<div *ngIf="pageSize != paginationTotalItems && explorations.length != 0" class ="row text-center mt-1">
 			<ul class="pagination justify-content-center">
 				<li class="page-item" [ngClass]="{'disabled': 1 > (currentPage - 1)}">
 					<a class="page-link" aria-label="Previous" (click)="handlePageChange(currentPage - 1)">
@@ -101,12 +101,18 @@
 				</li>
 			</ul>
 		</div>
+		<div id="no-data-explorations" [ngStyle]="{'display':explorations.length == 0 ? 'block' : 'none', 'opacity': explorations.length == 0 ? '1' : '0', 'visibility': explorations.length == 0 ? 'visible' : 'hidden'}"
+			class="bg-light d-flex justify-content-center align-items-center ">
+			<span class="alert align-middle" role="alert">
+				{{'No data to display' | translate}}
+			</span>
+		</div>
 	</div>
 </div>
 
-<app-delete-confirmation [(open)]="deletingExploration" [modelName]="'exploration'" [id]="exploration.id"
-                         [name]="exploration.title"
-                         (cancel)="cancel()" (confirm)="delete($event)">
+<app-delete-confirmation [(open)]="deletingExploration" [modelName]="'exploration'"
+						 [id]="exploration.id" [name]="exploration.title"
+						 (cancel)="cancel()" (confirm)="delete($event)">
 </app-delete-confirmation>
 
 <simple-notifications></simple-notifications>
