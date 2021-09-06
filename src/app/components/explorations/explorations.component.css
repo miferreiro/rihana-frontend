@@ -36,3 +36,17 @@
 .btn:focus {
 	box-shadow: none;
 }
+
+.page-item {
+	cursor: pointer;
+}
+
+.page-link {
+	color: black;
+	border: none;
+}
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}

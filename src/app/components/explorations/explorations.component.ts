@@ -43,6 +43,7 @@ export class ExplorationsComponent implements OnInit {
 	public paginationTotalItems: number;
 	public pageSize: number;
 	public pageChangeEvent = new Subject<string>();
+	public lastPage: number;
 
 	public deletingExploration:boolean = false;
 
@@ -66,6 +67,7 @@ export class ExplorationsComponent implements OnInit {
 	getPageExplorations() {
 		this.explorationsService.getTotalExplorations(this.loggedUser, this.currentPage, this.pageSize).subscribe(explorationPage => {
 			this.paginationTotalItems = explorationPage.totalItems;
+			this.lastPage = Math.ceil(this.paginationTotalItems / this.pageSize);
 			this.explorations = explorationPage.explorations;
 		});
 	}
