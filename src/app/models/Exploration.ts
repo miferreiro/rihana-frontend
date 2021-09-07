@@ -20,6 +20,8 @@
  */
 
 import {Patient} from "./Patient";
+import {Radiograph} from "./Radiograph";
+import {Report} from "./Report";
 import {Users} from "./Users";
 
 export class Exploration {
@@ -28,4 +30,6 @@ export class Exploration {
 	explorationDate: Date;
 	user: Users;
 	patient: Patient;
+	report: Report;
+	radiographs: Radiograph[]
 }

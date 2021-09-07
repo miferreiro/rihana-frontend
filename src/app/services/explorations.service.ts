@@ -31,14 +31,20 @@ import {Exploration} from '../models/Exploration';
 import {Patient} from '../models/Patient';
 import {PatientsService} from './patients.service';
 import {UsersService} from './users.service';
+import {ReportsService} from './reports.service';
+import {RadiographsService} from './radiographs.service';
 import {Users} from '../models/Users';
+import {Radiograph} from '../models/Radiograph';
+import {Report} from '../models/Report';
 
 @Injectable()
 export class ExplorationsService {
 
 	constructor(private http: HttpClient,
 				private usersService: UsersService,
-				private patientsService: PatientsService) {
+				private patientsService: PatientsService,
+				private reportsService: ReportsService,
+				private radiographsService: RadiographsService) {
 	}
 
 	getTotalExplorations(user: string, page: number, pageSize: number): Observable<ExplorationPage> {
@@ -51,9 +57,10 @@ export class ExplorationsService {
 
 	private getExplorations(user: string, page: number, pageSize: number, params: HttpParams): Observable<ExplorationPage> {
 		params = params.append('user', user).append('page', page.toString()).append('pageSize', pageSize.toString());
+
 		return this.http.get<ExplorationInfo[]>(`${environment.restApi}/exploration/`, {params, observe: 'response'}).pipe(
 			concatMap(response => {
-				return this.withUserAndPatient(of(response.body)
+				return this.withUserPatientReportAndRadiographs(of(response.body), user
 				).pipe(
 					map(explorationsWithPatient => {
 						const explorationPage: ExplorationPage = {
@@ -67,32 +74,49 @@ export class ExplorationsService {
 		);
 	}
 
-	private withUserAndPatient(explorationInfoObservable: Observable<ExplorationInfo[]>): Observable<Exploration[]> {
-		return explorationInfoObservable.pipe(
-			concatMap(explorationInfos =>
-				explorationInfos.length === 0 ? of([]) :
-				forkJoin(
-					forkJoin(explorationInfos.map(explorationInfo => this.usersService.getUser('radiologist'))),
-					forkJoin(explorationInfos.map(explorationInfo => this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id)))
-				).pipe(
-					map(userAndPatient =>
-						explorationInfos.map((explorationInfo, index) => {
-								return this.mapExplorationInfo(explorationInfo, userAndPatient[0][index], userAndPatient[1][index]);
-							}
+	private withUserPatientReportAndRadiographs(explorationInfoObservable: Observable<ExplorationInfo[]>,
+												user: string): Observable<Exploration[]> {
+		return explorationInfoObservable
+			.pipe(
+				concatMap(explorationInfos =>
+					forkJoin([
+						this.usersService.getUser(user),
+						forkJoin(explorationInfos.map(explorationInfo =>
+							this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id)
+						)),
+						forkJoin(explorationInfos.map(explorationInfo =>
+							this.reportsService.getReport((<IdAndUri>explorationInfo.patient).id)
+						)),
+						forkJoin(explorationInfos.map(explorationInfo =>
+							forkJoin(explorationInfo.radiographs.map(radiograph => {
+								return this.radiographsService.getRadiograph((<IdAndUri>radiograph).id);
+							}))
+						))
+					])
+					.pipe(
+						map(userPatientReportAndRadiographs =>
+							explorationInfos.map((explorationInfo, index) =>
+								this.mapExplorationInfo(explorationInfo,
+										userPatientReportAndRadiographs[0][index],
+										userPatientReportAndRadiographs[1][index],
+										userPatientReportAndRadiographs[2][index],
+										userPatientReportAndRadiographs[3][index])
+							)
 						)
 					)
 				)
-			)
-		);
+			);
 	}
 
-	private mapExplorationInfo(explorationInfo: ExplorationInfo, user: Users, patient: Patient): Exploration {
+	private mapExplorationInfo(explorationInfo: ExplorationInfo, user: Users, patient: Patient, report: Report, radiographs: Radiograph[]): Exploration {
 		return {
 			id: explorationInfo.id,
 			title: explorationInfo.title,
 			explorationDate: explorationInfo.explorationDate,
 			user: user,
-			patient: patient
+			patient: patient,
+			report: report,
+			radiographs: radiographs
 		};
 	}
 }

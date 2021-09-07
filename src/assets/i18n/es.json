@@ -81,5 +81,6 @@
 	"Delete": "Eliminar",
 	"Are you sure you want to delete": "Estás seguro de que quieres eliminar",
 	"This action is permanent and cannot be undone": "Esta acción es permanente y no se puede deshacer",
-	"exploration": "exploración"
+	"exploration": "exploración",
+	"Detected signs": "Signos detectados"
 }

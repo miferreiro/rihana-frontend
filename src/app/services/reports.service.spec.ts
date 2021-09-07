@@ -19,33 +19,18 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Patient} from "./Patient";
+import {inject, TestBed} from '@angular/core/testing';
 
-export class Report {
-	id: string;
-	completionDate: Date;
-	reportNumber: string;
-	applicant: string;
-	priority: string;
-	status: string;
-	bed: string;
-	requestedExplorations: RequestedExploration[];
-	clinicalData: string;
-	performedExplorations: PerformedExploration[];
-	findings: string;
-	conclusions: string;
-}
+import {ReportsService} from './reports.service';
 
-export class RequestedExploration {
-	code: string;
-	description: string;
-	date: Date;
-}
+describe('ReportsService', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			providers: [ReportsService]
+		});
+	});
 
-export class PerformedExploration {
-	code: string;
-	description: string;
-	date: Date;
-	portable: string;
-	surgery: string;
-}
+	it('should be created', inject([ReportsService], (service: ReportsService) => {
+		expect(service).toBeTruthy();
+	}));
+});

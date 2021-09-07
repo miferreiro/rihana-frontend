@@ -80,13 +80,13 @@
 					<p class="text-nowrap fw-bold">{{'Birthdate' | translate}}</p>
 				</div>
 				<div class="col-md-3 col-sm-6 col-xs-12">
-					<p>{{report.hasOwnProperty("patient") && report.patient.hasOwnProperty("birthdate") ? (report.patient.birthdate | date:'dd/MM/yyyy') : ""}}</p>
+					<p>{{patient.hasOwnProperty("birthdate") ? (patient.birthdate | date:'dd/MM/yyyy') : ""}}</p>
 				</div>
 				<div class="col-md-3 col-sm-6 col-xs-12">
 					<p class="fw-bold">{{'Sex' | translate}}</p>
 				</div>
 				<div class="col-md-3 col-sm-6 col-xs-12">
-					<p>{{report.hasOwnProperty("patient") && report.patient.hasOwnProperty("sex") ? (report.patient.sex | translate) : ""}}</p>
+					<p>{{patient.hasOwnProperty("sex") ? (patient.sex | translate) : ""}}</p>
 				</div>
 			</div>
 		</div>

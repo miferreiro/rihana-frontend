@@ -26,6 +26,8 @@ import {NotificationService} from '../../modules/notification/services/notificat
 import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {Exploration} from '../../models/Exploration';
 import {Subject} from 'rxjs';
+import {Sign} from '../../models/Sign';
+import {assignColorTypeSign, SignType} from '../../models/SignType';
 
 @Component({
 	selector: 'app-explorations',
@@ -72,6 +74,16 @@ export class ExplorationsComponent implements OnInit {
 		});
 	}
 
+	public getExplorationSigns(exploration: Exploration): Sign[] {
+		let signs: Sign[] = exploration.radiographs.map(radiograph => radiograph.signs.map(sign => sign))[0];
+		signs = [...new Map(signs.map(item => [item.type.code, item])).values()];
+		return signs;
+	}
+
+	public getNumExplorationSignType(exploration: Exploration, code: string): number {
+		return exploration.radiographs.map(radiograph => radiograph.signs.filter(sign => sign.type.code == code))[0].length;
+	}
+
 	public cancel() { }
 
 	public delete(id: string) {
@@ -107,5 +119,9 @@ export class ExplorationsComponent implements OnInit {
 		this.pageSize = event.target.value;
 		this.currentPage = 1;
 		this.getPageExplorations();
+	}
+
+	public assignColorTypeSign(signType: SignType, colorSecondary: boolean = false): string {
+		return assignColorTypeSign(signType, colorSecondary);
 	}
 }

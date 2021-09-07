@@ -19,33 +19,11 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Patient} from "./Patient";
+import {Sign} from "../../models/Sign";
 
-export class Report {
+export interface RadiographInfo {
 	id: string;
-	completionDate: Date;
-	reportNumber: string;
-	applicant: string;
-	priority: string;
-	status: string;
-	bed: string;
-	requestedExplorations: RequestedExploration[];
-	clinicalData: string;
-	performedExplorations: PerformedExploration[];
-	findings: string;
-	conclusions: string;
-}
-
-export class RequestedExploration {
-	code: string;
-	description: string;
-	date: Date;
-}
-
-export class PerformedExploration {
-	code: string;
-	description: string;
-	date: Date;
-	portable: string;
-	surgery: string;
+	type: string;
+	source: string;
+	signs: Sign[];
 }

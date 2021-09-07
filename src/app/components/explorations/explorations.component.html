@@ -54,6 +54,7 @@
 			<thead>
 				<tr>
 					<th scope="col">{{'Title' | translate}}</th>
+					<th scope="col">{{'Detected signs' | translate}}</th>
 					<th scope="col">{{'Date' | translate}}</th>
 					<th scope="col">{{'Options' | translate}}</th>
 				</tr>
@@ -61,6 +62,21 @@
 			<tbody>
 				<tr *ngFor="let exploration of explorations; let i=index">
 					<td>{{exploration.title}}</td>
+					<td>
+						<div *ngIf="getExplorationSigns(exploration).length != 0" class="signs-cell">
+							<li *ngFor="let sign of getExplorationSigns(exploration); let i=index"
+									[ngStyle]="{'border-color': assignColorTypeSign(sign.type)}" class="signType">
+								<span>{{sign.type.code}}</span>
+								<span class="numSignType badge rounded-pill"
+									  [ngStyle]="{'background-color': assignColorTypeSign(sign.type, false), 'color': assignColorTypeSign(sign.type, true)}">
+									  {{getNumExplorationSignType(exploration, sign.type.code)}}
+								</span>
+							</li>
+						</div>
+						<div *ngIf="getExplorationSigns(exploration).length == 0" class="noFinding">
+							{{'No finding' | translate}}
+						</div>
+					</td>
 					<td>{{exploration.explorationDate | date:'dd/MM/yyyy'}}</td>
 					<td>
 						<div class="btn-group" role="group" aria-label="Basic example">
@@ -102,7 +118,7 @@
 			</ul>
 		</div>
 		<div id="no-data-explorations" [ngStyle]="{'display':explorations.length == 0 ? 'block' : 'none', 'opacity': explorations.length == 0 ? '1' : '0', 'visibility': explorations.length == 0 ? 'visible' : 'hidden'}"
-			class="bg-light d-flex justify-content-center align-items-center ">
+			class="bg-light justify-content-center align-items-center ">
 			<span class="alert align-middle" role="alert">
 				{{'No data to display' | translate}}
 			</span>

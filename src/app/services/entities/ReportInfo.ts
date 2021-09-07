@@ -19,10 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Patient} from "./Patient";
+import {RequestedExploration, PerformedExploration} from "../../models/Report";
+import {IdAndUri} from "./IdAndUri";
 
-export class Report {
+export interface ReportInfo {
 	id: string;
+	exploration: string | IdAndUri;
 	completionDate: Date;
 	reportNumber: string;
 	applicant: string;
@@ -34,18 +36,4 @@ export class Report {
 	performedExplorations: PerformedExploration[];
 	findings: string;
 	conclusions: string;
-}
-
-export class RequestedExploration {
-	code: string;
-	description: string;
-	date: Date;
-}
-
-export class PerformedExploration {
-	code: string;
-	description: string;
-	date: Date;
-	portable: string;
-	surgery: string;
 }

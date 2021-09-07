@@ -40,6 +40,8 @@ import {AuthenticationInterceptor} from './helpers/authentication.interceptor';
 
 import {ExplorationsService} from './services/explorations.service';
 import {PatientsService} from './services/patients.service';
+import {RadiographsService} from './services/radiographs.service';
+import {ReportsService} from './services/reports.service';
 import {SignsService} from './services/signs.service';
 
 import {BarChartComponent} from './components/explorations/bar-chart/bar-chart.component';
@@ -114,6 +116,8 @@ import {ChartsModule} from 'ng2-charts';
 	providers: [
 		ExplorationsService,
 		PatientsService,
+		RadiographsService,
+		ReportsService,
 		SignsService,
 		{
 			provide: ErrorHandler,

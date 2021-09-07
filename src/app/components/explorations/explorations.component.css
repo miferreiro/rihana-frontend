@@ -47,8 +47,8 @@
 }
 
 table {
-    table-layout: fixed;
-    word-wrap: break-word;
+	table-layout: fixed;
+	word-wrap: break-word;
 	margin-bottom: 0;
 }
 
@@ -62,6 +62,75 @@ table {
 }
 
 #no-data-explorations span {
+	display: block;
 	margin: 1rem;
 	padding: 0;
+	text-align: center;
+}
+
+.signs-cell {
+	margin: 0;
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	scrollbar-color: rgba(0, 0, 0, .5) rgba(0, 0, 0, 0);
+	scrollbar-width: thin;
+	display: flex;
+}
+
+.signType {
+	display: flex;
+	flex-direction: row;
+	list-style-type: none;
+	margin: .2rem .5rem;
+	padding: .2rem .4rem;
+	border: 1px solid;
+	border-left: 8px solid;
+	border-radius: 5px 5px;
+	justify-content: space-between;
+	font-size: .8rem;
+}
+
+.signType:first-child {
+	align-self: center;
+}
+
+.numSignType {
+	margin: 0 0 0 .5rem;
+	padding: .3rem .45rem;
+}
+
+.noFinding {
+	list-style-type: none;
+	margin: .2rem .5rem;
+	padding: .2rem .4rem;
+	border: 1px solid black;
+	border-left: 8px solid black;
+	border-radius: 5px 5px;
+	font-size: .8rem;
+}
+
+.signs-cell::-webkit-scrollbar, .table-responsive::-webkit-scrollbar {
+	-webkit-appearance: none;
+}
+
+.signs-cell::-webkit-scrollbar:vertical, .table-responsive::-webkit-scrollbar:vertical {
+	width:10px;
+}
+
+.signs-cell::-webkit-scrollbar-button:increment,.signs-cell::-webkit-scrollbar-button, .table-responsive::-webkit-scrollbar-button:increment,.table-responsive::-webkit-scrollbar-button {
+	display: none;
+}
+
+.signs-cell::-webkit-scrollbar:horizontal, .table-responsive::-webkit-scrollbar:horizontal {
+	height: 10px;
+}
+
+.signs-cell::-webkit-scrollbar-thumb, .table-responsive::-webkit-scrollbar-thumb {
+	background-color: #797979;
+	border-radius: 20px;
+	border: 2px solid #f1f2f3;
+}
+
+.signs-cell::-webkit-scrollbar-track, .table-responsive::-webkit-scrollbar-track {
+	border-radius: 10px;
 }

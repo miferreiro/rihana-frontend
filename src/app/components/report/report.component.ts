@@ -46,6 +46,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 	);
 
 	public report: Report = new Report();
+	public patient: Patient = new Patient();
 
 	constructor(private notificationService: NotificationService) {
 		GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.js`;
@@ -134,18 +135,16 @@ export class ReportComponent implements OnInit, OnDestroy {
 		const regexAddress = /(?:Enderezo: )([a-zA-Z0-9À-ÿÑñ.ºª ()-]+)(?: Teléfono:)/;
 		const regexPhoneNumber = /(?:Teléfono: )([0-9]+)/;
 
-		let patient = new Patient();
+		this.patient = new Patient();
 
 		let birthdateParts = report.match(regexBirthdate)[1].trim().replace(/[\t ]+/g, "").split("/");
-		patient.birthdate = new Date(birthdateParts[2], birthdateParts[1] - 1, birthdateParts[0],);
+		this.patient.birthdate = new Date(birthdateParts[2], birthdateParts[1] - 1, birthdateParts[0],);
 
 		if (report.match(regexSex)[1] === 'Mujer') {
-			patient.sex = SEX.FEMALE;
+			this.patient.sex = SEX.FEMALE;
 		} else {
-			patient.sex = SEX.MALE;
+			this.patient.sex = SEX.MALE;
 		}
-
-		this.report.patient = patient;
 
 		let completionDateParts = report.match(regexCompletionDate)[1].trim().replace(/[\t ]+/g, "").split("/");
 		this.report.completionDate = new Date(completionDateParts[2], completionDateParts[1] - 1, completionDateParts[0]);

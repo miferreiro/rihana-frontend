@@ -81,5 +81,6 @@
 	"Delete": "Delete",
 	"Are you sure you want to delete": "Are you sure you want to delete",
 	"This action is permanent and cannot be undone": "This action is permanent and cannot be undone",
-	"exploration": "exploration"
+	"exploration": "exploration",
+	"Detected signs": "Detected signs"
 }
