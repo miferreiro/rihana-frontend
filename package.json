@@ -1,7 +1,7 @@
 {
   "name": "@rihana/frontend",
   "description": "RIHANA - Radiological Image and History Acquisition for Neurocomputing Analysis",
-  "version": "0.1.0-alpha.63",
+  "version": "0.1.0-alpha.64",
   "license": "GPL-3.0",
   "author": {
     "name": "David A. Ruano Ordás",
@@ -38,6 +38,7 @@
     "@angular/platform-browser-dynamic": "~12.0.3",
     "@angular/router": "~12.0.3",
     "@iplab/ngx-file-upload": "^3.2.0",
+    "@ng-select/ng-select": "^7.2.0",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@popperjs/core": "^2.9.2",

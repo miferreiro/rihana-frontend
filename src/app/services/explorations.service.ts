@@ -36,6 +36,7 @@ import {RadiographsService} from './radiographs.service';
 import {Users} from '../models/Users';
 import {Radiograph} from '../models/Radiograph';
 import {Report} from '../models/Report';
+import {SignType} from '../models/SignType';
 
 @Injectable()
 export class ExplorationsService {
@@ -47,16 +48,18 @@ export class ExplorationsService {
 				private radiographsService: RadiographsService) {
 	}
 
-	getTotalExplorations(user: string, page: number, pageSize: number): Observable<ExplorationPage> {
-		return this.getExplorations(user, page, pageSize, new HttpParams());
+	getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[]): Observable<ExplorationPage> {
+		return this.getExplorations(user, page, pageSize, signTypes, new HttpParams());
 	}
 
 	delete(id: string) {
 		return this.http.delete(`${environment.restApi}/exploration/` + id);
 	}
 
-	private getExplorations(user: string, page: number, pageSize: number, params: HttpParams): Observable<ExplorationPage> {
+	private getExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], params: HttpParams): Observable<ExplorationPage> {
 		params = params.append('user', user).append('page', page.toString()).append('pageSize', pageSize.toString());
+
+		signTypes.forEach(signType => params = params.append('signType', signType.code));
 
 		return this.http.get<ExplorationInfo[]>(`${environment.restApi}/exploration/`, {params, observe: 'response'}).pipe(
 			concatMap(response => {
@@ -79,6 +82,7 @@ export class ExplorationsService {
 		return explorationInfoObservable
 			.pipe(
 				concatMap(explorationInfos =>
+					explorationInfos.length === 0 ? of([]) :
 					forkJoin([
 						this.usersService.getUser(user),
 						forkJoin(explorationInfos.map(explorationInfo =>

@@ -82,5 +82,7 @@
 	"Are you sure you want to delete": "Are you sure you want to delete",
 	"This action is permanent and cannot be undone": "This action is permanent and cannot be undone",
 	"exploration": "exploration",
-	"Detected signs": "Detected signs"
+	"Detected signs": "Detected signs",
+	"No sign types found": "No sign types found",
+	"Search by sign types": "Search by sign types"
 }

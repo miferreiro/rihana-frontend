@@ -22,6 +22,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ExplorationsService} from '../../services/explorations.service';
+import {SignsService} from '../../services/signs.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {Exploration} from '../../models/Exploration';
@@ -39,6 +40,9 @@ export class ExplorationsComponent implements OnInit {
 	private _currentPage: number;
 	public loggedUser: string;
 
+	public signTypes: SignType[];
+	public signTypesFilter: SignType[] = [];
+
 	public explorations: Exploration[] = [];
 	public exploration: Exploration = new Exploration();
 
@@ -54,7 +58,8 @@ export class ExplorationsComponent implements OnInit {
 	constructor(private authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
 				private locationService: LocalizationService,
-				private explorationsService: ExplorationsService) { }
+				private explorationsService: ExplorationsService,
+				private signsService: SignsService) { }
 
 	ngOnInit() {
 		if (this.authenticationService.getUser().authenticated) {
@@ -63,11 +68,18 @@ export class ExplorationsComponent implements OnInit {
 
 		this.pageSize = 5;
 		this.currentPage = 1;
+		this.getSignTypes();
 		this.getPageExplorations();
 	}
 
+	private getSignTypes() {
+		this.signsService.getSignTypes().subscribe(signTypes =>
+			this.signTypes = signTypes
+		)
+	}
+
 	getPageExplorations() {
-		this.explorationsService.getTotalExplorations(this.loggedUser, this.currentPage, this.pageSize).subscribe(explorationPage => {
+		this.explorationsService.getTotalExplorations(this.loggedUser, this.currentPage, this.pageSize, this.signTypesFilter).subscribe(explorationPage => {
 			this.paginationTotalItems = explorationPage.totalItems;
 			this.lastPage = Math.ceil(this.paginationTotalItems / this.pageSize);
 			this.explorations = explorationPage.explorations;
@@ -75,13 +87,18 @@ export class ExplorationsComponent implements OnInit {
 	}
 
 	public getExplorationSigns(exploration: Exploration): Sign[] {
-		let signs: Sign[] = exploration.radiographs.map(radiograph => radiograph.signs.map(sign => sign))[0];
+		let signs: Sign[] = exploration.radiographs.map(radiograph => radiograph.signs.map(sign => sign)).reduce((acc, val) => acc.concat(val), []);
 		signs = [...new Map(signs.map(item => [item.type.code, item])).values()];
 		return signs;
 	}
 
 	public getNumExplorationSignType(exploration: Exploration, code: string): number {
 		return exploration.radiographs.map(radiograph => radiograph.signs.filter(sign => sign.type.code == code))[0].length;
+	}
+
+	public searchBySignTypes() {
+		this.currentPage = 1;
+		this.getPageExplorations();
 	}
 
 	public cancel() { }

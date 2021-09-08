@@ -24,6 +24,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ErrorHandler, NgModule} from '@angular/core';
 import {FileUploadModule} from '@iplab/ngx-file-upload';
 import {FormsModule} from '@angular/forms';
+import {NgSelectModule} from '@ng-select/ng-select';
 import {InternationalizationModule} from './modules/internationalization/internationalization.module';
 import {TranslateCompiler, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
@@ -92,6 +93,7 @@ import {ChartsModule} from 'ng2-charts';
 		FileUploadModule,
 		FormsModule,
 		HttpClientModule,
+		NgSelectModule,
 		NotificationModule,
 		NgxPaginationModule,
 		SimpleNotificationsModule.forRoot({

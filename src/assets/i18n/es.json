@@ -82,5 +82,7 @@
 	"Are you sure you want to delete": "Estás seguro de que quieres eliminar",
 	"This action is permanent and cannot be undone": "Esta acción es permanente y no se puede deshacer",
 	"exploration": "exploración",
-	"Detected signs": "Signos detectados"
+	"Detected signs": "Signos detectados",
+	"No sign types found": "No se encontraron tipos de signos",
+	"Search by sign types": "Buscar por tipos de signos"
 }

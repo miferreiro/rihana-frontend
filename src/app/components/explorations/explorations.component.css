@@ -160,3 +160,19 @@ table {
 .signs-cell::-webkit-scrollbar-track, .table-responsive::-webkit-scrollbar-track {
 	border-radius: 10px;
 }
+
+ng-select {
+	width: 100%;
+}
+
+.ng-option {
+	display: flex;
+	flex-direction: row;
+	list-style-type: none;
+	padding: .2rem .4rem;
+	border: 1px solid;
+	border-left: 8px solid;
+	border-radius: 5px 5px;
+	justify-content: space-between;
+	font-size: .8rem;
+}
