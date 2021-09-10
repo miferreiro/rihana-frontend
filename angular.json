@@ -19,7 +19,8 @@
 					"options": {
 						"allowedCommonJsDependencies": [
 							"pdfjs-dist",
-							"chart.js"
+							"chart.js",
+							"chartjs-plugin-datalabels"
 						],
 						"outputPath": "dist/rihana-frontend",
 						"index": "src/index.html",

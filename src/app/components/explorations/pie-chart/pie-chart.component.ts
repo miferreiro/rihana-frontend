@@ -26,6 +26,7 @@ import {Observable} from 'rxjs';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {assignColorTypeSign, SignType} from '../../../models/SignType';
 import {SignsService} from '../../../services/signs.service';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
 	selector: 'app-pie-chart',
@@ -42,11 +43,23 @@ export class PieChartComponent implements OnInit {
 	public pieChartLabels: Label[] = [];
 	public pieChartData: number[] = [];
 	public pieChartColors: any[] = [];
+	public pieChartPlugins: any[] = [pluginDataLabels];
 
 	public pieChartOptions: ChartOptions = {
+		layout: {
+            padding: {
+				top: 20,
+				bottom: 15
+			}
+        },
 		legend: {
 			align: 'center',
 			display: true,
+			fullWidth: false,
+			labels: {
+				padding: 20
+			},
+			onClick: function() {},
 			position: 'bottom'
 		},
 		maintainAspectRatio: false,
@@ -76,6 +89,38 @@ export class PieChartComponent implements OnInit {
 					document.getElementById('no-data-pie-chart').style.visibility = 'visible';
 					document.getElementById('pieChart').style.display = 'none'
 				}
+			}
+		},
+		plugins: {
+			datalabels: {
+				anchor: 'end',
+				backgroundColor: function(context) {
+					const setOpacity = (hex: string, alpha: number) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2)}`;
+					let color: string = context.dataset.backgroundColor[context.dataIndex];
+					return setOpacity(color.substring(0, context.dataset.backgroundColor[context.dataIndex].length - 2), 1);
+				},
+				borderColor: 'white',
+				borderRadius: 25,
+				borderWidth: 2,
+				color: 'white',
+				display: function(context) {
+
+					let minPercentage = 10;
+
+					var data = context.dataset.data;
+					var value = Number.parseInt(data[context.dataIndex].toString());
+
+					let array:number[] = [];
+					data.forEach((x:any)=> array.push(x));
+					let total = array.reduce((a, b) => a + b, 0);
+
+					return (value / total) * 100 > minPercentage;
+				},
+				font: {
+					weight: 'bold'
+				},
+				padding: 6,
+				opacity: 1
 			}
 		}
 	};
