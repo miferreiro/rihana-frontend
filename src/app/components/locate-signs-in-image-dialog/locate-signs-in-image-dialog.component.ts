@@ -116,6 +116,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.newSign = new Sign();
 
 		this.showSelectSignType = false;
+		this.resetRadiography();
 	}
 
 	public removeSignType(signType: SignType): void {

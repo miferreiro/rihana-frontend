@@ -226,7 +226,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 
 	public expandReport() {
 		if (document.getElementById("dataReport").className.includes("open")) {
-			document.getElementById("dataReport").className = document.getElementById("dataReport").className.replace("open", "");
+			document.getElementById("dataReport").className = document.getElementById("dataReport").className.replace(" open", "");
 			document.getElementById("expandControl").className = "bi bi-eye-slash";
 		} else {
 			document.getElementById("dataReport").className += " open";
