@@ -152,7 +152,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	}
 
 	public onSave(): void {
-		this.closePopovers();
 		this.close.emit({
 			cancelled: false,
 			signs: this.signs
@@ -160,7 +159,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	}
 
 	public onCancel(): void {
-		this.closePopovers();
 		this.close.emit({
 			cancelled: true
 		});
@@ -172,21 +170,5 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 
 	public assignColorTypeSign(signType: SignType, colorSecondary: boolean = false): string {
 		return assignColorTypeSign(signType, colorSecondary);
-	}
-
-	public closePopover(signId: string): void {
-		let popovers = document.getElementsByClassName("popover");
-		for (var i = popovers.length; i--; ){
-			if (!this.signs.some(s => s.id == signId)) {
-				popovers[i].remove();
-			}
-		}
-	}
-
-	private closePopovers(): void {
-		let popovers = document.getElementsByClassName("popover");
-		for (var i = popovers.length; i--; ){
-			popovers[i].remove();
-		}
 	}
 }

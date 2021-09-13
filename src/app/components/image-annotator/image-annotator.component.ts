@@ -136,7 +136,6 @@ export class ImageAnnotatorComponent {
 	}
 
 	private paintSigns(): void {
-		this.checkPopovers();
 		let div = document.getElementById("image-annotator");
 		let removeElements = (elements: HTMLCollectionOf<Element>) => {
 			for (var i = elements.length; i--; ){
@@ -205,22 +204,15 @@ export class ImageAnnotatorComponent {
 													"position:absolute;background-color:" + assignColorTypeSign(sign.type) +
 													";opacity:0")
 
-					let question = document.createElement("i");
-					question.className = "bi bi-question-circle hoverZoneIcon";
-
-					let questionWidth: number, questionHeight: number;
 					if (this.canLocate()) {
-
 						let xWidth: number, xHeight: number;
 
 						if (loc.width >= loc.height) {
-							xWidth = loc.width * 3 * this.scaleFactorImage / 4 - 10;
-							xHeight = questionHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
-							questionWidth = (loc.width * this.scaleFactorImage) / 4 - 10;
+							xWidth = loc.width * this.scaleFactorImage / 2 - 10;
+							xHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
 						} else {
-							xWidth = questionWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
-							xHeight = (loc.height * this.scaleFactorImage) / 4 - 10;
-							questionHeight = (loc.height * 3 * this.scaleFactorImage) / 4 - 10;
+							xWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
+							xHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
 						}
 
 						let x = document.createElement("i");
@@ -232,55 +224,8 @@ export class ImageAnnotatorComponent {
 												assignColorTypeSign(sign.type, true));
 
 						hoverZone.append(x);
-					} else {
-						questionWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
-						questionHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
+						div.appendChild(hoverZone);
 					}
-
-					question.setAttribute("style", "left:" + questionWidth + "px;top:" + questionHeight + "px;" +
-											"position:absolute;width:1rem;height:1rem;font-size:1rem;color:" +
-											assignColorTypeSign(sign.type, true) + ";visibility:hidden");
-
-					question.setAttribute("data-bs-toggle", "popover");
-					question.setAttribute("data-bs-placement", "top");
-					question.setAttribute("data-bs-trigger", "focus");
-					question.setAttribute("data-bs-title", sign.id);
-					question.setAttribute("data-bs-content",
-										this.localizationService.translate("Area") + ": " +
-										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.area()),
-																	'1.0-0',
-																	this.localizationService.getCurrentLocaleId()) +
-										"mm²<br>x: " +
-										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.x),
-																	'1.0-0',
-																	this.localizationService.getCurrentLocaleId()) +
-										"mm<br>y: " +
-										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.y),
-																	'1.0-0',
-																	this.localizationService.getCurrentLocaleId()) +
-										"mm<br>" + this.localizationService.translate("Width") + ": " +
-										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.width),
-																	'1.0-0',
-																	this.localizationService.getCurrentLocaleId()) +
-										"mm<br>" + this.localizationService.translate("Height") + ": " +
-										this._decimalPipe.transform(this._pixelsToMms.transform(sign.location.height),
-																	'1.0-0',
-																	this.localizationService.getCurrentLocaleId()) +
-										"mm");
-
-					question.addEventListener("inserted.bs.popover", function() {
-						let popover = document.getElementById(question.getAttribute("aria-describedby"));
-						if (popover) {
-							let popoverHeader = popover.querySelectorAll("h3")[0] as HTMLElement;
-							popoverHeader.style.backgroundColor = assignColorTypeSign(sign.type);
-							popoverHeader.style.borderColor = assignColorTypeSign(sign.type);
-							popoverHeader.style.color = assignColorTypeSign(sign.type, true);
-						}
-					});
-
-					hoverZone.append(question);
-
-					div.appendChild(hoverZone);
 				} else if (sign.location.width * this.scaleFactorImage > 25 && sign.location.height * this.scaleFactorImage > 25) {
 					let hoverZone = document.createElement("div");
 					hoverZone.className = "hoverZone";
@@ -291,22 +236,24 @@ export class ImageAnnotatorComponent {
 													"position:absolute;background-color:" + assignColorTypeSign(sign.type) +
 													";opacity:0")
 
-					let xWidth: number, xHeight: number;
 
-					xWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
-					xHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
+					if (this.canLocate()) {
+						let xWidth: number, xHeight: number;
 
-					let x = document.createElement("i");
-					x.className = "bi bi-trash hoverZoneIcon";
-					x.onclick = () => this.removeSign.emit(sign);
+						xWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
+						xHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
 
-					x.setAttribute("style", "left:" + xWidth + "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
-											"position:absolute;font-size:1rem;visibility:hidden;color:" +
-											assignColorTypeSign(sign.type, true));
+						let x = document.createElement("i");
+						x.className = "bi bi-trash hoverZoneIcon";
+						x.onclick = () => this.removeSign.emit(sign);
 
-					hoverZone.append(x);
+						x.setAttribute("style", "left:" + xWidth + "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
+												"position:absolute;font-size:1rem;visibility:hidden;color:" +
+												assignColorTypeSign(sign.type, true));
 
-					div.appendChild(hoverZone);
+						hoverZone.append(x);
+						div.appendChild(hoverZone);
+					}
 				}
 			}
 		}
@@ -399,7 +346,6 @@ export class ImageAnnotatorComponent {
 
 	@HostListener('window:resize', ['$event'])
 	private resizeCanvas(): void {
-		this.closePopovers();
 		if (this.getMaxWidth() > this.getMaxHeight()) {
 			this.scaleFactorImage = this.getMaxHeight() / this.imageElement.height;
 			if (this.imageElement.width * this.scaleFactorImage > this.getMaxWidth()) {
@@ -473,22 +419,6 @@ export class ImageAnnotatorComponent {
 	private changeFilterImg(): void {
 		if (this.canvasElement) {
 			this.repaint();
-		}
-	}
-
-	private checkPopovers(): void {
-		let popovers = document.getElementsByClassName("popover");
-		for (var i = popovers.length; i--; ){
-			if (!this.signs.some(s => s.id == popovers[i].getElementsByClassName("popover-header")[0].textContent && s.render)) {
-				popovers[i].remove();
-			}
-		}
-	}
-
-	private closePopovers(): void {
-		let popovers = document.getElementsByClassName("popover");
-		for (var i = popovers.length; i--; ){
-			popovers[i].remove();
 		}
 	}
 }

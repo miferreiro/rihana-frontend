@@ -29,8 +29,6 @@ import {Router} from '@angular/router';
 
 import {Role} from './models/User';
 
-declare let $:any;
-
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
@@ -76,15 +74,6 @@ export class AppComponent implements OnInit {
 				}
 			}
 		);
-		$("body").popover({
-			html: true,
-			selector: '[data-bs-toggle=popover]'
-        }).on("show.bs.popover", function() {
-			let popovers = document.getElementsByClassName("popover");
-			for (var i = popovers.length; i--; ) {
-				popovers[i].remove();
-			}
-		});
 	}
 
 	switchLang(lang: string) {
