@@ -104,6 +104,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 				var pdfBase64 = atob(fr.result.toString().split(',')[1]);
 				let report = await this.getDocument(pdfBase64);
 				this.loadFieldsReport(report);
+				this.notificationService.success("The file has the correct format", "File upload successful")
 			}
 			fr.readAsDataURL(file);
 		}
