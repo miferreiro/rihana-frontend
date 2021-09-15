@@ -66,7 +66,7 @@ export class ExplorationsComponent implements OnInit {
 			this.loggedUser = this.authenticationService.getUser().login;
 		}
 
-		this.pageSize = 5;
+		this.pageSize = 6;
 		this.currentPage = 1;
 		this.getSignTypes();
 		this.getPageExplorations();
@@ -87,13 +87,15 @@ export class ExplorationsComponent implements OnInit {
 	}
 
 	public getExplorationSigns(exploration: Exploration): Sign[] {
-		let signs: Sign[] = exploration.radiographs.map(radiograph => radiograph.signs.map(sign => sign)).reduce((acc, val) => acc.concat(val), []);
-		signs = [...new Map(signs.map(item => [item.type.code, item])).values()];
-		return signs;
+		return [...new Map(this.explorationSigns(exploration).map(item => [item.type.code, item])).values()];
 	}
 
 	public getNumExplorationSignType(exploration: Exploration, code: string): number {
-		return exploration.radiographs.map(radiograph => radiograph.signs.filter(sign => sign.type.code == code))[0].length;
+		return this.explorationSigns(exploration).filter(sign => sign.type.code == code).length;
+	}
+
+	public getRadiographType(exploration: Exploration): string {
+		return exploration.radiographs.map(radiograph => radiograph.type).join("&");
 	}
 
 	public searchBySignTypes() {
@@ -140,5 +142,9 @@ export class ExplorationsComponent implements OnInit {
 
 	public assignColorTypeSign(signType: SignType, colorSecondary: boolean = false): string {
 		return assignColorTypeSign(signType, colorSecondary);
+	}
+
+	private explorationSigns(exploration: Exploration): Sign[] {
+		return exploration.radiographs.map(radiograph => radiograph.signs.map(sign => sign)).reduce((acc, val) => acc.concat(val), []);
 	}
 }

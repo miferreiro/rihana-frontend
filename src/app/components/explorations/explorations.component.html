@@ -83,44 +83,43 @@
 		</form>
 	</div>
 	<div class="row table-responsive" [ngClass]="{'mb-4': !(pageSize < paginationTotalItems && explorations.length != 0)}">
-		<table class="table text-center align-middle">
-			<thead>
-				<tr>
-					<th scope="col">{{'Title' | translate}}</th>
-					<th scope="col">{{'Detected signs' | translate}}</th>
-					<th scope="col">{{'Date' | translate}}</th>
-					<th scope="col">{{'Options' | translate}}</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let exploration of explorations; let i=index">
-					<td>{{exploration.title}}</td>
-					<td>
-						<div *ngIf="getExplorationSigns(exploration).length != 0" class="signs-cell">
-							<li *ngFor="let sign of getExplorationSigns(exploration); let i=index"
-									[ngStyle]="{'border-color': assignColorTypeSign(sign.type)}" class="signType">
-								<span>{{sign.type.code}}</span>
-								<span class="numSignType badge rounded-pill"
-									  [ngStyle]="{'background-color': assignColorTypeSign(sign.type, false), 'color': assignColorTypeSign(sign.type, true)}">
-									  {{getNumExplorationSignType(exploration, sign.type.code)}}
-								</span>
-							</li>
+		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-0" >
+			<div *ngFor="let exploration of explorations; let i=index" class="col">
+				<div class="card h-100">
+					<div class="d-flex flex-column card-header">
+						<small class="text-capitalize card-category">{{getRadiographType(exploration)}}</small>
+						<h5 class="card-title">{{exploration.title}}</h5>
+						<h6 class="card-subtitle text-muted">{{exploration.explorationDate | date:'dd/MM/yyyy'}}</h6>
+					</div>
+					<div class="row card-body mr-0 ml-0">
+						<div *ngIf="getExplorationSigns(exploration).length != 0" class="row d-flex">
+							<div *ngFor="let sign of getExplorationSigns(exploration); let i=index"
+								 class="col-auto align-self-center">
+								<div class="signType my-1" [ngStyle]="{'border-color': assignColorTypeSign(sign.type)}">
+									<span>{{sign.type.code}}</span>
+									<span class="numSignType badge rounded-pill"
+										  [ngStyle]="{'background-color': assignColorTypeSign(sign.type, false), 'color': assignColorTypeSign(sign.type, true)}">
+											{{getNumExplorationSignType(exploration, sign.type.code)}}
+									</span>
+								</div>
+							</div>
 						</div>
-						<div *ngIf="getExplorationSigns(exploration).length == 0" class="noFinding">
-							{{'No finding' | translate}}
+						<div *ngIf="getExplorationSigns(exploration).length == 0" class="row d-flex">
+							<div class="align-self-center noFinding">
+								<span>{{'No finding' | translate}}</span>
+							</div>
 						</div>
-					</td>
-					<td>{{exploration.explorationDate | date:'dd/MM/yyyy'}}</td>
-					<td>
-						<div class="btn-group" role="group" aria-label="Basic example">
+					</div>
+					<div class="card-footer">
+						<div class="btn-group" role="group">
 							<button class="btn"><i class="bi bi-pencil-square"></i></button>
-							<button class="btn"><i class="bi bi-info-lg"></i></button>
-							<button class="btn" (click)="remove(exploration.id)"><i class="bi bi-trash" style="color: black;"></i></button>
+							<button class="btn border-start border-end"><i class="bi bi-info-lg"></i></button>
+							<button class="btn" (click)="remove(exploration.id)"><i class="bi bi-trash"></i></button>
 						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div *ngIf="pageSize < paginationTotalItems && explorations.length != 0" class ="row text-center mt-4 mb-4">
 			<ul class="pagination justify-content-center">
 				<li class="page-item" [ngClass]="{'disabled': 1 > (currentPage - 1)}">
