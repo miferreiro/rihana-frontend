@@ -19,12 +19,12 @@
   ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
 -->
 
-<div class="row mt-4 mb-4">
+<div *ngIf="showRadiograph('PA-LAT')" class="row mt-4 mb-4">
 	<app-radiograph [typeExploration]="'PA'" (radiographHandler)="radiographHandler($event, 'PA')"></app-radiograph>
 </div>
-<div class="row mt-4 mb-4">
+<div *ngIf="showRadiograph('PA-LAT')" class="row mt-4 mb-4">
 	<app-radiograph [typeExploration]="'LAT'" (radiographHandler)="radiographHandler($event, 'LAT')"></app-radiograph>
 </div>
-<div class="row mt-4 mb-4">
+<div *ngIf="showRadiograph('AP')" class="row mt-4 mb-4">
 	<app-radiograph [typeExploration]="'AP'" (radiographHandler)="radiographHandler($event, 'AP')"></app-radiograph>
 </div>

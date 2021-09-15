@@ -35,43 +35,47 @@ export class RadiologyAnalysisComponent implements OnInit {
 
 	public report: Report = new Report();
 
+	@Output() radiographs = new EventEmitter<Radiograph[]>();
+
+	private _radiographs: Radiograph[];
+
+	ngOnInit(): void {
+		this.typeExploration = 'PA-LAT';
+		this._radiographs = [];
+	}
+
 	@Input() set reportFields(report: Report) {
 		this.report = report;
 		if (this.report.hasOwnProperty("performedExplorations")) {
-			let codes = this.report.performedExplorations.map(function(exploration) { return exploration.code;});
+			let codes: string[] = this.report.performedExplorations.map(function(exploration) { return exploration.code; });
 			if (codes.includes('70102')) {
 				this.typeExploration = 'PA-LAT';
+			} else if (codes.includes('70101') || codes.includes('70121')) {
+				this.typeExploration = 'AP';
 			} else {
-				this.typeExploration = null;
+				this.typeExploration = 'PA-LAT';
 			}
 		} else {
-			this.typeExploration = null;
+			this.typeExploration = 'PA-LAT';
 		}
 	};
 
-	@Output() radiographs = new EventEmitter<Radiograph[]>();
+	public radiographHandler(event: Radiograph, type: string): void {
 
-	private _radiographs: Radiograph[] = [null, null];
+		if (event == undefined) {
+			event = null;
+		}
 
-	ngOnInit(): void {
-		this.typeExploration = null;
+		if (type == 'PA' || type == 'AP') {
+			this._radiographs[0] = event;
+		} else {
+			this._radiographs[1] = event;
+		}
+
+		this.radiographs.emit(this._radiographs);
 	}
 
-	public radiographHandler(event: Radiograph, type: string): void {
-		if (event != undefined) {
-			if (type != 'LAT') {
-				this._radiographs[0] = event;
-			} else {
-				this._radiographs[1] = event;
-			}
-			this.radiographs.emit(this._radiographs);
-		} else {
-			if (type != 'LAT') {
-				this._radiographs[0] = null;
-			} else {
-				this._radiographs[1] = null;
-			}
-			this.radiographs.emit(this._radiographs);
-		}
+	public showRadiograph(type: string): boolean {
+		return type === this.typeExploration;
 	}
 }
