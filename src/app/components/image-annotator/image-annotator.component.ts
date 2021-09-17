@@ -425,13 +425,7 @@ export class ImageAnnotatorComponent {
 							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).paddingTop) +
 							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).paddingBottom);
 
-		let heightFooter = 	parseInt(getComputedStyle(document.getElementsByClassName("modal-footer-custom")[0]).height) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-footer-custom")[0]).marginTop) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-footer-custom")[0]).marginBottom) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-footer-custom")[0]).paddingTop) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-footer-custom")[0]).paddingBottom);
-
-		var heightMax = parseInt(getComputedStyle(document.getElementById("modal")).height) - heightHeader - heightFooter - heightOptions;
+		var heightMax = parseInt(getComputedStyle(document.getElementById("modal")).height) - heightHeader - heightOptions;
 
 		return heightMax;
 	}

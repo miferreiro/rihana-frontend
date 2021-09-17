@@ -20,13 +20,17 @@
 -->
 
 <div id="image-dialog" class="modal fade show" tabindex="-1" aria-labelledby="imageDialogLabel" aria-hidden="false">
-	<div id="modal" class="modal-dialog modal-dialog-centered">
+	<div id="modal" class="modal-dialog modal-dialog-centered modal-fullscreen">
 		<div class="modal-content">
 			<div class="modal-header-custom">
 				<h5 class="modal-title" id="exampleModalLabel">{{'Finding and storing radiological signs' | translate}} </h5>
+				<div class="modal-options">
+					<i *ngIf="!disabled" class="bi bi-check-circle me-2" style="color: green;" (click)="onSave()"></i>
+					<i class="bi bi-x-circle" style="color: red;" (click)="onCancel()"></i>
+				</div>
 			</div>
 			<div class="row modal-body-custom">
-				<div id="section-radiograph" class="col-xxl-6 col-lg-12 col-md-12 col-sm-12 align-self-start m-auto">
+				<div id="section-radiograph" class="col-xxl-6 col-lg-8 col-md-12 col-sm-12 align-self-start m-auto">
 					<span class="control-options d-flex justify-content-between">
 						<div>
 							<span>
@@ -63,7 +67,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="section-signs" class="col-xxl-6 col-lg-12 col-md-12 col-sm-12">
+				<div id="section-signs" class="col-xxl-6 col-lg-12 col-md-12 col-sm-12 m-auto">
 					<div class="row">
 						<h5 class="text-center fw-bold text-dark mt-4 mb-4">
 							{{'ModalTitleFindingsSigns' | translate:"{count:" + signs.length + "}"}}
@@ -127,10 +131,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="modal-footer-custom">
-				<i *ngIf="!disabled" class="bi bi-check-circle" style="color: green;" (click)="onSave()"></i>
-				<i class="bi bi-x-circle" style="color: red;" (click)="onCancel()"></i>
 			</div>
 		</div>
 	</div>
