@@ -27,6 +27,7 @@ import {Radiograph} from '../../../models/Radiograph';
 import {AnnotationResult} from '../../locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
 import {LocalizationService} from '../../../modules/internationalization/localization.service';
 import {NotificationService} from '../../../modules/notification/services/notification.service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-radiograph',
@@ -56,7 +57,8 @@ export class RadiographComponent implements OnInit {
 	public showImageDialog: boolean = false;
 
 	constructor(public localizationService: LocalizationService,
-				private notificationService: NotificationService
+				private notificationService: NotificationService,
+				private notificationsService: NotificationsService
 		) { }
 
 	ngOnInit(): void {
@@ -120,6 +122,7 @@ export class RadiographComponent implements OnInit {
 	}
 
 	public openDialogImage(disabled : boolean = false): void {
+		this.notificationsService.remove();
 		this.showImageDialog = true;
 		this.disabled  = disabled;
 		if (!this.radiograph.signs) {
