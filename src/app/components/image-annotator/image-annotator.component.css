@@ -20,7 +20,8 @@
  */
 
 .image-annotator-div {
-	width: fit-content;
+	width: 100%;
+	height: 100%;
 	margin: auto;
 }
 
@@ -48,6 +49,9 @@ img {
 }
 
 .cursorBC {
-	color: red;
 	cursor: url(/assets/images/brightnessContrast.png) 12 12, auto;
+}
+
+.cursorGrabbing {
+	cursor: grabbing;
 }

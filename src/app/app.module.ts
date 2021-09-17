@@ -67,6 +67,8 @@ import localeGl from '@angular/common/locales/gl';
 
 import {ChartsModule} from 'ng2-charts';
 
+import {NgxPanZoomModule} from 'ngx-panzoom';
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -93,6 +95,7 @@ import {ChartsModule} from 'ng2-charts';
 		FileUploadModule,
 		FormsModule,
 		HttpClientModule,
+		NgxPanZoomModule,
 		NgSelectModule,
 		NotificationModule,
 		NgxPaginationModule,

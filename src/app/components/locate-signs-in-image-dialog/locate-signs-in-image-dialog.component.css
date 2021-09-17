@@ -124,6 +124,7 @@ i {
 
 .img-div {
 	text-align: center;
+	text-align: -webkit-center;
 	font-size: 0rem;
 }
 

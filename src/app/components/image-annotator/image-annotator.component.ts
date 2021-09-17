@@ -19,13 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {DecimalPipe} from '@angular/common';
-import {Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
 import {Sign} from '../../models/Sign';
 import {assignColorTypeSign} from '../../models/SignType';
 import {SignLocation} from '../../models/SignLocation';
-import {PixelsToMmsPipe} from '../../pipes/pixels-to-mms.pipe';
-import {LocalizationService} from '../../modules/internationalization/localization.service';
+import {PanZoomConfig, PanZoomAPI, PanZoomModel, PanZoomConfigOptions} from 'ngx-panzoom';
+import {Subscription} from 'rxjs';
 
 @Component({
 	selector: 'app-image-annotator',
@@ -56,9 +55,37 @@ export class ImageAnnotatorComponent {
 	private _brightness: string;
 	private _contrast: string;
 
-	constructor(private localizationService: LocalizationService,
-				private _decimalPipe: DecimalPipe,
-				private _pixelsToMms: PixelsToMmsPipe) { }
+	private panZoomConfigOptions: PanZoomConfigOptions = {
+		zoomLevels: 10,
+		scalePerZoomLevel: 2.0,
+		zoomStepDuration: 0.2,
+		neutralZoomLevel: 2,
+		freeMouseWheelFactor: 0.01,
+		zoomToFitZoomLevelFactor: 0.95,
+		dragMouseButton: 'middle',
+		keepInBounds: true,
+		dynamicContentDimensions: true
+	};
+	panzoomConfig: PanZoomConfig = new PanZoomConfig(this.panZoomConfigOptions);
+	private panZoomAPI: PanZoomAPI;
+	private apiSubscription: Subscription;
+	panzoomModel: PanZoomModel;
+	private modelChangedSubscription: Subscription;
+
+	private zoom: number = 1;
+
+
+	constructor(private changeDetector: ChangeDetectorRef) {
+
+	}
+
+	ngOnInit(): void {
+		this.apiSubscription = this.panzoomConfig.api.subscribe( (api: PanZoomAPI) => this.panZoomAPI = api );
+    	this.modelChangedSubscription = this.panzoomConfig.modelChanged.subscribe(
+			 (model: PanZoomModel) => this.onModelChanged(model)
+			);
+	}
+
 
 	get src(): string {
 		return this._src;
@@ -159,11 +186,10 @@ export class ImageAnnotatorComponent {
 				context.stroke();
 			}
 		}
-
 	}
 
 	private paintSignsInfo(): void {
-		let div = document.getElementById("image-annotator");
+		let div = document.getElementById("canvasZone");
 		let removeElements = (elements: HTMLCollectionOf<Element>) => {
 			for (var i = elements.length; i--; ){
 				elements[i].remove();
@@ -332,13 +358,21 @@ export class ImageAnnotatorComponent {
 	}
 
 	onMouseDown(event: MouseEvent) {
+
 		if (event.which == 1) {
 			this.canvasElement.className = "cursor";
 			if (this.canLocate()) {
 				const location = this.adjustMouseLocation(event);
 				this.clearLocation();
+
+				location.x = location.x / this.getCssScale(this.zoom);
+				location.y = location.y / this.getCssScale(this.zoom);
+
 				this.newSignLocation = new SignLocation(location.x / this.scaleFactorImage, location.y / this.scaleFactorImage, 0, 0);
 			}
+		} else if (event.which === 2) {
+			const location = this.adjustMouseLocation(event);
+			this.canvasElement.className = "cursorGrabbing";
 		} else if (event.which == 3) {
 			const location = this.adjustMouseLocation(event);
 			this.canvasElement.className = "cursorBC";
@@ -347,11 +381,25 @@ export class ImageAnnotatorComponent {
 		}
 	}
 
+	onModelChanged(model: PanZoomModel): void {
+		this.changeDetector.markForCheck();
+		this.changeDetector.detectChanges();
+
+		if (!(model.pan == null || model.zoomLevel == null)) {
+			this.zoom = model.zoomLevel;
+		}
+		this.repaint();
+	}
+
 	onMouseMove(event: MouseEvent) {
 		if (event.which == 1) {
 			if (this.canLocate() && this.isDrawing) {
 				const location = this.adjustMouseLocation(event);
 				this.clearLocation();
+
+				location.x = location.x / this.getCssScale(this.zoom);
+				location.y = location.y / this.getCssScale(this.zoom);
+
 				this.newSignLocation.width = (location.x / this.scaleFactorImage) - this.newSignLocation.x;
 				this.newSignLocation.height = (location.y / this.scaleFactorImage) - this.newSignLocation.y;
 				this.repaint();
@@ -370,6 +418,7 @@ export class ImageAnnotatorComponent {
 		if (this.canLocate() && this.isDrawing) {
 			let sign = new Sign();
 			sign.location = this.newSignLocation.regularize();
+
 			sign.type = null;
 			this.newSign.emit(sign);
 			this.newSignLocation = null;
@@ -400,6 +449,11 @@ export class ImageAnnotatorComponent {
 			let slide = controls[i] as HTMLElement;
 			slide.style.maxWidth = this.canvasElement.width.toString() + 'px';
 		}
+
+		let div = document.querySelector(".image-annotator-div-parent") as HTMLElement;
+		div.style.width = this.canvasElement.width.toString() + 'px';
+		div.style.height = this.canvasElement.height.toString() + 'px';
+
 		this.repaint();
 		this.newSetScaleFactorImage.emit(this.scaleFactorImage);
 	}
@@ -435,4 +489,9 @@ export class ImageAnnotatorComponent {
 			this.repaint(true);
 		}
 	}
+
+	private getCssScale(zoomLevel: any): number {
+		return Math.pow(this.panzoomConfig.scalePerZoomLevel, zoomLevel - this.panzoomConfig.neutralZoomLevel);
+	}
 }
+
