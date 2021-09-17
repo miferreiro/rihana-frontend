@@ -29,7 +29,6 @@
 }
 
 canvas {
-	cursor: url(/assets/images/cursor.png) 12 12, auto;
 	width: auto;
 	height: auto;
 	max-width: 100%;
@@ -42,4 +41,13 @@ img {
 	max-width: 100%;
 	max-height: 100%;
 	display: block;
+}
+
+.cursor {
+	cursor: url(/assets/images/cursor.png) 12 12, auto;
+}
+
+.cursorBC {
+	color: red;
+	cursor: url(/assets/images/brightnessContrast.png) 12 12, auto;
 }

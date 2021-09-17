@@ -90,5 +90,7 @@
 	"exploration": "exploration",
 	"Detected signs": "Detected signs",
 	"No sign types found": "No sign types found",
-	"Search by sign types": "Search by sign types"
+	"Search by sign types": "Search by sign types",
+	"Brightness": "Brightness",
+	"Contrast": "Contrast"
 }

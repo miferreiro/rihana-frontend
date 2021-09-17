@@ -110,84 +110,25 @@ i {
 	cursor: pointer;
 }
 
-.options {
-	margin: .2rem auto;
-	display: flex;
-}
-
 .control-options {
-	width: 100%;
-	text-align: right;
+	margin: .2rem auto;
+	margin-bottom: .5rem;
+	padding-bottom: .2rem;
+	display: flex;
+	border-bottom: 1px lightgray solid;
+	font-size: .7rem;
 }
 
-.img-controls {
-	margin: .5rem auto;
-	font-size: .8rem;
-	cursor: pointer;
-}
-
-.slider {
-	-webkit-appearance: none;
-	width: calc(100% - 100px);
-	height: 10px;
-	background: #d3d3d3;
-	border-radius: 5px;
-	outline: none;
-	opacity: 0.7;
-	-webkit-transition: .2s;
-	transition: opacity .2s;
-}
-
-.slider:hover {
-	opacity: 1;
-}
-
-.img-contrast .slider::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	appearance: none;
-	width: 23px;
-	height: 24px;
-	background: url('/assets/images/contrasticon.png');
-	border: 0;
-	cursor: pointer;
-}
-
-.img-contrast .slider::-moz-range-thumb {
-	width: 23px;
-	height: 25px;
-	background: url('/assets/images/contrasticon.png');
-	border: 0;
-	cursor: pointer;
-}
-
-.img-brightness .slider::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	appearance: none;
-	width: 24px;
-	height: 24px;
-	background: url('/assets/images/brightness.png');
-	border: 0;
-	cursor: pointer;
-}
-
-.img-brightness .slider::-moz-range-thumb {
-	width: 24px;
-	height: 24px;
-	background: url('/assets/images/brightness.png');
-	border: 0;
-	cursor: pointer;
-}
-
-.img-controls span {
-	width: 100px;
+.control-options span {
+	width: auto;
 	display: inline-block;
 	position: relative;
-	padding-left: .5rem;
+	padding: 0 .5rem 0 .5rem;
 	cursor: default;
 }
 
-.img-controls span input {
-	width: 70px;
+.control-options span input {
+	width: 50px;
 	border: none;
 	border-bottom: 1px solid black;
 	text-align: center;
@@ -195,12 +136,16 @@ i {
 	-moz-appearance: textfield;
 }
 
-.img-controls span input:hover {
+.control-options span input:hover {
 	-moz-appearance: initial
 }
 
-.img-controls span input:focus {
+.control-options span input:focus {
 	outline: none;
+}
+
+.control-options .resetRadiograph {
+	text-align: right;
 }
 
 .img-div {
@@ -288,7 +233,7 @@ h6 {
 }
 
 .card-header-custom:first-child {
-    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+	border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
 }
 
 .card-body-custom {

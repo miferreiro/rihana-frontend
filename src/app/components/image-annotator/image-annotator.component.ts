@@ -20,11 +20,11 @@
  */
 
 import {DecimalPipe} from '@angular/common';
-import {PixelsToMmsPipe} from '../../pipes/pixels-to-mms.pipe';
 import {Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
 import {Sign} from '../../models/Sign';
 import {assignColorTypeSign} from '../../models/SignType';
 import {SignLocation} from '../../models/SignLocation';
+import {PixelsToMmsPipe} from '../../pipes/pixels-to-mms.pipe';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
 
 @Component({
@@ -41,6 +41,9 @@ export class ImageAnnotatorComponent {
 	@Output() newSign = new EventEmitter<Sign>();
 	@Output() newSetScaleFactorImage = new EventEmitter<number>();
 	@Output() removeSign = new EventEmitter<Sign>();
+
+	@Output() brightnessChange = new EventEmitter<string>();
+	@Output() contrastChange = new EventEmitter<string>();
 
 	@ViewChild('canvasElement') private canvasElementRef: ElementRef<HTMLCanvasElement>;
 	@ViewChild('imageElement') private imageElementRef: ElementRef<HTMLImageElement>;
@@ -71,6 +74,7 @@ export class ImageAnnotatorComponent {
 
 	@Input() set brightness(brightness: string) {
 		this._brightness = brightness;
+		this.brightnessChange.emit(this._brightness);
 		this.changeFilterImg();
 	}
 
@@ -80,6 +84,7 @@ export class ImageAnnotatorComponent {
 
 	@Input() set contrast(contrast: string) {
 		this._contrast = contrast;
+		this.contrastChange.emit(this._contrast);
 		this.changeFilterImg();
 	}
 
@@ -122,9 +127,12 @@ export class ImageAnnotatorComponent {
 		return !this.disabled;
 	}
 
-	private repaint(): void {
+	private repaint(isFilteringImage: boolean = false): void {
 		this.paintImage();
-		this.paintSigns();
+		this.paintSignsCanvas();
+		if (!isFilteringImage) {
+			this.paintSignsInfo();
+		}
 	}
 
 	private paintImage(): void {
@@ -135,20 +143,9 @@ export class ImageAnnotatorComponent {
 											 0, 0, this.canvasElement.width, this.canvasElement.height);
 	}
 
-	private paintSigns(): void {
-		let div = document.getElementById("image-annotator");
-		let removeElements = (elements: HTMLCollectionOf<Element>) => {
-			for (var i = elements.length; i--; ){
-				elements[i].remove();
-			}
-		};
-		removeElements(div.getElementsByTagName("i"));
-		removeElements(div.getElementsByClassName("hoverZone"));
-		removeElements(div.getElementsByClassName("signIdDiv"));
-
+	private paintSignsCanvas(): void {
 		const context = this.context2D;
 		context.lineWidth = ImageAnnotatorComponent.STROKE_SIZE;
-		context.font = ".7rem Arial";
 
 		for (let sign of this.signs) {
 			if (sign.render) {
@@ -160,7 +157,25 @@ export class ImageAnnotatorComponent {
 				context.rect(loc.x * this.scaleFactorImage, loc.y * this.scaleFactorImage,
 							 loc.width * this.scaleFactorImage, loc.height * this.scaleFactorImage);
 				context.stroke();
+			}
+		}
 
+	}
+
+	private paintSignsInfo(): void {
+		let div = document.getElementById("image-annotator");
+		let removeElements = (elements: HTMLCollectionOf<Element>) => {
+			for (var i = elements.length; i--; ){
+				elements[i].remove();
+			}
+		};
+		removeElements(div.getElementsByTagName("i"));
+		removeElements(div.getElementsByClassName("hoverZone"));
+		removeElements(div.getElementsByClassName("signIdDiv"));
+
+		for (let sign of this.signs) {
+			if (sign.render) {
+				let loc = sign.location;
 				let canvasDim = document.querySelector("canvas");
 
 				let signIdDiv = document.createElement("div");
@@ -312,22 +327,40 @@ export class ImageAnnotatorComponent {
 		this.resizeCanvas();
 	}
 
+	onRightClick() {
+		return false;
+	}
+
 	onMouseDown(event: MouseEvent) {
-		if (this.canLocate()) {
+		if (event.which == 1) {
+			this.canvasElement.className = "cursor";
+			if (this.canLocate()) {
+				const location = this.adjustMouseLocation(event);
+				this.clearLocation();
+				this.newSignLocation = new SignLocation(location.x / this.scaleFactorImage, location.y / this.scaleFactorImage, 0, 0);
+			}
+		} else if (event.which == 3) {
 			const location = this.adjustMouseLocation(event);
-			this.clearLocation();
-			this.newSignLocation = new SignLocation(location.x / this.scaleFactorImage, location.y / this.scaleFactorImage, 0, 0);
+			this.canvasElement.className = "cursorBC";
+			this.brightness = (Math.round((location.y / this.canvasElement.height) * 200)).toString();
+			this.contrast = (Math.round((location.x / this.canvasElement.width) * 200)).toString();
 		}
 	}
 
 	onMouseMove(event: MouseEvent) {
-		if (this.canLocate() && this.isDrawing) {
+		if (event.which == 1) {
+			if (this.canLocate() && this.isDrawing) {
+				const location = this.adjustMouseLocation(event);
+				this.clearLocation();
+				this.newSignLocation.width = (location.x / this.scaleFactorImage) - this.newSignLocation.x;
+				this.newSignLocation.height = (location.y / this.scaleFactorImage) - this.newSignLocation.y;
+				this.repaint();
+				this.paintLocation();
+			}
+		} else if (event.which == 3) {
 			const location = this.adjustMouseLocation(event);
-			this.clearLocation();
-			this.newSignLocation.width = (location.x / this.scaleFactorImage) - this.newSignLocation.x;
-			this.newSignLocation.height = (location.y / this.scaleFactorImage) - this.newSignLocation.y;
-			this.repaint();
-			this.paintLocation();
+			this.brightness = (Math.round((location.y / this.canvasElement.height) * 200)).toString();
+			this.contrast = (Math.round((location.x / this.canvasElement.width) * 200)).toString();
 		}
 	}
 
@@ -342,6 +375,7 @@ export class ImageAnnotatorComponent {
 			this.newSignLocation = null;
 			this.repaint();
 		}
+		this.canvasElement.className = "cursor";
 	}
 
 	@HostListener('window:resize', ['$event'])
@@ -361,12 +395,7 @@ export class ImageAnnotatorComponent {
 		this.canvasElement.width = this.imageElement.width * this.scaleFactorImage;
 		this.canvasElement.height = this.imageElement.height * this.scaleFactorImage;
 
-		let imgControls = document.querySelectorAll("#image-dialog .img-controls");
-		for (let i = imgControls.length; i--; ) {
-			let slide = imgControls[i] as HTMLElement;
-			slide.style.maxWidth = this.canvasElement.width.toString() + 'px';
-		}
-		let controls = document.querySelectorAll("#image-dialog .options");
+		let controls = document.querySelectorAll("#image-dialog .control-options");
 		for (let i = controls.length; i--; ) {
 			let slide = controls[i] as HTMLElement;
 			slide.style.maxWidth = this.canvasElement.width.toString() + 'px';
@@ -390,20 +419,11 @@ export class ImageAnnotatorComponent {
 							parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).paddingTop) +
 							parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).paddingBottom);
 
-		let heightImgControls = 0;
-		[].forEach.call(document.getElementById("image-dialog").getElementsByClassName("img-controls"), function(item) {
-			heightImgControls+= parseInt(getComputedStyle(item).height) +
-							parseInt(getComputedStyle(item).marginTop) +
-							parseInt(getComputedStyle(item).marginBottom) +
-							parseInt(getComputedStyle(item).paddingTop) +
-							parseInt(getComputedStyle(item).paddingBottom);
-		});
-
-		let heightOptions = parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("options")[0]).height) +
-							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("options")[0]).marginTop) +
-							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("options")[0]).marginBottom) +
-							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("options")[0]).paddingTop) +
-							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("options")[0]).paddingBottom);
+		let heightOptions = parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).height) +
+							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).marginTop) +
+							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).marginBottom) +
+							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).paddingTop) +
+							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).paddingBottom);
 
 		let heightFooter = 	parseInt(getComputedStyle(document.getElementsByClassName("modal-footer-custom")[0]).height) +
 							parseInt(getComputedStyle(document.getElementsByClassName("modal-footer-custom")[0]).marginTop) +
@@ -411,14 +431,14 @@ export class ImageAnnotatorComponent {
 							parseInt(getComputedStyle(document.getElementsByClassName("modal-footer-custom")[0]).paddingTop) +
 							parseInt(getComputedStyle(document.getElementsByClassName("modal-footer-custom")[0]).paddingBottom);
 
-		var heightMax = parseInt(getComputedStyle(document.getElementById("modal")).height) - heightImgControls - heightHeader - heightFooter - heightOptions;
+		var heightMax = parseInt(getComputedStyle(document.getElementById("modal")).height) - heightHeader - heightFooter - heightOptions;
 
 		return heightMax;
 	}
 
 	private changeFilterImg(): void {
 		if (this.canvasElement) {
-			this.repaint();
+			this.repaint(true);
 		}
 	}
 }

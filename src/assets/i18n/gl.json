@@ -90,5 +90,7 @@
 	"exploration": "exploración",
 	"Detected signs": "Signos atopados",
 	"No sign types found": "Non se atoparon tipos de signos",
-	"Search by sign types": "Buscar por tipos de signos"
+	"Search by sign types": "Buscar por tipos de signos",
+	"Brightness": "Brillo",
+	"Contrast": "Contraste"
 }

@@ -27,40 +27,39 @@
 			</div>
 			<div class="row modal-body-custom">
 				<div id="section-radiograph" class="col-xxl-6 col-lg-12 col-md-12 col-sm-12 align-self-start m-auto">
-					<span class="options">
-						<span class="control-options">
-							<i name="radiograph" class="bi bi-arrow-clockwise" style="font-size: 1rem; color: black;"
-								(click)="resetRadiography()"></i>
-						</span>
+					<span class="control-options d-flex justify-content-between">
+						<div>
+							<span>
+								{{'Brightness' | translate}}:
+								<input name="radiograph" type="number" min="0" max="200" value="{{brightness}}"
+										(input)="changeBrightness($event)">
+								%
+							</span>
+
+							<span>
+								{{'Contrast' | translate}}:
+								<input name="radiograph" type="number" min="0" max="200" value="{{contrast}}"
+										(input)="changeContrast($event)">
+								%
+							</span>
+						</div>
+						<div>
+							<span class="resetRadiograph">
+								<div class="btn-group" role="group">
+								<i name="radiograph" class="bi bi-arrow-clockwise" style="font-size: 1rem; color: black;"
+									(click)="resetRadiography()"></i>
+								</div>
+							</span>
+						</div>
 					</span>
 					<div class="img-div">
 						<div>
 							<app-image-annotator id="image-annotator" [src]="src" [signs]="signs" [disabled]="disabled"
 													(newSign)="setLocationNewSign($event)"
-													[contrast]="contrast" [brightness]="brightness"
+													[(contrast)]="contrast" [(brightness)]="brightness"
 													(newSetScaleFactorImage)="setScaleFactorImage($event)"
 													(removeSign)="removeSign($event)">
 							</app-image-annotator>
-						</div>
-					</div>
-					<div class="img-controls">
-						<div class="img-brightness">
-							<input name="radiograph" type="range" min="0" max="200" value="{{brightness}}" class="slider"
-									(input)="changeBrightness($event)">
-							<span>
-								<input name="radiograph" type="number" min="0" max="200" value="{{brightness}}"
-										(input)="changeBrightness($event)">
-								%
-							</span>
-						</div>
-						<div class="img-contrast">
-							<input name="radiograph" type="range" min="0" max="200" value="{{contrast}}" class="slider"
-									(input)="changeContrast($event)">
-							<span id="contrast-number">
-								<input name="radiograph" type="number" min="0" max="200" value="{{contrast}}"
-										(input)="changeContrast($event)">
-								%
-							</span>
 						</div>
 					</div>
 				</div>
