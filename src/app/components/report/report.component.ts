@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component,EventEmitter,OnDestroy,OnInit,Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {Subscription} from 'rxjs';
 import {getDocument, GlobalWorkerOptions, version} from 'pdfjs-dist';
@@ -28,9 +28,9 @@ import {Patient, SEX} from '../../models/Patient';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 
 @Component({
-  selector: 'app-report',
-  templateUrl: './report.component.html',
-  styleUrls: ['./report.component.css']
+	selector: 'app-report',
+	templateUrl: './report.component.html',
+	styleUrls: ['./report.component.css']
 })
 export class ReportComponent implements OnInit, OnDestroy {
 
@@ -45,6 +45,8 @@ export class ReportComponent implements OnInit, OnDestroy {
 		[FileUploadValidators.filesLimit(2)]
 	);
 
+	public isReportLoaded: boolean;
+
 	public report: Report = new Report();
 	public patient: Patient = new Patient();
 
@@ -54,6 +56,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.report = new Report();
+		this.isReportLoaded = false;
 		this.subscriptionReport = this.controlReport.valueChanges.subscribe((values: Array<File>) => {
 			if (values.length == 2) {
 				if (this.extensionValid.includes(values[1].name.split('.').pop())) {
@@ -91,10 +94,12 @@ export class ReportComponent implements OnInit, OnDestroy {
 
 	}
 
-	public removeFile(): void {
+	public removeReport(): void {
 		this.controlReport.removeFile(this.controlReport.value[0])
 		this.report = new Report();
+		this.patient = new Patient();
 		this.reportEvent.emit(this.report);
+		this.isReportLoaded = false;
 	}
 
 	private loadReport(file: File): void {
@@ -104,61 +109,83 @@ export class ReportComponent implements OnInit, OnDestroy {
 				var pdfBase64 = atob(fr.result.toString().split(',')[1]);
 				let report = await this.getDocument(pdfBase64);
 				this.loadFieldsReport(report);
-				this.notificationService.success("The file has the correct format", "File upload successful")
+				this.isReportLoaded = true;
+				this.notificationService.success("The file has the correct format", "File upload successfull")
 			}
 			fr.readAsDataURL(file);
 		}
 	}
 
-	private loadFieldsReport(report: any):void {
+	public onPaste(event: Event): void {
+		if (navigator.clipboard) {
+			navigator.clipboard.readText()
+				.then(text => {
+					text = text.replace(/(\r\n|\n|\r)/gm, " ");
+					this.loadFieldsReport(text);
+					this.isReportLoaded = true;
+				})
+				.catch(error => {
+					this.notificationService.error("The copied report has not the correct format", "Report loaded failed")
+				});
+		} else {
+			this.notificationService.error("The clipboard is not enabled", "Failed to access the clipboard")
+		}
+	}
 
-		const regexCompletionDate = /(?:Data Realización )([0-9 ]+\/[0-9 ]+\/[0-9 ]+)/;
-		const regexReportN = /(?:Informe Nº )([0-9]+)/;
-		const regexApplicant = /(?:SOLICITANTE Centro\/Servizo )([[a-zA-Z0-9À-ÿÑñ.\/ -]+)(?: Médico)/;
-		const regexDoctor = /(?:Médico )([a-zA-Z0-9À-ÿÑñ.ºª -]+)(?: PACIENTE)/;
-		const regexPriority = /(?:Prioridade )([a-zA-Z0-9À-ÿÑñ]+)(?: )/;
-		const regexStatus = /(?:Prioridade [a-zA-Z0-9À-ÿÑñ]+ )([a-zA-Z0-9À-ÿÑñ]+)(?: )/;
-		const regexBed = /(?:Cama )([a-zA-ZÀ-ÿÑñ0-9]+)/;
-		const regexRequestedExplorations = /(?:EXPLORACIÓNS SOLICITADAS Código Descrición Data )((([0-9]+) ([a-zA-ZÀ-ÿÑñ\/, ]+) ([0-9]+  \/  [0-9]+  \/  [0-9]+) ?)+)(?:   DATOS CLÍNICOS\/SOSPEITA DIAGNÓSTICA DA SOLICITUDE)/;
-		const regexIndividualRequestedExplorations = /(([0-9]+) ([a-zA-ZÀ-ÿÑñ\/, ]+) ([0-9]+  \/  [0-9]+  \/  [0-9]+)(?: ?))/;
-		const regexClinicalData = /(?:DATOS CLÍNICOS\/SOSPEITA DIAGNÓSTICA DA SOLICITUDE )([a-zA-Z0-9À-ÿÑñ\s!"#$%&'()*+,\\.\/:;<=>?@[\]^_`{|}~-]+)(?: EXPLORACIÓNS REALIZADAS)/;
-		const regexPerformedExplorations = /(?:EXPLORACIÓNS REALIZADAS Código Descrición Data Portátil Quirófano )((([0-9]+) ([a-zA-ZÀ-ÿÑñ\/, ]+) ([0-9]+  \/  [0-9]+  \/  [0-9]+)   ([NS]) ([NS]) ?)+)(?: ACHADOS)/;
-		const regexIndividualPerformedExplorations = /(([0-9]+) ([a-zA-ZÀ-ÿÑñ\/, ]+) ([0-9]+  \/  [0-9]+  \/  [0-9]+)   ([NS]) ([NS])(?: ?))/;
-		const regexFindings = /(?:ACHADOS )([a-zA-Z0-9À-ÿÑñ\s!"#$%&'()*+,\\.\/:;<=>?@[\]^_`{|}~-]+)(?: CONCLUSIÓNS)/;
-		const regexConclusions = /(?:CONCLUSIÓNS )([a-zA-Z0-9À-ÿÑñ\s!"#$%&'()*+,\\.\/:;<=>?@[\]^_`{|}~-]+)(?: RADIÓLOGO)/;
-		const regexRadiologist = /(?:RADIÓLOGO\/A )([a-zA-Z0-9À-ÿÑñ.ºª -]+ )/;
-		const regexPatient = /(?:Paciente: )([a-zA-Z0-9À-ÿÑñ.ºª -]+)(?: Data Nac:)/;
-		const regexBirthdate = /(?:Data Nac: )([0-9 ]+\/[0-9 ]+\/[0-9 ]+)(?: Sexo:)/;
-		const regexSex = /(?:Sexo: )([a-zA-ZÀ-ÿÑñ]+)(?:  NHC:)/;
-		const regexNHC = /(?:NHC: )([0-9]+)(?: CIP:)/;
-		const regexCIP = /(?:CIP: )([0-9A-Z]+)(?: NSS:)/;
-		const regexNSS = /(?:NSS: )([0-9\/]+)(?:  Enderezo:)/;
-		const regexAddress = /(?:Enderezo: )([a-zA-Z0-9À-ÿÑñ.ºª ()-]+)(?: Teléfono:)/;
-		const regexPhoneNumber = /(?:Teléfono: )([0-9]+)/;
+	private loadFieldsReport(report: any): void {
+
+		report = report.replace(/\s+/g, " ");
+		let dictRegex = {};
+
+		dictRegex["regexBirthdate"] = /(?:Data Nac: )([0-9 ]+\/[0-9 ]+\/[0-9 ]+)(?: Sexo:)/;
+		dictRegex["regexSex"] = /(?:Sexo: )([a-zA-ZÀ-ÿÑñ]+)(?: NHC:)/;
+		dictRegex["regexCompetionDate"] = /(?:Data Realización )([0-9 ]+\/[0-9 ]+\/[0-9 ]+)/;
+		dictRegex["regexReportN"] = /(?:Informe Nº )([0-9]+)/;
+		dictRegex["regexApplicant"] = /(?:SOLICITANTE Centro\/Servizo )([[a-zA-Z0-9À-ÿÑñ.\/ -]+)(?: Médico)/;
+		dictRegex["regexPriority"] = /(?:Prioridade )([a-zA-Z0-9À-ÿÑñ]+)(?: )/;
+		dictRegex["regexBed"] = /(?:Cama )([a-zA-ZÀ-ÿÑñ0-9]+)/;
+		dictRegex["regexStatus"] = /(?:Prioridade [a-zA-Z0-9À-ÿÑñ]+ )([a-zA-Z0-9À-ÿÑñ]+)(?: )/;
+		dictRegex["regexRequestedExplorations"] = /(?:EXPLORACIÓNS SOLICITADAS Código Descrición Data )((([0-9]+) ([a-zA-ZÀ-ÿÑñ\/, ]+) ([0-9]+ \/ [0-9]+ \/ [0-9]+) ?)+)(?: DATOS CLÍNICOS\/SOSPEITA DIAGNÓSTICA DA SOLICITUDE)/;
+		dictRegex["regexIndividualRequestedExplorations"] = /(([0-9]+) ([a-zA-ZÀ-ÿÑñ\/, ]+) ([0-9]+ \/ [0-9]+ \/ [0-9]+)(?: ?))/;
+		dictRegex["regexPerformedExplorations"] = /(?:EXPLORACIÓNS REALIZADAS Código Descrición Data Portátil Quirófano )((([0-9]+) ([a-zA-ZÀ-ÿÑñ\/, ]+) ([0-9]+ \/ [0-9]+ \/ [0-9]+) ([NS]) ([NS]) ?)+)(?: ACHADOS)/;
+		dictRegex["regexIndividualPerformedExplorations"] = /(([0-9]+) ([a-zA-ZÀ-ÿÑñ\/, ]+) ([0-9]+ \/ [0-9]+ \/ [0-9]+) ([NS]) ([NS])(?: ?))/;
+		dictRegex["regexClinicalData"] = /(?:DATOS CLÍNICOS\/SOSPEITA DIAGNÓSTICA DA SOLICITUDE )([a-zA-Z0-9À-ÿÑñ\s!"#$%&'()*+,\\.\/:;<=>?@[\]^_`{|}~-]+)(?: EXPLORACIÓNS REALIZADAS)/;
+		dictRegex["regexFindings"] = /(?:ACHADOS )([a-zA-Z0-9À-ÿÑñ\s!"#$%&'()*+,\\.\/:;<=>?@[\]^_`{|}~-]+)(?: CONCLUSIÓNS)/;
+		dictRegex["regexConclusions"] = /(?:CONCLUSIÓNS )([a-zA-Z0-9À-ÿÑñ\s!"#$%&'()*+,\\.\/:;<=>?@[\]^_`{|}~-]+)(?: RADIÓLOGO)/;
+
+		// const regexDoctor = /(?:Médico )([a-zA-Z0-9À-ÿÑñ.ºª -]+)(?: PACIENTE)/;
+		// const regexRadiologist = /(?:RADIÓLOGO\/A )([a-zA-Z0-9À-ÿÑñ.ºª -]+ )/;
+		// const regexPatient = /(?:Paciente: )([a-zA-Z0-9À-ÿÑñ.ºª -]+)(?: Data Nac:)/;
+		// const regexNHC = /(?:NHC: )([0-9]+)(?: CIP:)/;
+		// const regexCIP = /(?:CIP: )([0-9A-Z]+)(?: NSS:)/;
+		// const regexNSS = /(?:NSS: )([0-9\/]+)(?:  Enderezo:)/;
+		// const regexAddress = /(?:Enderezo: )([a-zA-Z0-9À-ÿÑñ.ºª ()-]+)(?: Teléfono:)/;
+		// const regexPhoneNumber = /(?:Teléfono: )([0-9]+)/;
 
 		this.patient = new Patient();
 
-		let birthdateParts = report.match(regexBirthdate)[1].trim().replace(/[\t ]+/g, "").split("/");
+		let birthdateParts: RegExp = report.match(dictRegex["regexBirthdate"])[1].trim().replace(/[\t ]+/g, "").split("/");
+
 		this.patient.birthdate = new Date(birthdateParts[2], birthdateParts[1] - 1, birthdateParts[0],);
 
-		if (report.match(regexSex)[1] === 'Mujer') {
+		if (report.match(dictRegex["regexSex"])[1] === 'Mujer') {
 			this.patient.sex = SEX.FEMALE;
 		} else {
 			this.patient.sex = SEX.MALE;
 		}
 
-		let completionDateParts = report.match(regexCompletionDate)[1].trim().replace(/[\t ]+/g, "").split("/");
+		let completionDateParts = report.match(dictRegex["regexCompetionDate"])[1].trim().replace(/[\t ]+/g, "").split("/");
 		this.report.completionDate = new Date(completionDateParts[2], completionDateParts[1] - 1, completionDateParts[0]);
-		this.report.reportNumber = report.match(regexReportN)[1];
-		this.report.applicant = report.match(regexApplicant)[1].trim().replace(/[\t ]+/g, " ");
-		this.report.priority = report.match(regexPriority)[1];
-		this.report.status = report.match(regexStatus)[1];
-		this.report.bed = report.match(regexBed)[1];
+		this.report.reportNumber = report.match(dictRegex["regexReportN"])[1];
+		this.report.applicant = report.match(dictRegex["regexApplicant"])[1].trim().replace(/[\t ]+/g, " ");
+		this.report.priority = report.match(dictRegex["regexPriority"])[1];
+		this.report.status = report.match(dictRegex["regexStatus"])[1];
+		this.report.bed = report.match(dictRegex["regexBed"])[1];
 
-		let splitRequestedExplorations = report.match(regexRequestedExplorations)[1]
-												.trim()
-												.split(regexIndividualRequestedExplorations)
-												.filter(function (e: string) {return e != "";});
+		let splitRequestedExplorations = report.match(dictRegex["regexRequestedExplorations"])[1]
+			.trim()
+			.split(dictRegex["regexIndividualRequestedExplorations"])
+			.filter(function (e: string) { return e != ""; });
 		let requestedExplorations: RequestedExploration[] = [];
 		let numAttrReqExpl = 4;
 		for (let i = 0; i < splitRequestedExplorations.length / numAttrReqExpl; i++) {
@@ -173,12 +200,12 @@ export class ReportComponent implements OnInit, OnDestroy {
 		}
 
 		this.report.requestedExplorations = requestedExplorations;
-		this.report.clinicalData = report.match(regexClinicalData)[1];
+		this.report.clinicalData = report.match(dictRegex["regexClinicalData"])[1];
 
-		let splitPerformedExplorations = report.match(regexPerformedExplorations)[1]
-												.trim()
-												.split(regexIndividualPerformedExplorations)
-												.filter(function (e) {return e != "";});
+		let splitPerformedExplorations = report.match(dictRegex["regexPerformedExplorations"])[1]
+			.trim()
+			.split(dictRegex["regexIndividualPerformedExplorations"])
+			.filter(function (e) { return e != ""; });
 
 		let performedExplorations: PerformedExploration[] = []
 		let numAttrPerExpl = 6;
@@ -198,8 +225,8 @@ export class ReportComponent implements OnInit, OnDestroy {
 		}
 
 		this.report.performedExplorations = performedExplorations;
-		this.report.findings = report.match(regexFindings)[1];
-		this.report.conclusions = report.match(regexConclusions)[1];
+		this.report.findings = report.match(dictRegex["regexFindings"])[1];
+		this.report.conclusions = report.match(dictRegex["regexConclusions"])[1];
 
 		this.reportEvent.emit(this.report);
 	}

@@ -92,5 +92,11 @@
 	"No sign types found": "No sign types found",
 	"Search by sign types": "Search by sign types",
 	"Brightness": "Brightness",
-	"Contrast": "Contrast"
+	"Contrast": "Contrast",
+	"Click here to paste from clipboard": "Click here to paste from clipboard",
+	"Report loaded correctly from clipboard": "Report loaded correctly from clipboard",
+	"Report loaded failed": "Report loaded failed",
+	"The copied report has not the correct format": "The copied report has not the correct format",
+	"Failed to access the clipboard": "Failed to access the clipboard",
+	"The clipboard is not enabled": "The clipboard is not enabled"
 }

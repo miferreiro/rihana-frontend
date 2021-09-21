@@ -67,7 +67,7 @@
 	"Select the type of sign": "Selecciona o tipo de signo",
 	"ModalTitleFindingsSigns": "{count, plural, one{Detectado} other{Detectados}} {count} {count, plural, one{signo radiolóxico} other{signos radiolóxicos}}",
 	"File upload successfull": "O ficheiro cargouse con éxito",
-	"File upload failed": "Error na carga do ficheiro",
+	"File upload failed": "Erro na carga do ficheiro",
 	"Radiograph upload successfull": "A radiografía cargouse con éxito",
 	"The PA radiograph has been upload correctly": "A radiografía PA cargouse correctamente",
 	"The LAT radiograph has been upload correctly": "A radiografía LAT cargouse correctamente",
@@ -92,5 +92,11 @@
 	"No sign types found": "Non se atoparon tipos de signos",
 	"Search by sign types": "Buscar por tipos de signos",
 	"Brightness": "Brillo",
-	"Contrast": "Contraste"
+	"Contrast": "Contraste",
+	"Click here to paste from clipboard": "Prema aquí para pegar dende o portapapeis",
+	"Report loaded correctly from clipboard": "O informe cargouse con éxito dende o portapapeis",
+	"Report loaded failed": "Erro na carga do informe",
+	"The copied report has not the correct format": "O informe copiado non ten o formato correcto",
+	"Failed to access the clipboard": "Erro acceso ao portapapeis",
+	"The clipboard is not enabled": "O portapapeis non está habilitado"
 }

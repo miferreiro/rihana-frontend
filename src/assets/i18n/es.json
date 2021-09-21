@@ -92,5 +92,11 @@
 	"No sign types found": "No se encontraron tipos de signos",
 	"Search by sign types": "Buscar por tipos de signos",
 	"Brightness": "Brillo",
-	"Contrast": "Contraste"
+	"Contrast": "Contraste",
+	"Click here to paste from clipboard": "Haga clic aquí para pegar desde el portapapeles",
+	"Report loaded correctly from clipboard": "El informe ha sido cargado correctamente desde el portapapeles",
+	"Report loaded failed": "Error en la carga del informe",
+	"The copied report has not the correct format": "El informe copiado no tiene el formato correcto",
+	"Failed to access the clipboard": "Error en el acesso al portapeles",
+	"The clipboard is not enabled": "El portapapeles no está habilitado"
 }
