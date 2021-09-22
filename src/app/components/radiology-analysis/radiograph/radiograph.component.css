@@ -23,9 +23,9 @@
 	--bs-gutter-x: 0 !important;
 }
 
-.file-drop-zone {
+.file-drop-zone, .file-paste-zone {
 	width: 100%;
-	min-height: 100px;
+	height: 100%;
 	display: block;
 	position: relative;
 	padding: 1rem;
@@ -34,6 +34,14 @@
 	outline-offset: -10px;
 	color: #646464;
 	font-size: 1rem;
+}
+
+.file-paste-zone {
+	cursor: pointer;
+}
+
+.file-paste-zone p {
+	margin-bottom: 0;
 }
 
 label {

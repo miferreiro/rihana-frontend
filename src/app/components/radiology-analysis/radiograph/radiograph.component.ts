@@ -27,12 +27,12 @@ import {Radiograph} from '../../../models/Radiograph';
 import {AnnotationResult} from '../../locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
 import {LocalizationService} from '../../../modules/internationalization/localization.service';
 import {NotificationService} from '../../../modules/notification/services/notification.service';
-import { NotificationsService } from 'angular2-notifications';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
-  selector: 'app-radiograph',
-  templateUrl: './radiograph.component.html',
-  styleUrls: ['./radiograph.component.css']
+	selector: 'app-radiograph',
+	templateUrl: './radiograph.component.html',
+	styleUrls: ['./radiograph.component.css']
 })
 export class RadiographComponent implements OnInit {
 
@@ -44,9 +44,11 @@ export class RadiographComponent implements OnInit {
 	public disabled: boolean = false;
 	private subscription: Subscription;
 
+	public isRadiographLoaded: boolean;
+
 	public radiograph: Radiograph;
 
-	public readonly controlRadiography = new FileUploadControl(
+	public readonly controlRadiograph = new FileUploadControl(
 		{listVisible: true, discardInvalid: true, multiple: false},
 		[FileUploadValidators.filesLimit(2)]
 	);
@@ -59,28 +61,29 @@ export class RadiographComponent implements OnInit {
 	constructor(public localizationService: LocalizationService,
 				private notificationService: NotificationService,
 				private notificationsService: NotificationsService
-		) { }
+				) { }
 
 	ngOnInit(): void {
 		this.isLoadingRadiograph = true;
-		this.subscription = this.controlRadiography.valueChanges.subscribe((values: Array<File>) => {
+		this.isRadiographLoaded = false;
+		this.subscription = this.controlRadiograph.valueChanges.subscribe((values: Array<File>) => {
 			if (values.length == 2) {
 				if (this.extensionValid.includes(values[1].name.split('.').pop())) {
-					this.controlRadiography.setValue([values[1]]);
+					this.controlRadiograph.setValue([values[1]]);
 				} else {
 					this.notificationService.error("The file does not have the correct extension (.png, .jpg or .jpeg)", "File upload failed");
 				}
 			} else {
 				if (values[0] != undefined) {
 					if (this.extensionValid.includes(values[0].name.split('.').pop())) {
-						this.uploadedFile = this.loadRadiography(values[0]);
+						this.uploadedFile = this.loadRadiograph(values[0]);
 						this.uploadedFile.subscribe(event => {
 							this.isLoadingRadiograph = (event == null);
 						});
 						this.notificationService.success("The " + this.typeExploration + " radiograph has been upload correctly", "Radiograph upload successfull")
 					} else {
 						this.notificationService.error("The file does not have the correct extension (.png, .jpg or .jpeg)", "File upload failed");
-						this.controlRadiography.setValue([]);
+						this.controlRadiograph.setValue([]);
 					}
 				}
 			}
@@ -88,7 +91,7 @@ export class RadiographComponent implements OnInit {
 		this.radiograph = new Radiograph();
 	}
 
-	public addRadiography(event: Event): void {
+	public addRadiograph(event: Event): void {
 		const input = event.target as HTMLInputElement;
 
 		if (!input.files?.length) {
@@ -96,13 +99,18 @@ export class RadiographComponent implements OnInit {
 		}
 		const file = input.files[0];
 		if (this.extensionValid.includes(file.name.split('.').pop())) {
-			this.controlRadiography.setValue([file]);
+			this.controlRadiograph.setValue([file]);
 		} else {
 			this.notificationService.error("The file does not have the correct extension (.png, .jpg or .jpeg)", "File upload failed");
 		}
 	}
 
-	private loadRadiography(file: File): BehaviorSubject<string> {
+	public removeRadiograph(): void {
+		this.isRadiographLoaded = false;
+		this.controlRadiograph.removeFile(this.controlRadiograph.value[0])
+	}
+
+	private loadRadiograph(file: File): BehaviorSubject<string> {
 		let uploadedFile: BehaviorSubject<string> = new BehaviorSubject(null);
 		if (file != undefined) {
 			const fr = new FileReader();
@@ -111,6 +119,8 @@ export class RadiographComponent implements OnInit {
 				this.radiograph = new Radiograph();
 				this.radiograph.type = this.typeExploration;
 				this.radiograph.source = e.target.result.toString();
+				this.isRadiographLoaded = true;
+
 				this.radiographHandler.emit(this.radiograph);
 			};
 			fr.readAsDataURL(file);
@@ -119,6 +129,33 @@ export class RadiographComponent implements OnInit {
 			this.radiographHandler.emit(null);
 		}
 		return uploadedFile;
+	}
+
+	public onPaste(event: any): any {
+		if (navigator.clipboard) {
+			let anyNavigator: any;
+			anyNavigator = window.navigator;
+
+			anyNavigator.clipboard.read()
+				.then(clipboardItems => {
+					let item = clipboardItems[0];
+					if (item.types.includes("image/png")) {
+						item.getType("image/png").then((imagePasted): void => {
+							imagePasted.lastModifiedDate = new Date();
+							imagePasted.name = this.typeExploration.concat(".png");
+							let file: File = <File> imagePasted;
+							this.controlRadiograph.setValue([file]);
+						})
+					} else {
+						this.notificationService.error("The copied report has not the correct format", "Report loaded failed");
+					}
+				})
+				.catch((error: string) => {
+					this.notificationService.error("The copied report has not the correct format", "Report loaded failed");
+				});
+		} else {
+			this.notificationService.error("The clipboard is not enabled", "Failed to access the clipboard");
+		}
 	}
 
 	public openDialogImage(disabled : boolean = false): void {
@@ -140,11 +177,11 @@ export class RadiographComponent implements OnInit {
 		document.getElementsByTagName("body")[0].style.overflow = "auto";
 	}
 
-	public ngOnDestroy(): void {
-		this.subscription.unsubscribe();
-	}
-
 	public assignColorTypeSign(signType: SignType, colorSecondary: boolean = false): string {
 		return assignColorTypeSign(signType, colorSecondary);
+	}
+
+	public ngOnDestroy(): void {
+		this.subscription.unsubscribe();
 	}
 }
