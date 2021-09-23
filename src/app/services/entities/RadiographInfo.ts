@@ -26,4 +26,5 @@ export interface RadiographInfo {
 	type: string;
 	source: string;
 	signs: Sign[];
+	observations: string;
 }

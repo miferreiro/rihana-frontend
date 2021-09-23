@@ -98,5 +98,7 @@
 	"Report loaded failed": "Report loaded failed",
 	"The copied report has not the correct format": "The copied report has not the correct format",
 	"Failed to access the clipboard": "Failed to access the clipboard",
-	"The clipboard is not enabled": "The clipboard is not enabled"
+	"The clipboard is not enabled": "The clipboard is not enabled",
+	"Observations": "Observations",
+	"Add your observations here": "Add your observations here"
 }

@@ -98,5 +98,7 @@
 	"Report loaded failed": "Erro na carga do informe",
 	"The copied report has not the correct format": "O informe copiado non ten o formato correcto",
 	"Failed to access the clipboard": "Erro acceso ao portapapeis",
-	"The clipboard is not enabled": "O portapapeis non está habilitado"
+	"The clipboard is not enabled": "O portapapeis non está habilitado",
+	"Observations": "Observacións",
+	"Add your observations here": "Engade aquí as túas observacións"
 }

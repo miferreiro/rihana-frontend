@@ -160,3 +160,10 @@ label {
 	border-left: 8px solid;
 	border-radius: 5px 5px;
 }
+
+.form-control:focus {
+	color: #212529;
+	background-color: #fff;
+	border-color: inherit;
+	box-shadow: none
+}

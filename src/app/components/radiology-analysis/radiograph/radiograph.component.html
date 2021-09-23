@@ -119,6 +119,11 @@
 			</li>
 		</ul>
 	</div>
+	<div class="row mt-4">
+		<h4 class="col">{{'Observations' | translate}}: </h4>
+		<textarea name="observations" class="form-control" [(ngModel)]="radiograph.observations"
+				  placeholder="{{'Add your observations here' | translate}}..."></textarea>
+	</div>
 </div>
 
 <app-locate-signs-in-image-dialog

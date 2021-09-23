@@ -26,4 +26,5 @@ export class Radiograph {
 	type: string;
 	source: string;
 	signs: Sign[];
+	observations: string;
 }

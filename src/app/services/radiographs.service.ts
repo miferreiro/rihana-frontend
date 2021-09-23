@@ -46,7 +46,8 @@ export class RadiographsService {
 			id: radiographInfo.id,
 			type: radiographInfo.type,
 			source: radiographInfo.source,
-			signs: radiographInfo.signs
+			signs: radiographInfo.signs,
+			observations: radiographInfo.observations
 		};
 	}
 }
