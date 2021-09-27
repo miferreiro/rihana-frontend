@@ -90,3 +90,11 @@ i {
 	flex-direction: column;
 	font-size: .7rem;
 }
+
+.pan-element {
+	transition: transform 0s linear;
+}
+
+.zoom-element {
+	transition: transform 0s linear;
+}

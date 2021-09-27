@@ -47,8 +47,9 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	public isLoadingRadiology: boolean = false;
 	public scaleFactorImage: number = 1;
 
-	public brightness: string = '100';
-	public contrast: string = '100';
+	public brightness: string;
+	public contrast: string;
+	public reseted: boolean;
 
 	public signTypes: SignType[];
 	public newSign: Sign;
@@ -59,6 +60,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	ngOnInit(): void {
 		this.brightness = '100';
 		this.contrast = '100';
+		this.reseted = false;
 		this.signService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes;
 		})
@@ -77,6 +79,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	public resetRadiography(): void {
 		this.brightness = '100';
 		this.contrast = '100';
+		this.reseted = true;
 	}
 
 	public listSignTypes(): SignType[] {

@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Sign} from '../../models/Sign';
 import {assignColorTypeSign} from '../../models/SignType';
 import {SignLocation} from '../../models/SignLocation';
@@ -31,7 +31,7 @@ import {Subscription} from 'rxjs';
 	templateUrl: './image-annotator.component.html',
 	styleUrls: ['./image-annotator.component.css']
 })
-export class ImageAnnotatorComponent {
+export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 
 	private static readonly STROKE_SIZE = 2;
 
@@ -43,6 +43,7 @@ export class ImageAnnotatorComponent {
 
 	@Output() brightnessChange = new EventEmitter<string>();
 	@Output() contrastChange = new EventEmitter<string>();
+	@Output() resetedChange = new EventEmitter<boolean>();
 
 	@ViewChild('canvasElement') private canvasElementRef: ElementRef<HTMLCanvasElement>;
 	@ViewChild('imageElement') private imageElementRef: ElementRef<HTMLImageElement>;
@@ -54,9 +55,11 @@ export class ImageAnnotatorComponent {
 	private _signs: Sign[];
 	private _brightness: string;
 	private _contrast: string;
+	private zoom: number;
+	private _reseted: boolean;
 
 	private panZoomConfigOptions: PanZoomConfigOptions = {
-		zoomLevels: 10,
+		zoomLevels: 5,
 		scalePerZoomLevel: 2.0,
 		zoomStepDuration: 0.2,
 		neutralZoomLevel: 2,
@@ -66,18 +69,14 @@ export class ImageAnnotatorComponent {
 		keepInBounds: true,
 		dynamicContentDimensions: true
 	};
-	panzoomConfig: PanZoomConfig = new PanZoomConfig(this.panZoomConfigOptions);
+
+	public panzoomConfig: PanZoomConfig = new PanZoomConfig(this.panZoomConfigOptions);
 	private panZoomAPI: PanZoomAPI;
 	private apiSubscription: Subscription;
-	panzoomModel: PanZoomModel;
+	private panzoomModel: PanZoomModel;
 	private modelChangedSubscription: Subscription;
 
-	private zoom: number = 1;
-
-
-	constructor(private changeDetector: ChangeDetectorRef) {
-
-	}
+	constructor(private changeDetector: ChangeDetectorRef) {}
 
 	ngOnInit(): void {
 		this.apiSubscription = this.panzoomConfig.api.subscribe( (api: PanZoomAPI) => this.panZoomAPI = api );
@@ -85,7 +84,6 @@ export class ImageAnnotatorComponent {
 			 (model: PanZoomModel) => this.onModelChanged(model)
 			);
 	}
-
 
 	get src(): string {
 		return this._src;
@@ -113,6 +111,16 @@ export class ImageAnnotatorComponent {
 		this._contrast = contrast;
 		this.contrastChange.emit(this._contrast);
 		this.changeFilterImg();
+	}
+
+	get reseted(): boolean {
+		return this._reseted;
+	}
+
+	@Input() set reseted(reseted: boolean) {
+		this.panZoomAPI.resetView();
+		this.zoom = 2;
+		this.resetedChange.emit(false);
 	}
 
 	get signs(): Sign[] {
@@ -358,7 +366,6 @@ export class ImageAnnotatorComponent {
 	}
 
 	onMouseDown(event: MouseEvent) {
-
 		if (event.which == 1) {
 			this.canvasElement.className = "cursor";
 			if (this.canLocate()) {
@@ -492,6 +499,11 @@ export class ImageAnnotatorComponent {
 
 	private getCssScale(zoomLevel: any): number {
 		return Math.pow(this.panzoomConfig.scalePerZoomLevel, zoomLevel - this.panzoomConfig.neutralZoomLevel);
+	}
+
+
+	ngOnDestroy(): void {
+		this.apiSubscription.unsubscribe();
 	}
 }
 
