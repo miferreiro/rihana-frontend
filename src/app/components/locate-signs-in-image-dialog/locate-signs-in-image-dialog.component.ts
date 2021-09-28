@@ -128,7 +128,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 
 	public showSignType(signType: SignType, event: Event): void {
 		const show = event.target as HTMLInputElement;
-		let render = (show.className === "bi bi-eye-slash");
+		let render = show.className.includes("bi bi-eye-slash");
 
 		this.signs = this.signs.map(sign => {
 			if (sign.type.code === signType.code) {
