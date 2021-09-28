@@ -60,7 +60,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 		zoomLevels: 5,
 		scalePerZoomLevel: 2.0,
 		zoomStepDuration: 0.2,
-		neutralZoomLevel: 2,
+		neutralZoomLevel: 0,
 		freeMouseWheelFactor: 0.01,
 		zoomToFitZoomLevelFactor: 0.95,
 		dragMouseButton: 'middle',
@@ -77,6 +77,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 	constructor(private changeDetector: ChangeDetectorRef) {}
 
 	ngOnInit(): void {
+		this.panzoomConfig.neutralZoomLevel = 2;
 		this.apiSubscription = this.panzoomConfig.api.subscribe( (api: PanZoomAPI) => this.panZoomAPI = api );
     	this.modelChangedSubscription = this.panzoomConfig.modelChanged.subscribe(
 			 (model: PanZoomModel) => this.onModelChanged(model)
