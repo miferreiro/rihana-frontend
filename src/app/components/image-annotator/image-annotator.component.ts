@@ -43,7 +43,6 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 
 	@Output() brightnessChange = new EventEmitter<string>();
 	@Output() contrastChange = new EventEmitter<string>();
-	@Output() resetedChange = new EventEmitter<boolean>();
 
 	@ViewChild('canvasElement') private canvasElementRef: ElementRef<HTMLCanvasElement>;
 	@ViewChild('imageElement') private imageElementRef: ElementRef<HTMLImageElement>;
@@ -56,7 +55,6 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 	private _brightness: string;
 	private _contrast: string;
 	private zoom: number;
-	private _reseted: boolean;
 
 	private panZoomConfigOptions: PanZoomConfigOptions = {
 		zoomLevels: 5,
@@ -113,16 +111,6 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 		this.changeFilterImg();
 	}
 
-	get reseted(): boolean {
-		return this._reseted;
-	}
-
-	@Input() set reseted(reseted: boolean) {
-		this.panZoomAPI.resetView();
-		this.zoom = 2;
-		this.resetedChange.emit(false);
-	}
-
 	get signs(): Sign[] {
 		return this._signs;
 	}
@@ -160,6 +148,13 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 
 	private canLocate(): boolean {
 		return !this.disabled;
+	}
+
+	public resetPanZoom() {
+		if (this.panZoomAPI != undefined) {
+			this.panZoomAPI.resetView();
+		}
+		this.zoom = 2;
 	}
 
 	private repaint(isFilteringImage: boolean = false): void {

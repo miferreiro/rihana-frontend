@@ -19,11 +19,13 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
+
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Sign} from '../../models/Sign';
 import {assignColorTypeSign, SignType} from '../../models/SignType';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {SignsService} from '../../services/signs.service';
+import {ImageAnnotatorComponent} from '../image-annotator/image-annotator.component';
 
 export class AnnotationResult {
 	readonly cancelled: boolean;
@@ -37,6 +39,8 @@ export class AnnotationResult {
 })
 export class LocateSignsInImageDialogComponent implements OnInit {
 
+	@ViewChild(ImageAnnotatorComponent) private imageAnnotatorComponent: ImageAnnotatorComponent;
+
 	@Input() src: string;
 	@Input() signs: Sign[];
 	@Input() disabled: boolean;
@@ -49,7 +53,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 
 	public brightness: string;
 	public contrast: string;
-	public reseted: boolean;
 
 	public signTypes: SignType[];
 	public newSign: Sign;
@@ -60,7 +63,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	ngOnInit(): void {
 		this.brightness = '100';
 		this.contrast = '100';
-		this.reseted = false;
 		this.signService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes;
 		})
@@ -79,7 +81,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	public resetRadiography(): void {
 		this.brightness = '100';
 		this.contrast = '100';
-		this.reseted = true;
+		this.imageAnnotatorComponent.resetPanZoom();
 	}
 
 	public listSignTypes(): SignType[] {
