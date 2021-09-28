@@ -35,7 +35,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 
 	private static readonly STROKE_SIZE = 2;
 
-	@Input() disabled = false;
+	@Input() disabled: boolean;
 
 	@Output() newSign = new EventEmitter<Sign>();
 	@Output() newSetScaleFactorImage = new EventEmitter<number>();
@@ -118,7 +118,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 	@Input() set signs(signs: Sign[]) {
 		this._signs = signs;
 		if (this.canvasElement !== null) {
-			this.repaint();
+			this.repaint(true);
 		}
 	}
 
@@ -157,10 +157,10 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 		this.zoom = 2;
 	}
 
-	private repaint(isFilteringImage: boolean = false): void {
+	private repaint(paintSignsInfo: boolean = false): void {
 		this.paintImage();
 		this.paintSignsCanvas();
-		if (!isFilteringImage) {
+		if (paintSignsInfo) {
 			this.paintSignsInfo();
 		}
 	}
@@ -303,28 +303,6 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	private clearLocation(): void {
-		let signLocation = this.signLocationToPaint;
-		if (signLocation !== undefined && Boolean(signLocation) && signLocation.isValid()) {
-		  try {
-				const context = this.context2D;
-				signLocation = signLocation.regularize();
-
-				const x = Math.max(0, signLocation.x - ImageAnnotatorComponent.STROKE_SIZE);
-				const y = Math.max(0, signLocation.y - ImageAnnotatorComponent.STROKE_SIZE);
-
-				const width = Math.min(this.imageElement.width,
-										signLocation.width + ImageAnnotatorComponent.STROKE_SIZE * 2);
-				const height = Math.min(this.imageElement.height,
-										signLocation.height + ImageAnnotatorComponent.STROKE_SIZE * 2);
-
-				context.drawImage(this.imageElement, x, y, width, height, x, y, width, height);
-			} catch (e) {
-				// If context is not available an exception will be thrown.
-		  	}
-		}
-	}
-
 	private paintLocation(): void {
 		const signLocation = this.signLocationToPaint;
 		if (signLocation !== undefined && Boolean(signLocation) && signLocation.isValid()) {
@@ -365,7 +343,6 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 			this.canvasElement.className = "cursor";
 			if (this.canLocate()) {
 				const location = this.adjustMouseLocation(event);
-				this.clearLocation();
 
 				location.x = location.x / this.getCssScale(this.zoom);
 				location.y = location.y / this.getCssScale(this.zoom);
@@ -390,21 +367,20 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 		if (!(model.pan == null || model.zoomLevel == null)) {
 			this.zoom = model.zoomLevel;
 		}
-		this.repaint();
+		this.repaint(false);
 	}
 
 	onMouseMove(event: MouseEvent) {
 		if (event.which == 1) {
 			if (this.canLocate() && this.isDrawing) {
 				const location = this.adjustMouseLocation(event);
-				this.clearLocation();
 
 				location.x = location.x / this.getCssScale(this.zoom);
 				location.y = location.y / this.getCssScale(this.zoom);
 
 				this.newSignLocation.width = (location.x / this.scaleFactorImage) - this.newSignLocation.x;
 				this.newSignLocation.height = (location.y / this.scaleFactorImage) - this.newSignLocation.y;
-				this.repaint();
+				this.repaint(false);
 				this.paintLocation();
 			}
 		} else if (event.which == 3) {
@@ -424,7 +400,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 			sign.type = null;
 			this.newSign.emit(sign);
 			this.newSignLocation = null;
-			this.repaint();
+			this.repaint(false);
 		}
 		this.canvasElement.className = "cursor";
 	}
@@ -456,30 +432,34 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 		div.style.width = this.canvasElement.width.toString() + 'px';
 		div.style.height = this.canvasElement.height.toString() + 'px';
 
-		this.repaint();
+		this.repaint(true);
 		this.newSetScaleFactorImage.emit(this.scaleFactorImage);
 	}
 
 	private getMaxWidth(): number {
-		let widthRadiographySection = parseInt(getComputedStyle(document.getElementById("section-radiograph")).width) -
-									  parseInt(getComputedStyle(document.getElementById("section-radiograph")).paddingLeft) -
-		 							  parseInt(getComputedStyle(document.getElementById("section-radiograph")).paddingRight);
+		let styleSection = getComputedStyle(document.getElementById("section-radiograph"));
+		let widthRadiographySection = parseInt(styleSection.width) -
+									  parseInt(styleSection.paddingLeft) -
+		 							  parseInt(styleSection.paddingRight);
 
 		return widthRadiographySection;
 	}
 
 	private getMaxHeight(): number {
-		let heightHeader = 	parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).height) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).marginTop) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).marginBottom) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).paddingTop) +
-							parseInt(getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]).paddingBottom);
+		let styleModalHeader = getComputedStyle(document.getElementsByClassName("modal-header-custom")[0]);
+		let heightHeader = 	parseInt(styleModalHeader.height) +
+							parseInt(styleModalHeader.marginTop) +
+							parseInt(styleModalHeader.marginBottom) +
+							parseInt(styleModalHeader.paddingTop) +
+							parseInt(styleModalHeader.paddingBottom);
 
-		let heightOptions = parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).height) +
-							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).marginTop) +
-							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).marginBottom) +
-							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).paddingTop) +
-							parseInt(getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]).paddingBottom);
+		let styleImageDialog = getComputedStyle(document.getElementById("image-dialog").getElementsByClassName("control-options")[0]);
+
+		let heightOptions = parseInt(styleImageDialog.height) +
+							parseInt(styleImageDialog.marginTop) +
+							parseInt(styleImageDialog.marginBottom) +
+							parseInt(styleImageDialog.paddingTop) +
+							parseInt(styleImageDialog.paddingBottom);
 
 		var heightMax = parseInt(getComputedStyle(document.getElementById("modal")).height) - heightHeader - heightOptions;
 
@@ -496,9 +476,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 		return Math.pow(this.panzoomConfig.scalePerZoomLevel, zoomLevel - this.panzoomConfig.neutralZoomLevel);
 	}
 
-
 	ngOnDestroy(): void {
 		this.apiSubscription.unsubscribe();
 	}
 }
-

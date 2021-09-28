@@ -41,7 +41,7 @@ export class RadiographComponent implements OnInit {
 	@Output() radiographHandler = new EventEmitter<Radiograph>();
 	@Input() typeExploration: string;
 
-	public disabled: boolean = false;
+	public disabled: boolean;
 	private subscription: Subscription;
 
 	public isRadiographLoaded: boolean;
@@ -60,12 +60,12 @@ export class RadiographComponent implements OnInit {
 
 	constructor(public localizationService: LocalizationService,
 				private notificationService: NotificationService,
-				private notificationsService: NotificationsService
-				) { }
+				private notificationsService: NotificationsService) { }
 
 	ngOnInit(): void {
 		this.isLoadingRadiograph = true;
 		this.isRadiographLoaded = false;
+		this.disabled = false;
 		this.subscription = this.controlRadiograph.valueChanges.subscribe((values: Array<File>) => {
 			if (values.length == 2) {
 				if (this.extensionValid.includes(values[1].name.split('.').pop())) {
