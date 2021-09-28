@@ -39,12 +39,23 @@ i {
 }
 
 .modal-fullscreen {
-	height: auto;
+	height: inherit;
 }
 
 .modal-fullscreen .modal-content {
-	height: inherit;
+	height: 100%;
 }
+
+@media (max-width: 1400px) {
+	.modal-fullscreen {
+		height: unset;
+	}
+
+	.modal-fullscreen .modal-content {
+		height: unset;
+	}
+}
+
 
 .modal-header-custom {
 	display: flex;
