@@ -21,7 +21,7 @@
 
 <div class="image-annotator-div-parent">
 	<pan-zoom [config]="panzoomConfig">
-		<div id="canvasZone" class="image-annotator-div">
+		<div id="canvasZone" class="image-annotator-div" (mouseover)="disableScroll(true)" (mouseout)="disableScroll(false)" >
 			<canvas #canvasElement [class.disabled]="disabled" (mousedown)="onMouseDown($event)" (mousemove)="onMouseMove($event)"
 			(contextmenu)="onRightClick()" class="cursor">
 			</canvas>

@@ -477,6 +477,16 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 		return Math.pow(this.panzoomConfig.scalePerZoomLevel, zoomLevel - this.panzoomConfig.neutralZoomLevel);
 	}
 
+	public disableScroll(disable: boolean) {
+		if (disable) {
+			document.getElementById("image-dialog").style.overflowX = "unset";
+			document.getElementById("image-dialog").style.overflowY = "unset";
+		} else {
+			document.getElementById("image-dialog").style.overflowX = "hidden";
+			document.getElementById("image-dialog").style.overflowY = "auto";
+		}
+	}
+
 	ngOnDestroy(): void {
 		this.apiSubscription.unsubscribe();
 	}
