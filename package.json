@@ -1,15 +1,15 @@
 {
   "name": "@rihana/frontend",
   "description": "RIHANA - Radiological Image and History Acquisition for Neurocomputing Analysis",
-  "version": "0.1.0-alpha.81",
+  "version": "0.1.0-alpha.82",
   "license": "GPL-3.0",
   "author": {
-    "name": "David A. Ruano Ordás",
-    "email": "drordas@uvigo.es"
+    "name": "Miguel Ferreiro Díaz",
+    "email": "miguel.ferreiro.diaz@uvigo.es"
   },
   "contributors": [
-    "José Ramón Méndez Reboredo",
-    "Miguel Ferreiro Díaz"
+	"David A. Ruano Ordás",
+    "José Ramón Méndez Reboredo"
   ],
   "repository": "https://github.com/miferreiro/rihana-frontend.git",
   "scripts": {
