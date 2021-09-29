@@ -56,6 +56,7 @@ import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiol
 import {RadiographComponent} from './components/radiology-analysis/radiograph/radiograph.component';
 import {ReportComponent} from './components/report/report.component';
 import {PieChartComponent} from './components/explorations/pie-chart/pie-chart.component';
+import {UserComponent} from './components/user/user.component';
 
 import {LangPipe} from './pipes/lang.pipe';
 import {PixelsToMmsPipe} from './pipes/pixels-to-mms.pipe';
@@ -81,6 +82,7 @@ import {NgxPanZoomModule} from 'ngx-panzoom';
 		RadiologyAnalysisComponent,
 		RadiographComponent,
 		ReportComponent,
+		UserComponent,
 		LangPipe,
 		PixelsToMmsPipe,
 		BytesToHumanReadablePipe,

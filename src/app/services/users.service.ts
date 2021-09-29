@@ -24,6 +24,7 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
+import {User} from '../models/User';
 import {Users} from "../models/Users";
 import {UserInfo} from "./entities/UserInfo";
 
@@ -35,10 +36,43 @@ export class UsersService {
 	constructor(private http: HttpClient) {
 	}
 
+	getUsers(): Observable<Users[]> {
+		return this.http.get<UserInfo[]>(`${environment.restApi}/user/`).pipe(
+		  	map((users) => users.map(this.mapUserInfo.bind(this)))
+		);
+	}
+
 	getUser(login: string): Observable<Users> {
 		return this.http.get<UserInfo[]>(`${environment.restApi}/user/${login}`).pipe(
 			map(this.mapUserInfo.bind(this))
 		);
+	}
+
+	create(user: Users): Observable<Users> {
+		const userInfo = this.toUserInfo(user);
+
+		return this.http.post<UserInfo>(`${environment.restApi}/user`, userInfo).pipe(
+			map(this.mapUserInfo.bind(this))
+		);
+	}
+
+	editUser(user: Users): Observable<User> {
+		const userInfo = this.toUserInfo(user);
+		return this.http.put<UserInfo>(`${environment.restApi}/user/${user.login}`, userInfo).pipe(
+			map(this.mapUserInfo.bind(this))
+		);
+	}
+
+	deleteUser(login: string) {
+		return this.http.delete(`${environment.restApi}/user/${login}`);
+	}
+
+	private toUserInfo(user: Users): UserInfo {
+		return {
+			login: user.login,
+			password: user.password,
+			role: user.role
+		};
 	}
 
 	private mapUserInfo(userInfo: UserInfo): Users {
