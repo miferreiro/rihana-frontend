@@ -44,7 +44,8 @@
 						</li>
 					</ul>
 				</div>
-				<div *ngIf="authenticationService.getUser().authenticated == true" class="nav-item user border-end">
+				<div *ngIf="authenticationService.getUser().authenticated == true" class="nav-item user border-end"
+					 (click)="getProfile()">
 					<div>
 						<i class="bi bi-person-circle"></i>
 					</div>

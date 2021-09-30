@@ -25,6 +25,7 @@ import {AuthGuard} from './guards/authGuard';
 import {LoginComponent} from './components/login/login.component';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
 import {ExplorationComponent} from './components/exploration/exploration.component';
+import {ProfileComponent} from './components/profile/profile.component';
 import {UserComponent} from './components/user/user.component';
 
 const routes: Routes = [
@@ -39,6 +40,9 @@ const routes: Routes = [
 	},
 	{
 		path: 'login', component: LoginComponent
+	},
+	{
+		path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]
 	},
 	{
 		path: '', redirectTo: 'explorations', pathMatch: 'full'

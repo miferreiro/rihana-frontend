@@ -46,6 +46,7 @@ nav {
 .user {
 	padding: 0rem 1rem;
 	display: flex;
+	cursor: pointer;
 }
 
 .user i {

@@ -1,0 +1,90 @@
+<!--
+  ~ RIHANA Frontend
+  ~
+  ~ Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
+  ~ Miguel Ferreiro Díaz
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public
+  ~ License along with this program.  If not, see
+  ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
+-->
+
+<div *ngIf="loggedUser != null" class="container mt-5">
+	<div class="card">
+		<h4 class="card-header">
+			{{'User Profile' | translate}}: <span class="text-capitalize">{{loggedUser.login}}</span>
+		</h4>
+		<form ngNativeValidate #userForm="ngForm">
+			<div class="card-body">
+				<section>
+					<div class="row mb-3">
+						<label class="col-6 align-self-center fw-bold">
+							{{'Username' | translate}}
+						</label>
+						<div class="col-6 align-self-center">
+							{{loggedUser.login}}
+						</div>
+					</div>
+					<div class="row mb-3" [hidden]="!editingUser">
+						<label for="user-form-password" class="col-12 col-md-6 align-self-center fw-bold">
+							{{'Password' | translate}}
+						</label>
+						<div class="col-12 col-md-6 align-self-center">
+							<input type="password" id="user-form-password" name="password"
+									[(ngModel)]="loggedUser.password" minlength="6"
+									#passwordUser="ngModel"/>
+						</div>
+						<div *ngIf="passwordUser.invalid && !passwordUser.pristine" class="alert alert-danger my-0 py-1" role="alert">
+							<div *ngIf="passwordUser.errors.minlength && passwordUser.value !== ''">
+								{{'Password can\'t be shorter than 6 characters.' | translate}}
+							</div>
+						</div>
+					</div>
+					<div class="row mb-3 align-middle" [hidden]="!editingUser">
+						<label for="user-form-password-confirm" class="col-12 col-md-6 align-self-center fw-bold">
+							{{'Confirm password' | translate}}
+						</label>
+						<div class="col-12 col-md-6 align-self-center">
+							<input type="password" id="user-form-password-confirm" name="confirmPassword"
+									[(ngModel)]="confirmPassword" #confirmPasswordUser="ngModel"/>
+						</div>
+						<div *ngIf="passwordUser.value !== '' && passwordUser.value !== confirmPasswordUser.value &&
+								!confirmPasswordUser.pristine" class="alert alert-danger my-0 py-1" role="alert">
+							{{'Passwords don\'t match' | translate}}
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label for="user-form-role" class="col-6 align-self-center fw-bold">
+							{{'Role' | translate}}
+						</label>
+						<div class="col-6 align-self-center">
+							{{loggedUser.role}}
+						</div>
+					</div>
+				</section>
+			</div>
+			<div class="card-footer text-end">
+				<button *ngIf="!editingUser" type="button" class="col-3 btn btn-secondary btn-sm" (click)="edit()">
+					{{'Edit' | translate}}
+				</button>
+				<button *ngIf="editingUser" type="button" class="col-3 btn btn-success btn-sm" (click)="editUser()"
+						[disabled]="userForm.invalid || (passwordUser.value !== '' &&
+						passwordUser.value !== confirmPasswordUser.value)">
+					{{'Save' | translate}}
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<simple-notifications></simple-notifications>

@@ -56,6 +56,7 @@ import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiol
 import {RadiographComponent} from './components/radiology-analysis/radiograph/radiograph.component';
 import {ReportComponent} from './components/report/report.component';
 import {PieChartComponent} from './components/explorations/pie-chart/pie-chart.component';
+import {ProfileComponent} from './components/profile/profile.component';
 import {UserComponent} from './components/user/user.component';
 
 import {LangPipe} from './pipes/lang.pipe';
@@ -79,6 +80,7 @@ import {NgxPanZoomModule} from 'ngx-panzoom';
 		ImageAnnotatorComponent,
 		LoginComponent,
 		LocateSignsInImageDialogComponent,
+		ProfileComponent,
 		RadiologyAnalysisComponent,
 		RadiographComponent,
 		ReportComponent,

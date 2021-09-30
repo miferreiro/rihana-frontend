@@ -118,5 +118,6 @@
 	"Edit": "Edit",
 	"Cancel": "Cancel",
 	"Passwords don't match": "Passwords don't match",
-	"Must be a alphanumeric": "Must be a alphanumeric"
+	"Must be a alphanumeric": "Must be a alphanumeric",
+	"User Profile": "User Profile"
 }

@@ -118,5 +118,6 @@
 	"Edit": "Editar",
 	"Cancel": "Cancelar",
 	"Passwords don't match": "Las contraseñas no coinciden",
-	"Must be a alphanumeric": "Tiene que ser alfanumérico"
+	"Must be a alphanumeric": "Tiene que ser alfanumérico",
+	"User Profile": "Perfil del usuario"
 }

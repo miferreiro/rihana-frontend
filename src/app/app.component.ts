@@ -81,6 +81,10 @@ export class AppComponent implements OnInit {
 		localStorage.setItem('language', lang);
 	}
 
+	getProfile() {
+		this.router.navigateByUrl('/profile');
+	}
+
 	logOut() {
 		this.authenticationService.logOut();
 		this.router.navigateByUrl('/login');
