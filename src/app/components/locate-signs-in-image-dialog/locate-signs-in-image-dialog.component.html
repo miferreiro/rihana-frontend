@@ -70,63 +70,75 @@
 				<div id="section-signs" class="col-xxl-6 col-lg-12 col-md-12 col-sm-12 m-auto">
 					<div class="row">
 						<h5 class="text-center fw-bold text-dark mt-4 mb-4">
-							{{'ModalTitleFindingsSigns' | translate:"{count:" + signs.length + "}"}}
+							{{'ModalTitleFindingsSigns' | translate:"{count:" + countSignDetected() + "}"}}
 						</h5>
 					</div>
 					<div class="row signs">
 						<div class="col">
+							<div class="row text-center">
+								<div class="col">
+									<input class="check" type="checkbox" id="noFindings" [checked]="noFindings" (change)="checkNoFindings($event)" >
+									<label for="noFindings">{{'No findings' | translate}}</label>
+								</div>
+								<div class="col">
+									<input class="check" type="checkbox" id="nonNormal" [checked]="noNormal" (change)="checkNoNormal($event)">
+									<label for="nonNormal">{{'Non-normal' | translate}}</label>
+								</div>
+							</div>
 							<div class="row">
-								<div *ngFor="let signType of listSignTypes()" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
-									<div class="card">
-										<div class="card-header-custom">
-											<div class="header d-flex justify-content-between">
-												<h6>{{signType.name | translate}}</h6>
-												<div>
-													<i *ngIf="signsType(signType).length > 0"
-														[ngClass]="{'bi bi-eye': checkRenderSomeSingType(signType), 'bi bi-eye-slash': !checkRenderSomeSingType(signType)}"
-														(click)="showSignType(signType, $event)"></i>
-													<i *ngIf="signsType(signType).length > 0 && !disabled" class="bi bi-trash"
-														(click)="removeSignType(signType)"></i>
+								<ng-container *ngFor="let signType of listSignTypes()">
+									<div *ngIf="signType.code != 'NOF' && signType.code != 'NON'" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
+										<div class="card">
+											<div class="card-header-custom">
+												<div class="header d-flex justify-content-between">
+													<h6>{{signType.name | translate}}</h6>
+													<div>
+														<i *ngIf="signsType(signType).length > 0"
+															[ngClass]="{'bi bi-eye': checkRenderSomeSingType(signType), 'bi bi-eye-slash': !checkRenderSomeSingType(signType)}"
+															(click)="showSignType(signType, $event)"></i>
+														<i *ngIf="signsType(signType).length > 0 && !disabled" class="bi bi-trash"
+															(click)="removeSignType(signType)"></i>
+													</div>
 												</div>
 											</div>
-										</div>
-										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill"
-												[ngStyle]="{'background-color': assignColorTypeSign(signType),
-															'color': assignColorTypeSign(signType, true)}">
-												{{signsType(signType).length}}
-										</span>
-										<div *ngIf="signsType(signType).length > 0" class="card-body-custom">
-											<ul class="list-group">
-												<li *ngFor="let sign of signsType(signType); let indexSign = index"
-													class="d-flex justify-content-between">
-													<details>
-														<summary>
-															{{sign.id}} (<var>{{'Area' | translate}}</var>: {{sign.location?.area() | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm²)
-														</summary>
-														<span>
-															{{'Location' | translate}}:
-															<ul>
-																<li>
-																	<var>x</var>: {{sign.location?.x | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
-																	<var>y</var>: {{sign.location?.y | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
-																</li>
-																<li>
-																	<var>{{'Width' | translate}}</var>: {{sign.location?.width | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
-																	<var>{{'Height' | translate}}</var>: {{sign.location?.height | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
-																</li>
-															</ul>
+											<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill"
+													[ngStyle]="{'background-color': assignColorTypeSign(signType),
+																'color': assignColorTypeSign(signType, true)}">
+													{{signsType(signType).length}}
+											</span>
+											<div *ngIf="signsType(signType).length > 0" class="card-body-custom">
+												<ul class="list-group">
+													<li *ngFor="let sign of signsType(signType); let indexSign = index"
+														class="d-flex justify-content-between">
+														<details>
+															<summary>
+																{{sign.id}} (<var>{{'Area' | translate}}</var>: {{sign.location?.area() | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm²)
+															</summary>
+															<span>
+																{{'Location' | translate}}:
+																<ul>
+																	<li>
+																		<var>x</var>: {{sign.location?.x | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
+																		<var>y</var>: {{sign.location?.y | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
+																	</li>
+																	<li>
+																		<var>{{'Width' | translate}}</var>: {{sign.location?.width | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
+																		<var>{{'Height' | translate}}</var>: {{sign.location?.height | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm
+																	</li>
+																</ul>
+															</span>
+														</details>
+														<span class="col-auto text-center">
+															<i [ngClass]="{'bi bi-eye': sign.render, 'bi bi-eye-slash': !sign.render}"
+																(click)="showSign(sign, $event)"></i>
+															<i *ngIf="!disabled" class="bi bi-trash" (click)="removeSign(sign)"></i>
 														</span>
-													</details>
-													<span class="col-auto text-center">
-														<i [ngClass]="{'bi bi-eye': sign.render, 'bi bi-eye-slash': !sign.render}"
-															(click)="showSign(sign, $event)"></i>
-														<i *ngIf="!disabled" class="bi bi-trash" (click)="removeSign(sign)"></i>
-													</span>
-												</li>
-											</ul>
+													</li>
+												</ul>
+											</div>
 										</div>
 									</div>
-								</div>
+								</ng-container>
 							</div>
 						</div>
 					</div>
@@ -146,9 +158,11 @@
 			</div>
 			<div class="modal-body">
 				<ul class="list-group list-group-flush">
-					<li *ngFor="let signType of listSignTypes()" (click)="addSign(signType)" class="list-group-item">
-						{{signType.name | translate}}
-					</li>
+					<ng-container *ngFor="let signType of listSignTypes()">
+						<li *ngIf="signType.code != 'NOF' && signType.code != 'NON'" (click)="addSign(signType)" class="list-group-item">
+							{{signType.name | translate}}
+						</li>
+					</ng-container>
 				</ul>
 			</div>
 		</div>

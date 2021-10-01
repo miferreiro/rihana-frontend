@@ -57,14 +57,25 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	public signTypes: SignType[];
 	public newSign: Sign;
 
+	public signNoFindings: Sign;
+	public noFindings: boolean;
+	public noNormal: boolean;
+
 	constructor(public localizationService: LocalizationService,
 				private signService: SignsService) { }
 
 	ngOnInit(): void {
 		this.brightness = '100';
 		this.contrast = '100';
+
+		this.noFindings = this.signs.filter(sing => sing.type.code == "NOF").length > 0;
+		this.noNormal = this.signs.filter(sing => sing.type.code == "NON").length > 0;
+
 		this.signService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes;
+			this.signNoFindings = new Sign();
+			this.signNoFindings.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
+			this.signNoFindings.id = this.signNoFindings.type.code;
 		})
 	}
 
@@ -108,6 +119,10 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	}
 
 	public addSign(signType: SignType): void {
+		if (this.signs.filter(sing => sing.type.code == "NOF" || sing.type.code == "NON").length > 0) {
+			this.signs = [];
+		}
+
 		let index = this.signsType(signType).length;
 		this.newSign.id = signType.code + index;
 		this.newSign.type = signType;
@@ -121,11 +136,18 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.newSign = new Sign();
 
 		this.showSelectSignType = false;
+		this.noFindings = false;
+		this.noNormal = false;
 		this.resetRadiography();
 	}
 
 	public removeSignType(signType: SignType): void {
 		this.signs = this.signs.filter(sign => sign.type.code !== signType.code);
+		if (this.signs.length == 0) {
+			this.noFindings = true;
+			(document.getElementById("noFindings") as HTMLInputElement).checked = true;
+			this.signs = [this.signNoFindings];
+		}
 	}
 
 	public showSignType(signType: SignType, event: Event): void {
@@ -142,6 +164,11 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 
 	public removeSign(sign: Sign): void {
 		this.signs = this.signs.filter(s => s !== sign);
+		if (this.signs.length == 0) {
+			this.noFindings = true;
+			(document.getElementById("noFindings") as HTMLInputElement).checked = true;
+			this.signs = [this.signNoFindings];
+		}
 	}
 
 	public showSign(sign: Sign, event: Event): void {
@@ -175,5 +202,34 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 
 	public assignColorTypeSign(signType: SignType, colorSecondary: boolean = false): string {
 		return assignColorTypeSign(signType, colorSecondary);
+	}
+
+	public countSignDetected(): number {
+		return this.signs.filter(sign => sign.type.code != 'NOF' && sign.type.code != 'NON').length;
+	}
+
+	public checkNoFindings(event: any): void {
+		if (event.target.checked) {
+			this.noFindings = true;
+			this.noNormal = false;
+			this.signs = [this.signNoFindings];
+		} else {
+			this.noFindings = false;
+			this.signs = this.signs.filter(sign => !sign.type.code.includes("NOF"));
+		}
+	}
+
+	public checkNoNormal(event: any): void {
+		if (event.target.checked) {
+			this.noFindings = false;
+			this.noNormal = true;
+			let signNoNormal = new Sign();
+			signNoNormal.type = this.signTypes.filter(signType => signType.code.includes("NON"))[0];
+			signNoNormal.id = signNoNormal.type.code;
+			this.signs = [signNoNormal];
+		} else {
+			this.noNormal = false;
+			this.signs = this.signs.filter(sign => !sign.type.code.includes("NON"));
+		}
 	}
 }

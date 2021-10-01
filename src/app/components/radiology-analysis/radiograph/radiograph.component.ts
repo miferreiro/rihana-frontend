@@ -22,12 +22,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {BehaviorSubject, Subscription} from 'rxjs';
+import {NotificationsService} from 'angular2-notifications';
+import {SignsService} from '../../../services/signs.service';
 import {assignColorTypeSign, SignType} from '../../../models/SignType';
 import {Radiograph} from '../../../models/Radiograph';
+import {Sign} from '../../../models/Sign';
 import {AnnotationResult} from '../../locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
 import {LocalizationService} from '../../../modules/internationalization/localization.service';
 import {NotificationService} from '../../../modules/notification/services/notification.service';
-import {NotificationsService} from 'angular2-notifications';
 
 @Component({
 	selector: 'app-radiograph',
@@ -46,6 +48,7 @@ export class RadiographComponent implements OnInit {
 
 	public isRadiographLoaded: boolean;
 
+	private signTypes: SignType[];
 	public radiograph: Radiograph;
 
 	public readonly controlRadiograph = new FileUploadControl(
@@ -60,7 +63,8 @@ export class RadiographComponent implements OnInit {
 
 	constructor(public localizationService: LocalizationService,
 				private notificationService: NotificationService,
-				private notificationsService: NotificationsService) { }
+				private notificationsService: NotificationsService,
+				private signsService: SignsService) { }
 
 	ngOnInit(): void {
 		this.isLoadingRadiograph = true;
@@ -88,6 +92,7 @@ export class RadiographComponent implements OnInit {
 				}
 			}
 		});
+		this.getSignTypes();
 		this.radiograph = new Radiograph();
 	}
 
@@ -119,6 +124,13 @@ export class RadiographComponent implements OnInit {
 				this.radiograph = new Radiograph();
 				this.radiograph.type = this.typeExploration;
 				this.radiograph.source = e.target.result.toString();
+				let signInitial = new Sign();
+				signInitial.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
+				signInitial.id = signInitial.type.code;
+
+				this.radiograph.signs = [signInitial];
+
+
 				this.isRadiographLoaded = true;
 
 				this.radiographHandler.emit(this.radiograph);
@@ -175,6 +187,12 @@ export class RadiographComponent implements OnInit {
 			this.radiographHandler.emit(this.radiograph);
 		}
 		document.getElementsByTagName("body")[0].style.overflow = "auto";
+	}
+
+	private getSignTypes() {
+		this.signsService.getSignTypes().subscribe(signTypes =>
+			this.signTypes = signTypes
+		)
 	}
 
 	public assignColorTypeSign(signType: SignType, colorSecondary: boolean = false): string {

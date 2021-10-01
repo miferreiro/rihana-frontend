@@ -104,16 +104,6 @@ ng-select {
 	padding: .3rem .45rem;
 }
 
-.noFinding {
-	width: fit-content;
-	margin: .2rem .5rem;
-	padding: .2rem .4rem;
-	border: 1px solid black;
-	border-left: 8px solid black;
-	border-radius: 5px 5px;
-	font-size: .7rem;
-}
-
 .card-footer {
 	padding: 0;
 	display: grid;

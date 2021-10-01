@@ -38,7 +38,6 @@ export function assignColorTypeSign(signType: SignType, colorSecondary: boolean 
 				// Color family: red
 				if (!colorSecondary) {
 					color = '#E6B8B8';
-
 				} else {
 					color = '#990F0B';
 				}
@@ -89,6 +88,22 @@ export function assignColorTypeSign(signType: SignType, colorSecondary: boolean 
 					color = '#FFC37D';
 				} else {
 					color = '#843E04';
+				}
+				break;
+			case 'NOF':
+				// Color family: black and white
+				if (!colorSecondary) {
+					color = '#000000';
+				} else {
+					color = '#FFFFFF';
+				}
+				break
+			case 'NON':
+				// Color family: lavender
+				if (!colorSecondary) {
+					color = '#D0BDF6';
+				} else {
+					color = '#6F44C7';
 				}
 				break;
 			default:
