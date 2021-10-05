@@ -56,17 +56,21 @@ export class ProfileComponent implements OnInit {
 	}
 
 	editUser() {
-		this.usersService.editUser(this.loggedUser).subscribe(updatedUser => {
+		if (this.loggedUser.password !== '') {
+			this.usersService.editUser(this.loggedUser).subscribe(updatedUser => {
+				this.editingUser = false;
+				if (this.loggedUser.password !== '') {
+					this.authenticationService.logOut();
+					this.authenticationService.logIn(this.loggedUser.login, this.loggedUser.password, this.loggedUser.role);
+				}
+				Object.assign(this.loggedUser, updatedUser);
+				this.confirmPassword = '';
+				this.notificationService.success(this.locationService.translate('User edited successfully') + '.',
+												this.locationService.translate('User edited'));
+			});
+		} else {
 			this.editingUser = false;
-			if (this.loggedUser.password !== '') {
-				this.authenticationService.logOut();
-				this.authenticationService.logIn(this.loggedUser.login, this.loggedUser.password, this.loggedUser.role);
-			}
-			Object.assign(this.loggedUser, updatedUser);
-			this.confirmPassword = '';
-			this.notificationService.success(this.locationService.translate('User edited successfully') + '.',
-											 this.locationService.translate('User edited'));
-		});
+		}
 	}
 
 }
