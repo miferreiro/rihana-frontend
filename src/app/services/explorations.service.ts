@@ -89,7 +89,7 @@ export class ExplorationsService {
 							this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id)
 						)),
 						forkJoin(explorationInfos.map(explorationInfo =>
-							this.reportsService.getReport((<IdAndUri>explorationInfo.patient).id)
+							this.reportsService.getReport((<IdAndUri>explorationInfo.report).id)
 						)),
 						forkJoin(explorationInfos.map(explorationInfo =>
 							forkJoin(explorationInfo.radiographs.map(radiograph => {
