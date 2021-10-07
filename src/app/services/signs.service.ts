@@ -25,9 +25,7 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 import {Sign} from "../models/Sign";
-import {SignType} from "../models/SignType";
 import {SignInfo} from "./entities/SignInfo";
-import {SignTypeInfo} from "./entities/SignTypeInfo";
 
 @Injectable()
 export class SignsService {
@@ -47,12 +45,6 @@ export class SignsService {
 		);
 	}
 
-	getSignTypes(): Observable<SignType[]> {
-		return this.http.get<SignInfo[]>(`${environment.restApi}/sign/type`).pipe(
-			map((signTypes) => signTypes.map(this.mapSignTypeInfo.bind(this)))
-		);
-	}
-
 	private mapSignInfo(signInfo: SignInfo): Sign {
 		return {
 			id: signInfo.id,
@@ -66,15 +58,6 @@ export class SignsService {
 			brightness: signInfo.brightness,
 			contrast: signInfo.contrast,
 			render: true
-		};
-	}
-
-	private mapSignTypeInfo(signTypeInfo: SignTypeInfo): SignType {
-		return  {
-				code: signTypeInfo.code,
-				name: signTypeInfo.name,
-				description: signTypeInfo.description,
-				target: signTypeInfo.target
 		};
 	}
 }

@@ -1,0 +1,178 @@
+<!--
+  ~ RIHANA Frontend
+  ~
+  ~ Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
+  ~ Miguel Ferreiro Díaz
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public
+  ~ License along with this program.  If not, see
+  ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
+-->
+
+<div class="container pb-2">
+	<div class="row summary mt-2 mb-3 text-center">
+		<h2>{{'Sign types management' | translate}}</h2>
+	</div>
+
+	<div class="row mb-3">
+		<div class="d-flex justify-content-end">
+			<button type="button" class="input-group-text btn btn-success btn-sm" (click)="creatingSignType=true"
+			        data-bs-toggle="modal" data-bs-target="#signTypeModal">
+				<i class="bi bi-plus-lg me-3"></i> {{'Add sign type' | translate}}
+			</button>
+		</div>
+	</div>
+
+	<form #signTypeForm="ngForm" (submit)="save(); signTypeForm.reset()" ngNativeValidate>
+		<div id="signTypeModal" class="modal fade" tabindex="-1" aria-labelledby="signtypeModalLabel" data-bs-backdrop="static">
+			<div class="modal-dialog modal-md modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 *ngIf="creatingSignType" class="modal-title">{{'Add sign type' | translate}}</h5>
+						<h5 *ngIf="editingSignType" class="modal-title">{{'Edit sign type' | translate}}: "{{ signType.code }}"</h5>
+					</div>
+					<div class="modal-body">
+						<section>
+							<div *ngIf="creatingSignType" class="row mb-3">
+								<label for="signtype-form-name" class="col-6 col-form-label required">
+									{{'Code' | translate}}
+								</label>
+								<div class="col-6">
+									<input id="signtype-form-code" id="code" type="text" name="code" [(ngModel)]="signType.code" required
+											pattern="[a-zA-ZñÑ0-9_-]{1,100}" title="{{'Must be a alphanumeric' | translate}}" #codeSignType="ngModel"/>
+								</div>
+								<div *ngIf="codeSignType.invalid  && !codeSignType.pristine" class="alert alert-danger my-0 py-1" role="alert">
+									<div *ngIf="codeSignType.errors.required">
+										{{'Code is required' | translate}}.
+									</div>
+									<div *ngIf="codeSignType.errors.pattern">
+										{{'Code can only contain letters, numbers or underscore and should have a length between 1 and 100' | translate}}.
+									</div>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<label for="signtype-form-name" class="col-6 col-form-label required">
+									{{'Name' | translate}}
+								</label>
+								<div class="col-6">
+									<input id="signtype-form-name" id="name" type="text" name="name" [(ngModel)]="signType.name" required
+											pattern="[a-zA-ZñÑ0-9_-]{1,100}" title="{{'Must be a alphanumeric' | translate}}" #nameSignType="ngModel"/>
+								</div>
+								<div *ngIf="nameSignType.invalid && !nameSignType.pristine" class="alert alert-danger my-0 py-1" role="alert">
+									<div *ngIf="nameSignType.errors.required">
+										{{'Name is required' | translate}}.
+									</div>
+									<div *ngIf="nameSignType.errors.pattern">
+										{{'Name can only contain letters, numbers or underscore and should have a length between 1 and 100' | translate}}.
+									</div>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<label for="signtype-form-description" class="col-6 col-form-label required">
+									{{'Description' | translate}}
+								</label>
+								<div class="col-6">
+									<textarea style="max-height:200px" id="signtype-form-description" id="description" type="text" rows="6" maxlength="100" name="description" [(ngModel)]="signType.description" required
+											pattern="[a-zA-ZñÑ0-9_-]{1,100}" title="{{'Must be a alphanumeric' | translate}}" #descriptionSignType="ngModel"></textarea>
+								</div>
+								<div *ngIf="descriptionSignType.invalid && !descriptionSignType.pristine" class="alert alert-danger my-0 py-1" role="alert">
+									<div *ngIf="descriptionSignType.errors.required">
+										{{'Description is required' | translate}}.
+									</div>
+									<div *ngIf="descriptionSignType.errors.pattern">
+										{{'Description can only contain letters, numbers or underscore and should have a length between 1 and 100' | translate}}.
+									</div>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<label for="signtype-form-target" class="col-6 col-form-label required">
+									{{'Target' | translate}}
+								</label>
+								<div class="col-6">
+									<input id="signtype-form-target" id="target" type="number" min="0" step="1" name="target" [(ngModel)]="signType.target" required
+											pattern="[0-9]{0,100}" title="{{'Must be numeric' | translate}}" #targetSignType="ngModel"/>
+								</div>
+								<div *ngIf="targetSignType.invalid && !targetSignType.pristine" class="alert alert-danger my-0 py-1" role="alert">
+									<div *ngIf="targetSignType.errors.required">
+										{{'Target is required' | translate}}.
+									</div>
+									<div *ngIf="targetSignType.errors.pattern">
+										{{'Target can only be positive numbers' | translate}}.
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+					<div class="modal-footer py-1">
+						<button #closeBtn type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal"
+								(click)="cancel(); signTypeForm.reset()">
+							{{'Cancel' | translate}}
+						</button>
+						<button *ngIf="creatingSignType" type="submit" class="btn btn-primary btn-sm"
+								[disabled]="signTypeForm.invalid">
+							{{'Add' | translate}}
+						</button>
+						<button *ngIf="editingSignType" type="submit" class="btn btn-primary btn-sm"
+								[disabled]="signTypeForm.invalid ">
+							{{'Edit' | translate}}
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<div class="row table-responsive">
+		<table class="table text-center align-middle">
+			<thead>
+				<tr>
+					<th scope="col">{{'Code' | translate}}</th>
+					<th scope="col">{{'Name' | translate}}</th>
+					<th scope="col">{{'Description' | translate}}</th>
+					<th scope="col">{{'Target' | translate}}</th>
+					<th scope="col">{{'Actions' | translate}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let signType of signTypes">
+					<td>{{signType.code}}</td>
+					<td>{{signType.name | translate}}</td>
+					<td>{{signType.description | translate}}</td>
+					<td>{{signType.target}}</td>
+					<td>
+						<div class="btn-group" role="group">
+							<button class="btn border-end" (click)="edit(signType.code)" data-bs-toggle="modal"
+									data-bs-target="#signTypeModal">
+									<i class="bi bi-pencil-square"></i>
+							</button>
+							<button class="btn" (click)="remove(signType.code)"><i class="bi bi-trash"></i></button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="no-data-signTypes" [ngStyle]="{'display': signTypes.length == 0 ? 'block' : 'none', 'opacity': signTypes.length == 0 ? '1' : '0', 'visibility': signTypes.length == 0 ? 'visible' : 'hidden'}"
+			 class="bg-light justify-content-center align-items-center">
+			<span class="alert align-middle" role="alert">
+				{{'No data to display' | translate}}
+			</span>
+		</div>
+	</div>
+</div>
+
+<app-delete-confirmation [(open)]="deletingSignType" [modelName]="'signType'"
+						 [id]="signType.code" [name]="signType.code"
+						 (cancel)="cancel()" (confirm)="delete($event)">
+</app-delete-confirmation>
+
+<simple-notifications></simple-notifications>

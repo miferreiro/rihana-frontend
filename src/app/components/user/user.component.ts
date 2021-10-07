@@ -51,11 +51,11 @@ export class UserComponent implements OnInit {
 	constructor(private authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
 				private locationService: LocalizationService,
-				private usersServices: UsersService) { }
+				private usersService: UsersService) { }
 
 	ngOnInit(): void {
 		this.user.role = Role.USER;
-		this.usersServices.getUsers().subscribe(users => {
+		this.usersService.getUsers().subscribe(users => {
 			this.users = users;
 			const loggedUser = this.users.find((user) => user.login === this.authenticationService.getUser().login);
 			this.users.splice(this.users.indexOf(loggedUser), 1);
@@ -64,14 +64,14 @@ export class UserComponent implements OnInit {
 
 	save() {
 		if (this.creatingUser) {
-			this.usersServices.create(this.user).subscribe((newUser) => {
+			this.usersService.create(this.user).subscribe((newUser) => {
 				this.users = this.users.concat(newUser);
 				this.notificationService.success(this.locationService.translate('User registered successfully') + '.',
 												 this.locationService.translate('User registered'));
 				this.cancel();
 			});
 		} else {
-			this.usersServices.editUser(this.user).subscribe(updated => {
+			this.usersService.editUser(this.user).subscribe(updated => {
 				Object.assign(this.users.find((user) => user.login === this.user.login), updated);
 				this.notificationService.success(this.locationService.translate('User edited successfully') + '.',
 												 this.locationService.translate('User edited'));
@@ -98,7 +98,7 @@ export class UserComponent implements OnInit {
 	}
 
 	delete(login: string) {
-		this.usersServices.deleteUser(login).subscribe(() => {
+		this.usersService.deleteUser(login).subscribe(() => {
 			const index = this.users.indexOf(
 				this.users.find((user) => user.login === login)
 			);

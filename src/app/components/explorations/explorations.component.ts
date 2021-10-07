@@ -22,7 +22,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ExplorationsService} from '../../services/explorations.service';
-import {SignsService} from '../../services/signs.service';
+import {SignTypesService} from '../../services/sign-types.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {Exploration} from '../../models/Exploration';
@@ -59,7 +59,7 @@ export class ExplorationsComponent implements OnInit {
 				private notificationService: NotificationService,
 				private locationService: LocalizationService,
 				private explorationsService: ExplorationsService,
-				private signsService: SignsService) { }
+				private signTypesService: SignTypesService) { }
 
 	ngOnInit() {
 		if (this.authenticationService.getUser().authenticated) {
@@ -73,7 +73,7 @@ export class ExplorationsComponent implements OnInit {
 	}
 
 	private getSignTypes() {
-		this.signsService.getSignTypes().subscribe(signTypes =>
+		this.signTypesService.getSignTypes().subscribe(signTypes =>
 			this.signTypes = signTypes
 		)
 	}

@@ -44,6 +44,7 @@ import {PatientsService} from './services/patients.service';
 import {RadiographsService} from './services/radiographs.service';
 import {ReportsService} from './services/reports.service';
 import {SignsService} from './services/signs.service';
+import {SignTypesService} from './services/sign-types.service';
 
 import {BarChartComponent} from './components/explorations/bar-chart/bar-chart.component';
 import {DeleteConfirmationComponent} from './components/delete-confirmation/delete-confirmation.component';
@@ -55,6 +56,7 @@ import {LocateSignsInImageDialogComponent} from './components/locate-signs-in-im
 import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiology-analysis.component';
 import {RadiographComponent} from './components/radiology-analysis/radiograph/radiograph.component';
 import {ReportComponent} from './components/report/report.component';
+import {SigntypeComponent} from './components/signtype/signtype.component';
 import {PieChartComponent} from './components/explorations/pie-chart/pie-chart.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {UserComponent} from './components/user/user.component';
@@ -84,6 +86,7 @@ import {NgxPanZoomModule} from 'ngx-panzoom';
 		RadiologyAnalysisComponent,
 		RadiographComponent,
 		ReportComponent,
+		SigntypeComponent,
 		UserComponent,
 		LangPipe,
 		PixelsToMmsPipe,
@@ -128,6 +131,7 @@ import {NgxPanZoomModule} from 'ngx-panzoom';
 		RadiographsService,
 		ReportsService,
 		SignsService,
+		SignTypesService,
 		{
 			provide: ErrorHandler,
 			useClass: ErrorNotificationHandler

@@ -25,10 +25,14 @@ import {AuthGuard} from './guards/authGuard';
 import {LoginComponent} from './components/login/login.component';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
 import {ExplorationComponent} from './components/exploration/exploration.component';
+import {SigntypeComponent} from './components/signtype/signtype.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {UserComponent} from './components/user/user.component';
 
 const routes: Routes = [
+	{
+		path: 'singtypes', component: SigntypeComponent, canActivate: [AuthGuard]
+	},
 	{
 		path: 'users', component: UserComponent, canActivate: [AuthGuard]
 	},

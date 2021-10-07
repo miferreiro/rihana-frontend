@@ -23,7 +23,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {NotificationsService} from 'angular2-notifications';
-import {SignsService} from '../../../services/signs.service';
+import {SignTypesService} from '../../../services/sign-types.service';
 import {assignColorTypeSign, SignType} from '../../../models/SignType';
 import {Radiograph} from '../../../models/Radiograph';
 import {Sign} from '../../../models/Sign';
@@ -64,7 +64,7 @@ export class RadiographComponent implements OnInit {
 	constructor(public localizationService: LocalizationService,
 				private notificationService: NotificationService,
 				private notificationsService: NotificationsService,
-				private signsService: SignsService) { }
+				private signTypesService: SignTypesService) { }
 
 	ngOnInit(): void {
 		this.isLoadingRadiograph = true;
@@ -190,7 +190,7 @@ export class RadiographComponent implements OnInit {
 	}
 
 	private getSignTypes() {
-		this.signsService.getSignTypes().subscribe(signTypes =>
+		this.signTypesService.getSignTypes().subscribe(signTypes =>
 			this.signTypes = signTypes
 		)
 	}

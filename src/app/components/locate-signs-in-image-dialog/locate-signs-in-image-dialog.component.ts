@@ -24,7 +24,7 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {Sign} from '../../models/Sign';
 import {assignColorTypeSign, SignType} from '../../models/SignType';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
-import {SignsService} from '../../services/signs.service';
+import {SignTypesService} from '../../services/sign-types.service';
 import {ImageAnnotatorComponent} from '../image-annotator/image-annotator.component';
 
 export class AnnotationResult {
@@ -62,7 +62,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	public noNormal: boolean;
 
 	constructor(public localizationService: LocalizationService,
-				private signService: SignsService) { }
+				private signTypesService: SignTypesService) { }
 
 	ngOnInit(): void {
 		this.brightness = '100';
@@ -71,7 +71,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.noFindings = this.signs.filter(sing => sing.type.code == "NOF").length > 0;
 		this.noNormal = this.signs.filter(sing => sing.type.code == "NON").length > 0;
 
-		this.signService.getSignTypes().subscribe(signTypes => {
+		this.signTypesService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes;
 			this.signNoFindings = new Sign();
 			this.signNoFindings.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
