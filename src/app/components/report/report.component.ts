@@ -27,6 +27,11 @@ import {PerformedExploration, Report, RequestedExploration} from '../../models/R
 import {Patient, SEX} from '../../models/Patient';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 
+export class ReportResult {
+	readonly report: Report;
+	readonly patient: Patient;
+}
+
 @Component({
 	selector: 'app-report',
 	templateUrl: './report.component.html',
@@ -36,7 +41,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 
 	private readonly extensionValid = ['pdf'];
 
-	@Output() reportEvent = new EventEmitter<Report>();
+	@Output() reportEvent = new EventEmitter<ReportResult>();
 
 	private subscriptionReport: Subscription;
 
@@ -98,7 +103,10 @@ export class ReportComponent implements OnInit, OnDestroy {
 		this.controlReport.removeFile(this.controlReport.value[0])
 		this.report = new Report();
 		this.patient = new Patient();
-		this.reportEvent.emit(this.report);
+		this.reportEvent.emit({
+			report: this.report,
+			patient: this.patient
+		});
 		this.isReportLoaded = false;
 	}
 
@@ -137,6 +145,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 		report = report.replace(/\s+/g, " ");
 		let dictRegex = {};
 
+		dictRegex["regexCIP"] = /(?:CIP: )([0-9A-Z]+)(?: NSS:)/;
 		dictRegex["regexBirthdate"] = /(?:Data Nac: )([0-9 ]+\/[0-9 ]+\/[0-9 ]+)(?: Sexo:)/;
 		dictRegex["regexSex"] = /(?:Sexo: )([a-zA-ZÀ-ÿÑñ]+)(?: NHC:)/;
 		dictRegex["regexCompetionDate"] = /(?:Data Realización )([0-9 ]+\/[0-9 ]+\/[0-9 ]+)/;
@@ -157,12 +166,13 @@ export class ReportComponent implements OnInit, OnDestroy {
 		// const regexRadiologist = /(?:RADIÓLOGO\/A )([a-zA-Z0-9À-ÿÑñ.ºª -]+ )/;
 		// const regexPatient = /(?:Paciente: )([a-zA-Z0-9À-ÿÑñ.ºª -]+)(?: Data Nac:)/;
 		// const regexNHC = /(?:NHC: )([0-9]+)(?: CIP:)/;
-		// const regexCIP = /(?:CIP: )([0-9A-Z]+)(?: NSS:)/;
 		// const regexNSS = /(?:NSS: )([0-9\/]+)(?:  Enderezo:)/;
 		// const regexAddress = /(?:Enderezo: )([a-zA-Z0-9À-ÿÑñ.ºª ()-]+)(?: Teléfono:)/;
 		// const regexPhoneNumber = /(?:Teléfono: )([0-9]+)/;
 
 		this.patient = new Patient();
+
+		this.patient.patientID = report.match(dictRegex["regexCIP"])[1];
 
 		let birthdateParts: RegExp = report.match(dictRegex["regexBirthdate"])[1].trim().replace(/[\t ]+/g, "").split("/");
 
@@ -228,7 +238,10 @@ export class ReportComponent implements OnInit, OnDestroy {
 		this.report.findings = report.match(dictRegex["regexFindings"])[1];
 		this.report.conclusions = report.match(dictRegex["regexConclusions"])[1];
 
-		this.reportEvent.emit(this.report);
+		this.reportEvent.emit({
+			report: this.report,
+			patient: this.patient
+		});
 	}
 
 	private async getDocument(pdfBase64: string): Promise<string> {

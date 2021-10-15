@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, AfterViewChecked} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ExplorationsService} from '../../services/explorations.service';
 import {SignTypesService} from '../../services/sign-types.service';
@@ -35,7 +35,7 @@ import {assignColorTypeSign, SignType} from '../../models/SignType';
 	templateUrl: './explorations.component.html',
 	styleUrls: ['./explorations.component.css']
 })
-export class ExplorationsComponent implements OnInit {
+export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	private _currentPage: number;
 	public loggedUser: string;
@@ -70,6 +70,13 @@ export class ExplorationsComponent implements OnInit {
 		this.currentPage = 1;
 		this.getSignTypes();
 		this.getPageExplorations();
+	}
+
+	ngAfterViewChecked() {
+		if (this.explorationsService.getExplorationCreated()) {
+			this.notificationService.success('Exploration registered successfully', 'Exploration registered')
+			this.explorationsService.setExplorationCreated(false);
+		}
 	}
 
 	private getSignTypes() {

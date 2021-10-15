@@ -30,17 +30,19 @@ import {Report} from '../../models/Report';
 })
 export class RadiologyAnalysisComponent implements OnInit {
 
-	public typeExploration: string;
+	public _typeExploration: string;
 	public showImageDialog = false;
 
 	public report: Report = new Report();
 
 	@Output() radiographs = new EventEmitter<Radiograph[]>();
+	@Output() typeExploration = new EventEmitter<string>();
 
 	private _radiographs: Radiograph[];
 
 	ngOnInit(): void {
-		this.typeExploration = 'PA-LAT';
+		this._typeExploration = 'PA-LAT';
+		this.typeExploration.emit(this._typeExploration);
 		this._radiographs = [];
 	}
 
@@ -49,15 +51,16 @@ export class RadiologyAnalysisComponent implements OnInit {
 		if (this.report.hasOwnProperty("performedExplorations")) {
 			let codes: string[] = this.report.performedExplorations.map(function(exploration) { return exploration.code; });
 			if (codes.includes('70102')) {
-				this.typeExploration = 'PA-LAT';
+				this._typeExploration = 'PA-LAT';
 			} else if (codes.includes('70101') || codes.includes('70121')) {
-				this.typeExploration = 'AP';
+				this._typeExploration = 'AP';
 			} else {
-				this.typeExploration = 'PA-LAT';
+				this._typeExploration = 'PA-LAT';
 			}
 		} else {
-			this.typeExploration = 'PA-LAT';
+			this._typeExploration = 'PA-LAT';
 		}
+		this.typeExploration.emit(this._typeExploration);
 	};
 
 	public radiographHandler(event: Radiograph, type: string): void {
@@ -76,6 +79,6 @@ export class RadiologyAnalysisComponent implements OnInit {
 	}
 
 	public showRadiograph(type: string): boolean {
-		return type === this.typeExploration;
+		return type === this._typeExploration;
 	}
 }

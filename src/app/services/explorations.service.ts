@@ -21,25 +21,33 @@
 
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {IdAndUri} from './entities/IdAndUri';
-import {ExplorationInfo} from './entities/ExplorationInfo';
-import {ExplorationPage} from './entities/ExplorationPage';
-import {environment} from '../../environments/environment';
 import {forkJoin, Observable, of} from 'rxjs';
 import {concatMap, map} from 'rxjs/operators';
-import {Exploration} from '../models/Exploration';
-import {Patient} from '../models/Patient';
+import {environment} from '../../environments/environment';
+import {EnumUtils} from '../utils/enum.utils';
+import {ExplorationInfo} from './entities/ExplorationInfo';
+import {ExplorationPage} from './entities/ExplorationPage';
+import {IdAndUri} from './entities/IdAndUri';
+import {NewExplorationInfo} from './entities/NewExplorationInfo';
+import {NewPatientInfo} from './entities/NewPatientInfo';
+import {NewRadiographInfo} from './entities/NewRadiographInfo';
+import {NewSignInfo} from './entities/NewSignInfo';
 import {PatientsService} from './patients.service';
 import {UsersService} from './users.service';
 import {ReportsService} from './reports.service';
 import {RadiographsService} from './radiographs.service';
-import {Users} from '../models/Users';
+import {Exploration} from '../models/Exploration';
+import {Patient, SEX} from '../models/Patient';
 import {Radiograph} from '../models/Radiograph';
 import {Report} from '../models/Report';
+import {Sign} from '../models/Sign';
 import {SignType} from '../models/SignType';
+import {Users} from '../models/Users';
 
 @Injectable()
 export class ExplorationsService {
+
+	private explorationCreated: boolean = false;
 
 	constructor(private http: HttpClient,
 				private usersService: UsersService,
@@ -50,6 +58,22 @@ export class ExplorationsService {
 
 	getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[]): Observable<ExplorationPage> {
 		return this.getExplorations(user, page, pageSize, signTypes, new HttpParams());
+	}
+
+	createExploration(exploration: Exploration): Observable<Exploration> {
+		const newExplorationInfo = this.toNewExplorationInfo(exploration);
+		return this.http.post<NewExplorationInfo>(`${environment.restApi}/exploration`, newExplorationInfo)
+			.pipe(
+				map(this.mapExplorationInfo.bind(this))
+			);
+	}
+
+	getExplorationCreated(): boolean {
+		return this.explorationCreated;
+	}
+
+	setExplorationCreated(explorationCreated: boolean): void {
+		this.explorationCreated = explorationCreated;
 	}
 
 	delete(id: string) {
@@ -86,8 +110,7 @@ export class ExplorationsService {
 					forkJoin([
 						this.usersService.getUser(user),
 						forkJoin(explorationInfos.map(explorationInfo =>
-							this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id)
-						)),
+							this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id))),
 						forkJoin(explorationInfos.map(explorationInfo =>
 							this.reportsService.getReport((<IdAndUri>explorationInfo.report).id)
 						)),
@@ -101,10 +124,10 @@ export class ExplorationsService {
 						map(userPatientReportAndRadiographs =>
 							explorationInfos.map((explorationInfo, index) =>
 								this.mapExplorationInfo(explorationInfo,
-										userPatientReportAndRadiographs[0][index],
-										userPatientReportAndRadiographs[1][index],
-										userPatientReportAndRadiographs[2][index],
-										userPatientReportAndRadiographs[3][index])
+									userPatientReportAndRadiographs[0][index],
+									userPatientReportAndRadiographs[1][index],
+									userPatientReportAndRadiographs[2][index],
+									userPatientReportAndRadiographs[3][index])
 							)
 						)
 					)
@@ -122,5 +145,66 @@ export class ExplorationsService {
 			report: report,
 			radiographs: radiographs
 		};
+	}
+
+	private toNewExplorationInfo(exploration: Exploration): NewExplorationInfo {
+
+		let report: Report;
+		let patient: NewPatientInfo;
+
+		report = exploration.report;
+		patient = this.toNewPatientInfo(exploration.patient)
+
+		return {
+			explorationDate: exploration.explorationDate,
+			user: exploration.user.login,
+			patient: patient,
+			report: report,
+			radiographs: exploration.radiographs.map(radiograph => this.toNewRadiographInfo(radiograph))
+		};
+	}
+
+	private toNewPatientInfo(patient: Patient): NewPatientInfo {
+		if (patient.sex != null && patient.birthdate != null) {
+			return {
+				patientID: patient.patientID,
+				sex: EnumUtils.findKeyForValue(SEX, patient.sex),
+				birthdate: new Date(patient.birthdate)
+			};
+		} else if (patient.sex != null) {
+			return {
+				patientID: patient.patientID,
+				sex: EnumUtils.findKeyForValue(SEX, patient.sex)
+			};
+		} else if (patient.birthdate != null) {
+			return {
+				patientID: patient.patientID,
+				birthdate: new Date(patient.birthdate)
+			};
+		} else {
+			return {
+				patientID: patient.patientID
+			};
+		}
+
+	}
+
+	private toNewRadiographInfo(radiograph: Radiograph): NewRadiographInfo {
+		return {
+			type: radiograph.type,
+			source: radiograph.source,
+			signs: radiograph.signs.map(sign => this.toNewSignInfo(sign)),
+			observations: radiograph.observations
+		}
+	}
+
+	private toNewSignInfo(sign: Sign): NewSignInfo {
+		return {
+			id: sign.id,
+			type: sign.type,
+			location: sign.location,
+			brightness: sign.brightness,
+			contrast: sign.contrast
+		}
 	}
 }

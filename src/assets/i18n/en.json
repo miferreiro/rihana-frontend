@@ -139,5 +139,11 @@
 	"Sign type registered": "Sign type registered",
 	"Sign type registered successfully": "Sign type registered successfully",
 	"Sign type removed": "Sign type removed",
-	"Sign type removed successfully": "Sign type removed successfully"
+	"Sign type removed successfully": "Sign type removed successfully",
+	"Exploration registered": "Exploration registered",
+	"Exploration registered successfully": "Exploration registered successfully",
+	"Not possible create an exploration": "Not possible create an exploration",
+	"Upload a report": "Upload a report",
+	"Upload a radiograph": "Upload a radiograph",
+	"The exploration is 'PA-LAT' type, therefore two loaded radiographs are required": "The exploration is 'PA-LAT' type, therefore two loaded radiographs are required"
 }

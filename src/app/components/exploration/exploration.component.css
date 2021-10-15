@@ -30,3 +30,59 @@ app-radiology-analysis {
 footer {
 	z-index: 999;
 }
+
+input {
+	flex: 0 1 auto;
+	margin-left: 0;
+	margin-right: .5rem;
+	margin-top: .25rem;
+	margin-bottom: .25rem;
+	background: linear-gradient(to bottom,transparent 95%,#0094d2 95%) no-repeat;
+	background-size: 0 100%;
+	transition: background-size .2s ease;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none;
+	-o-appearance: none;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	height: 1rem;
+	color: #000;
+	display: inline-block;
+	min-width: 2.5rem;
+	border-bottom: 1px solid #9a9a9a;
+	padding: 0 .25rem;
+	touch-action: manipulation;
+	overflow: visible;
+}
+
+input[type=date] {
+	border: none;
+}
+
+input:focus-visible {
+	outline-offset: 0px;
+}
+
+input[type=date]:focus-visible {
+	border: none;
+}
+
+input:focus {
+	border-bottom: 1px solid #0094d2;
+	background-size: 100% 100%;
+	outline: 0;
+}
+
+input[type=date]:focus {
+	border: none;
+	background: none;
+}
+
+.required:after {
+	content: '*';
+	line-height: .5rem;
+	color: #c92100;
+	margin-left: .25rem;
+}

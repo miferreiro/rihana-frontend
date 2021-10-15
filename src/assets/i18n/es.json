@@ -139,5 +139,11 @@
 	"Sign type registered": "Tipo de signo registrado",
 	"Sign type registered successfully": "Tipo de signo registrado con éxito",
 	"Sign type removed": "Tipo de signo eliminado",
-	"Sign type removed successfully": "Tipo de signo eliminado con éxito"
+	"Sign type removed successfully": "Tipo de signo eliminado con éxito",
+	"Exploration registered": "Exploración registrada",
+	"Exploration registered successfully": "Exploración registrada con éxito",
+	"Not possible create an exploration": "No es posible crear una exploración",
+	"Upload a report": "Carga un informe",
+	"Upload a radiograph": "Carga una radiografía",
+	"The exploration is 'PA-LAT' type, therefore two loaded radiographs are required": "La exploración es de tipo 'PA-LAT' por lo que se necesitan dos radiografías cargadas"
 }
