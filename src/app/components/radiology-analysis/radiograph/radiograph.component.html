@@ -127,7 +127,7 @@
 	</div>
 	<div class="row mt-4">
 		<h4 class="col">{{'Observations' | translate}}: </h4>
-		<textarea name="observations" class="form-control" [(ngModel)]="radiograph.observations"
+		<textarea name="observations" class="form-control" style="max-height:100px" rows="2" maxlength="3000" [(ngModel)]="radiograph.observations"
 				  placeholder="{{'Add your observations here' | translate}}..."></textarea>
 	</div>
 </div>
