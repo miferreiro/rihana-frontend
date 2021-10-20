@@ -138,6 +138,8 @@
 	"Target": "Target",
 	"Sign type registered": "Sign type registered",
 	"Sign type registered successfully": "Sign type registered successfully",
+	"Sign type edited": "Sign type edited",
+	"Sign type edited successfully": "Sign type edited successfully",
 	"Sign type removed": "Sign type removed",
 	"Sign type removed successfully": "Sign type removed successfully",
 	"Exploration registered": "Exploration registered",
@@ -145,5 +147,8 @@
 	"Not possible create an exploration": "Not possible create an exploration",
 	"Upload a report": "Upload a report",
 	"Upload a radiograph": "Upload a radiograph",
-	"The exploration is 'PA-LAT' type, therefore two loaded radiographs are required": "The exploration is 'PA-LAT' type, therefore two loaded radiographs are required"
+	"The exploration is 'PA-LAT' type, therefore two loaded radiographs are required": "The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
+	"Primary color": "Primary color",
+	"Secondary color": "Secondary color",
+	"Copy color to clipboard": "Copy color to clipboard"
 }

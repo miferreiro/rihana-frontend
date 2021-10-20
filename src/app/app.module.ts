@@ -73,6 +73,8 @@ import {ChartsModule} from 'ng2-charts';
 
 import {NgxPanZoomModule} from 'ngx-panzoom';
 
+import {ColorPickerModule} from '@iplab/ngx-color-picker';
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -99,6 +101,7 @@ import {NgxPanZoomModule} from 'ngx-panzoom';
 		BrowserModule,
 		BrowserAnimationsModule,
 		ChartsModule,
+		ColorPickerModule,
 		FileUploadModule,
 		FormsModule,
 		HttpClientModule,

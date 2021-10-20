@@ -24,7 +24,7 @@ import {ChartOptions, ChartType} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {Observable} from 'rxjs';
 import {AuthenticationService} from '../../../services/authentication.service';
-import {assignColorTypeSign, SignType} from '../../../models/SignType';
+import {SignType} from '../../../models/SignType';
 import {SignsService} from '../../../services/signs.service';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
@@ -149,7 +149,7 @@ export class PieChartComponent implements OnInit {
 			);
 
 			const setOpacity = (hex: string, alpha: number) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2)}`;
-			let signColors = signTypes.map(signType => setOpacity(assignColorTypeSign(signType, false), 0.8))
+			let signColors = signTypes.map(signType => setOpacity(signType.primaryColor, 0.8))
 
 			this.pieChartLabels = signTypesLabels;
 			this.pieChartData = signNum;

@@ -113,13 +113,13 @@
 	<div *ngIf="radiograph.signs != undefined" class="row signs">
 		<ul>
 			<li *ngFor="let sign of radiograph.signs" class="col-lg-4 col-md-6 col-12">
-				<p *ngIf="sign.type.code != 'NOF' && sign.type.code != 'NON'" [ngStyle]="{'border-color': assignColorTypeSign(sign.type)}">
+				<p *ngIf="sign.type.code != 'NOF' && sign.type.code != 'NON'" [ngStyle]="{'border-color': sign.type.primaryColor}">
 					{{sign.id}} (<var>{{'Area' | translate}}</var>: {{sign.location?.area() | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm²)
 				</p>
-				<p *ngIf="sign.type.code == 'NOF'" [ngStyle]="{'border-color': assignColorTypeSign(sign.type)}">
+				<p *ngIf="sign.type.code == 'NOF'" [ngStyle]="{'border-color': sign.type.primaryColor}">
 					{{sign.type.name | translate}}
 				</p>
-				<p *ngIf="sign.type.code == 'NON'" [ngStyle]="{'border-color': assignColorTypeSign(sign.type)}">
+				<p *ngIf="sign.type.code == 'NON'" [ngStyle]="{'border-color': sign.type.primaryColor}">
 					{{sign.type.name | translate}}
 				</p>
 			</li>

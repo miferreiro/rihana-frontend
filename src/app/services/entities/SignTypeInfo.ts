@@ -24,4 +24,6 @@ export interface SignTypeInfo {
 	name: string;
 	description: string;
 	target: number;
+	primaryColor: string;
+	secondaryColor: string;
 }

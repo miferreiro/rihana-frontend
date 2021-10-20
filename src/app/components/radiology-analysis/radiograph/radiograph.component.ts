@@ -24,7 +24,7 @@ import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {NotificationsService} from 'angular2-notifications';
 import {SignTypesService} from '../../../services/sign-types.service';
-import {assignColorTypeSign, SignType} from '../../../models/SignType';
+import {SignType} from '../../../models/SignType';
 import {Radiograph} from '../../../models/Radiograph';
 import {Sign} from '../../../models/Sign';
 import {AnnotationResult} from '../../locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
@@ -193,10 +193,6 @@ export class RadiographComponent implements OnInit {
 		this.signTypesService.getSignTypes().subscribe(signTypes =>
 			this.signTypes = signTypes
 		)
-	}
-
-	public assignColorTypeSign(signType: SignType, colorSecondary: boolean = false): string {
-		return assignColorTypeSign(signType, colorSecondary);
 	}
 
 	public ngOnDestroy(): void {

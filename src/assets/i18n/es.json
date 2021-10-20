@@ -138,6 +138,8 @@
 	"Target": "Objetivo",
 	"Sign type registered": "Tipo de signo registrado",
 	"Sign type registered successfully": "Tipo de signo registrado con éxito",
+	"Sign type edited": "Tipo de signo editado",
+	"Sign type edited successfully": "Tipo de signo editado con éxito",
 	"Sign type removed": "Tipo de signo eliminado",
 	"Sign type removed successfully": "Tipo de signo eliminado con éxito",
 	"Exploration registered": "Exploración registrada",
@@ -145,5 +147,8 @@
 	"Not possible create an exploration": "No es posible crear una exploración",
 	"Upload a report": "Carga un informe",
 	"Upload a radiograph": "Carga una radiografía",
-	"The exploration is 'PA-LAT' type, therefore two loaded radiographs are required": "La exploración es de tipo 'PA-LAT' por lo que se necesitan dos radiografías cargadas"
+	"The exploration is 'PA-LAT' type, therefore two loaded radiographs are required": "La exploración es de tipo 'PA-LAT' por lo que se necesitan dos radiografías cargadas",
+	"Primary color": "Color primario",
+	"Secondary color": "Color secundario",
+	"Copy color to clipboard": "Copiar el color al portapapeles"
 }

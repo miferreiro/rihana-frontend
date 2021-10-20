@@ -52,7 +52,9 @@ export class SignsService {
 				code: signInfo.type.code,
 				name: signInfo.type.name,
 				description: signInfo.type.description,
-				target: signInfo.type.target
+				target: signInfo.type.target,
+				primaryColor: signInfo.type.primaryColor,
+				secondaryColor: signInfo.type.secondaryColor
 			},
 			location: signInfo.location,
 			brightness: signInfo.brightness,

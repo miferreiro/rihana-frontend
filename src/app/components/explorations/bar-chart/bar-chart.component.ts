@@ -23,7 +23,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {Observable} from 'rxjs';
-import {assignColorTypeSign, SignType} from '../../../models/SignType';
+import {SignType} from '../../../models/SignType';
 import {SignsService} from '../../../services/signs.service';
 
 @Component({
@@ -150,7 +150,7 @@ export class BarChartComponent implements OnInit {
 			);
 
 			const setOpacity = (hex: string, alpha: number) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2)}`;
-			let signColors = signTypes.map(signType => setOpacity(assignColorTypeSign(signType, false), 0.8))
+			let signColors = signTypes.map(signType => setOpacity(signType.primaryColor, 0.8))
 
 			let signNumPercentages: number[] = signNum.map((n, i) => Math.ceil((n / signTypesTarget[i])));
 

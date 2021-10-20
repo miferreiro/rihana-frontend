@@ -19,18 +19,19 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SignType} from '../../models/SignType';
 import {SignTypesService} from '../../services/sign-types.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
+import {ColorPickerControl, ColorsTable} from '@iplab/ngx-color-picker';
 
 @Component({
 	selector: 'app-signtype',
 	templateUrl: './signtype.component.html',
 	styleUrls: ['./signtype.component.css']
 })
-export class SigntypeComponent implements OnInit {
+export class SigntypeComponent implements OnInit, AfterViewChecked {
 
 	@ViewChild('closeBtn') closeBtn: ElementRef;
 
@@ -45,6 +46,9 @@ export class SigntypeComponent implements OnInit {
 
 	signTypes: SignType[] = [];
 
+	public compactControlPrimaryColor = new ColorPickerControl().hidePresets();
+	public compactControlSecondaryColor = new ColorPickerControl().hidePresets();
+
 	constructor(private notificationService: NotificationService,
 				private locationService: LocalizationService,
 				private signTypesService: SignTypesService) { }
@@ -53,6 +57,14 @@ export class SigntypeComponent implements OnInit {
 		this.signTypesService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes;
 		})
+		this.signType.primaryColor ="#FFFFFF";
+		this.signType.secondaryColor ="#000000";
+	}
+
+	ngAfterViewChecked(): void {
+		document.querySelectorAll("indicator-component").forEach(e =>
+			e.setAttribute("title", this.locationService.translate("Copy color to clipboard"))
+		);
 	}
 
 	save() {
@@ -67,8 +79,8 @@ export class SigntypeComponent implements OnInit {
 			this.signTypesService.editSignType(this.signType).subscribe((updated) => {
 				Object.assign(this.signTypes.find((signType) => signType.code === this.signType.code), updated);
 
-				this.notificationService.success(this.locationService.translate('Sign type registered successfully') + '.',
-												 this.locationService.translate('Sign type registered'));
+				this.notificationService.success(this.locationService.translate('Sign type edited successfully') + '.',
+												 this.locationService.translate('Sign type edited'));
 				this.cancel();
 			});
 		}
@@ -79,6 +91,8 @@ export class SigntypeComponent implements OnInit {
 		this.editingSignType = false;
 		this.deletingSignType = false;
 		this.signType = new SignType();
+		this.signType.primaryColor ="#FFFFFF";
+		this.signType.secondaryColor ="#000000";
 		this.closeBtn.nativeElement.click();
 	}
 

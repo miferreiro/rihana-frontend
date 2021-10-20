@@ -62,11 +62,11 @@
 
 					<ng-template ng-label-tmp let-item="item" let-clear="clear">
 						<span class="ng-value-label"
-								[ngStyle]="{'background-color': assignColorTypeSign(item, false) + 'CC', 'color': assignColorTypeSign(item, true)}">
+								[ngStyle]="{'background-color': item.primaryColor + 'CC', 'color': item.secondaryColor}">
 							{{item.code}}
 						</span>
 						<span class="ng-value-icon right"
-								[ngStyle]="{'background-color': assignColorTypeSign(item, false) + 'CC', 'color': assignColorTypeSign(item, true), 'border-left': 'none'}"
+								[ngStyle]="{'background-color': item.primaryColor + 'CC', 'color': item.secondaryColor, 'border-left': 'none'}"
 								aria-hidden="true"
 								(click)="clear(item)">
 								×
@@ -74,7 +74,7 @@
 					</ng-template>
 
 					<ng-template ng-option-tmp let-item="item">
-						<div class="ng-option" [ngStyle]="{'border-color': assignColorTypeSign(item)}">
+						<div class="ng-option" [ngStyle]="{'border-color': item.primaryColor}">
 							{{item.name | translate}} ({{item.code}})
 						</div>
 					</ng-template>
@@ -95,10 +95,10 @@
 						<div *ngIf="getExplorationSigns(exploration).length != 0" class="row d-flex">
 							<div *ngFor="let sign of getExplorationSigns(exploration); let i=index"
 								 class="col-auto align-self-center">
-								<div class="signType my-1" [ngStyle]="{'border-color': assignColorTypeSign(sign.type)}">
+								<div class="signType my-1" [ngStyle]="{'border-color': sign.type.primaryColor}">
 									<span>{{sign.type.code}}</span>
 									<span class="numSignType badge rounded-pill"
-										  [ngStyle]="{'background-color': assignColorTypeSign(sign.type, false), 'color': assignColorTypeSign(sign.type, true)}">
+										  [ngStyle]="{'background-color': sign.type.primaryColor, 'color': sign.type.secondaryColor}">
 											{{getNumExplorationSignType(exploration, sign.type.code)}}
 									</span>
 								</div>

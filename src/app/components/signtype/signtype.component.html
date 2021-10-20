@@ -35,7 +35,7 @@
 
 	<form #signTypeForm="ngForm" (submit)="save(); signTypeForm.reset()" ngNativeValidate>
 		<div id="signTypeModal" class="modal fade" tabindex="-1" aria-labelledby="signtypeModalLabel" data-bs-backdrop="static">
-			<div class="modal-dialog modal-md modal-dialog-centered">
+			<div class="modal-dialog modal-lg modal-fullscreen-md-down modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 *ngIf="creatingSignType" class="modal-title">{{'Add sign type' | translate}}</h5>
@@ -44,11 +44,11 @@
 					<div class="modal-body">
 						<section>
 							<div *ngIf="creatingSignType" class="row mb-3">
-								<label for="signtype-form-name" class="col-6 col-form-label required">
+								<label for="signtype-form-name" class="col-lg-6 col-md-12 col-form-label required fw-bold">
 									{{'Code' | translate}}
 								</label>
-								<div class="col-6">
-									<input id="signtype-form-code" id="code" type="text" name="code" [(ngModel)]="signType.code" required
+								<div class="col-lg-6 col-md-12">
+									<input id="signtype-form-code" type="text" name="code" [(ngModel)]="signType.code" required
 											pattern="[a-zA-ZñÑ0-9_-]{1,100}" title="{{'Must be a alphanumeric' | translate}}" #codeSignType="ngModel"/>
 								</div>
 								<div *ngIf="codeSignType.invalid  && !codeSignType.pristine" class="alert alert-danger my-0 py-1" role="alert">
@@ -61,11 +61,11 @@
 								</div>
 							</div>
 							<div class="row mb-3">
-								<label for="signtype-form-name" class="col-6 col-form-label required">
+								<label for="signtype-form-name" class="col-lg-6 col-md-12 col-form-label required fw-bold">
 									{{'Name' | translate}}
 								</label>
-								<div class="col-6">
-									<input id="signtype-form-name" id="name" type="text" name="name" [(ngModel)]="signType.name" required
+								<div class="col-lg-6 col-md-12">
+									<input id="signtype-form-name" type="text" name="name" [(ngModel)]="signType.name" required
 											pattern="[a-zA-ZñÑ0-9_-]{1,100}" title="{{'Must be a alphanumeric' | translate}}" #nameSignType="ngModel"/>
 								</div>
 								<div *ngIf="nameSignType.invalid && !nameSignType.pristine" class="alert alert-danger my-0 py-1" role="alert">
@@ -78,11 +78,11 @@
 								</div>
 							</div>
 							<div class="row mb-3">
-								<label for="signtype-form-description" class="col-6 col-form-label required">
+								<label for="signtype-form-description" class="col-lg-6 col-md-12 col-form-label required fw-bold">
 									{{'Description' | translate}}
 								</label>
-								<div class="col-6">
-									<textarea style="max-height:200px" id="signtype-form-description" id="description" type="text" rows="6" maxlength="100" name="description" [(ngModel)]="signType.description" required
+								<div class="col-lg-6 col-md-12">
+									<textarea style="max-height:100px" id="signtype-form-description" type="text" rows="3" maxlength="100" name="description" [(ngModel)]="signType.description" required
 											pattern="[a-zA-ZñÑ0-9_-]{1,100}" title="{{'Must be a alphanumeric' | translate}}" #descriptionSignType="ngModel"></textarea>
 								</div>
 								<div *ngIf="descriptionSignType.invalid && !descriptionSignType.pristine" class="alert alert-danger my-0 py-1" role="alert">
@@ -95,11 +95,11 @@
 								</div>
 							</div>
 							<div class="row mb-3">
-								<label for="signtype-form-target" class="col-6 col-form-label required">
+								<label for="signtype-form-target" class="col-lg-6 col-md-12 col-form-label required fw-bold">
 									{{'Target' | translate}}
 								</label>
-								<div class="col-6">
-									<input id="signtype-form-target" id="target" type="number" min="0" step="1" name="target" [(ngModel)]="signType.target" required
+								<div class="col-lg-6 col-md-12">
+									<input id="signtype-form-target" type="number" min="0" step="1" name="target" [(ngModel)]="signType.target" required
 											pattern="[0-9]{0,100}" title="{{'Must be numeric' | translate}}" #targetSignType="ngModel"/>
 								</div>
 								<div *ngIf="targetSignType.invalid && !targetSignType.pristine" class="alert alert-danger my-0 py-1" role="alert">
@@ -111,6 +111,38 @@
 									</div>
 								</div>
 							</div>
+							<div class="row mb-3">
+								<label for="signtype-form-primaryColor" class="col-lg-6 col-md-12 col-form-label required fw-bold">
+									{{'Primary color' | translate}}
+								</label>
+								<div class="col-lg-6 col-md-12">
+									<div class="mb-2">
+										<span class="mx-2">Color seleccionado:</span>
+										<input type="color" value="{{signType.primaryColor}}" disabled>
+									</div>
+									<compact-picker [(color)]="signType.primaryColor" [control]="compactControlPrimaryColor"></compact-picker>
+								</div>
+								<div *ngIf="signType.primaryColor == '' || signType.primaryColor == undefined " class="alert alert-danger my-0 py-1" role="alert">
+									No puede ser vacio
+								</div>
+
+							</div>
+
+							<div class="row mb-3">
+								<label for="signtype-form-secondaryColor" class="col-lg-6 col-md-12 col-form-label required fw-bold">
+									{{'Secondary color' | translate}}
+								</label>
+								<div class="col-lg-6 col-md-12">
+									<div class="mb-2">
+										<span class="mx-2">Color seleccionado:</span>
+										<input type="color" value="{{signType.secondaryColor}}" disabled>
+									</div>
+									<compact-picker [(color)]="signType.secondaryColor" [control]="compactControlSecondaryColor"></compact-picker>
+								</div>
+								<div *ngIf="signType.secondaryColor == '' || signType.secondaryColor == undefined " class="alert alert-danger my-0 py-1" role="alert">
+									No puede ser vacio
+								</div>
+							</div>
 						</section>
 					</div>
 					<div class="modal-footer py-1">
@@ -119,11 +151,17 @@
 							{{'Cancel' | translate}}
 						</button>
 						<button *ngIf="creatingSignType" type="submit" class="btn btn-primary btn-sm"
-								[disabled]="signTypeForm.invalid">
+								[disabled]="signTypeForm.invalid || signType.primaryColor === '' ||
+								signType.primaryColor === undefined ||
+								signType.primaryColor === '' ||
+								signType.primaryColor === undefined">
 							{{'Add' | translate}}
 						</button>
 						<button *ngIf="editingSignType" type="submit" class="btn btn-primary btn-sm"
-								[disabled]="signTypeForm.invalid ">
+								[disabled]="signTypeForm.invalid || signType.secondaryColor === '' ||
+											signType.secondaryColor === undefined ||
+											signType.secondaryColor === '' ||
+											signType.secondaryColor === undefined">
 							{{'Edit' | translate}}
 						</button>
 					</div>
@@ -138,8 +176,10 @@
 				<tr>
 					<th scope="col">{{'Code' | translate}}</th>
 					<th scope="col">{{'Name' | translate}}</th>
-					<th scope="col">{{'Description' | translate}}</th>
+					<!-- <th scope="col">{{'Description' | translate}}</th> -->
 					<th scope="col">{{'Target' | translate}}</th>
+					<th scope="col">{{'Primary color' | translate}}</th>
+					<th scope="col">{{'Secondary color' | translate}}</th>
 					<th scope="col">{{'Actions' | translate}}</th>
 				</tr>
 			</thead>
@@ -147,8 +187,18 @@
 				<tr *ngFor="let signType of signTypes">
 					<td>{{signType.code}}</td>
 					<td>{{signType.name | translate}}</td>
-					<td>{{signType.description | translate}}</td>
+					<!-- <td>{{signType.description | translate}}</td> -->
 					<td>{{signType.target}}</td>
+					<td>
+						<div class="cp_wrapper">
+							<input type="color" value="{{signType.primaryColor}}" disabled>
+						</div>
+					</td>
+					<td>
+						<div class="cp_wrapper">
+							<input type="color" value="{{signType.secondaryColor}}" disabled>
+						</div>
+					</td>
 					<td>
 						<div class="btn-group" role="group">
 							<button class="btn border-end" (click)="edit(signType.code)" data-bs-toggle="modal"

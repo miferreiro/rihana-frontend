@@ -22,7 +22,7 @@
 
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Sign} from '../../models/Sign';
-import {assignColorTypeSign, SignType} from '../../models/SignType';
+import {SignType} from '../../models/SignType';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {SignTypesService} from '../../services/sign-types.service';
 import {ImageAnnotatorComponent} from '../image-annotator/image-annotator.component';
@@ -198,10 +198,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 
 	public setScaleFactorImage(scaleFactorImage: number): void {
 		this.scaleFactorImage = scaleFactorImage;
-	}
-
-	public assignColorTypeSign(signType: SignType, colorSecondary: boolean = false): string {
-		return assignColorTypeSign(signType, colorSecondary);
 	}
 
 	public countSignDetected(): number {

@@ -20,9 +20,11 @@
  */
 
 table {
-	table-layout: fixed;
-	word-wrap: break-word;
+	width: auto;
+	min-width: 100%;
 	margin-bottom: 0;
+	table-layout: fixed;
+	word-wrap: initial;
 }
 
 .btn:focus {
@@ -56,47 +58,50 @@ table {
 	font-size: .8rem;
 }
 
-input {
-	flex: 0 1 auto;
+input[type=text],
+input[type=number] {
+	height: 1rem;
+	min-width: 2.5rem;
 	margin-left: 0;
 	margin-right: .5rem;
 	margin-top: .25rem;
 	margin-bottom: .25rem;
+	padding: 0 .25rem;
+	flex: 0 1 auto;
+	display: inline-block;
 	background: linear-gradient(to bottom,transparent 95%,#0094d2 95%) no-repeat;
 	background-size: 0 100%;
+	box-shadow: none;
+	border: 0;
+	border-radius: 0;
+	border-bottom: 1px solid #9a9a9a;
+	color: #000;
+	touch-action: manipulation;
+	overflow: visible;
 	transition: background-size .2s ease;
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	-ms-appearance: none;
 	-o-appearance: none;
-	border: 0;
-	border-radius: 0;
-	box-shadow: none;
-	height: 1rem;
-	color: #000;
-	display: inline-block;
-	min-width: 2.5rem;
-	border-bottom: 1px solid #9a9a9a;
-	padding: 0 .25rem;
-	touch-action: manipulation;
-	overflow: visible;
 }
 
-input:focus-visible {
+input[type=text]:focus-visible,
+input[type=number]:focus-visible {
 	outline-offset: 0px;
 }
 
-input:focus {
-	border-bottom: 1px solid #0094d2;
+input[type=text]:focus,
+input[type=number]:focus {
 	background-size: 100% 100%;
+	border-bottom: 1px solid #0094d2;
 	outline: 0;
 }
 
 .required:after {
+	margin-left: .25rem;
 	content: '*';
 	line-height: .5rem;
 	color: #c92100;
-	margin-left: .25rem;
 }
 
 input[type=number] {
@@ -114,4 +119,61 @@ input[type=number]:hover {
 
 input[type=number]:focus {
 	outline: none;
+}
+
+.cp_wrapper {
+	width: 2em;
+	height: 2em;
+	margin: auto;
+	border-radius: 50%;
+	box-shadow: 1px 1px 3px 0px grey;
+	overflow: hidden;
+}
+
+.cp_wrapper > input {
+	width: 150%;
+	height: 150%;
+	padding: 0;
+	margin: -25%;
+}
+
+@media(max-width: 991px) {
+
+	.modal-content {
+		text-align: center;
+	}
+
+	compact-picker {
+		margin: auto;
+	}
+}
+
+span {
+	vertical-align: super;
+}
+
+.table-responsive::-webkit-scrollbar {
+	-webkit-appearance: none;
+}
+
+.table-responsive::-webkit-scrollbar:vertical {
+	width:10px;
+}
+
+.table-responsive::-webkit-scrollbar-button:increment,.table-responsive::-webkit-scrollbar-button {
+	display: none;
+}
+
+.table-responsive::-webkit-scrollbar:horizontal {
+	height: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+	background-color: #797979;
+	border-radius: 20px;
+	border: 2px solid #f1f2f3;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+	border-radius: 10px;
 }

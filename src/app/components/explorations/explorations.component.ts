@@ -20,15 +20,15 @@
  */
 
 import {Component, OnInit, AfterViewChecked} from '@angular/core';
+import {Subject} from 'rxjs';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ExplorationsService} from '../../services/explorations.service';
 import {SignTypesService} from '../../services/sign-types.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {Exploration} from '../../models/Exploration';
-import {Subject} from 'rxjs';
 import {Sign} from '../../models/Sign';
-import {assignColorTypeSign, SignType} from '../../models/SignType';
+import {SignType} from '../../models/SignType';
 
 @Component({
 	selector: 'app-explorations',
@@ -145,10 +145,6 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		this.pageSize = event.target.value;
 		this.currentPage = 1;
 		this.getPageExplorations();
-	}
-
-	public assignColorTypeSign(signType: SignType, colorSecondary: boolean = false): string {
-		return assignColorTypeSign(signType, colorSecondary);
 	}
 
 	private explorationSigns(exploration: Exploration): Sign[] {

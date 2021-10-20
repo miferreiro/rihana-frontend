@@ -223,7 +223,7 @@ label {
 	display: block;
 	float: right;
 	border-radius: 6px 10px 10px 6px;
-	transition: all 1 cubic-bezier(.25,1.7,.35,.8);;
+	transition: all 1 cubic-bezier(.25,1.7,.35,.8);
 	z-index: -1;
 }
 
@@ -248,7 +248,7 @@ label {
 	display: block;
 	float: right;
 	border-radius: 10px 6px 6px 10px;
-	transition: all 1 cubic-bezier(.25,1.7,.35,.8);;
+	transition: all 1 cubic-bezier(.25,1.7,.35,.8);
 	z-index: -1;
 }
 

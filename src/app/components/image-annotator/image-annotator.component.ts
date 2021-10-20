@@ -21,7 +21,6 @@
 
 import {ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Sign} from '../../models/Sign';
-import {assignColorTypeSign} from '../../models/SignType';
 import {SignLocation} from '../../models/SignLocation';
 import {PanZoomConfig, PanZoomAPI, PanZoomModel, PanZoomConfigOptions} from 'ngx-panzoom';
 import {Subscription} from 'rxjs';
@@ -47,6 +46,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 	@ViewChild('canvasElement') private canvasElementRef: ElementRef<HTMLCanvasElement>;
 	@ViewChild('imageElement') private imageElementRef: ElementRef<HTMLImageElement>;
 
+	private defaultColor: string = "yellow";
 	private newSignLocation: SignLocation = null;
 	private scaleFactorImage: number;
 
@@ -183,7 +183,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 				let loc = sign.location;
 
 				context.beginPath();
-				context.strokeStyle = assignColorTypeSign(sign.type);;
+				context.strokeStyle = sign.type.primaryColor;
 				context.filter = 'brightness(1) contrast(1)';
 				context.rect(loc.x * this.scaleFactorImage, loc.y * this.scaleFactorImage,
 							 loc.width * this.scaleFactorImage, loc.height * this.scaleFactorImage);
@@ -222,8 +222,8 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 				}
 
 				signIdDiv.setAttribute("style", "left:" + (left - 1) + "px;top:" + top + "px;width: fit-content;" +
-												"background-color:" + assignColorTypeSign(sign.type) +
-												";color:" + assignColorTypeSign(sign.type, true));
+												"background-color:" + sign.type.primaryColor +
+												";color:" + sign.type.secondaryColor);
 				div.appendChild(signIdDiv);
 
 				let widthDiv = Math.max((loc.width * this.scaleFactorImage + 2), signIdDiv.clientWidth);
@@ -246,7 +246,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 													"top:" + (canvasDim.offsetTop + (loc.y * this.scaleFactorImage)) + "px;" +
 													"width:" + (loc.width * this.scaleFactorImage) + "px;" +
 													"height:" + (loc.height * this.scaleFactorImage) + "px;" +
-													"position:absolute;background-color:" + assignColorTypeSign(sign.type) +
+													"position:absolute;background-color:" + sign.type.primaryColor +
 													";opacity:0")
 
 					if (this.canLocate()) {
@@ -266,7 +266,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 
 						x.setAttribute("style", "left:" + xWidth + "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
 												"position:absolute;font-size:1rem;visibility:hidden;color:" +
-												assignColorTypeSign(sign.type, true));
+												sign.type.secondaryColor);
 
 						hoverZone.append(x);
 						div.appendChild(hoverZone);
@@ -278,7 +278,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 													"top:" + (canvasDim.offsetTop + (loc.y * this.scaleFactorImage)) + "px;" +
 													"width:" + (loc.width * this.scaleFactorImage) + "px;" +
 													"height:" + (loc.height * this.scaleFactorImage) + "px;" +
-													"position:absolute;background-color:" + assignColorTypeSign(sign.type) +
+													"position:absolute;background-color:" + sign.type.primaryColor +
 													";opacity:0")
 
 
@@ -294,7 +294,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 
 						x.setAttribute("style", "left:" + xWidth + "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
 												"position:absolute;font-size:1rem;visibility:hidden;color:" +
-												assignColorTypeSign(sign.type, true));
+												sign.type.secondaryColor);
 
 						hoverZone.append(x);
 						div.appendChild(hoverZone);
@@ -312,7 +312,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 			context.beginPath();
 
 			context.lineWidth = ImageAnnotatorComponent.STROKE_SIZE;
-			context.strokeStyle = assignColorTypeSign(undefined);
+			context.strokeStyle = this.defaultColor;
 
 			context.rect(signLocation.x * this.scaleFactorImage, signLocation.y * this.scaleFactorImage, signLocation.width * this.scaleFactorImage, signLocation.height * this.scaleFactorImage);
 			context.stroke();

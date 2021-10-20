@@ -63,7 +63,9 @@ export class SignTypesService {
 			code: signType.code,
 			name: signType.name,
 			description: signType.description,
-			target: signType.target
+			target: signType.target,
+			primaryColor: signType.primaryColor,
+			secondaryColor: signType.secondaryColor
 		};
 	}
 
@@ -72,7 +74,9 @@ export class SignTypesService {
 			code: signTypeInfo.code,
 			name: signTypeInfo.name,
 			description: signTypeInfo.description,
-			target: signTypeInfo.target
+			target: signTypeInfo.target,
+			primaryColor: signTypeInfo.primaryColor,
+			secondaryColor: signTypeInfo.secondaryColor
 		};
 	}
 }
