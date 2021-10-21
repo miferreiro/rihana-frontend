@@ -75,17 +75,17 @@
 					</div>
 					<div class="row signs">
 						<div class="col">
-							<div class="row text-center">
-								<div class="col">
-									<input class="check" type="checkbox" id="noFindings" [checked]="noFindings" (change)="checkNoFindings($event)" >
-									<label for="noFindings">{{'No findings' | translate}}</label>
-								</div>
-								<div class="col">
-									<input class="check" type="checkbox" id="nonNormal" [checked]="noNormal" (change)="checkNoNormal($event)">
-									<label for="nonNormal">{{'Non-normal' | translate}}</label>
-								</div>
-							</div>
 							<div class="row">
+								<div class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
+									<div class="card">
+										<div class="card-header-custom">
+											<div class="header d-flex justify-content-between">
+												<h6>{{'Non-normal'| translate}}</h6>
+												<input class="check" type="checkbox" id="nonNormal" [checked]="noNormal" (change)="checkNoNormal($event)">
+											</div>
+										</div>
+									</div>
+								</div>
 								<ng-container *ngFor="let signType of listSignTypes()">
 									<div *ngIf="signType.code != 'NOF' && signType.code != 'NON'" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
 										<div class="card">

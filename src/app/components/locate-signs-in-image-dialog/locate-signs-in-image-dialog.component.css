@@ -320,9 +320,6 @@ h6 {
 .check {
 	width: 1em;
 	height: 1em;
-	margin-top: .25em;
-	margin-right: 1rem;
-	vertical-align: top;
 	background-color: #fff;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -334,6 +331,7 @@ h6 {
 	appearance: none;
 	-webkit-print-color-adjust: exact;
 	color-adjust: exact;
+	cursor: pointer;
 }
 
 .check:focus {
