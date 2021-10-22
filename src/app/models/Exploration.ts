@@ -31,5 +31,6 @@ export class Exploration {
 	user: Users;
 	patient: Patient;
 	report: Report;
-	radiographs: Radiograph[]
+	radiographs: Radiograph[];
+	deleted?: boolean;
 }

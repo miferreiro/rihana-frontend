@@ -29,6 +29,7 @@ import {LocalizationService} from '../../modules/internationalization/localizati
 import {Exploration} from '../../models/Exploration';
 import {Sign} from '../../models/Sign';
 import {SignType} from '../../models/SignType';
+import {Role} from '../../models/User';
 
 @Component({
 	selector: 'app-explorations',
@@ -51,7 +52,8 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 	public pageChangeEvent = new Subject<string>();
 	public lastPage: number;
 
-	public deletingExploration:boolean = false;
+	public deletingExploration: boolean = false;
+	public recoveringExploration: boolean = false;
 
 	public updateChart: Subject<void> = new Subject<void>();
 
@@ -121,6 +123,15 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		});
 	}
 
+	public recover(id: string) {
+		this.explorationsService.recover(id).subscribe(() => {
+			this.notificationService.success(this.locationService.translate('Exploration recovered successfully') + ".",
+											 this.locationService.translate('Exploration recovered'));
+			this.getPageExplorations();
+			this.updateChart.next();
+		});
+	}
+
 	public remove(id: string) {
 		this.deletingExploration = true;
 		this.exploration = this.explorations.find((exploration) => exploration.id === id);
@@ -149,5 +160,9 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	private explorationSigns(exploration: Exploration): Sign[] {
 		return exploration.radiographs.map(radiograph => radiograph.signs.map(sign => sign)).reduce((acc, val) => acc.concat(val), []);
+	}
+
+	public isAdmin(): boolean {
+		return this.authenticationService.getRole() === Role.ADMIN;
 	}
 }

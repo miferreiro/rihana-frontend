@@ -150,5 +150,9 @@
 	"The exploration is 'PA-LAT' type, therefore two loaded radiographs are required": "A exploración é de tipo 'PA-LAT' polo que se necesitan dúas radiografías cargadas",
 	"Primary color": "Cor primario",
 	"Secondary color": "Cor secundario",
-	"Copy color to clipboard": "Copiar a cor ao portapapeis"
+	"Copy color to clipboard": "Copiar a cor ao portapapeis",
+	"by": "por",
+	"at": "en",
+	"Exploration recovered": "Exploración recuperada",
+	"Exploration recovered successfully": "Exploración recuperada con éxito"
 }

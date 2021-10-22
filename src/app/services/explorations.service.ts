@@ -33,7 +33,6 @@ import {NewPatientInfo} from './entities/NewPatientInfo';
 import {NewRadiographInfo} from './entities/NewRadiographInfo';
 import {NewSignInfo} from './entities/NewSignInfo';
 import {PatientsService} from './patients.service';
-import {UsersService} from './users.service';
 import {ReportsService} from './reports.service';
 import {RadiographsService} from './radiographs.service';
 import {Exploration} from '../models/Exploration';
@@ -50,7 +49,6 @@ export class ExplorationsService {
 	private explorationCreated: boolean = false;
 
 	constructor(private http: HttpClient,
-				private usersService: UsersService,
 				private patientsService: PatientsService,
 				private reportsService: ReportsService,
 				private radiographsService: RadiographsService) {
@@ -76,8 +74,12 @@ export class ExplorationsService {
 		this.explorationCreated = explorationCreated;
 	}
 
-	delete(id: string) {
+	delete(id: string): Observable<Object> {
 		return this.http.delete(`${environment.restApi}/exploration/` + id);
+	}
+
+	recover(id: string): Observable<Object> {
+		return this.http.put(`${environment.restApi}/exploration/recover/` + id, null);
 	}
 
 	private getExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], params: HttpParams): Observable<ExplorationPage> {
@@ -108,7 +110,6 @@ export class ExplorationsService {
 				concatMap(explorationInfos =>
 					explorationInfos.length === 0 ? of([]) :
 					forkJoin([
-						this.usersService.getUser(user),
 						forkJoin(explorationInfos.map(explorationInfo =>
 							this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id))),
 						forkJoin(explorationInfos.map(explorationInfo =>
@@ -124,10 +125,10 @@ export class ExplorationsService {
 						map(userPatientReportAndRadiographs =>
 							explorationInfos.map((explorationInfo, index) =>
 								this.mapExplorationInfo(explorationInfo,
+									explorationInfo.user,
 									userPatientReportAndRadiographs[0][index],
 									userPatientReportAndRadiographs[1][index],
-									userPatientReportAndRadiographs[2][index],
-									userPatientReportAndRadiographs[3][index])
+									userPatientReportAndRadiographs[2][index])
 							)
 						)
 					)
@@ -136,15 +137,28 @@ export class ExplorationsService {
 	}
 
 	private mapExplorationInfo(explorationInfo: ExplorationInfo, user: Users, patient: Patient, report: Report, radiographs: Radiograph[]): Exploration {
-		return {
-			id: explorationInfo.id,
-			title: explorationInfo.title,
-			explorationDate: explorationInfo.explorationDate,
-			user: user,
-			patient: patient,
-			report: report,
-			radiographs: radiographs
-		};
+		if (explorationInfo.deleted != null) {
+			return {
+				id: explorationInfo.id,
+				title: explorationInfo.title,
+				explorationDate: explorationInfo.explorationDate,
+				user: user,
+				patient: patient,
+				report: report,
+				radiographs: radiographs,
+				deleted: explorationInfo.deleted
+			};
+		} else {
+			return {
+				id: explorationInfo.id,
+				title: explorationInfo.title,
+				explorationDate: explorationInfo.explorationDate,
+				user: user,
+				patient: patient,
+				report: report,
+				radiographs: radiographs
+			};
+		}
 	}
 
 	private toNewExplorationInfo(exploration: Exploration): NewExplorationInfo {

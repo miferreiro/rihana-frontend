@@ -19,14 +19,16 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
+import {Users} from '../../models/Users';
 import {IdAndUri} from './IdAndUri';
 
 export interface ExplorationInfo {
 	id: string;
 	title: string;
 	explorationDate: Date;
-	user: string;
+	user: Users;
 	patient: string | IdAndUri;
 	report: string | IdAndUri;
 	radiographs: string[] | IdAndUri[];
+	deleted?: boolean;
 }

@@ -89,7 +89,8 @@
 					<div class="d-flex flex-column card-header">
 						<small class="text-capitalize card-category">{{getRadiographType(exploration)}}</small>
 						<h5 class="card-title">{{exploration.title}}</h5>
-						<h6 class="card-subtitle text-muted">{{exploration.explorationDate | date:'dd/MM/yyyy'}}</h6>
+						<h6 *ngIf="!isAdmin()"class="card-subtitle text-muted">{{exploration.explorationDate | date:'dd/MM/yyyy'}}</h6>
+						<h6 *ngIf="isAdmin()" class="card-subtitle text-muted"> <span class="text-capitalize">{{'by' | translate}} </span> <span class="text-capitalize">{{exploration.user}}</span>, {{'at' | translate}} {{exploration.explorationDate | date:'dd/MM/yyyy'}}</h6>
 					</div>
 					<div class="row card-body mr-0 ml-0">
 						<div *ngIf="getExplorationSigns(exploration).length != 0" class="row d-flex">
@@ -109,7 +110,8 @@
 						<div class="btn-group" role="group">
 							<button class="btn"><i class="bi bi-pencil-square"></i></button>
 							<button class="btn border-start border-end"><i class="bi bi-info-lg"></i></button>
-							<button class="btn" (click)="remove(exploration.id)"><i class="bi bi-trash"></i></button>
+							<button *ngIf="!exploration.deleted" class="btn" (click)="remove(exploration.id)"><i class="bi bi-trash"></i></button>
+							<button *ngIf="exploration.deleted" class="btn" (click)="recover(exploration.id)"><i class="bi bi-bootstrap-reboot"></i></button>
 						</div>
 					</div>
 				</div>

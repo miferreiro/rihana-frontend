@@ -150,5 +150,9 @@
 	"The exploration is 'PA-LAT' type, therefore two loaded radiographs are required": "The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
 	"Primary color": "Primary color",
 	"Secondary color": "Secondary color",
-	"Copy color to clipboard": "Copy color to clipboard"
+	"Copy color to clipboard": "Copy color to clipboard",
+	"by": "by",
+	"at": "at",
+	"Exploration recovered": "Exploration recovered",
+	"Exploration recovered successfully": "Exploration recovered successfully"
 }
