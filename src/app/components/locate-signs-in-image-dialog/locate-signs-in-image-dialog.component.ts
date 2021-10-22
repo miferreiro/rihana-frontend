@@ -58,7 +58,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	public newSign: Sign;
 
 	public signNoFindings: Sign;
-	public noNormal: boolean;
+	public other: boolean;
 
 	constructor(public localizationService: LocalizationService,
 				private signTypesService: SignTypesService) { }
@@ -67,7 +67,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 		this.brightness = '100';
 		this.contrast = '100';
 
-		this.noNormal = this.signs.filter(sing => sing.type.code == "NON").length > 0;
+		this.other = this.signs.filter(sing => sing.type.code == "OTH").length > 0;
 
 		this.signTypesService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes;
@@ -193,24 +193,24 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	}
 
 	public countSignDetected(): number {
-		return this.signs.filter(sign => sign.type.code != 'NOF' && sign.type.code != 'NON').length;
+		return this.signs.filter(sign => sign.type.code != 'NOF' && sign.type.code != 'OTH').length;
 	}
 
-	public checkNoNormal(event: any): void {
+	public checkOther(event: any): void {
 		if (event.target.checked) {
-			this.noNormal = true;
-			let signNoNormal = new Sign();
-			signNoNormal.type = this.signTypes.filter(signType => signType.code.includes("NON"))[0];
-			signNoNormal.id = signNoNormal.type.code;
+			this.other = true;
+			let otherSigns = new Sign();
+			otherSigns.type = this.signTypes.filter(signType => signType.code.includes("OTH"))[0];
+			otherSigns.id = otherSigns.type.code;
 
 			if (this.signs.filter(sign => sign.type.code.includes("NOF")).length == 1) {
-				this.signs = [signNoNormal];
+				this.signs = [otherSigns];
 			} else {
-				this.signs.push(signNoNormal);
+				this.signs.push(otherSigns);
 			}
 		} else {
-			this.noNormal = false;
-			this.signs = this.signs.filter(sign => !sign.type.code.includes("NON"));
+			this.other = false;
+			this.signs = this.signs.filter(sign => !sign.type.code.includes("OTH"));
 			if (this.signs.length == 0) {
 				this.signs = [this.signNoFindings];
 			}

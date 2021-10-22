@@ -80,14 +80,14 @@
 									<div class="card">
 										<div class="card-header-custom">
 											<div class="header d-flex justify-content-between">
-												<h6>{{'Non-normal'| translate}}</h6>
-												<input class="check" type="checkbox" id="nonNormal" [checked]="noNormal" (change)="checkNoNormal($event)">
+												<h6>{{'Other'| translate}}</h6>
+												<input class="check" type="checkbox" id="other" [checked]="other" (change)="checkOther($event)">
 											</div>
 										</div>
 									</div>
 								</div>
 								<ng-container *ngFor="let signType of listSignTypes()">
-									<div *ngIf="signType.code != 'NOF' && signType.code != 'NON'" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
+									<div *ngIf="signType.code != 'NOF' && signType.code != 'OTH'" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
 										<div class="card">
 											<div class="card-header-custom">
 												<div class="header d-flex justify-content-between">
@@ -159,7 +159,7 @@
 			<div class="modal-body">
 				<ul class="list-group list-group-flush">
 					<ng-container *ngFor="let signType of listSignTypes()">
-						<li *ngIf="signType.code != 'NOF' && signType.code != 'NON'" (click)="addSign(signType)" class="list-group-item">
+						<li *ngIf="signType.code != 'NOF' && signType.code != 'OTH'" (click)="addSign(signType)" class="list-group-item">
 							{{signType.name | translate}}
 						</li>
 					</ng-container>
