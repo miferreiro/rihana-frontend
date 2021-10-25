@@ -89,4 +89,8 @@ export class AppComponent implements OnInit {
 		this.authenticationService.logOut();
 		this.router.navigateByUrl('/login');
 	}
+
+	displayHeader() {
+		return !(this.router.url === '/PageNotFound');
+	}
 }

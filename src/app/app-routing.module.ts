@@ -26,6 +26,7 @@ import {LoginComponent} from './components/login/login.component';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
 import {ExplorationComponent} from './components/exploration/exploration.component';
 import {SigntypeComponent} from './components/signtype/signtype.component';
+import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {UserComponent} from './components/user/user.component';
 
@@ -50,6 +51,12 @@ const routes: Routes = [
 	},
 	{
 		path: '', redirectTo: 'explorations', pathMatch: 'full'
+	},
+	{
+		path: '**', pathMatch: 'full', redirectTo: 'PageNotFound',
+	},
+	{
+		path: 'PageNotFound', component: PagenotfoundComponent
 	}
 ];
 

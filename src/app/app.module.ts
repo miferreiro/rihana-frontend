@@ -57,6 +57,7 @@ import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiol
 import {RadiographComponent} from './components/radiology-analysis/radiograph/radiograph.component';
 import {ReportComponent} from './components/report/report.component';
 import {SigntypeComponent} from './components/signtype/signtype.component';
+import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
 import {PieChartComponent} from './components/explorations/pie-chart/pie-chart.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {UserComponent} from './components/user/user.component';
@@ -93,6 +94,7 @@ import {ColorPickerModule} from '@iplab/ngx-color-picker';
 		LangPipe,
 		PixelsToMmsPipe,
 		BytesToHumanReadablePipe,
+		PagenotfoundComponent,
 		PieChartComponent,
 		BarChartComponent
 	],
