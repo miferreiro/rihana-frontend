@@ -83,7 +83,9 @@ export class RadiographComponent implements OnInit {
 						this.uploadedFile.subscribe(event => {
 							this.isLoadingRadiograph = (event == null);
 						});
-						this.notificationService.success("The " + this.typeExploration + " radiograph has been upload correctly", "Radiograph upload successfull")
+						if (!this.watchMode) {
+							this.notificationService.success("The " + this.typeExploration + " radiograph has been upload correctly", "Radiograph upload successfull")
+						}
 					} else {
 						this.notificationService.error("The file does not have the correct extension (.png, .jpg or .jpeg)", "File upload failed");
 						this.controlRadiograph.setValue([]);
@@ -235,5 +237,6 @@ export class RadiographComponent implements OnInit {
 
 	public ngOnDestroy(): void {
 		this.subscription.unsubscribe();
+		this.uploadedFile.unsubscribe();
 	}
 }
