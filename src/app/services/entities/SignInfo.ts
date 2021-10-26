@@ -19,13 +19,13 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
+import {SignLocationInfo} from "./SignLocationInfo";
 import {SignTypeInfo} from "./SignTypeInfo";
-import {SignLocation} from "../../models/SignLocation";
 
 export interface SignInfo {
 	id: string;
 	type: SignTypeInfo;
-	location: SignLocation;
+	location: SignLocationInfo;
 	brightness: number;
 	contrast: number;
 }

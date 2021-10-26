@@ -19,12 +19,9 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {SignInfo} from "./SignInfo";
-
-export interface RadiographInfo {
-	id: string;
-	type: string;
-	source: string;
-	signs: SignInfo[];
-	observations: string;
+export class SignLocationInfo {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
 }

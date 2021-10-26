@@ -54,6 +54,13 @@ export class ExplorationsService {
 				private radiographsService: RadiographsService) {
 	}
 
+	getExplorationCreated(): boolean {
+		return this.explorationCreated;
+	}
+
+	setExplorationCreated(explorationCreated: boolean): void {
+		this.explorationCreated = explorationCreated;
+	}
 	getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[]): Observable<ExplorationPage> {
 		return this.getExplorations(user, page, pageSize, signTypes, new HttpParams());
 	}
@@ -64,14 +71,6 @@ export class ExplorationsService {
 			.pipe(
 				map(this.mapExplorationInfo.bind(this))
 			);
-	}
-
-	getExplorationCreated(): boolean {
-		return this.explorationCreated;
-	}
-
-	setExplorationCreated(explorationCreated: boolean): void {
-		this.explorationCreated = explorationCreated;
 	}
 
 	delete(id: string): Observable<Object> {

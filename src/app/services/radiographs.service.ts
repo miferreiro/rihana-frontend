@@ -24,8 +24,12 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
-import {Radiograph} from "../models/Radiograph";
 import {RadiographInfo} from "./entities/RadiographInfo";
+import {SignInfo} from "./entities/SignInfo";
+import {SignLocationInfo} from "./entities/SignLocationInfo";
+import {Radiograph} from "../models/Radiograph";
+import {Sign} from "../models/Sign";
+import {SignLocation} from "../models/SignLocation";
 
 @Injectable({
 	providedIn: 'root'
@@ -46,8 +50,27 @@ export class RadiographsService {
 			id: radiographInfo.id,
 			type: radiographInfo.type,
 			source: radiographInfo.source,
-			signs: radiographInfo.signs,
+			signs: radiographInfo.signs.map(sign => this.mapSignInfo(sign)),
 			observations: radiographInfo.observations
 		};
+	}
+
+	private mapSignInfo(sign: SignInfo): Sign {
+		return {
+			id: sign.id,
+			type: sign.type,
+			location: this.mapSignLocationInfo(sign.location),
+			brightness: sign.brightness,
+			contrast: sign.contrast,
+			render: true
+		}
+	}
+
+	private mapSignLocationInfo(signLocation: SignLocationInfo): SignLocation {
+		if (signLocation == null) {
+			return null;
+		} else {
+			return new SignLocation(signLocation.x, signLocation.y, signLocation.width, signLocation.height);
+		}
 	}
 }

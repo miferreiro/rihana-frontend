@@ -24,8 +24,10 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
-import {Sign} from "../models/Sign";
 import {SignInfo} from "./entities/SignInfo";
+import {SignLocationInfo} from "./entities/SignLocationInfo";
+import {Sign} from "../models/Sign";
+import {SignLocation} from "../models/SignLocation";
 
 @Injectable()
 export class SignsService {
@@ -56,10 +58,18 @@ export class SignsService {
 				primaryColor: signInfo.type.primaryColor,
 				secondaryColor: signInfo.type.secondaryColor
 			},
-			location: signInfo.location,
+			location: this.mapSignLocationInfo(signInfo.location),
 			brightness: signInfo.brightness,
 			contrast: signInfo.contrast,
 			render: true
 		};
+	}
+
+	private mapSignLocationInfo(signLocation: SignLocationInfo): SignLocation {
+		if (signLocation == null) {
+			return null;
+		} else {
+			return new SignLocation(signLocation.x, signLocation.y, signLocation.width, signLocation.height);
+		}
 	}
 }
