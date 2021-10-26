@@ -76,7 +76,7 @@
 					<div class="row signs">
 						<div class="col">
 							<div class="row">
-								<div class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
+								<div class="p-3 col-12">
 									<div class="card">
 										<div class="card-header-custom">
 											<div class="header d-flex justify-content-between">
@@ -86,8 +86,10 @@
 										</div>
 									</div>
 								</div>
+							</div>
+							<div class="row">
 								<ng-container *ngFor="let signType of listSignTypes()">
-									<div *ngIf="signType.code != 'NOF' && signType.code != 'OTH'" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
+									<div *ngIf="signType.code != 'NOF' && signType.code != 'OTH' && signsType(signType).length > 0" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
 										<div class="card">
 											<div class="card-header-custom">
 												<div class="header d-flex justify-content-between">
