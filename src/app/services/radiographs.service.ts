@@ -57,7 +57,6 @@ export class RadiographsService {
 
 	private mapSignInfo(sign: SignInfo): Sign {
 		return {
-			id: sign.id,
 			type: sign.type,
 			location: this.mapSignLocationInfo(sign.location),
 			brightness: sign.brightness,

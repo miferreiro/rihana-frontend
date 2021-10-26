@@ -213,7 +213,6 @@ export class ExplorationsService {
 
 	private toNewSignInfo(sign: Sign): NewSignInfo {
 		return {
-			id: sign.id,
 			type: sign.type,
 			location: sign.location,
 			brightness: sign.brightness,

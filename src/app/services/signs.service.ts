@@ -49,7 +49,6 @@ export class SignsService {
 
 	private mapSignInfo(signInfo: SignInfo): Sign {
 		return {
-			id: signInfo.id,
 			type: {
 				code: signInfo.type.code,
 				name: signInfo.type.name,

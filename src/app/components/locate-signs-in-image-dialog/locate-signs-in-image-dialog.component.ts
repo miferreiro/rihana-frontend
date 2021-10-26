@@ -73,7 +73,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 			this.signTypes = signTypes;
 			this.signNoFindings = new Sign();
 			this.signNoFindings.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
-			this.signNoFindings.id = this.signNoFindings.type.code;
 		})
 	}
 
@@ -121,8 +120,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 			this.signs = [];
 		}
 
-		let index = this.signsType(signType).length;
-		this.newSign.id = signType.code + index;
 		this.newSign.type = signType;
 		this.newSign.render = true;
 		this.newSign.brightness = Number(this.brightness) / 100;
@@ -201,7 +198,6 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 			this.other = true;
 			let otherSigns = new Sign();
 			otherSigns.type = this.signTypes.filter(signType => signType.code.includes("OTH"))[0];
-			otherSigns.id = otherSigns.type.code;
 
 			if (this.signs.filter(sign => sign.type.code.includes("NOF")).length == 1) {
 				this.signs = [otherSigns];

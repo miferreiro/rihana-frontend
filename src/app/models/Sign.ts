@@ -23,7 +23,6 @@ import {SignLocation} from "./SignLocation";
 import {SignType} from "./SignType";
 
 export class Sign {
-	id: string;
 	location: SignLocation;
 	type: SignType;
 	render: boolean;

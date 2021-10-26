@@ -23,7 +23,6 @@ import {SignLocationInfo} from "./SignLocationInfo";
 import {SignTypeInfo} from "./SignTypeInfo";
 
 export interface SignInfo {
-	id: string;
 	type: SignTypeInfo;
 	location: SignLocationInfo;
 	brightness: number;

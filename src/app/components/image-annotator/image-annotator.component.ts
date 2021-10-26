@@ -203,14 +203,21 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 		removeElements(div.getElementsByClassName("hoverZone"));
 		removeElements(div.getElementsByClassName("signIdDiv"));
 
+		let indexSignTypes = new Map();
+
 		for (let sign of this.signs) {
+			if (indexSignTypes.has(sign.type.code)) {
+				indexSignTypes.set(sign.type.code, indexSignTypes.get(sign.type.code) + 1);
+			} else {
+				indexSignTypes.set(sign.type.code, 0);
+			}
 			if (sign.render) {
 				let loc = sign.location;
 				let canvasDim = document.querySelector("canvas");
 
 				let signIdDiv = document.createElement("div");
 				signIdDiv.className = "signIdDiv text-wrap";
-				signIdDiv.textContent = sign.id;
+				signIdDiv.textContent = sign.type.code + indexSignTypes.get(sign.type.code);
 
 				let top: number;
 				let left = (canvasDim.parentElement.offsetLeft + (loc.x * this.scaleFactorImage));

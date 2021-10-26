@@ -112,7 +112,7 @@
 														class="d-flex justify-content-between">
 														<details>
 															<summary>
-																{{sign.id}} (<var>{{'Area' | translate}}</var>: {{sign.location?.area() | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm²)
+																{{sign.type.code + indexSign}} (<var>{{'Area' | translate}}</var>: {{sign.location?.area() | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm²)
 															</summary>
 															<span>
 																{{'Location' | translate}}:
