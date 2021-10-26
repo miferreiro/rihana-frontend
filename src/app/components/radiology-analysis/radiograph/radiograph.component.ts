@@ -42,6 +42,7 @@ export class RadiographComponent implements OnInit {
 
 	@Output() radiographHandler = new EventEmitter<Radiograph>();
 	@Input() typeExploration: string;
+	@Input() radiograph: Radiograph;
 
 	public disabled: boolean;
 	private subscription: Subscription;
@@ -49,7 +50,6 @@ export class RadiographComponent implements OnInit {
 	public isRadiographLoaded: boolean;
 
 	private signTypes: SignType[];
-	public radiograph: Radiograph;
 
 	public readonly controlRadiograph = new FileUploadControl(
 		{listVisible: true, discardInvalid: true, multiple: false},
@@ -60,6 +60,7 @@ export class RadiographComponent implements OnInit {
 
 	public isLoadingRadiograph: boolean = false;
 	public showImageDialog: boolean = false;
+	public watchMode: boolean;
 
 	constructor(public localizationService: LocalizationService,
 				private notificationService: NotificationService,
@@ -67,9 +68,7 @@ export class RadiographComponent implements OnInit {
 				private signTypesService: SignTypesService) { }
 
 	ngOnInit(): void {
-		this.isLoadingRadiograph = true;
-		this.isRadiographLoaded = false;
-		this.disabled = false;
+
 		this.subscription = this.controlRadiograph.valueChanges.subscribe((values: Array<File>) => {
 			if (values.length == 2) {
 				if (this.extensionValid.includes(values[1].name.split('.').pop())) {
@@ -92,8 +91,25 @@ export class RadiographComponent implements OnInit {
 				}
 			}
 		});
+
+		if (this.radiograph != null) {
+			this.watchMode = true;
+			this.isLoadingRadiograph = false;
+			this.isRadiographLoaded = true;
+			this.disabled = true;
+			let contentType = this.radiograph.source.split(",")[0];
+			let b64Data = this.radiograph.source.split(",")[1];
+			let blob = this.b64toBlob(b64Data, contentType)
+			let file: File = new File([blob], this.radiograph.type + ".png");
+			this.controlRadiograph.setValue([file]);
+		} else {
+			this.watchMode = false;
+			this.isLoadingRadiograph = true;
+			this.isRadiographLoaded = false;
+			this.disabled = false;
+		}
+
 		this.getSignTypes();
-		this.radiograph = new Radiograph();
 	}
 
 	public addRadiograph(event: Event): void {
@@ -112,6 +128,8 @@ export class RadiographComponent implements OnInit {
 
 	public removeRadiograph(): void {
 		this.isRadiographLoaded = false;
+		this.isLoadingRadiograph = true;
+		this.radiograph = undefined;
 		this.controlRadiograph.removeFile(this.controlRadiograph.value[0])
 	}
 
@@ -121,19 +139,19 @@ export class RadiographComponent implements OnInit {
 			const fr = new FileReader();
 			fr.onload = async (e) =>  {
 				uploadedFile.next(e.target.result.toString());
-				this.radiograph = new Radiograph();
-				this.radiograph.type = this.typeExploration;
-				this.radiograph.source = e.target.result.toString();
-				let signInitial = new Sign();
-				signInitial.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
-				signInitial.id = signInitial.type.code;
+				if (this.radiograph == undefined) {
+					this.radiograph = new Radiograph();
+					this.radiograph.type = this.typeExploration;
+					this.radiograph.source = e.target.result.toString();
+					let signInitial = new Sign();
+					signInitial.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
 
-				this.radiograph.signs = [signInitial];
+					this.radiograph.signs = [signInitial];
 
+					this.isRadiographLoaded = true;
 
-				this.isRadiographLoaded = true;
-
-				this.radiographHandler.emit(this.radiograph);
+					this.radiographHandler.emit(this.radiograph);
+				}
 			};
 			fr.readAsDataURL(file);
 		} else {
@@ -194,6 +212,26 @@ export class RadiographComponent implements OnInit {
 			this.signTypes = signTypes
 		)
 	}
+
+	private b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
+		const byteCharacters = atob(b64Data);
+		const byteArrays = [];
+
+		for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+			const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+			const byteNumbers = new Array(slice.length);
+			for (let i = 0; i < slice.length; i++) {
+				byteNumbers[i] = slice.charCodeAt(i);
+			}
+
+			const byteArray = new Uint8Array(byteNumbers);
+			byteArrays.push(byteArray);
+		}
+
+		const blob = new Blob(byteArrays, {type: contentType});
+		return blob;
+	  }
 
 	public ngOnDestroy(): void {
 		this.subscription.unsubscribe();

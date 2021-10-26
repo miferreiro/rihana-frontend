@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {Subscription} from 'rxjs';
 import {getDocument, GlobalWorkerOptions, version} from 'pdfjs-dist';
@@ -41,6 +41,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 
 	private readonly extensionValid = ['pdf'];
 
+	@Input() exploration;
 	@Output() reportEvent = new EventEmitter<ReportResult>();
 
 	private subscriptionReport: Subscription;
@@ -52,16 +53,23 @@ export class ReportComponent implements OnInit, OnDestroy {
 
 	public isReportLoaded: boolean;
 
-	public report: Report = new Report();
-	public patient: Patient = new Patient();
+	public report: Report;
+	public patient: Patient;
 
 	constructor(private notificationService: NotificationService) {
 		GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.js`;
 	}
 
 	ngOnInit(): void {
-		this.report = new Report();
-		this.isReportLoaded = false;
+		if (this.exploration.title != undefined) {
+			this.report = this.exploration.report;
+			this.patient = this.exploration.patient;
+			this.isReportLoaded = true;
+		} else {
+			this.report = new Report();
+			this.patient = new Patient();
+			this.isReportLoaded = false;
+		}
 		this.subscriptionReport = this.controlReport.valueChanges.subscribe((values: Array<File>) => {
 			if (values.length == 2) {
 				if (this.extensionValid.includes(values[1].name.split('.').pop())) {

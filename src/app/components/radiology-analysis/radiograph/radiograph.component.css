@@ -167,3 +167,7 @@ label {
 	border-color: inherit;
 	box-shadow: none
 }
+
+.defaultCursor {
+	cursor: default;
+}

@@ -29,8 +29,10 @@
 		</div>
 		<div class="col-xxl-6 col-12">
 			<div class="row">
-				<form *ngIf="!isReportLoaded && controlReport.value.length == 0 || isReportLoaded && controlReport.value.length > 0"
-					[ngClass]="{'col-6': !isReportLoaded, 'col-12': isReportLoaded && controlReport.value.length > 0}">
+				<div *ngIf="!isReportLoaded && controlReport.value.length == 0 ||
+							isReportLoaded && controlReport.value.length > 0"
+					 [ngClass]="{'col-6': !isReportLoaded,
+								 'col-12': isReportLoaded && controlReport.value.length > 0}">
 					<div class="file-drop-zone" file-drop-zone [control]="controlReport">
 						<label class="upload-input ng-trigger ng-trigger-zoomAnimation">
 							<div class="col text-center">
@@ -73,16 +75,18 @@
 							</div>
 						</div>
 					</div>
-				</form>
-				<form *ngIf="!isReportLoaded && controlReport.value.length == 0 || isReportLoaded && controlReport.value.length == 0"
-					[ngClass]="{'col-6': !isReportLoaded, 'col-12': isReportLoaded && controlReport.value.length == 0}">
+				</div>
+				<div *ngIf="!isReportLoaded && controlReport.value.length == 0 ||
+							isReportLoaded && controlReport.value.length == 0"
+					 [ngClass]="{'col-6': !isReportLoaded,
+								 'col-12': isReportLoaded && controlReport.value.length == 0}">
 					<div *ngIf="!isReportLoaded" class="file-paste-zone text-center" (click)="onPaste($event)">
 						<i class="bi bi-clipboard"></i>
 						<p>
 							{{'Click here to paste from clipboard' | translate}}
 						</p>
 					</div>
-					<div *ngIf="isReportLoaded" class="file-paste-zone text-center">
+					<div *ngIf="isReportLoaded && exploration.title == undefined" class="file-paste-zone text-center">
 						<p>
 							{{'Report loaded correctly from clipboard' | translate}}
 						</p>
@@ -93,7 +97,13 @@
 							</span>
 						</div>
 					</div>
-				</form>
+					<div *ngIf="isReportLoaded && exploration.title != undefined"
+						 class="file-paste-zone defaultCursor text-center">
+						<p>
+							{{'Report loaded correctly' | translate}}
+						</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

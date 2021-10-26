@@ -20,15 +20,19 @@
 -->
 
 <div class="container pb-5">
-	<app-report (reportEvent)="reportHandler($event)"></app-report>
-	<app-radiology-analysis [reportFields]="newExploration.report" (radiographs)="radiographsHandler($event)"
+	<div class="row mt-4 mb-4">
+		<h2 *ngIf="exploration.title != undefined" class="text-center fw-bold">{{exploration.title}}</h2>
+		<h2 *ngIf="exploration.title == undefined" class="text-center fw-bold">{{'Creating an exploration' | translate}}</h2>
+	</div>
+	<app-report [exploration]="exploration" (reportEvent)="reportHandler($event)"></app-report>
+	<app-radiology-analysis [exploration]="exploration" [reportFields]="exploration.report" (radiographs)="radiographsHandler($event)"
 		(typeExploration)=setTypeExploration($event)></app-radiology-analysis>
 </div>
 <footer class="footer mt-auto py-1 fixed-bottom bg-light">
 	<div class="container">
 		<div class="row justify-content-between text-center">
 			<i class="col bi bi-arrow-left-circle" style="color:steelblue;" (click)="closeExploration()"></i>
-			<i class="col bi bi-check-circle" style="color: green;" (click)="saveExploration()"></i>
+			<i *ngIf="exploration.title == undefined" class="col bi bi-check-circle" style="color: green;" (click)="saveExploration()"></i>
 		</div>
 	</div>
 </footer>

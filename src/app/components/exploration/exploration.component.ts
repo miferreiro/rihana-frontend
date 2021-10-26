@@ -20,7 +20,7 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Navigation, Router} from '@angular/router';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ExplorationsService} from '../../services/explorations.service';
@@ -42,7 +42,7 @@ export class ExplorationComponent implements OnInit {
 	readonly return: string = '';
 	public loggedUser: string;
 
-	public newExploration: Exploration = new Exploration();
+	public exploration: Exploration = new Exploration();
 	public typeExploration: string;
 	public SEXValues: SEX[];
 
@@ -56,39 +56,44 @@ export class ExplorationComponent implements OnInit {
 			this.loggedUser = this.authenticationService.getUser().login;
 		}
 		this.SEXValues = EnumUtils.enumValues(SEX);
-		this.newExploration.explorationDate = new Date();
-		this.newExploration.user = new Users();
-		this.newExploration.user.login = this.loggedUser;
-		this.newExploration.report = new Report();
-		this.newExploration.patient = new Patient();
-		this.newExploration.patient.patientID = null;
-		this.newExploration.patient.birthdate = null;
-		this.newExploration.patient.sex = null;
-		this.newExploration.radiographs = [];
-		this.typeExploration = 'PA-LAT'
+
+		if (this.explorationsService.getExploration() != undefined) {
+			this.exploration = this.explorationsService.getExploration();
+		} else {
+			this.exploration.explorationDate = new Date();
+			this.exploration.user = new Users();
+			this.exploration.user.login = this.loggedUser;
+			this.exploration.report = new Report();
+			this.exploration.patient = new Patient();
+			this.exploration.patient.patientID = null;
+			this.exploration.patient.birthdate = null;
+			this.exploration.patient.sex = null;
+			this.exploration.radiographs = [];
+			this.typeExploration = 'PA-LAT'
+		}
 	}
 
 	public reportHandler(reportResult: ReportResult): void {
-		this.newExploration.report = reportResult.report;
-		this.newExploration.patient = reportResult.patient;
+		this.exploration.report = reportResult.report;
+		this.exploration.patient = reportResult.patient;
 	}
 
 	public radiographsHandler(radiographs: Radiograph[]): void {
-		this.newExploration.radiographs = radiographs;
+		this.exploration.radiographs = radiographs;
 	}
 
 	public saveExploration(): void {
-		if (this.newExploration.patient.patientID === null ||
-			this.newExploration.patient.patientID === "" ||
-			this.newExploration.report.reportNumber === null) {
+		if (this.exploration.patient.patientID === null ||
+			this.exploration.patient.patientID === "" ||
+			this.exploration.report.reportNumber === null) {
 			this.notificationService.warning("Upload a report", "Not possible create an exploration");
-		} else if (this.newExploration.radiographs.length == 0) {
+		} else if (this.exploration.radiographs.length == 0) {
 			this.notificationService.warning("Upload a radiograph", "Not possible create an exploration");
-		} else if (this.typeExploration == 'PA-LAT' && this.newExploration.radiographs.length < 2) {
+		} else if (this.typeExploration == 'PA-LAT' && this.exploration.radiographs.length < 2) {
 			this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
 											 "Not possible create an exploration");
 		} else {
-			this.explorationsService.createExploration(this.newExploration).subscribe(newExploration => {
+			this.explorationsService.createExploration(this.exploration).subscribe(exploration => {
 				this.explorationsService.setExplorationCreated(true);
 				this.router.navigateByUrl(this.return);
 			});
@@ -96,11 +101,11 @@ export class ExplorationComponent implements OnInit {
 	}
 
 	public closeExploration(): void {
-		this.newExploration.explorationDate = null;
-		this.newExploration.user = null;
-		this.newExploration.report = null;
-		this.newExploration.patient = null;
-		this.newExploration.radiographs = null;
+		this.exploration.explorationDate = null;
+		this.exploration.user = null;
+		this.exploration.report = null;
+		this.exploration.patient = null;
+		this.exploration.radiographs = null;
 		this.router.navigateByUrl(this.return);
 	}
 

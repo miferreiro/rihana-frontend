@@ -20,6 +20,7 @@
  */
 
 import {Component,EventEmitter,Input,OnInit,Output} from '@angular/core';
+import {Exploration} from '../../models/Exploration';
 import {Radiograph} from '../../models/Radiograph';
 import {Report} from '../../models/Report';
 
@@ -33,6 +34,7 @@ export class RadiologyAnalysisComponent implements OnInit {
 	public _typeExploration: string;
 	public showImageDialog = false;
 
+	@Input() exploration: Exploration;
 	public report: Report = new Report();
 
 	@Output() radiographs = new EventEmitter<Radiograph[]>();
@@ -41,9 +43,21 @@ export class RadiologyAnalysisComponent implements OnInit {
 	private _radiographs: Radiograph[];
 
 	ngOnInit(): void {
-		this._typeExploration = 'PA-LAT';
-		this.typeExploration.emit(this._typeExploration);
-		this._radiographs = [];
+
+		if (this.exploration.title != undefined) {
+			this._radiographs = this.exploration.radiographs;
+			if (this._radiographs.length == 2) {
+				this._typeExploration = 'PA-LAT';
+				this.typeExploration.emit(this._typeExploration);
+			} else {
+				this._typeExploration = 'AP';
+				this.typeExploration.emit(this._typeExploration);
+			}
+		} else {
+			this._typeExploration = 'PA-LAT';
+			this.typeExploration.emit(this._typeExploration);
+			this._radiographs = [];
+		}
 	}
 
 	@Input() set reportFields(report: Report) {

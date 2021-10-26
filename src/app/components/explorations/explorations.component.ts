@@ -20,6 +20,7 @@
  */
 
 import {Component, OnInit, AfterViewChecked} from '@angular/core';
+import {Router} from '@angular/router';
 import {Subject} from 'rxjs';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ExplorationsService} from '../../services/explorations.service';
@@ -61,7 +62,8 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 				private notificationService: NotificationService,
 				private locationService: LocalizationService,
 				private explorationsService: ExplorationsService,
-				private signTypesService: SignTypesService) { }
+				private signTypesService: SignTypesService,
+				private router: Router) { }
 
 	ngOnInit() {
 		if (this.authenticationService.getUser().authenticated) {
@@ -72,6 +74,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		this.currentPage = 1;
 		this.getSignTypes();
 		this.getPageExplorations();
+		this.explorationsService.setExploration(undefined);
 	}
 
 	ngAfterViewChecked() {
@@ -164,5 +167,10 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	public isAdmin(): boolean {
 		return this.authenticationService.getRole() === Role.ADMIN;
+	}
+
+	public infoExploration(exploration: Exploration) {
+		this.explorationsService.setExploration(exploration);
+		this.router.navigate(['/exploration']);
 	}
 }

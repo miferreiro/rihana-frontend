@@ -34,8 +34,11 @@
 	</div>
 	<div class="col-xxl-6 col-12">
 		<div class="row">
-			<form *ngIf="!isRadiographLoaded && controlRadiograph.value.length == 0 || isRadiographLoaded && controlRadiograph.value.length > 0"
-				[ngClass]="{'col-6': !isRadiographLoaded, 'col-12': isRadiographLoaded && controlRadiograph.value.length > 0}">
+			<div *ngIf="!watchMode &&
+						(!isRadiographLoaded && controlRadiograph.value.length == 0 ||
+						isRadiographLoaded && controlRadiograph.value.length > 0)"
+				[ngClass]="{'col-6': !isRadiographLoaded,
+							'col-12': isRadiographLoaded && controlRadiograph.value.length > 0}">
 				<div class="file-drop-zone" file-drop-zone [control]="controlRadiograph">
 					<label class="upload-input">
 						<div class="col text-center">
@@ -78,9 +81,12 @@
 						</div>
 					</div>
 				</div>
-			</form>
-			<form *ngIf="!isRadiographLoaded && controlRadiograph.value.length == 0 || isRadiographLoaded && controlRadiograph.value.length == 0"
-					[ngClass]="{'col-6': !isRadiographLoaded, 'col-12': isRadiographLoaded && controlRadiograph.value.length == 0}">
+			</div>
+			<div *ngIf="!watchMode &&
+						(!isRadiographLoaded && controlRadiograph.value.length == 0 ||
+						isRadiographLoaded && controlRadiograph.value.length == 0)"
+					[ngClass]="{'col-6': !isRadiographLoaded,
+								'col-12': isRadiographLoaded && controlRadiograph.value.length == 0}">
 				<div *ngIf="!isRadiographLoaded" class="file-paste-zone text-center" (click)="onPaste($event)">
 					<i class="bi bi-clipboard"></i>
 					<p>
@@ -89,7 +95,7 @@
 				</div>
 				<div *ngIf="isRadiographLoaded" class="file-paste-zone text-center">
 					<p>
-						{{'Report loaded correctly from clipboard' | translate}}
+						{{'Radiograph loaded correctly from clipboard' | translate}}
 					</p>
 					<div class="file-buttons">
 						<span class="remove-btn" (click)="removeRadiograph()">
@@ -98,7 +104,17 @@
 						</span>
 					</div>
 				</div>
-			</form>
+			</div>
+			<div *ngIf="watchMode" class="file-paste-zone text-left defaultCursor">
+				<div class="upload-list">
+					<div class="file-upload-icon">
+						<i class="bi bi-file-image " style="font-size: 1rem; color: black;"></i>
+					</div>
+					<div class="file-info">
+						{{controlRadiograph.value[0].name}} ({{controlRadiograph.value[0].size | humanFileSize}})
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -106,7 +122,7 @@
 	<div class="row">
 		<h4 class="col">{{'Signs detected' | translate}}: {{radiograph.signs ? radiograph.signs.length : '0' }}</h4>
 		<span class="col text-end">
-			<i class="bi bi-brush" (click)="openDialogImage()"></i>
+			<i *ngIf="!watchMode" class="bi bi-brush" (click)="openDialogImage()"></i>
 			<i class="bi bi-info-lg" (click)="openDialogImage(true)"></i>
 		</span>
 	</div>
@@ -122,10 +138,14 @@
 			</li>
 		</ul>
 	</div>
-	<div class="row mt-4">
+	<div *ngIf="!watchMode || watchMode && radiograph.observations != null" class="row mt-4">
 		<h4 class="col">{{'Observations' | translate}}: </h4>
-		<textarea name="observations" class="form-control" style="max-height:100px" rows="2" maxlength="3000" [(ngModel)]="radiograph.observations"
+		<textarea *ngIf="!watchMode" name="observations" class="form-control" style="max-height:100px" rows="2"
+				  maxlength="3000" [(ngModel)]="radiograph.observations"
 				  placeholder="{{'Add your observations here' | translate}}..."></textarea>
+		<p *ngIf="watchMode">
+			{{radiograph.observations}}
+		</p>
 	</div>
 </div>
 

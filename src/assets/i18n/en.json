@@ -156,5 +156,8 @@
 	"Exploration recovered": "Exploration recovered",
 	"Exploration recovered successfully": "Exploration recovered successfully",
 	"Sorry, an error has occured, Requested page not found!": "Sorry, an error has occured, Requested page not found!",
-	"Take Me Home": "Take Me Home"
+	"Take Me Home": "Take Me Home",
+	"Report loaded correctly": "Report loaded correctly",
+	"Radiograph loaded correctly from clipboard": "Radiograph loaded correctly from clipboard",
+	"Creating an exploration": "Creating an exploration"
 }

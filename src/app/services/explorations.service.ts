@@ -48,6 +48,8 @@ export class ExplorationsService {
 
 	private explorationCreated: boolean = false;
 
+	private exploration: Exploration;
+
 	constructor(private http: HttpClient,
 				private patientsService: PatientsService,
 				private reportsService: ReportsService,
@@ -61,6 +63,15 @@ export class ExplorationsService {
 	setExplorationCreated(explorationCreated: boolean): void {
 		this.explorationCreated = explorationCreated;
 	}
+
+	getExploration(): Exploration {
+		return this.exploration;
+	}
+
+	setExploration(exploration: Exploration): void {
+		this.exploration = exploration;
+	}
+
 	getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[]): Observable<ExplorationPage> {
 		return this.getExplorations(user, page, pageSize, signTypes, new HttpParams());
 	}

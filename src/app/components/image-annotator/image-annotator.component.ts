@@ -24,6 +24,7 @@ import {Sign} from '../../models/Sign';
 import {SignLocation} from '../../models/SignLocation';
 import {PanZoomConfig, PanZoomAPI, PanZoomModel, PanZoomConfigOptions} from 'ngx-panzoom';
 import {Subscription} from 'rxjs';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-image-annotator',
@@ -50,7 +51,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 	private newSignLocation: SignLocation = null;
 	private scaleFactorImage: number;
 
-	private _src: string;
+	private _src: SafeUrl;
 	private _signs: Sign[];
 	private _brightness: string;
 	private _contrast: string;
@@ -74,22 +75,23 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 	private panzoomModel: PanZoomModel;
 	private modelChangedSubscription: Subscription;
 
-	constructor(private changeDetector: ChangeDetectorRef) {}
+	constructor(private changeDetector: ChangeDetectorRef,
+				private sanitizer: DomSanitizer) {}
 
 	ngOnInit(): void {
 		this.panzoomConfig.neutralZoomLevel = 2;
-		this.apiSubscription = this.panzoomConfig.api.subscribe( (api: PanZoomAPI) => this.panZoomAPI = api );
+		this.apiSubscription = this.panzoomConfig.api.subscribe((api: PanZoomAPI) => this.panZoomAPI = api);
     	this.modelChangedSubscription = this.panzoomConfig.modelChanged.subscribe(
-			 (model: PanZoomModel) => this.onModelChanged(model)
-			);
+			(model: PanZoomModel) => this.onModelChanged(model)
+		);
 	}
 
-	get src(): string {
+	get src(): any {
 		return this._src;
 	}
 
-	@Input() set src(src: string) {
-		this._src = src;
+	@Input() set src(src: any) {
+		this._src = this.sanitizer.bypassSecurityTrustUrl(src);
 	}
 
 	get brightness(): string {
@@ -179,7 +181,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 		context.lineWidth = ImageAnnotatorComponent.STROKE_SIZE;
 
 		for (let sign of this.signs) {
-			if (sign.render) {
+			if (sign.location != null && sign.render) {
 				let loc = sign.location;
 
 				context.beginPath();
@@ -211,7 +213,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 			} else {
 				indexSignTypes.set(sign.type.code, 0);
 			}
-			if (sign.render) {
+			if (sign.location != null && sign.render) {
 				let loc = sign.location;
 				let canvasDim = document.querySelector("canvas");
 
@@ -496,5 +498,6 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.apiSubscription.unsubscribe();
+		this.modelChangedSubscription.unsubscribe();
 	}
 }

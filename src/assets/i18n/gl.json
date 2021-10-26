@@ -156,5 +156,8 @@
 	"Exploration recovered": "Exploración recuperada",
 	"Exploration recovered successfully": "Exploración recuperada con éxito",
 	"Sorry, an error has occured. Requested page not found!": "Sentímolo, produciuse un erro. Non se atopu a páxina solicitada",
-	"Take Me Home": "Lévame á páxina principal"
+	"Take Me Home": "Lévame á páxina principal",
+	"Report loaded correctly": "O informe cargouse con éxito",
+	"Radiograph loaded correctly from clipboard": "A radiografía cargouse con éxito dende o portapapeis",
+	"Creating an exploration": "Creando unha exploración"
 }

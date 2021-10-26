@@ -109,7 +109,7 @@
 					<div class="card-footer">
 						<div class="btn-group" role="group">
 							<button class="btn"><i class="bi bi-pencil-square"></i></button>
-							<button class="btn border-start border-end"><i class="bi bi-info-lg"></i></button>
+							<button class="btn border-start border-end" (click)="infoExploration(exploration)"><i class="bi bi-info-lg"></i></button>
 							<button *ngIf="!exploration.deleted" class="btn" (click)="remove(exploration.id)"><i class="bi bi-trash"></i></button>
 							<button *ngIf="exploration.deleted" class="btn" (click)="recover(exploration.id)"><i class="bi bi-bootstrap-reboot"></i></button>
 						</div>

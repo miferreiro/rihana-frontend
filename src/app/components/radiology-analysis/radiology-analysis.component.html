@@ -20,11 +20,11 @@
 -->
 
 <div *ngIf="showRadiograph('PA-LAT')" class="row mt-4 mb-4">
-	<app-radiograph [typeExploration]="'PA'" (radiographHandler)="radiographHandler($event, 'PA')"></app-radiograph>
+	<app-radiograph [radiograph]="exploration.radiographs[0]" [typeExploration]="'PA'" (radiographHandler)="radiographHandler($event, 'PA')"></app-radiograph>
 </div>
 <div *ngIf="showRadiograph('PA-LAT')" class="row mt-4 mb-4">
-	<app-radiograph [typeExploration]="'LAT'" (radiographHandler)="radiographHandler($event, 'LAT')"></app-radiograph>
+	<app-radiograph [radiograph]="exploration.radiographs[1]" [typeExploration]="'LAT'" (radiographHandler)="radiographHandler($event, 'LAT')"></app-radiograph>
 </div>
 <div *ngIf="showRadiograph('AP')" class="row mt-4 mb-4">
-	<app-radiograph [typeExploration]="'AP'" (radiographHandler)="radiographHandler($event, 'AP')"></app-radiograph>
+	<app-radiograph [radiograph]="exploration.radiographs[0]" [typeExploration]="'AP'" (radiographHandler)="radiographHandler($event, 'AP')"></app-radiograph>
 </div>
