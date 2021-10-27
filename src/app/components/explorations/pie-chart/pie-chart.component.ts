@@ -96,7 +96,25 @@ export class PieChartComponent implements OnInit {
 				anchor: 'end',
 				backgroundColor: function(context) {
 					const setOpacity = (hex: string, alpha: number) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2)}`;
+					const shadeColor = (color: string, percent: number) => {
+
+						const percentChannel = (channel: number, percent: number) => {
+							let C = Math.round(channel * (100 + percent) / 100);
+							return (C < 255 ? C : 255);
+						}
+						const toHex = (channel: number) => `${((channel.toString(16).length == 1) ? "0" +
+							channel.toString(16) : channel.toString(16))}`
+
+						let R: number = parseInt(color.substring(1, 3), 16);
+						let G: number = parseInt(color.substring(3, 5), 16);
+						let B: number = parseInt(color.substring(5, 7), 16);
+
+						return "#" + toHex(percentChannel(R, percent)) + toHex(percentChannel(G, percent)) +
+							toHex(percentChannel(B, percent));
+					}
+
 					let color: string = context.dataset.backgroundColor[context.dataIndex];
+					color = shadeColor(color, -30);
 					return setOpacity(color.substring(0, context.dataset.backgroundColor[context.dataIndex].length - 2), 1);
 				},
 				borderColor: 'white',
@@ -149,7 +167,7 @@ export class PieChartComponent implements OnInit {
 			);
 
 			const setOpacity = (hex: string, alpha: number) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2)}`;
-			let signColors = signTypes.map(signType => setOpacity(signType.primaryColor, 0.8))
+			let signColors = signTypes.map(signType => setOpacity(signType.primaryColor, 0.8));
 
 			this.pieChartLabels = signTypesLabels;
 			this.pieChartData = signNum;
