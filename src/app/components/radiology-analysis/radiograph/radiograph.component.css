@@ -153,12 +153,21 @@ label {
 	font-size: 0.8rem;
 }
 
-#radiographInfo .signs p {
+#radiographInfo .signs .signType {
+	width: auto;
 	margin: .5rem;
-	padding: .4rem;
+	padding: .2rem .4rem;
+	display: flex;
+	justify-content: space-between;
 	border: 1px solid;
 	border-left: 8px solid;
 	border-radius: 5px 5px;
+	font-size: .7rem;
+}
+
+#radiographInfo .signs .numSignType {
+	margin: 0 0 0 .5rem;
+	padding: .3rem .45rem;
 }
 
 .form-control:focus {

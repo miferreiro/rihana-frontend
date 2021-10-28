@@ -128,13 +128,19 @@
 	</div>
 	<div class="row signs">
 		<ul>
-			<li *ngFor="let sign of radiograph.signs" class="col-lg-4 col-md-6 col-12">
-				<p *ngIf="sign.type.code != 'NOF' && sign.type.code != 'OTH'" [ngStyle]="{'border-color': sign.type.primaryColor}">
-					{{sign.type.code}} (<var>{{'Area' | translate}}</var>: {{sign.location?.area() | pixelsToMms | number : '1.0-0' : localizationService.getCurrentLocaleId()}}mm²)
-				</p>
-				<p *ngIf="sign.type.code == 'NOF' || sign.type.code == 'OTH'" [ngStyle]="{'border-color': sign.type.primaryColor}">
-					{{sign.type.name | translate}}
-				</p>
+			<li *ngFor="let signType of signTypesRadiograph" class="col-lg-4 col-md-6 col-12 align-self-center">
+				<div *ngIf="signType.code != 'NOF' && signType.code != 'OTH'" class="signType my-1"
+					 [ngStyle]="{'border-color': signType.primaryColor}">
+					<span>{{signType.name | translate}}</span>
+					<span class="numSignType badge rounded-pill"
+						  [ngStyle]="{'background-color': signType.primaryColor, 'color': signType.secondaryColor}">
+							{{getNumSignType(signType)}}
+					</span>
+				</div>
+				<div *ngIf="signType.code == 'NOF' || signType.code == 'OTH'" class="signType my-1"
+				   [ngStyle]="{'border-color': signType.primaryColor}">
+					{{signType.name | translate}}
+				</div>
 			</li>
 		</ul>
 	</div>

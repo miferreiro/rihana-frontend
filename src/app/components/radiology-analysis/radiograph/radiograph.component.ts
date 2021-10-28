@@ -50,6 +50,7 @@ export class RadiographComponent implements OnInit {
 	public isRadiographLoaded: boolean;
 
 	private signTypes: SignType[];
+	public signTypesRadiograph: SignType[];
 
 	public readonly controlRadiograph = new FileUploadControl(
 		{listVisible: true, discardInvalid: true, multiple: false},
@@ -154,6 +155,7 @@ export class RadiographComponent implements OnInit {
 
 					this.radiographHandler.emit(this.radiograph);
 				}
+				this.updateSignTypesRadiograph();
 			};
 			fr.readAsDataURL(file);
 		} else {
@@ -206,7 +208,16 @@ export class RadiographComponent implements OnInit {
 			this.radiograph.signs = location.signs;
 			this.radiographHandler.emit(this.radiograph);
 		}
+		this.updateSignTypesRadiograph();
 		document.getElementsByTagName("body")[0].style.overflow = "auto";
+	}
+
+	public updateSignTypesRadiograph(): void {
+		this.signTypesRadiograph = this.radiograph.signs.map((item): SignType => item.type).filter((x, i, a): boolean => a.indexOf(x) === i);
+	}
+
+	public getNumSignType(signType: SignType): number {
+		return this.radiograph.signs.filter(sign => sign.type.code == signType.code).length;
 	}
 
 	private getSignTypes() {
