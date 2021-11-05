@@ -91,7 +91,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 	}
 
 	getPageExplorations() {
-		this.explorationsService.getTotalExplorations(this.loggedUser, this.currentPage, this.pageSize, this.signTypesFilter).subscribe(explorationPage => {
+		this.explorationsService.getTotalExplorations(this.loggedUser, this.currentPage, this.pageSize, this.signTypesFilter, false).subscribe(explorationPage => {
 			this.paginationTotalItems = explorationPage.totalItems;
 			this.lastPage = Math.ceil(this.paginationTotalItems / this.pageSize);
 			this.explorations = explorationPage.explorations;

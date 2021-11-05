@@ -21,8 +21,8 @@
 
 import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import {Observable, of} from "rxjs";
+import {concatMap, map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 import {RadiographInfo} from "./entities/RadiographInfo";
 import {SignInfo} from "./entities/SignInfo";
@@ -39,10 +39,38 @@ export class RadiographsService {
 	constructor(private http: HttpClient) {
 	}
 
-	getRadiograph(id: string): Observable<Radiograph> {
-		return this.http.get<RadiographInfo[]>(`${environment.restApi}/radiograph/${id}`).pipe(
-			map(this.mapRadiographInfo.bind(this))
+	private static arrayBufferToBase64(buffer: ArrayBuffer): string {
+		let binary = '';
+		const bytes = new Uint8Array(buffer);
+		const len = bytes.byteLength;
+		for (let i = 0; i < len; i++) {
+		  binary += String.fromCharCode(bytes[i]);
+		}
+		return window.btoa(binary);
+	}
+
+	getRadiograph(id: string, source: boolean = false): Observable<Radiograph> {
+		return this.http.get<RadiographInfo>(`${environment.restApi}/radiograph/${id}/metadata`).pipe(
+			concatMap((radiographInfo: RadiographInfo) => {
+				if(source) {
+					return this.getRadiographContents(radiographInfo.id)
+						.pipe(
+							map(imageContent => {
+								const radiograph = this.mapRadiographInfo(radiographInfo);
+								radiograph.source = 'data:image/png;base64,' + imageContent;
+								return radiograph;
+							})
+						);
+				} else {
+					return of(this.mapRadiographInfo(radiographInfo))
+				}
+			})
 		);
+	}
+
+	getRadiographContents(id: string): Observable<string> {
+		return this.http.get(`${environment.restApi}/radiograph/${id}`, { responseType: 'arraybuffer' })
+			.pipe(map(RadiographsService.arrayBufferToBase64));
 	}
 
 	private mapRadiographInfo(radiographInfo: RadiographInfo): Radiograph {

@@ -72,7 +72,7 @@ export class ExplorationsService {
 		this.explorationId = explorationId;
 	}
 
-	getExploration(uuid: string): Observable<Exploration> {
+	getExploration(uuid: string, source: boolean = false): Observable<Exploration> {
 		return this.http.get<ExplorationInfo>(`${environment.restApi}/exploration/${uuid}`)
 			.pipe(
 				concatMap(explorationInfo =>
@@ -80,7 +80,7 @@ export class ExplorationsService {
 						this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id),
 						this.reportsService.getReport((<IdAndUri>explorationInfo.report).id),
 						forkJoin(explorationInfo.radiographs.map(radiograph => {
-							return this.radiographsService.getRadiograph((<IdAndUri>radiograph).id).pipe(
+							return this.radiographsService.getRadiograph((<IdAndUri>radiograph).id, source).pipe(
 								map(radiograph => radiograph)
 							);
 						}))
@@ -94,13 +94,13 @@ export class ExplorationsService {
 								patientReportAndRadiographs[1],
 								patientReportAndRadiographs[2])
 						})
+						)
 					)
 				)
-			)
 	}
 
-	getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[]): Observable<ExplorationPage> {
-		return this.getExplorations(user, page, pageSize, signTypes, new HttpParams());
+	getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], source: boolean = false): Observable<ExplorationPage> {
+		return this.getExplorations(user, page, pageSize, signTypes, source, new HttpParams());
 	}
 
 	createExploration(exploration: Exploration): Observable<Exploration> {
@@ -119,15 +119,14 @@ export class ExplorationsService {
 		return this.http.put(`${environment.restApi}/exploration/recover/` + id, null);
 	}
 
-	private getExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], params: HttpParams): Observable<ExplorationPage> {
+	private getExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], source: boolean = false, params: HttpParams): Observable<ExplorationPage> {
 		params = params.append('user', user).append('page', page.toString()).append('pageSize', pageSize.toString());
 
 		signTypes.forEach(signType => params = params.append('signType', signType.code));
 
 		return this.http.get<ExplorationInfo[]>(`${environment.restApi}/exploration/`, {params, observe: 'response'}).pipe(
 			concatMap(response => {
-				return this.withPatientReportAndRadiographs(of(response.body))
-				.pipe(
+				return this.withPatientReportAndRadiographs(of(response.body), source).pipe(
 					map(explorationsWithPatient => {
 						const explorationPage: ExplorationPage = {
 							totalItems: Number(response.headers.get('X-Pagination-Total-Items')),
@@ -140,7 +139,7 @@ export class ExplorationsService {
 		);
 	}
 
-	private withPatientReportAndRadiographs(explorationInfoObservable: Observable<ExplorationInfo[]>): Observable<Exploration[]> {
+	private withPatientReportAndRadiographs(explorationInfoObservable: Observable<ExplorationInfo[]>, source: boolean): Observable<Exploration[]> {
 		return explorationInfoObservable
 			.pipe(
 				concatMap(explorationInfos =>

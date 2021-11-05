@@ -20,7 +20,7 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {Navigation, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ExplorationsService} from '../../services/explorations.service';
@@ -58,8 +58,8 @@ export class ExplorationComponent implements OnInit {
 		this.SEXValues = EnumUtils.enumValues(SEX);
 
 		if (this.explorationsService.getExplorationId() != undefined) {
-			this.explorationsService.getExploration(this.explorationsService.getExplorationId()).subscribe(exploration => {
-				this.exploration = exploration;
+			this.explorationsService.getExploration(this.explorationsService.getExplorationId(), true).subscribe(exploration => {
+					this.exploration = exploration;
 			});
 		} else {
 			this.exploration.explorationDate = new Date();
