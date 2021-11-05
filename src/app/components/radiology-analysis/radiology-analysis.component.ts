@@ -95,4 +95,8 @@ export class RadiologyAnalysisComponent implements OnInit {
 	public showRadiograph(type: string): boolean {
 		return type === this._typeExploration;
 	}
+
+	public getTypeRadiograph(type: string): Radiograph {
+		return this._radiographs.find(radiograph => radiograph.type == type)
+	}
 }
