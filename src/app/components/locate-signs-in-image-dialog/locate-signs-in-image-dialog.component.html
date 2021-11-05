@@ -81,7 +81,9 @@
 										<div class="card-header-custom">
 											<div class="header d-flex justify-content-between">
 												<h6>{{'Other'| translate}}</h6>
-												<input class="check" type="checkbox" id="other" [checked]="other" (change)="checkOther($event)">
+												<input id="other" type="checkbox" class="check"
+													   [checked]="other" [disabled]="disabled"
+													   (change)="checkOther($event)">
 											</div>
 										</div>
 									</div>
