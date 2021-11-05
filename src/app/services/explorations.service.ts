@@ -48,7 +48,7 @@ export class ExplorationsService {
 
 	private explorationCreated: boolean = false;
 
-	private exploration: Exploration;
+	private explorationId: string;
 
 	constructor(private http: HttpClient,
 				private patientsService: PatientsService,
@@ -64,12 +64,39 @@ export class ExplorationsService {
 		this.explorationCreated = explorationCreated;
 	}
 
-	getExploration(): Exploration {
-		return this.exploration;
+	getExplorationId(): string {
+		return this.explorationId;
 	}
 
-	setExploration(exploration: Exploration): void {
-		this.exploration = exploration;
+	setExplorationId(explorationId: string): void {
+		this.explorationId = explorationId;
+	}
+
+	getExploration(uuid: string): Observable<Exploration> {
+		return this.http.get<ExplorationInfo>(`${environment.restApi}/exploration/${uuid}`)
+			.pipe(
+				concatMap(explorationInfo =>
+					forkJoin(
+						this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id),
+						this.reportsService.getReport((<IdAndUri>explorationInfo.report).id),
+						forkJoin(explorationInfo.radiographs.map(radiograph => {
+							return this.radiographsService.getRadiograph((<IdAndUri>radiograph).id).pipe(
+								map(radiograph => radiograph)
+							);
+						}))
+					)
+					.pipe(
+						map(patientReportAndRadiographs => {
+							return this.mapExplorationInfo(
+								explorationInfo,
+								explorationInfo.user,
+								patientReportAndRadiographs[0],
+								patientReportAndRadiographs[1],
+								patientReportAndRadiographs[2])
+						})
+					)
+				)
+			)
 	}
 
 	getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[]): Observable<ExplorationPage> {
@@ -99,8 +126,8 @@ export class ExplorationsService {
 
 		return this.http.get<ExplorationInfo[]>(`${environment.restApi}/exploration/`, {params, observe: 'response'}).pipe(
 			concatMap(response => {
-				return this.withUserPatientReportAndRadiographs(of(response.body), user
-				).pipe(
+				return this.withPatientReportAndRadiographs(of(response.body))
+				.pipe(
 					map(explorationsWithPatient => {
 						const explorationPage: ExplorationPage = {
 							totalItems: Number(response.headers.get('X-Pagination-Total-Items')),
@@ -113,8 +140,7 @@ export class ExplorationsService {
 		);
 	}
 
-	private withUserPatientReportAndRadiographs(explorationInfoObservable: Observable<ExplorationInfo[]>,
-												user: string): Observable<Exploration[]> {
+	private withPatientReportAndRadiographs(explorationInfoObservable: Observable<ExplorationInfo[]>): Observable<Exploration[]> {
 		return explorationInfoObservable
 			.pipe(
 				concatMap(explorationInfos =>

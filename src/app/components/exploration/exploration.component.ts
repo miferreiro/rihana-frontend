@@ -57,8 +57,10 @@ export class ExplorationComponent implements OnInit {
 		}
 		this.SEXValues = EnumUtils.enumValues(SEX);
 
-		if (this.explorationsService.getExploration() != undefined) {
-			this.exploration = this.explorationsService.getExploration();
+		if (this.explorationsService.getExplorationId() != undefined) {
+			this.explorationsService.getExploration(this.explorationsService.getExplorationId()).subscribe(exploration => {
+				this.exploration = exploration;
+			});
 		} else {
 			this.exploration.explorationDate = new Date();
 			this.exploration.user = new Users();
@@ -69,7 +71,7 @@ export class ExplorationComponent implements OnInit {
 			this.exploration.patient.birthdate = null;
 			this.exploration.patient.sex = null;
 			this.exploration.radiographs = [];
-			this.typeExploration = 'PA-LAT'
+			this.typeExploration = 'PA-LAT';
 		}
 	}
 

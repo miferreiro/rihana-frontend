@@ -74,7 +74,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		this.currentPage = 1;
 		this.getSignTypes();
 		this.getPageExplorations();
-		this.explorationsService.setExploration(undefined);
+		this.explorationsService.setExplorationId(undefined);
 	}
 
 	ngAfterViewChecked() {
@@ -170,7 +170,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 	}
 
 	public infoExploration(exploration: Exploration) {
-		this.explorationsService.setExploration(exploration);
+		this.explorationsService.setExplorationId(exploration.id);
 		this.router.navigate(['/exploration']);
 	}
 }

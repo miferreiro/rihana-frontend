@@ -24,8 +24,8 @@
 		<h2 *ngIf="exploration.title != undefined" class="text-center fw-bold">{{exploration.title}}</h2>
 		<h2 *ngIf="exploration.title == undefined" class="text-center fw-bold">{{'Creating an exploration' | translate}}</h2>
 	</div>
-	<app-report [exploration]="exploration" (reportEvent)="reportHandler($event)"></app-report>
-	<app-radiology-analysis [exploration]="exploration" [reportFields]="exploration.report" (radiographs)="radiographsHandler($event)"
+	<app-report *ngIf="exploration.explorationDate != undefined" [exploration]="exploration" (reportEvent)="reportHandler($event)"></app-report>
+	<app-radiology-analysis *ngIf="exploration.explorationDate != undefined" [exploration]="exploration" [reportFields]="exploration.report" (radiographs)="radiographsHandler($event)"
 		(typeExploration)=setTypeExploration($event)></app-radiology-analysis>
 </div>
 <footer class="footer mt-auto py-1 fixed-bottom bg-light">
