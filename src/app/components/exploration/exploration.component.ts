@@ -46,6 +46,8 @@ export class ExplorationComponent implements OnInit {
 	public typeExploration: string;
 	public SEXValues: SEX[];
 
+	public showOverlay: boolean = true;
+
 	constructor(private router: Router,
 				private authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
@@ -59,7 +61,8 @@ export class ExplorationComponent implements OnInit {
 
 		if (this.explorationsService.getExplorationId() != undefined) {
 			this.explorationsService.getExploration(this.explorationsService.getExplorationId(), true).subscribe(exploration => {
-					this.exploration = exploration;
+				this.exploration = exploration;
+				this.showOverlay = false;
 			});
 		} else {
 			this.exploration.explorationDate = new Date();
@@ -72,6 +75,7 @@ export class ExplorationComponent implements OnInit {
 			this.exploration.patient.sex = null;
 			this.exploration.radiographs = [];
 			this.typeExploration = 'PA-LAT';
+			this.showOverlay = false;
 		}
 	}
 

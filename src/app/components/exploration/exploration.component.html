@@ -36,3 +36,15 @@
 		</div>
 	</div>
 </footer>
+
+<div class="my-overlay" *ngIf="showOverlay">
+	<div class="loader">
+		<div class="loader--dot"></div>
+		<div class="loader--dot"></div>
+		<div class="loader--dot"></div>
+		<div class="loader--dot"></div>
+		<div class="loader--dot"></div>
+		<div class="loader--dot"></div>
+		<div class="loader--text">{{'Loading the exploration' | translate}}<span class="points"></span></div>
+	</div>
+</div>
