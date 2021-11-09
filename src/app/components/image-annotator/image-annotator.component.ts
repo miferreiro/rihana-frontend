@@ -84,6 +84,11 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
     	this.modelChangedSubscription = this.panzoomConfig.modelChanged.subscribe(
 			(model: PanZoomModel) => this.onModelChanged(model)
 		);
+		if (this.canLocate()) {
+			this.canvasElement.className = "cursor";
+		} else {
+			this.canvasElement.className = "disabled";
+		}
 	}
 
 	get src(): any {
@@ -350,14 +355,16 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 
 	onMouseDown(event: MouseEvent) {
 		if (event.which == 1) {
-			this.canvasElement.className = "cursor";
 			if (this.canLocate()) {
+				this.canvasElement.className = "cursor";
 				const location = this.adjustMouseLocation(event);
 
 				location.x = location.x / this.getCssScale(this.zoom);
 				location.y = location.y / this.getCssScale(this.zoom);
 
 				this.newSignLocation = new SignLocation(location.x / this.scaleFactorImage, location.y / this.scaleFactorImage, 0, 0);
+			} else {
+				this.canvasElement.className = "disabled";
 			}
 		} else if (event.which === 2) {
 			const location = this.adjustMouseLocation(event);
@@ -412,7 +419,11 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 			this.newSignLocation = null;
 			this.repaint(false);
 		}
-		this.canvasElement.className = "cursor";
+		if (this.canLocate()) {
+			this.canvasElement.className = "cursor";
+		} else {
+			this.canvasElement.className = "disabled";
+		}
 	}
 
 	@HostListener('window:resize', ['$event'])
