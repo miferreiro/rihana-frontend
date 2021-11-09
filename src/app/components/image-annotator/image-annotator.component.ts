@@ -499,8 +499,8 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 
 	public disableScroll(disable: boolean) {
 		if (disable) {
-			document.getElementById("image-dialog").style.overflowX = "unset";
-			document.getElementById("image-dialog").style.overflowY = "unset";
+			document.getElementById("image-dialog").style.overflowX = "hidden";
+			document.getElementById("image-dialog").style.overflowY = "hidden";
 		} else {
 			document.getElementById("image-dialog").style.overflowX = "hidden";
 			document.getElementById("image-dialog").style.overflowY = "auto";
