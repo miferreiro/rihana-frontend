@@ -160,5 +160,12 @@
 	"Report loaded correctly": "Report loaded correctly",
 	"Radiograph loaded correctly from clipboard": "Radiograph loaded correctly from clipboard",
 	"Creating an exploration": "Creating an exploration",
-	"Loading the exploration": "Loading the exploration"
+	"Loading the exploration": "Loading the exploration",
+	"Profile": "Profile",
+	"Security": "Security",
+	"Account security": "Account security",
+	"Language": "Language",
+	"Private profile": "Private profile",
+	"Change password": "Change password",
+	"Language configuration": "Language configuration"
 }

@@ -160,5 +160,12 @@
 	"Report loaded correctly": "O informe cargouse con éxito",
 	"Radiograph loaded correctly from clipboard": "A radiografía cargouse con éxito dende o portapapeis",
 	"Creating an exploration": "Creando unha exploración",
-	"Loading the exploration": "Cargando a exploración"
+	"Loading the exploration": "Cargando a exploración",
+	"Profile": "Perfil",
+	"Security": "Seguridade",
+	"Account security": "Seguridade da conta",
+	"Language": "Idioma",
+	"Private profile": "Perfil privado",
+	"Change password": "Cambio de contrasinal",
+	"Language configuration": "Configuración de idioma"
 }

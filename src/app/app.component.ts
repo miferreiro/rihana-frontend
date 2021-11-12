@@ -76,11 +76,6 @@ export class AppComponent implements OnInit {
 		);
 	}
 
-	switchLang(lang: string) {
-		this.localizationService.useLanguage(lang);
-		localStorage.setItem('language', lang);
-	}
-
 	getProfile() {
 		this.router.navigateByUrl('/profile');
 	}

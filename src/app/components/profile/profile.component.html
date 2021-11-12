@@ -20,70 +20,150 @@
 -->
 
 <div *ngIf="loggedUser != null" class="container mt-5">
-	<div class="card">
-		<h4 class="card-header">
-			{{'User Profile' | translate}}: <span class="text-capitalize">{{loggedUser.login}}</span>
-		</h4>
-		<form ngNativeValidate #userForm="ngForm">
-			<div class="card-body">
-				<section>
-					<div class="row mb-3">
-						<label class="col-6 align-self-center fw-bold">
-							{{'Username' | translate}}
-						</label>
-						<div class="col-6 align-self-center">
-							{{loggedUser.login}}
-						</div>
-					</div>
-					<div class="row mb-3" [hidden]="!editingUser">
-						<label for="user-form-password" class="col-12 col-md-6 align-self-center fw-bold">
-							{{'Password' | translate}}
-						</label>
-						<div class="col-12 col-md-6 align-self-center">
-							<input type="password" id="user-form-password" name="password"
-									[(ngModel)]="loggedUser.password" minlength="6"
-									#passwordUser="ngModel"/>
-						</div>
-						<div *ngIf="passwordUser.invalid && !passwordUser.pristine" class="alert alert-danger my-0 py-1" role="alert">
-							<div *ngIf="passwordUser.errors.minlength && passwordUser.value !== ''">
-								{{'Password can\'t be shorter than 6 characters.' | translate}}
+	<div  class="row gutters-sm">
+		<div class="col-md-4 d-none d-md-block">
+			<div class="card">
+				<div class="card-body">
+					<nav class="nav flex-column nav-pills nav-gap-y-1">
+						<a id="list-profile" href="#profile" class="nav-item nav-link"
+							data-bs-toggle="list" role="tab" aria-controls="list-profile">
+							<span class="bi bi-person"></span>
+							{{'Profile' | translate}}
+						</a>
+						<a id="list-account" href="#account" class="nav-item nav-link active"
+							data-bs-toggle="list" role="tab" aria-controls="list-account">
+							<span class="bi bi-gear" (click)="edit()"></span>
+							{{'Security' | translate}}
+						</a>
+						<a href="#language" id="list-language" class="nav-item nav-link"
+							data-bs-toggle="list" role="tab" aria-controls="list-language">
+							<span class="bi bi-globe"></span>
+							{{'Language' | translate}}
+						</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="card">
+				<div class="card-header border-bottom mb-3 d-flexx d-md-none">
+					<ul class="nav nav-tabs card-header-tabs nav-gap-x-1" role="tablist">
+						<li class="nav-item">
+							<a href="#profile" class="nav-link" data-bs-toggle="list" role="tab"
+								aria-controls="list-profile">
+								<span class="bi bi-person"></span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#account" class="nav-link active" data-bs-toggle="list" role="tab"
+								aria-controls="list-account" (click)="edit()">
+								<span class="bi bi-gear"></span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#language" class="nav-link" data-bs-toggle="list" role="tab"
+								aria-controls="list-language">
+								<span class="bi bi-globe"></span>
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="card-body tab-content">
+					<div id="profile" class="tab-pane fade" role="tabpanel" aria-labelledby="list-home">
+						<h2>{{'Private profile' | translate}}</h2>
+						<hr>
+						<section>
+							<div class="row mb-3">
+								<label class="col-6 align-self-center fw-bold">
+									{{'Username' | translate}}
+								</label>
+								<div class="col-6 align-self-center">
+									{{loggedUser.login}}
+								</div>
 							</div>
-						</div>
+							<div class="row mb-3">
+								<label class="col-6 align-self-center fw-bold">
+									{{'Role' | translate}}
+								</label>
+								<div class="col-6 align-self-center">
+									{{loggedUser.role}}
+								</div>
+							</div>
+						</section>
 					</div>
-					<div class="row mb-3 align-middle" [hidden]="!editingUser">
-						<label for="user-form-password-confirm" class="col-12 col-md-6 align-self-center fw-bold">
-							{{'Confirm password' | translate}}
-						</label>
-						<div class="col-12 col-md-6 align-self-center">
-							<input type="password" id="user-form-password-confirm" name="confirmPassword"
-									[(ngModel)]="confirmPassword" #confirmPasswordUser="ngModel"/>
-						</div>
-						<div *ngIf="passwordUser.value !== '' && passwordUser.value !== confirmPasswordUser.value &&
-								!confirmPasswordUser.pristine" class="alert alert-danger my-0 py-1" role="alert">
-							{{'Passwords don\'t match' | translate}}
-						</div>
+
+					<div id="account" class="tab-pane fade show active" role="tabpanel" aria-labelledby="list-account">
+						<h2>{{'Change password' | translate}}</h2>
+						<hr>
+						<form ngNativeValidate #userForm="ngForm">
+							<div class="row mb-3">
+								<label for="user-form-password" class="col-12 col-md-6 align-self-center fw-bold">
+									{{'Password' | translate}}
+								</label>
+								<div class="col-12 col-md-6 align-self-center">
+									<input type="password" id="user-form-password" name="password"
+											[(ngModel)]="loggedUser.password" minlength="6"
+											#passwordUser="ngModel"/>
+								</div>
+								<div *ngIf="passwordUser.invalid && !passwordUser.pristine"
+									class="alert alert-danger my-0 py-1" role="alert">
+									<div *ngIf="passwordUser.errors.minlength && passwordUser.value !== ''">
+										{{'Password can\'t be shorter than 6 characters.' | translate}}
+									</div>
+								</div>
+							</div>
+							<div class="row mb-3 align-middle">
+								<label for="user-form-password-confirm" class="col-12 col-md-6 align-self-center fw-bold">
+									{{'Confirm password' | translate}}
+								</label>
+								<div class="col-12 col-md-6 align-self-center">
+									<input type="password" id="user-form-password-confirm" name="confirmPassword"
+											[(ngModel)]="confirmPassword" #confirmPasswordUser="ngModel"/>
+								</div>
+								<div *ngIf="passwordUser.value !== '' && passwordUser.value !== confirmPasswordUser.value &&
+										!confirmPasswordUser.pristine" class="alert alert-danger my-0 py-1" role="alert">
+									{{'Passwords don\'t match' | translate}}
+								</div>
+							</div>
+							<button type="button" class="col-3 btn btn-success btn-sm" (click)="editUser()"
+									[disabled]="userForm.invalid || (passwordUser.value !== '' &&
+									passwordUser.value !== confirmPasswordUser.value)">
+									{{'Save' | translate}}
+							</button>
+						</form>
 					</div>
-					<div class="row mb-3">
-						<label for="user-form-role" class="col-6 align-self-center fw-bold">
-							{{'Role' | translate}}
-						</label>
-						<div class="col-6 align-self-center">
-							{{loggedUser.role}}
-						</div>
+
+					<div id="language" class="tab-pane fade" role="tabpanel" aria-labelledby="list-language">
+						<h2>{{'Language configuration' | translate}}</h2>
+						<hr>
+						<section>
+							<div class="row mb-3">
+								<label class="col-6 align-self-center fw-bold">
+									{{'Language' | translate}}
+								</label>
+
+								<div class="col-6 align-self-center dropdown">
+									<button id="dropdownLang" class="btn btn-secondary dropdown-toggle active"
+										role="button" data-bs-toggle="dropdown" aria-expanded="false">
+										{{localizationService.getCurrentLocaleId() | lang | translate}}
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownLang">
+										<li *ngFor="let language of localizationService.getLocaleIds();let i=index">
+											<a class="dropdown-item" (click)="switchLang(language)">
+												{{language | lang | translate}}
+											</a>
+											<hr *ngIf="i != (localizationService.getLocaleIds().length - 1)"
+												class="dropdown-divider">
+										</li>
+									</ul>
+								</div>
+							</div>
+						</section>
 					</div>
-				</section>
+				</div>
 			</div>
-			<div class="card-footer text-end">
-				<button *ngIf="!editingUser" type="button" class="col-3 btn btn-secondary btn-sm" (click)="edit()">
-					{{'Edit' | translate}}
-				</button>
-				<button *ngIf="editingUser" type="button" class="col-3 btn btn-success btn-sm" (click)="editUser()"
-						[disabled]="userForm.invalid || (passwordUser.value !== '' &&
-						passwordUser.value !== confirmPasswordUser.value)">
-					{{'Save' | translate}}
-				</button>
-			</div>
-		</form>
+		</div>
 	</div>
 </div>
 

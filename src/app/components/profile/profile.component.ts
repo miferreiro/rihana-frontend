@@ -39,13 +39,16 @@ export class ProfileComponent implements OnInit {
 	editingUser = false;
 
 	constructor(private authenticationService: AuthenticationService,
-				private locationService: LocalizationService,
+				public localizationService: LocalizationService,
 				private notificationService: NotificationService,
 				private usersService: UsersService) { }
 
 	ngOnInit(): void {
 		if (this.authenticationService.getUser().authenticated) {
-			this.usersService.getUser(this.authenticationService.getUser().login).subscribe(user => this.loggedUser = user);
+			this.usersService.getUser(this.authenticationService.getUser().login).subscribe(user => {
+				this.loggedUser = user;
+				this.loggedUser.password = '';
+			});
 		}
 	}
 
@@ -64,13 +67,19 @@ export class ProfileComponent implements OnInit {
 					this.authenticationService.logIn(this.loggedUser.login, this.loggedUser.password, this.loggedUser.role);
 				}
 				Object.assign(this.loggedUser, updatedUser);
+				this.loggedUser.password = '';
 				this.confirmPassword = '';
-				this.notificationService.success(this.locationService.translate('User edited successfully') + '.',
-												this.locationService.translate('User edited'));
+				this.notificationService.success(this.localizationService.translate('User edited successfully') + '.',
+												 this.localizationService.translate('User edited'));
 			});
 		} else {
 			this.editingUser = false;
 		}
+	}
+
+	switchLang(lang: string) {
+		this.localizationService.useLanguage(lang);
+		localStorage.setItem('language', lang);
 	}
 
 }

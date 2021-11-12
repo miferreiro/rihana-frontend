@@ -160,5 +160,12 @@
 	"Report loaded correctly": "El informe ha sido cargado correctamente",
 	"Radiograph loaded correctly from clipboard": "La radiografía ha sido cargada correctamente desde el portapapeles",
 	"Creating an exploration": "Creando una exploración",
-	"Loading the exploration": "Cargando la exploración"
+	"Loading the exploration": "Cargando la exploración",
+	"Profile": "Perfil",
+	"Security": "Seguridad",
+	"Account security": "Seguridad de la cuenta",
+	"Language": "Idioma",
+	"Private profile": "Perfil privado",
+	"Change password": "Cambio de contraseña",
+	"Language configuration": "Configuración de idioma"
 }
