@@ -144,7 +144,7 @@
 			</li>
 		</ul>
 	</div>
-	<div *ngIf="!watchMode || watchMode && radiograph.observations != null" class="row mt-4">
+	<div *ngIf="!watchMode || (watchMode && radiograph.observations != null)" class="row mt-4">
 		<h4 class="col">{{'Observations' | translate}}: </h4>
 		<textarea *ngIf="!watchMode" name="observations" class="form-control" style="max-height:100px" rows="2"
 				  maxlength="3000" [(ngModel)]="radiograph.observations"

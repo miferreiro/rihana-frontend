@@ -124,7 +124,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 	}
 
 	@Input() set signs(signs: Sign[]) {
-		this._signs = signs;
+		this._signs = [].concat(signs);
 		if (this.canvasElement !== null) {
 			this.repaint(true);
 		}

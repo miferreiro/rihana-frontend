@@ -42,7 +42,7 @@ export class RadiographComponent implements OnInit {
 
 	@Output() radiographHandler = new EventEmitter<Radiograph>();
 	@Input() typeExploration: string;
-	@Input() radiograph: Radiograph;
+	public _radiograph: Radiograph;
 
 	public disabled: boolean;
 	private subscription: Subscription;
@@ -113,6 +113,14 @@ export class RadiographComponent implements OnInit {
 		}
 
 		this.getSignTypes();
+	}
+
+	get radiograph(): Radiograph {
+		return this._radiograph;
+	}
+
+	@Input() set radiograph(radiograph: Radiograph) {
+		this._radiograph = radiograph;
 	}
 
 	public addRadiograph(event: Event): void {
@@ -213,7 +221,9 @@ export class RadiographComponent implements OnInit {
 	}
 
 	public updateSignTypesRadiograph(): void {
-		this.signTypesRadiograph = this.radiograph.signs.map((item): SignType => item.type).filter((x, i, a): boolean => a.indexOf(x) === i);
+		this.signTypesRadiograph = this.radiograph.signs.map((item): SignType => item.type)
+														.filter((value, index, self): boolean =>
+														 	self.findIndex(type => type.code == value.code) === index);
 	}
 
 	public getNumSignType(signType: SignType): number {

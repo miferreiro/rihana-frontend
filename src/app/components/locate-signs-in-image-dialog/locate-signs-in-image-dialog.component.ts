@@ -20,7 +20,8 @@
  */
 
 
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Subscription} from 'rxjs';
 import {Sign} from '../../models/Sign';
 import {SignType} from '../../models/SignType';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
@@ -37,14 +38,16 @@ export class AnnotationResult {
 	templateUrl: './locate-signs-in-image-dialog.component.html',
 	styleUrls: ['./locate-signs-in-image-dialog.component.css']
 })
-export class LocateSignsInImageDialogComponent implements OnInit {
+export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 
 	@ViewChild(ImageAnnotatorComponent) private imageAnnotatorComponent: ImageAnnotatorComponent;
 
 	@Input() src: string;
-	@Input() signs: Sign[];
 	@Input() disabled: boolean;
 	@Output() close = new EventEmitter<AnnotationResult>();
+
+	private _signs: Sign[];
+	private subscription: Subscription;
 
 	public showSelectSignType: boolean = false;
 
@@ -69,11 +72,19 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 
 		this.other = this.signs.filter(sing => sing.type.code == "OTH").length > 0;
 
-		this.signTypesService.getSignTypes().subscribe(signTypes => {
+		this.subscription = this.signTypesService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes;
 			this.signNoFindings = new Sign();
 			this.signNoFindings.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
-		})
+		});
+	}
+
+	get signs(): Sign[] {
+		return this._signs;
+	}
+
+	@Input() set signs(signs: Sign[]) {
+		this._signs = [].concat(signs);
 	}
 
 	public changeBrightness(event: Event): void {
@@ -101,7 +112,7 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 	}
 
 	public checkRenderSomeSingType(signType: SignType): boolean {
-		return this.signsType(signType).some(s => s.render)
+		return this.signsType(signType).some(s => s.render);
 	}
 
 	public setLocationNewSign(newSign: Sign): void {
@@ -211,5 +222,9 @@ export class LocateSignsInImageDialogComponent implements OnInit {
 				this.signs = [this.signNoFindings];
 			}
 		}
+	}
+
+	ngOnDestroy(): void {
+		this.subscription.unsubscribe();
 	}
 }
