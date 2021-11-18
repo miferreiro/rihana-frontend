@@ -29,7 +29,9 @@ import {ExplorationInfo} from './entities/ExplorationInfo';
 import {ExplorationPage} from './entities/ExplorationPage';
 import {IdAndUri} from './entities/IdAndUri';
 import {NewExplorationInfo} from './entities/NewExplorationInfo';
+import {EditExplorationInfo} from './entities/EditExplorationInfo';
 import {NewPatientInfo} from './entities/NewPatientInfo';
+import {NewPerformedExplorationInfo, NewReportInfo, NewRequestedExplorationInfo} from './entities/NewReportInfo';
 import {NewRadiographInfo} from './entities/NewRadiographInfo';
 import {NewSignInfo} from './entities/NewSignInfo';
 import {PatientsService} from './patients.service';
@@ -38,7 +40,7 @@ import {RadiographsService} from './radiographs.service';
 import {Exploration} from '../models/Exploration';
 import {Patient, SEX} from '../models/Patient';
 import {Radiograph} from '../models/Radiograph';
-import {Report} from '../models/Report';
+import {PerformedExploration, Report, RequestedExploration} from '../models/Report';
 import {Sign} from '../models/Sign';
 import {SignType} from '../models/SignType';
 import {Users} from '../models/Users';
@@ -47,8 +49,10 @@ import {Users} from '../models/Users';
 export class ExplorationsService {
 
 	private explorationCreated: boolean = false;
+	private explorationEdited: boolean = false;
 
 	private explorationId: string;
+	private editingExploration: boolean = false;
 
 	constructor(private http: HttpClient,
 				private patientsService: PatientsService,
@@ -64,12 +68,28 @@ export class ExplorationsService {
 		this.explorationCreated = explorationCreated;
 	}
 
+	getExplorationEdited(): boolean {
+		return this.explorationEdited;
+	}
+
+	setExplorationEdited(explorationEdited: boolean): void {
+		this.explorationEdited = explorationEdited;
+	}
+
 	getExplorationId(): string {
 		return this.explorationId;
 	}
 
 	setExplorationId(explorationId: string): void {
 		this.explorationId = explorationId;
+	}
+
+	getEditingExploration(): boolean {
+		return this.editingExploration;
+	}
+
+	setEditingExploration(editingExploration: boolean): void {
+		this.editingExploration = editingExploration;
 	}
 
 	getExploration(uuid: string, source: boolean = false): Observable<Exploration> {
@@ -106,6 +126,14 @@ export class ExplorationsService {
 	createExploration(exploration: Exploration): Observable<Exploration> {
 		const newExplorationInfo = this.toNewExplorationInfo(exploration);
 		return this.http.post<NewExplorationInfo>(`${environment.restApi}/exploration`, newExplorationInfo)
+			.pipe(
+				map(this.mapExplorationInfo.bind(this))
+			);
+	}
+
+	editExploration(exploration: Exploration): Observable<Exploration> {
+		const explorationInfo = this.toEditExplorationInfo(exploration);
+		return this.http.put<ExplorationInfo>(`${environment.restApi}/exploration/${explorationInfo.id}`, explorationInfo)
 			.pipe(
 				map(this.mapExplorationInfo.bind(this))
 			);
@@ -196,6 +224,24 @@ export class ExplorationsService {
 		}
 	}
 
+	private toEditExplorationInfo(exploration: Exploration): EditExplorationInfo {
+
+		let report: NewReportInfo;
+		let patient: NewPatientInfo;
+
+		report = this.toNewReportInfo(exploration.report);
+		patient = this.toNewPatientInfo(exploration.patient)
+
+		return {
+			id: exploration.id,
+			explorationDate: exploration.explorationDate,
+			user: exploration.user.login,
+			patient: patient,
+			report: report,
+			radiographs: exploration.radiographs.map(radiograph => this.toNewRadiographInfo(radiograph))
+		};
+	}
+
 	private toNewExplorationInfo(exploration: Exploration): NewExplorationInfo {
 
 		let report: Report;
@@ -253,6 +299,44 @@ export class ExplorationsService {
 			location: sign.location,
 			brightness: sign.brightness,
 			contrast: sign.contrast
+		}
+	}
+
+	private toNewReportInfo(report: Report): NewReportInfo {
+		return {
+			completionDate: report.completionDate,
+			reportNumber: report.reportNumber,
+			applicant: report.applicant,
+			priority: report.priority,
+			status: report.status,
+			bed: report.bed,
+			requestedExplorations: report.requestedExplorations.map(
+				requestedExploration => this.toNewRequestedExplorationInfo(requestedExploration)
+			),
+			clinicalData: report.clinicalData,
+			performedExplorations: report.performedExplorations.map(
+				performedExploration => this.toNewPerformedExplorationInfo(performedExploration)
+			),
+			findings: report.findings,
+			conclusions: report.conclusions
+		}
+	}
+
+	private toNewRequestedExplorationInfo(requestedExplorations: RequestedExploration): NewRequestedExplorationInfo {
+		return {
+			code: requestedExplorations.code,
+			description: requestedExplorations.description,
+			date: requestedExplorations.date
+		}
+	}
+
+	private toNewPerformedExplorationInfo(performedExplorations: PerformedExploration): NewPerformedExplorationInfo {
+		return {
+			code: performedExplorations.code,
+			description: performedExplorations.description,
+			date: performedExplorations.date,
+			portable: performedExplorations.portable,
+			surgery: performedExplorations.surgery,
 		}
 	}
 }

@@ -19,31 +19,15 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-export class Report {
+import {NewPatientInfo} from "./NewPatientInfo";
+import {NewRadiographInfo} from "./NewRadiographInfo";
+import {NewReportInfo} from "./NewReportInfo";
+
+export interface EditExplorationInfo {
 	id: string;
-	completionDate: Date;
-	reportNumber: string;
-	applicant: string;
-	priority: string;
-	status: string;
-	bed: string;
-	requestedExplorations: RequestedExploration[];
-	clinicalData: string;
-	performedExplorations: PerformedExploration[];
-	findings: string;
-	conclusions: string;
-}
-
-export class RequestedExploration {
-	code: string;
-	description: string;
-	date: Date;
-}
-
-export class PerformedExploration {
-	code: string;
-	description: string;
-	date: Date;
-	portable: string;
-	surgery: string;
+	explorationDate: Date;
+	user: string;
+	patient: NewPatientInfo;
+	report: NewReportInfo;
+	radiographs: NewRadiographInfo[];
 }

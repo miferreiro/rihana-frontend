@@ -23,6 +23,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FileUploadControl, FileUploadValidators} from '@iplab/ngx-file-upload';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {NotificationsService} from 'angular2-notifications';
+import {ExplorationsService} from '../../../services/explorations.service';
 import {SignTypesService} from '../../../services/sign-types.service';
 import {SignType} from '../../../models/SignType';
 import {Radiograph} from '../../../models/Radiograph';
@@ -30,6 +31,15 @@ import {Sign} from '../../../models/Sign';
 import {AnnotationResult} from '../../locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
 import {LocalizationService} from '../../../modules/internationalization/localization.service';
 import {NotificationService} from '../../../modules/notification/services/notification.service';
+import {EnumUtils} from '../../../utils/enum.utils';
+
+export enum STATE {
+	NOT_LOADED = "NOT_LOADED",
+	RADIOGRAPH_LOADED = "RADIOGRAPH_LOADED",
+	CLIPBOARD_LOADED = "CLIPBOARD_LOADED",
+	EXPLORATION_LOADED = "EXPLORATION_LOADED",
+	READ_ONLY = "READ_ONLY"
+}
 
 @Component({
 	selector: 'app-radiograph',
@@ -39,12 +49,12 @@ import {NotificationService} from '../../../modules/notification/services/notifi
 export class RadiographComponent implements OnInit {
 
 	private readonly extensionValid = ['png', 'jpg', 'jpeg'];
+	public STATEValues: STATE[];
 
 	@Output() radiographHandler = new EventEmitter<Radiograph>();
 	@Input() typeExploration: string;
 	public _radiograph: Radiograph;
 
-	public disabled: boolean;
 	private subscription: Subscription;
 
 	public isRadiographLoaded: boolean;
@@ -63,13 +73,16 @@ export class RadiographComponent implements OnInit {
 	public showImageDialog: boolean = false;
 	public watchMode: boolean;
 
+	public state: STATE = STATE.NOT_LOADED;
+
 	constructor(public localizationService: LocalizationService,
 				private notificationService: NotificationService,
 				private notificationsService: NotificationsService,
+				private explorationsService: ExplorationsService,
 				private signTypesService: SignTypesService) { }
 
 	ngOnInit(): void {
-
+		this.STATEValues = EnumUtils.enumValues(STATE);
 		this.subscription = this.controlRadiograph.valueChanges.subscribe((values: Array<File>) => {
 			if (values.length == 2) {
 				if (this.extensionValid.includes(values[1].name.split('.').pop())) {
@@ -99,17 +112,21 @@ export class RadiographComponent implements OnInit {
 			this.watchMode = true;
 			this.isLoadingRadiograph = false;
 			this.isRadiographLoaded = true;
-			this.disabled = true;
 			let contentType = this.radiograph.source.split(",")[0];
 			let b64Data = this.radiograph.source.split(",")[1];
 			let blob = this.b64toBlob(b64Data, contentType)
 			let file: File = new File([blob], this.radiograph.type + ".png");
 			this.controlRadiograph.setValue([file]);
+			if (this.explorationsService.getEditingExploration()) {
+				this.state = STATE.EXPLORATION_LOADED;
+			} else {
+				this.state = STATE.READ_ONLY;
+			}
 		} else {
 			this.watchMode = false;
 			this.isLoadingRadiograph = true;
 			this.isRadiographLoaded = false;
-			this.disabled = false;
+			this.state = STATE.NOT_LOADED;
 		}
 
 		this.getSignTypes();
@@ -142,6 +159,7 @@ export class RadiographComponent implements OnInit {
 		this.isLoadingRadiograph = true;
 		this.radiograph = undefined;
 		this.controlRadiograph.removeFile(this.controlRadiograph.value[0])
+		this.state = STATE.NOT_LOADED;
 	}
 
 	private loadRadiograph(file: File): BehaviorSubject<string> {
@@ -162,6 +180,7 @@ export class RadiographComponent implements OnInit {
 					this.isRadiographLoaded = true;
 
 					this.radiographHandler.emit(this.radiograph);
+					this.state = STATE.RADIOGRAPH_LOADED;
 				}
 				this.updateSignTypesRadiograph();
 			};
@@ -187,6 +206,7 @@ export class RadiographComponent implements OnInit {
 							imagePasted.name = this.typeExploration.concat(".png");
 							let file: File = <File> imagePasted;
 							this.controlRadiograph.setValue([file]);
+							this.state = STATE.CLIPBOARD_LOADED;
 						})
 					} else {
 						this.notificationService.error("The copied report has not the correct format", "Report loaded failed");
@@ -200,10 +220,9 @@ export class RadiographComponent implements OnInit {
 		}
 	}
 
-	public openDialogImage(disabled : boolean = false): void {
+	public openDialogImage(): void {
 		this.notificationsService.remove();
 		this.showImageDialog = true;
-		this.disabled  = disabled;
 		if (!this.radiograph.signs) {
 			this.radiograph.signs = [];
 		}
@@ -228,6 +247,10 @@ export class RadiographComponent implements OnInit {
 
 	public getNumSignType(signType: SignType): number {
 		return this.radiograph.signs.filter(sign => sign.type.code == signType.code).length;
+	}
+
+	public checkState(state: string) {
+		return this.state == EnumUtils.findKeyForValue(STATE, state);
 	}
 
 	private getSignTypes() {

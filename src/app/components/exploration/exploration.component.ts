@@ -48,6 +48,8 @@ export class ExplorationComponent implements OnInit {
 
 	public showOverlay: boolean = true;
 
+	public isEditing: boolean = false;
+
 	constructor(private router: Router,
 				private authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
@@ -59,7 +61,8 @@ export class ExplorationComponent implements OnInit {
 		}
 		this.SEXValues = EnumUtils.enumValues(SEX);
 
-		if (this.explorationsService.getExplorationId() != undefined) {
+		this.isEditing = this.explorationsService.getEditingExploration();
+		if (this.isEditing || this.explorationsService.getExplorationId() != undefined) {
 			this.explorationsService.getExploration(this.explorationsService.getExplorationId(), true).subscribe(exploration => {
 				this.exploration = exploration;
 				this.showOverlay = false;
@@ -89,20 +92,38 @@ export class ExplorationComponent implements OnInit {
 	}
 
 	public saveExploration(): void {
-		if (this.exploration.patient.patientID === null ||
-			this.exploration.patient.patientID === "" ||
-			this.exploration.report.reportNumber === null) {
-			this.notificationService.warning("Upload a report", "Not possible create an exploration");
-		} else if (this.exploration.radiographs.length == 0) {
-			this.notificationService.warning("Upload a radiograph", "Not possible create an exploration");
-		} else if (this.typeExploration == 'PA-LAT' && this.exploration.radiographs.length < 2) {
-			this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
-											 "Not possible create an exploration");
+		if (!this.isEditing) {
+			if (this.exploration.patient.patientID === null ||
+				this.exploration.patient.patientID === "" ||
+				this.exploration.report.reportNumber === null) {
+				this.notificationService.warning("Upload a report", "Not possible create an exploration");
+			} else if (this.exploration.radiographs.length == 0) {
+				this.notificationService.warning("Upload a radiograph", "Not possible create an exploration");
+			} else if (this.typeExploration == 'PA-LAT' && this.exploration.radiographs.length < 2) {
+				this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
+												 "Not possible create an exploration");
+			} else {
+				this.explorationsService.createExploration(this.exploration).subscribe(exploration => {
+					this.explorationsService.setExplorationCreated(true);
+					this.router.navigateByUrl(this.return);
+				});
+			}
 		} else {
-			this.explorationsService.createExploration(this.exploration).subscribe(exploration => {
-				this.explorationsService.setExplorationCreated(true);
-				this.router.navigateByUrl(this.return);
-			});
+			if (this.exploration.patient.patientID === null ||
+				this.exploration.patient.patientID === "" ||
+				this.exploration.report.reportNumber === null) {
+				this.notificationService.warning("Upload a report", "Not possible edit the exploration");
+			} else if (this.exploration.radiographs.length == 0) {
+				this.notificationService.warning("Upload a radiograph", "Not possible edit the exploration");
+			} else if (this.typeExploration == 'PA-LAT' && this.exploration.radiographs.length < 2) {
+				this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
+												 "Not possible edit the exploration");
+			} else {
+				this.explorationsService.editExploration(this.exploration).subscribe(exploration => {
+					this.explorationsService.setExplorationEdited(true);
+					this.router.navigateByUrl(this.return);
+				});
+			}
 		}
 	}
 

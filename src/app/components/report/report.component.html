@@ -22,29 +22,29 @@
 <div class="row mt-4 mb-4">
 	<div class="row align-items-center">
 		<div class="col-xxl-6 col-12">
-			<h3 class="fw-bold">{{'Radiology report' | translate}}</h3>
-			<div class="report-show" *ngIf="isReportLoaded">
-				<i id="expandControl" class="bi bi-eye-slash" (click)="expandReport()"></i>
+			<div class="row report-title">
+				<h3>{{'Radiology report' | translate}}</h3>
+				<div *ngIf="!checkState('NOT_LOADED')">
+					<i id="expandControl" class="bi bi-eye-slash" (click)="expandReport()"></i>
+				</div>
 			</div>
 		</div>
 		<div class="col-xxl-6 col-12">
 			<div class="row">
-				<div *ngIf="!isReportLoaded && controlReport.value.length == 0 ||
-							isReportLoaded && controlReport.value.length > 0"
-					 [ngClass]="{'col-6': !isReportLoaded,
-								 'col-12': isReportLoaded && controlReport.value.length > 0}">
+				<div *ngIf="checkState('NOT_LOADED') || checkState('FILE_LOADED')"
+					 [ngClass]="{'col-6': checkState('NOT_LOADED'),
+								 'col-12': checkState('FILE_LOADED')}">
 					<div class="file-drop-zone" file-drop-zone [control]="controlReport">
-						<label class="upload-input ng-trigger ng-trigger-zoomAnimation">
+						<label *ngIf="checkState('NOT_LOADED')" class="upload-input ng-trigger ng-trigger-zoomAnimation">
 							<div class="col text-center">
 								<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 							</div>
-							<div *ngIf="controlReport.size === 0" class="col text text-center">
+							<div class="col text text-center">
 								{{'Drag and Drop the file or click here' | translate}}
 							</div>
 							<input class="files-input" type="file" accept=".pdf"
 								(change)="addFile($event)" onclick="this.value = null">
 						</label>
-
 						<ng-template #placeholder>
 							<div class="overlayCustom">
 								<div class="text-center">
@@ -55,8 +55,7 @@
 								</div>
 							</div>
 						</ng-template>
-
-						<div *ngIf="controlReport.value.length > 0">
+						<div *ngIf="checkState('FILE_LOADED')">
 							<div class="upload-list">
 								<div>
 									<div class="file-upload-icon">
@@ -76,17 +75,16 @@
 						</div>
 					</div>
 				</div>
-				<div *ngIf="!isReportLoaded && controlReport.value.length == 0 ||
-							isReportLoaded && controlReport.value.length == 0"
-					 [ngClass]="{'col-6': !isReportLoaded,
-								 'col-12': isReportLoaded && controlReport.value.length == 0}">
-					<div *ngIf="!isReportLoaded" class="file-paste-zone text-center" (click)="onPaste($event)">
+				<div *ngIf="checkState('NOT_LOADED') || checkState('CLIPBOARD_LOADED')"
+					 [ngClass]="{'col-6': checkState('NOT_LOADED'),
+								 'col-12': checkState('CLIPBOARD_LOADED')}">
+					<div *ngIf="checkState('NOT_LOADED')" class="file-paste-zone text-center" (click)="onPaste($event)">
 						<i class="bi bi-clipboard"></i>
 						<p>
 							{{'Click here to paste from clipboard' | translate}}
 						</p>
 					</div>
-					<div *ngIf="isReportLoaded && exploration.title == undefined" class="file-paste-zone text-center">
+					<div *ngIf="checkState('CLIPBOARD_LOADED')" class="file-paste-zone text-center">
 						<p>
 							{{'Report loaded correctly from clipboard' | translate}}
 						</p>
@@ -97,11 +95,23 @@
 							</span>
 						</div>
 					</div>
-					<div *ngIf="isReportLoaded && exploration.title != undefined"
-						 class="file-paste-zone defaultCursor text-center">
+				</div>
+				<div *ngIf="checkState('READ_ONLY')" class="col-12">
+					<div class="file-paste-zone defaultCursor text-center">
 						<p>
 							{{'Report loaded correctly' | translate}}
 						</p>
+					</div>
+				</div>
+				<div *ngIf="checkState('EXPLORATION_LOADED')" class="col-12">
+					<div class="file-paste-zone defaultCursor text-center report-loaded">
+						<p>
+							{{'Report loaded correctly' | translate}}
+						</p>
+						<span (click)="removeReport()">
+							<i class="bi bi-trash-fill" style="color: black;"></i>
+							{{'Remove' | translate}}
+						</span>
 					</div>
 				</div>
 			</div>

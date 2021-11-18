@@ -34,17 +34,15 @@
 	</div>
 	<div class="col-xxl-6 col-12">
 		<div class="row">
-			<div *ngIf="!watchMode &&
-						(!isRadiographLoaded && controlRadiograph.value.length == 0 ||
-						isRadiographLoaded && controlRadiograph.value.length > 0)"
-				[ngClass]="{'col-6': !isRadiographLoaded,
-							'col-12': isRadiographLoaded && controlRadiograph.value.length > 0}">
+			<div *ngIf="checkState('NOT_LOADED') || checkState('RADIOGRAPH_LOADED') || checkState('EXPLORATION_LOADED')"
+				[ngClass]="{'col-6': checkState('NOT_LOADED'),
+							'col-12': !checkState('NOT_LOADED')}">
 				<div class="file-drop-zone" file-drop-zone [control]="controlRadiograph">
-					<label class="upload-input">
+					<label *ngIf="checkState('NOT_LOADED')" class="upload-input">
 						<div class="col text-center">
 							<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
 						</div>
-						<div *ngIf="controlRadiograph.size === 0" class="col text text-center">
+						<div class="col text text-center">
 							{{'Drag and Drop the image or click here' | translate}}
 						</div>
 						<input name="inputRadiograph" class="files-input" type="file" accept="image/*"
@@ -62,7 +60,7 @@
 						</div>
 					</ng-template>
 
-					<div *ngIf="controlRadiograph.value.length > 0">
+					<div *ngIf="checkState('RADIOGRAPH_LOADED') || checkState('EXPLORATION_LOADED')">
 						<div class="upload-list">
 							<div>
 								<div class="file-upload-icon">
@@ -82,18 +80,16 @@
 					</div>
 				</div>
 			</div>
-			<div *ngIf="!watchMode &&
-						(!isRadiographLoaded && controlRadiograph.value.length == 0 ||
-						isRadiographLoaded && controlRadiograph.value.length == 0)"
-					[ngClass]="{'col-6': !isRadiographLoaded,
-								'col-12': isRadiographLoaded && controlRadiograph.value.length == 0}">
-				<div *ngIf="!isRadiographLoaded" class="file-paste-zone text-center" (click)="onPaste($event)">
+			<div *ngIf="checkState('NOT_LOADED') || checkState('CLIPBOARD_LOADED') || checkState('READ_ONLY')"
+					[ngClass]="{'col-6': checkState('NOT_LOADED'),
+								'col-12': !checkState('NOT_LOADED')}">
+				<div *ngIf="checkState('NOT_LOADED')" class="file-paste-zone text-center" (click)="onPaste($event)">
 					<i class="bi bi-clipboard"></i>
 					<p>
 						{{'Click here to paste from clipboard' | translate}}
 					</p>
 				</div>
-				<div *ngIf="isRadiographLoaded" class="file-paste-zone text-center">
+				<div *ngIf="checkState('CLIPBOARD_LOADED')" class="file-paste-zone text-center">
 					<p>
 						{{'Radiograph loaded correctly from clipboard' | translate}}
 					</p>
@@ -105,7 +101,7 @@
 					</div>
 				</div>
 			</div>
-			<div *ngIf="watchMode" class="file-paste-zone text-left defaultCursor">
+			<div *ngIf="checkState('READ_ONLY')" class="file-paste-zone text-left defaultCursor">
 				<div class="upload-list">
 					<div class="file-upload-icon">
 						<i class="bi bi-file-image " style="font-size: 1rem; color: black;"></i>
@@ -122,8 +118,8 @@
 	<div class="row">
 		<h4 class="col">{{'Signs detected' | translate}}: {{radiograph.signs ? radiograph.signs.length : '0' }}</h4>
 		<span class="col text-end">
-			<i *ngIf="!watchMode" class="bi bi-brush" (click)="openDialogImage()"></i>
-			<i class="bi bi-info-lg" (click)="openDialogImage(true)"></i>
+			<i *ngIf="!checkState('READ_ONLY')" class="bi bi-brush" (click)="openDialogImage()"></i>
+			<i class="bi bi-info-lg" (click)="openDialogImage()"></i>
 		</span>
 	</div>
 	<div class="row signs">
@@ -144,12 +140,12 @@
 			</li>
 		</ul>
 	</div>
-	<div *ngIf="!watchMode || (watchMode && radiograph.observations != null)" class="row mt-4">
+	<div *ngIf="!checkState('READ_ONLY') || (checkState('READ_ONLY') && radiograph.observations != null)" class="row mt-4">
 		<h4 class="col">{{'Observations' | translate}}: </h4>
-		<textarea *ngIf="!watchMode" name="observations" class="form-control" style="max-height:100px" rows="2"
-				  maxlength="3000" [(ngModel)]="radiograph.observations"
+		<textarea *ngIf="!checkState('READ_ONLY')" name="observations" class="form-control" style="max-height:100px"
+				  rows="2" maxlength="3000" [(ngModel)]="radiograph.observations"
 				  placeholder="{{'Add your observations here' | translate}}..."></textarea>
-		<p *ngIf="watchMode">
+		<p *ngIf="checkState('READ_ONLY')">
 			{{radiograph.observations}}
 		</p>
 	</div>
@@ -160,7 +156,7 @@
 	(close)="closeDialogImage($event)"
 	[src]="uploadedFile | async"
 	[signs]="radiograph.signs"
-	[disabled]="disabled">
+	[disabled]="checkState('READ_ONLY')">
 </app-locate-signs-in-image-dialog>
 
 <simple-notifications></simple-notifications>

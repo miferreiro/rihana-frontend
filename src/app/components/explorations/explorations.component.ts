@@ -82,6 +82,11 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 			this.notificationService.success('Exploration registered successfully', 'Exploration registered')
 			this.explorationsService.setExplorationCreated(false);
 		}
+
+		if (this.explorationsService.getExplorationEdited()) {
+			this.notificationService.success('Exploration edited successfully', 'Exploration edited')
+			this.explorationsService.setExplorationEdited(false);
+		}
 	}
 
 	private getSignTypes() {
@@ -171,6 +176,13 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	public infoExploration(exploration: Exploration) {
 		this.explorationsService.setExplorationId(exploration.id);
+		this.explorationsService.setEditingExploration(false);
 		this.router.navigate(['/exploration']);
+	}
+
+	public editExploration(exploration: Exploration) {
+		this.explorationsService.setExplorationId(exploration.id);
+		this.explorationsService.setEditingExploration(true);
+		this.router.navigate(['/exploration'])
 	}
 }

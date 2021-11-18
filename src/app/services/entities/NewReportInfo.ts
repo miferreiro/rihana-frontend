@@ -19,8 +19,9 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-export class Report {
-	id: string;
+import {RequestedExploration, PerformedExploration} from "../../models/Report";
+
+export interface NewReportInfo {
 	completionDate: Date;
 	reportNumber: string;
 	applicant: string;
@@ -34,13 +35,13 @@ export class Report {
 	conclusions: string;
 }
 
-export class RequestedExploration {
+export interface NewRequestedExplorationInfo {
 	code: string;
 	description: string;
 	date: Date;
 }
 
-export class PerformedExploration {
+export interface NewPerformedExplorationInfo {
 	code: string;
 	description: string;
 	date: Date;

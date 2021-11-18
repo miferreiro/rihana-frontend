@@ -21,7 +21,7 @@
 
 <div class="container pb-5">
 	<div class="row mt-4 mb-4">
-		<h2 *ngIf="exploration.title != undefined" class="text-center fw-bold">{{exploration.title}}</h2>
+		<h2 *ngIf="exploration.title != undefined || isEditing" class="text-center fw-bold">{{exploration.title}}</h2>
 		<h2 *ngIf="exploration.title == undefined" class="text-center fw-bold">{{'Creating an exploration' | translate}}</h2>
 	</div>
 	<app-report *ngIf="exploration.explorationDate != undefined" [exploration]="exploration" (reportEvent)="reportHandler($event)"></app-report>
@@ -32,7 +32,7 @@
 	<div class="container">
 		<div class="row justify-content-between text-center">
 			<i class="col bi bi-arrow-left-circle" style="color:steelblue;" (click)="closeExploration()"></i>
-			<i *ngIf="exploration.title == undefined" class="col bi bi-check-circle" style="color: green;" (click)="saveExploration()"></i>
+			<i *ngIf="exploration.title == undefined || isEditing" class="col bi bi-check-circle" style="color: green;" (click)="saveExploration()"></i>
 		</div>
 	</div>
 </footer>

@@ -25,11 +25,21 @@ import {Subscription} from 'rxjs';
 import {getDocument, GlobalWorkerOptions, version} from 'pdfjs-dist';
 import {PerformedExploration, Report, RequestedExploration} from '../../models/Report';
 import {Patient, SEX} from '../../models/Patient';
+import {ExplorationsService} from '../../services/explorations.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
+import {EnumUtils} from '../../utils/enum.utils';
 
 export class ReportResult {
 	readonly report: Report;
 	readonly patient: Patient;
+}
+
+export enum STATE {
+	NOT_LOADED = "NOT_LOADED",
+	FILE_LOADED = "FILE_LOADED",
+	CLIPBOARD_LOADED = "CLIPBOARD_LOADED",
+	EXPLORATION_LOADED = "EXPLORATION_LOADED",
+	READ_ONLY = "READ_ONLY"
 }
 
 @Component({
@@ -40,6 +50,7 @@ export class ReportResult {
 export class ReportComponent implements OnInit, OnDestroy {
 
 	private readonly extensionValid = ['pdf'];
+	public STATEValues: STATE[];
 
 	@Input() exploration;
 	@Output() reportEvent = new EventEmitter<ReportResult>();
@@ -51,24 +62,30 @@ export class ReportComponent implements OnInit, OnDestroy {
 		[FileUploadValidators.filesLimit(2)]
 	);
 
-	public isReportLoaded: boolean;
-
+	public state: STATE = STATE.NOT_LOADED;
 	public report: Report;
 	public patient: Patient;
 
-	constructor(private notificationService: NotificationService) {
+	constructor(private notificationService: NotificationService,
+				private explorationsService: ExplorationsService) {
 		GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.js`;
 	}
 
 	ngOnInit(): void {
+		this.STATEValues = EnumUtils.enumValues(STATE);
+
 		if (this.exploration.title != undefined) {
 			this.report = this.exploration.report;
 			this.patient = this.exploration.patient;
-			this.isReportLoaded = true;
+			if (this.explorationsService.getEditingExploration()) {
+				this.state = STATE.EXPLORATION_LOADED;
+			} else {
+				this.state = STATE.READ_ONLY;
+			}
 		} else {
 			this.report = new Report();
 			this.patient = new Patient();
-			this.isReportLoaded = false;
+			this.state = STATE.NOT_LOADED;
 		}
 		this.subscriptionReport = this.controlReport.valueChanges.subscribe((values: Array<File>) => {
 			if (values.length == 2) {
@@ -104,7 +121,6 @@ export class ReportComponent implements OnInit, OnDestroy {
 		} else {
 			this.notificationService.error("The file does not have the correct extension (.pdf)", "File upload failed");
 		}
-
 	}
 
 	public removeReport(): void {
@@ -115,7 +131,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 			report: this.report,
 			patient: this.patient
 		});
-		this.isReportLoaded = false;
+		this.state = STATE.NOT_LOADED;
 	}
 
 	private loadReport(file: File): void {
@@ -125,8 +141,8 @@ export class ReportComponent implements OnInit, OnDestroy {
 				var pdfBase64 = atob(fr.result.toString().split(',')[1]);
 				let report = await this.getDocument(pdfBase64);
 				this.loadFieldsReport(report);
-				this.isReportLoaded = true;
 				this.notificationService.success("The file has the correct format", "File upload successfull")
+				this.state = STATE.FILE_LOADED;
 			}
 			fr.readAsDataURL(file);
 		}
@@ -138,7 +154,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 				.then(text => {
 					text = text.replace(/(\r\n|\n|\r)/gm, " ");
 					this.loadFieldsReport(text);
-					this.isReportLoaded = true;
+					this.state = STATE.CLIPBOARD_LOADED;
 				})
 				.catch(error => {
 					this.notificationService.error("The copied report has not the correct format", "Report loaded failed")
@@ -281,6 +297,10 @@ export class ReportComponent implements OnInit, OnDestroy {
 			document.getElementById("dataReport").className += " open";
 			document.getElementById("expandControl").className = "bi bi-eye";
 		}
+	}
+
+	public checkState(state: string) {
+		return this.state == EnumUtils.findKeyForValue(STATE, state);
 	}
 
 	public ngOnDestroy(): void {

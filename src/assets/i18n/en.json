@@ -167,5 +167,8 @@
 	"Language": "Language",
 	"Private profile": "Private profile",
 	"Change password": "Change password",
-	"Language configuration": "Language configuration"
+	"Language configuration": "Language configuration",
+	"Exploration edited": "Exploration edited",
+	"Exploration edited successfully": "Exploration edited successfully",
+	"Not possible edit the exploration": "Not possible edit the exploration"
 }
