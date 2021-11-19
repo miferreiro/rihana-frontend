@@ -46,6 +46,7 @@ export class ExplorationComponent implements OnInit {
 	public typeExploration: string;
 	public SEXValues: SEX[];
 
+	public messageOverlay: string = "Loading the exploration";
 	public showOverlay: boolean = true;
 
 	public isEditing: boolean = false;
@@ -65,6 +66,7 @@ export class ExplorationComponent implements OnInit {
 		if (this.isEditing || this.explorationsService.getExplorationId() != undefined) {
 			this.explorationsService.getExploration(this.explorationsService.getExplorationId(), true).subscribe(exploration => {
 				this.exploration = exploration;
+				this.messageOverlay = "Loading the exploration";
 				this.showOverlay = false;
 			});
 		} else {
@@ -78,6 +80,7 @@ export class ExplorationComponent implements OnInit {
 			this.exploration.patient.sex = null;
 			this.exploration.radiographs = [];
 			this.typeExploration = 'PA-LAT';
+			this.messageOverlay = "Loading the exploration";
 			this.showOverlay = false;
 		}
 	}
@@ -103,8 +106,11 @@ export class ExplorationComponent implements OnInit {
 				this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
 												 "Not possible create an exploration");
 			} else {
+				this.messageOverlay = "Saving the exploration";
+				this.showOverlay = true;
 				this.explorationsService.createExploration(this.exploration).subscribe(exploration => {
 					this.explorationsService.setExplorationCreated(true);
+					this.showOverlay = false;
 					this.router.navigateByUrl(this.return);
 				});
 			}
@@ -119,8 +125,11 @@ export class ExplorationComponent implements OnInit {
 				this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
 												 "Not possible edit the exploration");
 			} else {
+				this.messageOverlay = "Saving the changes made";
+				this.showOverlay = true;
 				this.explorationsService.editExploration(this.exploration).subscribe(exploration => {
 					this.explorationsService.setExplorationEdited(true);
+					this.showOverlay = false;
 					this.router.navigateByUrl(this.return);
 				});
 			}

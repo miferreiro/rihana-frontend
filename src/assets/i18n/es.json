@@ -170,5 +170,7 @@
 	"Language configuration": "Configuración de idioma",
 	"Exploration edited": "Exploración editada",
 	"Exploration edited successfully": "Exploración editada con éxito",
-	"Not possible edit the exploration": "No es posible editar la exploración"
+	"Not possible edit the exploration": "No es posible editar la exploración",
+	"Saving the exploration": "Guardando la exploración",
+	"Saving the changes made": "Guardando los cambios realizados"
 }
