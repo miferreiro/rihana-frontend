@@ -31,6 +31,7 @@ import {Exploration} from '../../models/Exploration';
 import {Sign} from '../../models/Sign';
 import {SignType} from '../../models/SignType';
 import {Role} from '../../models/User';
+import moment from 'moment';
 
 @Component({
 	selector: 'app-explorations',
@@ -39,7 +40,9 @@ import {Role} from '../../models/User';
 })
 export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
+	private readonly formatDate: string = 'DD/MM/yyyy_HH:mm:ss';
 	private _currentPage: number;
+
 	public loggedUser: string;
 
 	public signTypes: SignType[];
@@ -58,6 +61,49 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	public updateChart: Subject<void> = new Subject<void>();
 
+	public initialDate;
+	public finalDate;
+	public options: any = {
+		autoApply: false,
+		alwaysShowCalendars: true,
+		applyButtonClasses: "btn-primary applyDate",
+		buttonClasses: "btn btn-sm",
+		cancelClass: "btn-default cancelDate",
+		drops: "up",
+		locale: {
+			format: 'DD/MM/yyyy',
+			daysOfWeek: [
+				this.locationService.translate("Sunday").substr(0, 2),
+				this.locationService.translate("Monday").substr(0, 2),
+				this.locationService.translate("Tuesday").substr(0, 2),
+				this.locationService.translate("Wednesday").substr(0, 2),
+				this.locationService.translate("Thursday").substr(0, 2),
+				this.locationService.translate("Friday").substr(0, 2),
+				this.locationService.translate("Saturday").substr(0, 2)
+			],
+			monthNames: [
+				this.locationService.translate("January"),
+				this.locationService.translate("February"),
+				this.locationService.translate("March"),
+				this.locationService.translate("April"),
+				this.locationService.translate("May"),
+				this.locationService.translate("June"),
+				this.locationService.translate("July"),
+				this.locationService.translate("August"),
+				this.locationService.translate("September"),
+				this.locationService.translate("October"),
+				this.locationService.translate("November"),
+				this.locationService.translate("December")
+			],
+			"firstDay": 1
+		},
+		minDate: '01/01/2021',
+		maxDate: new Date(),
+		opens: 'left',
+		showDropdowns: true,
+		timePicker: false
+	};
+
 	constructor(private authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
 				private locationService: LocalizationService,
@@ -72,6 +118,8 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 		this.pageSize = 6;
 		this.currentPage = 1;
+		this.initialDate = undefined;
+		this.finalDate = undefined;
 		this.getSignTypes();
 		this.getPageExplorations();
 		this.explorationsService.setExplorationId(undefined);
@@ -87,6 +135,8 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 			this.notificationService.success('Exploration edited successfully', 'Exploration edited')
 			this.explorationsService.setExplorationEdited(false);
 		}
+		document.getElementsByClassName("applyDate")[0].textContent = this.locationService.translate("Apply");
+		document.getElementsByClassName("cancelDate")[0].textContent = this.locationService.translate("Cancel");
 	}
 
 	private getSignTypes() {
@@ -96,7 +146,13 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 	}
 
 	getPageExplorations() {
-		this.explorationsService.getTotalExplorations(this.loggedUser, this.currentPage, this.pageSize, this.signTypesFilter, false).subscribe(explorationPage => {
+		let initialDate: Date = undefined;
+		let finalDate: Date = undefined;
+		if (this.initialDate != undefined) initialDate = this.initialDate.format(this.formatDate)
+		if (this.finalDate != undefined) finalDate = this.finalDate.format(this.formatDate)
+
+		this.explorationsService.getTotalExplorations(this.loggedUser, this.currentPage, this.pageSize,
+			this.signTypesFilter, false, initialDate, finalDate).subscribe(explorationPage => {
 			this.paginationTotalItems = explorationPage.totalItems;
 			this.lastPage = Math.ceil(this.paginationTotalItems / this.pageSize);
 			this.explorations = explorationPage.explorations;
@@ -184,5 +240,20 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		this.explorationsService.setExplorationId(exploration.id);
 		this.explorationsService.setEditingExploration(true);
 		this.router.navigate(['/exploration'])
+	}
+
+	public applyDate(): void {
+		this.getPageExplorations();
+	}
+
+	public selectedDate(value: any): void {
+		this.initialDate = value.start;
+		this.finalDate = value.end;
+	}
+
+	public cancelDate(): void {
+		this.initialDate = undefined;
+		this.finalDate = undefined;
+		this.getPageExplorations();
 	}
 }

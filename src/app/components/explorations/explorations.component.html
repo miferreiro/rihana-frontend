@@ -36,16 +36,15 @@
 
 	<h2 class="text-center m-4">{{'Latest explorations' | translate}}</h2>
 
-	<div class="row mb-3 text-center">
-		<div class="col-md-6 col-sm-12 my-2">
+	<div class="row text-center">
+		<div class="col-xl-5 col-12 my-2 d-flex align-items-center text-center">
 			<button type="button" class="input-group-text btn btn-success" routerLink="/exploration">
 				<i class="bi bi-plus-lg me-3"></i> {{'Add exploration' | translate}}
 			</button>
 		</div>
-		<form class="col-md-6 col-sm-12 my-2 align-self-center">
+		<form class="col-xl-4 col-12 my-2 align-self-center">
 			<div class="gx-0">
-				<ng-select class="signTypesSelect"
-							name="signTypesSelect"
+				<ng-select  name="signTypesSelect"
 							notFoundText="{{'No sign types found' | translate}}"
 							placeholder="{{'Search by sign types' | translate}}"
 							[clearable]="true"
@@ -81,6 +80,30 @@
 				</ng-select>
 			</div>
 		</form>
+		<div class="col-xl-3 col-12 my-2 d-flex align-items-center">
+			<div class="daterangerpicker"
+				 daterangepicker
+				 [options]="options"
+				 (selected)="selectedDate($event)"
+				 (applyDaterangepicker)="applyDate()"
+				 (cancelDaterangepicker)="cancelDate()">
+				<div class="d-flex justify-content-between h-100">
+					<span *ngIf="initialDate != undefined" class="ps-2 align-self-center">
+						{{initialDate | date:'dd/MM/YYYY'}} - {{finalDate | date:'dd/MM/YYYY'}}
+					</span>
+					<span *ngIf="initialDate == undefined" class="placeholder align-self-center">
+						{{'Select a range' | translate}}
+					</span>
+					<div class="align-self-center">
+						<span *ngIf="initialDate != undefined" class="cancel"
+							(click)="cancelDate()">×</span>
+						<span>
+							<button class="btn"><i class="bi bi-calendar"></i></button>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="row table-responsive" [ngClass]="{'mb-4': !(pageSize < paginationTotalItems && explorations.length != 0)}">
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-0" >

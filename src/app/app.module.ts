@@ -76,6 +76,8 @@ import {NgxPanZoomModule} from 'ngx-panzoom';
 
 import {ColorPickerModule} from '@iplab/ngx-color-picker';
 
+import {Daterangepicker} from 'ng2-daterangepicker';
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -104,6 +106,7 @@ import {ColorPickerModule} from '@iplab/ngx-color-picker';
 		BrowserAnimationsModule,
 		ChartsModule,
 		ColorPickerModule,
+		Daterangepicker,
 		FileUploadModule,
 		FormsModule,
 		HttpClientModule,
