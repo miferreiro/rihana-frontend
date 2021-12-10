@@ -36,13 +36,13 @@
 
 	<h2 class="text-center m-4">{{'Latest explorations' | translate}}</h2>
 
-	<div class="row text-center">
-		<div class="col-xl-5 col-12 my-2 d-flex align-items-center text-center">
+	<div class="row">
+		<div class="col-xl-5 col-12 my-2 px-1 d-flex align-items-center">
 			<button type="button" class="input-group-text btn btn-success" routerLink="/exploration">
 				<i class="bi bi-plus-lg me-3"></i> {{'Add exploration' | translate}}
 			</button>
 		</div>
-		<form class="col-xl-4 col-12 my-2 align-self-center">
+		<form class="col-xl-4 col-12 my-2 px-1 align-self-center text-center">
 			<div class="gx-0">
 				<ng-select  name="signTypesSelect"
 							notFoundText="{{'No sign types found' | translate}}"
@@ -80,7 +80,7 @@
 				</ng-select>
 			</div>
 		</form>
-		<div class="col-xl-3 col-12 my-2 d-flex align-items-center">
+		<div class="col-xl-3 col-12 my-2 px-1 d-flex align-items-center">
 			<div class="daterangerpicker"
 				 daterangepicker
 				 [options]="options"
@@ -105,9 +105,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="row table-responsive" [ngClass]="{'mb-4': !(pageSize < paginationTotalItems && explorations.length != 0)}">
-		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-0" >
-			<div *ngFor="let exploration of explorations; let i=index" class="col">
+	<div class="row d-flex justify-content-center" [ngClass]="{'mb-4': !(pageSize < paginationTotalItems && explorations.length != 0)}">
+		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-0 px-1">
+			<div *ngFor="let exploration of explorations; let i=index" class="col px-1">
 				<div class="card h-100">
 					<div class="d-flex flex-column card-header">
 						<small class="text-capitalize card-category">{{getRadiographType(exploration)}}</small>
