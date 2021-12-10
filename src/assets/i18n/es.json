@@ -193,5 +193,6 @@
 	"Saturday": "Sábado",
 	"Sunday": "Domingo",
 	"Select a range": "Seleccionar un rango",
-	"Apply": "Aplicar"
+	"Apply": "Aplicar",
+	"ExplorationPaginationFooter": "{currentPage} de {lastPage} páginas ({paginationTotalItems} elementos)"
 }

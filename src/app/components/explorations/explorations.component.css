@@ -167,6 +167,7 @@ ng-select {
 .page-link {
 	color: black;
 	border: none;
+	border-bottom: 2px white solid !important;
 }
 
 .currentPage {
@@ -174,7 +175,7 @@ ng-select {
 }
 
 .page-link:hover {
-	border-bottom: 2px black solid;
+	border-bottom: 2px black solid !important;
 	background-color: gainsboro;
 }
 
@@ -186,4 +187,8 @@ ng-select {
 .page-item:last-child .page-link {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
+}
+
+.pagination-footer {
+	font-size: .8rem;
 }

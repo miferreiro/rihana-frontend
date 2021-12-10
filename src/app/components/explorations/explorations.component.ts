@@ -31,7 +31,6 @@ import {Exploration} from '../../models/Exploration';
 import {Sign} from '../../models/Sign';
 import {SignType} from '../../models/SignType';
 import {Role} from '../../models/User';
-import moment from 'moment';
 
 @Component({
 	selector: 'app-explorations',

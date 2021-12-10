@@ -140,14 +140,22 @@
 				</div>
 			</div>
 		</div>
-		<div *ngIf="pageSize < paginationTotalItems && explorations.length != 0" class ="row text-center mt-4 mb-4">
+		<div *ngIf="pageSize < paginationTotalItems && explorations.length != 0" class ="row text-center mt-4">
 			<ul class="pagination justify-content-center">
 				<li class="page-item" [ngClass]="{'disabled': 1 > (currentPage - 1)}">
 					<a class="page-link" aria-label="Previous" (click)="handlePageChange(currentPage - 1)">
 						<span aria-hidden="true">&lt;</span>
 					</a>
 				</li>
-				<li *ngIf="currentPage != 1" class="page-item" [ngClass]="{'disabled': 1 > (currentPage - 1)}">
+				<li *ngIf="2 < currentPage" class="page-item" >
+					<a class="page-link" (click)="handlePageChange(1)">
+						1
+					</a>
+				</li>
+				<li *ngIf="2 < currentPage" class="page-item align-self-center">
+					...
+				</li>
+				<li *ngIf="currentPage != 1" class="page-item">
 					<a class="page-link" (click)="handlePageChange(currentPage - 1)">
 						{{currentPage - 1}}
 					</a>
@@ -157,9 +165,17 @@
 						{{currentPage}}
 					</a>
 				</li>
-				<li *ngIf="lastPage > currentPage" class="page-item" [ngClass]="{'disabled': (currentPage + 1) > lastPage}">
+				<li *ngIf="lastPage > currentPage" class="page-item">
 					<a class="page-link" (click)="handlePageChange(currentPage + 1)">
 						{{currentPage + 1}}
+					</a>
+				</li>
+				<li *ngIf="lastPage - 2> currentPage" class="page-item align-self-center">
+					...
+				</li>
+				<li *ngIf="lastPage - 2 >= currentPage" class="page-item">
+					<a class="page-link" (click)="handlePageChange(lastPage)">
+						{{lastPage}}
 					</a>
 				</li>
 				<li class="page-item" [ngClass]="{'disabled': (currentPage + 1) > lastPage}">
@@ -168,6 +184,14 @@
 					</a>
 				</li>
 			</ul>
+			<div *ngIf="pageSize < paginationTotalItems && explorations.length != 0" class ="row text-end mb-4">
+				<span class="pagination-footer text-muted">
+					{{'ExplorationPaginationFooter' |
+						translate:"{currentPage:" + currentPage +
+									", lastPage:" + lastPage +
+									", paginationTotalItems:" + paginationTotalItems +"}"}}
+				</span>
+			</div>
 		</div>
 		<div id="no-data-explorations" [ngStyle]="{'display':explorations.length == 0 ? 'block' : 'none', 'opacity': explorations.length == 0 ? '1' : '0', 'visibility': explorations.length == 0 ? 'visible' : 'hidden'}"
 			class="bg-light justify-content-center align-items-center ">
