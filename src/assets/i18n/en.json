@@ -194,5 +194,6 @@
 	"Sunday": "Sunday",
 	"Select a range": "Select a range",
 	"Apply": "Apply",
-	"ExplorationPaginationFooter": "{currentPage} of {lastPage} pages ({paginationTotalItems} items)"
+	"ExplorationPaginationFooter": "{currentPage} of {lastPage} pages ({paginationTotalItems} items)",
+	"Save": "Save"
 }

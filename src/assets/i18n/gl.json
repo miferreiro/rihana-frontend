@@ -194,5 +194,6 @@
 	"Sunday": "Domingo",
 	"Select a range": "Seleccionar un rango",
 	"Apply": "Aplicar",
-	"ExplorationPaginationFooter": "{currentPage} de {lastPage} páxinas ({paginationTotalItems} elementos)"
+	"ExplorationPaginationFooter": "{currentPage} de {lastPage} páxinas ({paginationTotalItems} elementos)",
+	"Save": "Gardar"
 }
