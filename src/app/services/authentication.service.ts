@@ -1,19 +1,19 @@
 /*
  * RIHANA Frontend
- * 
+ *
  * Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
  * Miguel Ferreiro Díaz
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -24,6 +24,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Role, User} from '../models/User';
 import {Observable} from 'rxjs';
+import {map} from "rxjs/operators";
 import {RihanaError} from '../modules/notification/entities';
 
 @Injectable({
@@ -39,8 +40,9 @@ export class AuthenticationService {
 	checkCredentials(login: string, password: string): Observable<Role> {
 		this.user.login = login;
 		this.user.password = password;
-		return this.http.get<Role>(`${environment.restApi}/user/${login}/role`)
+		return this.http.get<string>(`${environment.restApi}/user/${login}/role`, {responseType: 'text' as 'json'})
 		.pipe(
+			map(role => Role[role.toString()]),
 			RihanaError.throwOnError('Failed to login', `User or password incorrect. Please try again.`)
 		);
 	}

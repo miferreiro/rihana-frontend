@@ -150,7 +150,10 @@ export class ExplorationsService {
 
 	private getExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], source: boolean = false,
 		initialDate: Date, finalDate: Date, params: HttpParams): Observable<ExplorationPage> {
-		params = params.append('user', user).append('page', page.toString()).append('pageSize', pageSize.toString());
+		if (user != undefined) {
+			params = params.append('user', user);
+		}
+		params = params.append('page', page.toString()).append('pageSize', pageSize.toString());
 
 		signTypes.forEach(signType => params = params.append('signType', signType.code));
 

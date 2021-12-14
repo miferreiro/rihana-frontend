@@ -150,7 +150,12 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		if (this.initialDate != undefined) initialDate = this.initialDate.format(this.formatDate)
 		if (this.finalDate != undefined) finalDate = this.finalDate.format(this.formatDate)
 
-		this.explorationsService.getTotalExplorations(this.loggedUser, this.currentPage, this.pageSize,
+		let user: string = undefined;
+		if (this.loggedUser != "admin") {
+			user = this.loggedUser
+		}
+
+		this.explorationsService.getTotalExplorations(user, this.currentPage, this.pageSize,
 			this.signTypesFilter, false, initialDate, finalDate).subscribe(explorationPage => {
 			this.paginationTotalItems = explorationPage.totalItems;
 			this.lastPage = Math.ceil(this.paginationTotalItems / this.pageSize);

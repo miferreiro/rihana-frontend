@@ -57,7 +57,7 @@ export class UsersService {
 	}
 
 	editUser(user: Users): Observable<User> {
-		const userInfo = this.toUserInfo(user);
+		const userInfo = this.toEditUserInfo(user);
 		return this.http.put<UserInfo>(`${environment.restApi}/user/${user.login}`, userInfo).pipe(
 			map(this.mapUserInfo.bind(this))
 		);
@@ -72,6 +72,13 @@ export class UsersService {
 			login: user.login,
 			password: user.password,
 			role: user.role
+		};
+	}
+
+	private toEditUserInfo(user: Users): UserInfo {
+		return {
+			login: user.login,
+			password: user.password
 		};
 	}
 
