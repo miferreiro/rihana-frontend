@@ -22,15 +22,19 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AuthGuard} from './guards/authGuard';
-import {LoginComponent} from './components/login/login.component';
-import {ExplorationsComponent} from './components/explorations/explorations.component';
+import {ActionComponent} from './components/action/action.component';
 import {ExplorationComponent} from './components/exploration/exploration.component';
-import {SigntypeComponent} from './components/signtype/signtype.component';
+import {ExplorationsComponent} from './components/explorations/explorations.component';
+import {LoginComponent} from './components/login/login.component';
 import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
 import {ProfileComponent} from './components/profile/profile.component';
+import {SigntypeComponent} from './components/signtype/signtype.component';
 import {UserComponent} from './components/user/user.component';
 
 const routes: Routes = [
+	{
+		path: 'actions', component: ActionComponent, canActivate: [AuthGuard]
+	},
 	{
 		path: 'singtypes', component: SigntypeComponent, canActivate: [AuthGuard]
 	},

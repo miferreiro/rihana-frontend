@@ -195,5 +195,15 @@
 	"Select a range": "Seleccionar un rango",
 	"Apply": "Aplicar",
 	"ExplorationPaginationFooter": "{currentPage} de {lastPage} páginas ({paginationTotalItems} elementos)",
-	"Save": "Guardar"
+	"Save": "Guardar",
+	"Action": "Acción",
+	"Action management": "Gestión de acciones",
+	"Add action": "Añadir acción",
+	"Edit action": "Editar acción",
+	"Action registered": "Acción registrada",
+	"Action registered successfully": "Acción registrada con éxito",
+	"Action edited": "Acción editada",
+	"Action edited successfully": "Acción editada con éxito",
+	"Action removed": "Acción eliminada",
+	"Action removed successfully": "Acción eliminada con éxito"
 }

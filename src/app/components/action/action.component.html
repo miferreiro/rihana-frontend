@@ -1,0 +1,143 @@
+<!--
+  ~ RIHANA Frontend
+  ~
+  ~ Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
+  ~ Miguel Ferreiro Díaz
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public
+  ~ License along with this program.  If not, see
+  ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
+-->
+
+<div class="container pb-2">
+	<div class="row summary mt-2 mb-3 text-center">
+		<h2>{{'Action management' | translate}}</h2>
+	</div>
+
+	<div class="row mb-3">
+		<div class="d-flex justify-content-end">
+			<button type="button" class="input-group-text btn btn-success btn-sm" (click)="creatingAction=true"
+			        data-bs-toggle="modal" data-bs-target="#actionModal">
+				<i class="bi bi-plus-lg me-3"></i> {{'Add action' | translate}}
+			</button>
+		</div>
+	</div>
+
+	<form #actionForm="ngForm" (submit)="save(); actionForm.reset()" ngNativeValidate>
+		<div id="actionModal" class="modal fade" tabindex="-1" aria-labelledby="actionModalLabel" data-bs-backdrop="static">
+			<div class="modal-dialog modal-md modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 *ngIf="creatingAction" class="modal-title">{{'Add action' | translate}}</h5>
+						<h5 *ngIf="editingAction" class="modal-title">{{'Edit action' | translate}}: "{{ action.name }}"</h5>
+					</div>
+					<div class="modal-body">
+						<section>
+							<div *ngIf="creatingAction" class="row mb-3">
+								<label for="action-form-name" class="col-6 col-form-label required">
+									{{'Name' | translate}}
+								</label>
+								<div class="col-6">
+									<input id="action-form-name" id="name" type="text" name="name" [(ngModel)]="action.name" required
+											pattern="[a-zA-ZñÑ0-9_-]{1,100}" title="{{'Must be a alphanumeric' | translate}}" #nameAction="ngModel"/>
+								</div>
+								<div *ngIf="nameAction.invalid && !nameAction.pristine" class="alert alert-danger my-0 py-1" role="alert">
+									<div *ngIf="nameAction.errors.required">
+										{{'Name is required.' | translate}}
+									</div>
+									<div *ngIf="nameAction.errors.pattern">
+										{{'Name can only contain letters, numbers or underscore and should have a length between 1 and 100.' | translate}}
+									</div>
+								</div>
+							</div>
+
+							<div class="row mb-3">
+								<label for="action-form-description" class="col-6 col-form-label required">
+									{{'Description' | translate}}
+								</label>
+								<div class="col-6">
+									<input id="action-form-description" id="description" type="text" name="description" [(ngModel)]="action.description" required
+											pattern="[a-zA-ZñÑ0-9_-]{1,100}" title="{{'Must be a alphanumeric' | translate}}" #descriptionAction="ngModel"/>
+								</div>
+								<div *ngIf="descriptionAction.invalid && !descriptionAction.pristine" class="alert alert-danger my-0 py-1" role="alert">
+									<div *ngIf="descriptionAction.errors.required">
+										{{'Description is required.' | translate}}
+									</div>
+									<div *ngIf="descriptionAction.errors.pattern">
+										{{'Description can only contain letters, numbers or underscore and should have a length between 1 and 100.' | translate}}
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+					<div class="modal-footer py-1">
+						<button #closeBtn type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal"
+								(click)="cancel(); actionForm.reset()">
+							{{'Cancel' | translate}}
+						</button>
+						<button *ngIf="creatingAction" type="submit" class="btn btn-primary btn-sm"
+								[disabled]="actionForm.invalid">
+							{{'Add' | translate}}
+						</button>
+						<button *ngIf="editingAction" type="submit" class="btn btn-primary btn-sm"
+								[disabled]="actionForm.invalid">
+							{{'Edit' | translate}}
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<div class="row table-responsive">
+		<table class="table text-center align-middle">
+			<thead>
+				<tr>
+					<th scope="col">{{'Name' | translate}}</th>
+					<th scope="col">{{'Description' | translate}}</th>
+					<th scope="col">{{'Actions' | translate}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let action of actions; let i=index">
+					<td>{{action.name}}</td>
+					<td>{{action.description}}</td>
+					<td>
+						<div class="btn-group" role="group">
+							<button class="btn border-end" (click)="edit(action.id)" data-bs-toggle="modal"
+									data-bs-target="#actionModal">
+									<i class="bi bi-pencil-square"></i>
+							</button>
+							<button class="btn" (click)="remove(action.id)"><i class="bi bi-trash"></i></button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="no-data-actions" [ngStyle]="{'display': actions.length == 0 ? 'block' : 'none',
+											  'opacity': actions.length == 0 ? '1' : '0',
+											  'visibility': actions.length == 0 ? 'visible' : 'hidden'}"
+			 class="bg-light justify-content-center align-items-center">
+			<span class="alert align-middle" role="alert">
+				{{'No data to display' | translate}}
+			</span>
+		</div>
+	</div>
+</div>
+
+<app-delete-confirmation [(open)]="deletingAction" [modelName]="'action'"
+						 [id]="action.id" [name]="action.name"
+						 (cancel)="cancel()" (confirm)="delete($event)">
+</app-delete-confirmation>
+
+<simple-notifications></simple-notifications>

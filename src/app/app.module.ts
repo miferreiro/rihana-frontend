@@ -39,6 +39,7 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
 import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
 import {AuthenticationInterceptor} from './helpers/authentication.interceptor';
 
+import {ActionsService} from './services/actions.service';
 import {ExplorationsService} from './services/explorations.service';
 import {PatientsService} from './services/patients.service';
 import {RadiographsService} from './services/radiographs.service';
@@ -46,6 +47,7 @@ import {ReportsService} from './services/reports.service';
 import {SignsService} from './services/signs.service';
 import {SignTypesService} from './services/sign-types.service';
 
+import {ActionComponent} from './components/action/action.component';
 import {BarChartComponent} from './components/explorations/bar-chart/bar-chart.component';
 import {DeleteConfirmationComponent} from './components/delete-confirmation/delete-confirmation.component';
 import {ExplorationComponent} from './components/exploration/exploration.component';
@@ -81,6 +83,7 @@ import {Daterangepicker} from 'ng2-daterangepicker';
 @NgModule({
 	declarations: [
 		AppComponent,
+		ActionComponent,
 		DeleteConfirmationComponent,
 		ExplorationComponent,
 		ExplorationsComponent,
@@ -134,6 +137,7 @@ import {Daterangepicker} from 'ng2-daterangepicker';
 		})
 	],
 	providers: [
+		ActionsService,
 		ExplorationsService,
 		PatientsService,
 		RadiographsService,

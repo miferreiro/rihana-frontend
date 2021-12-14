@@ -1,0 +1,101 @@
+/*
+ * RIHANA Frontend
+ *
+ * Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
+ * Miguel Ferreiro Díaz
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ */
+
+table {
+	table-layout: fixed;
+	word-wrap: break-word;
+	margin-bottom: 0;
+}
+
+.btn:focus {
+	box-shadow: none;
+}
+
+.btn-group .btn {
+	padding-top: 1px;
+	padding-bottom: 1px;
+	color: black;
+	font-size: 1.3rem;
+}
+
+#no-data-actions {
+	width: 100%;
+	height: 100%;
+	display: none;
+	visibility: hidden;
+	opacity: 0;
+	transition: all 400ms linear 0s, opacity 400ms;
+}
+
+#no-data-actions span {
+	margin: 1rem;
+	padding: 0;
+	display: block;
+	text-align: center;
+}
+
+
+.modal-body {
+	font-size: .8rem;
+}
+
+input {
+	flex: 0 1 auto;
+	margin-left: 0;
+	margin-right: .5rem;
+	margin-top: .25rem;
+	margin-bottom: .25rem;
+	background: linear-gradient(to bottom,transparent 95%,#0094d2 95%) no-repeat;
+	background-size: 0 100%;
+	transition: background-size .2s ease;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none;
+	-o-appearance: none;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	height: 1rem;
+	color: #000;
+	display: inline-block;
+	min-width: 2.5rem;
+	border-bottom: 1px solid #9a9a9a;
+	padding: 0 .25rem;
+	touch-action: manipulation;
+	overflow: visible;
+}
+
+input:focus-visible {
+	outline-offset: 0px;
+}
+
+input:focus {
+	border-bottom: 1px solid #0094d2;
+	background-size: 100% 100%;
+	outline: 0;
+}
+
+.required:after {
+	content: '*';
+	line-height: .5rem;
+	color: #c92100;
+	margin-left: .25rem;
+}

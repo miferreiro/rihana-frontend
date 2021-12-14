@@ -22,16 +22,16 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
-  selector: 'app-delete-confirmation',
-  templateUrl: './delete-confirmation.component.html',
-  styleUrls: ['./delete-confirmation.component.css']
+	selector: 'app-delete-confirmation',
+	templateUrl: './delete-confirmation.component.html',
+	styleUrls: ['./delete-confirmation.component.css']
 })
 export class DeleteConfirmationComponent {
 
 	private _open = false;
 
 	// id that is used to delete the object
-	@Input() id: string;
+	@Input() id: any;
 	// identifying name that will be shown
 	@Input() name: string;
 	// type of model to delete
@@ -39,7 +39,7 @@ export class DeleteConfirmationComponent {
 
 	@Output() openChange = new EventEmitter<boolean>();
 
-	@Output() confirm = new EventEmitter<string>();
+	@Output() confirm = new EventEmitter<any>();
 	@Output() cancel = new EventEmitter<void>();
 
 	@Input()
