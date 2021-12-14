@@ -25,6 +25,7 @@ import {AuthGuard} from './guards/authGuard';
 import {ActionComponent} from './components/action/action.component';
 import {ExplorationComponent} from './components/exploration/exploration.component';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
+import {FunctionalityComponent} from './components/functionality/functionality.component';
 import {LoginComponent} from './components/login/login.component';
 import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
 import {ProfileComponent} from './components/profile/profile.component';
@@ -32,6 +33,9 @@ import {SigntypeComponent} from './components/signtype/signtype.component';
 import {UserComponent} from './components/user/user.component';
 
 const routes: Routes = [
+	{
+		path: 'functionalities', component: FunctionalityComponent, canActivate: [AuthGuard]
+	},
 	{
 		path: 'actions', component: ActionComponent, canActivate: [AuthGuard]
 	},

@@ -48,10 +48,12 @@
 									{{'Name' | translate}}
 								</label>
 								<div class="col-6">
-									<input id="action-form-name" id="name" type="text" name="name" [(ngModel)]="action.name" required
-											pattern="[a-zA-ZñÑ0-9_-]{1,100}" title="{{'Must be a alphanumeric' | translate}}" #nameAction="ngModel"/>
+									<input id="action-form-name" id="name" type="text" name="name"
+										   [(ngModel)]="action.name" required pattern="[a-zA-ZñÑ0-9_-]{1,100}"
+										   title="{{'Must be a alphanumeric' | translate}}" #nameAction="ngModel"/>
 								</div>
-								<div *ngIf="nameAction.invalid && !nameAction.pristine" class="alert alert-danger my-0 py-1" role="alert">
+								<div *ngIf="nameAction.invalid && !nameAction.pristine" class="alert alert-danger my-0 py-1"
+									 role="alert">
 									<div *ngIf="nameAction.errors.required">
 										{{'Name is required.' | translate}}
 									</div>
@@ -66,10 +68,12 @@
 									{{'Description' | translate}}
 								</label>
 								<div class="col-6">
-									<input id="action-form-description" id="description" type="text" name="description" [(ngModel)]="action.description" required
-											pattern="[a-zA-ZñÑ0-9_-]{1,100}" title="{{'Must be a alphanumeric' | translate}}" #descriptionAction="ngModel"/>
+									<input id="action-form-description" id="description" type="text" name="description"
+										   [(ngModel)]="action.description" required pattern="[a-zA-ZñÑ0-9_-]{1,100}"
+										   title="{{'Must be a alphanumeric' | translate}}" #descriptionAction="ngModel"/>
 								</div>
-								<div *ngIf="descriptionAction.invalid && !descriptionAction.pristine" class="alert alert-danger my-0 py-1" role="alert">
+								<div *ngIf="descriptionAction.invalid && !descriptionAction.pristine"
+									 class="alert alert-danger my-0 py-1" role="alert">
 									<div *ngIf="descriptionAction.errors.required">
 										{{'Description is required.' | translate}}
 									</div>

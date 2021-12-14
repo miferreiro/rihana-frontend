@@ -205,5 +205,16 @@
 	"Action edited": "Action edited",
 	"Action edited successfully": "Action edited successfully",
 	"Action removed": "Action removed",
-	"Action removed successfully": "Action removed successfully"
+	"Action removed successfully": "Action removed successfully",
+	"Functionality": "Functionality",
+	"Functionalities": "Functionalities",
+	"Functionality management": "Functionality management",
+	"Add functionality": "Add functionality",
+	"Edit functionality": "Edit functionality",
+	"Functionality registered": "Functionality registered",
+	"Functionality registered successfully": "Functionality registered successfully",
+	"Functionality edited": "Functionality edited",
+	"Functionality edited successfully": "Functionality edited successfully",
+	"Functionality removed": "Functionality removed",
+	"Functionality removed successfully": "Functionality removed successfully"
 }
