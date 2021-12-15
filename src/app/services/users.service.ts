@@ -78,7 +78,8 @@ export class UsersService {
 	private toEditUserInfo(user: Users): UserInfo {
 		return {
 			login: user.login,
-			password: user.password
+			password: user.password,
+			role: user.role
 		};
 	}
 
