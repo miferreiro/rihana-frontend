@@ -46,6 +46,10 @@ export class RoleComponent implements OnInit {
 				private rolesService: RolesService) { }
 
 	ngOnInit(): void {
+		this.getRoles();
+	}
+
+	getRoles() {
 		this.rolesService.getRoles().subscribe(roles => {
 			this.roles = roles;
 		});
@@ -54,7 +58,7 @@ export class RoleComponent implements OnInit {
 	save() {
 		if (this.creatingRole) {
 			this.rolesService.create(this.role).subscribe(newRole => {
-				this.roles = this.roles.concat(newRole);
+				this.getRoles();
 				this.notificationService.success(this.locationService.translate('Role registered successfully') + '.',
 												 this.locationService.translate('Role registered'));
 				this.cancel();

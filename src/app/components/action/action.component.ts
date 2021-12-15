@@ -46,6 +46,10 @@ export class ActionComponent implements OnInit {
 				private actionsService: ActionsService) { }
 
 	ngOnInit(): void {
+		this.getActions();
+	}
+
+	getActions() {
 		this.actionsService.getActions().subscribe(actions => {
 			this.actions = actions;
 		});
@@ -54,7 +58,7 @@ export class ActionComponent implements OnInit {
 	save() {
 		if (this.creatingAction) {
 			this.actionsService.create(this.action).subscribe(newAction => {
-				this.actions = this.actions.concat(newAction);
+				this.getActions();
 				this.notificationService.success(this.locationService.translate('Action registered successfully') + '.',
 												 this.locationService.translate('Action registered'));
 				this.cancel();

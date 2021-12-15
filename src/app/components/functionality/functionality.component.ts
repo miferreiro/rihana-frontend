@@ -46,6 +46,10 @@ export class FunctionalityComponent implements OnInit {
 				private functionalitiesService: FunctionalitiesService) { }
 
 	ngOnInit(): void {
+		this.getFunctionalities();
+	}
+
+	getFunctionalities() {
 		this.functionalitiesService.getFunctionalities().subscribe(functionalities => {
 			this.functionalities = functionalities;
 		});
@@ -54,7 +58,7 @@ export class FunctionalityComponent implements OnInit {
 	save() {
 		if (this.creatingFunctionality) {
 			this.functionalitiesService.create(this.functionality).subscribe(newFunctionality => {
-				this.functionalities = this.functionalities.concat(newFunctionality);
+				this.getFunctionalities();
 				this.notificationService.success(this.locationService.translate('Functionality registered successfully') + '.',
 												 this.locationService.translate('Functionality registered'));
 				this.cancel();
