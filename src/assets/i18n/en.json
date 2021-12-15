@@ -216,5 +216,15 @@
 	"Functionality edited": "Functionality edited",
 	"Functionality edited successfully": "Functionality edited successfully",
 	"Functionality removed": "Functionality removed",
-	"Functionality removed successfully": "Functionality removed successfully"
+	"Functionality removed successfully": "Functionality removed successfully",
+	"Roles": "Roles",
+	"Role management": "Role management",
+	"Add role": "Add role",
+	"Edit role": "Edit role",
+	"Role registered": "Role registered",
+	"Role registered successfully": "Role registered successfully",
+	"Role edited": "Role edited",
+	"Role edited successfully": "Role edited successfully",
+	"Role removed": "Role removed",
+	"Role removed successfully": "Role removed successfully"
 }

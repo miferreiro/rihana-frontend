@@ -45,6 +45,7 @@ import {FunctionalitiesService} from './services/functionalities.service';
 import {PatientsService} from './services/patients.service';
 import {RadiographsService} from './services/radiographs.service';
 import {ReportsService} from './services/reports.service';
+import {RolesService} from './services/roles.service';
 import {SignsService} from './services/signs.service';
 import {SignTypesService} from './services/sign-types.service';
 
@@ -60,6 +61,7 @@ import {LocateSignsInImageDialogComponent} from './components/locate-signs-in-im
 import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiology-analysis.component';
 import {RadiographComponent} from './components/radiology-analysis/radiograph/radiograph.component';
 import {ReportComponent} from './components/report/report.component';
+import {RoleComponent} from './components/role/role.component';
 import {SigntypeComponent} from './components/signtype/signtype.component';
 import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
 import {PieChartComponent} from './components/explorations/pie-chart/pie-chart.component';
@@ -97,6 +99,7 @@ import {Daterangepicker} from 'ng2-daterangepicker';
 		RadiologyAnalysisComponent,
 		RadiographComponent,
 		ReportComponent,
+		RoleComponent,
 		SigntypeComponent,
 		UserComponent,
 		LangPipe,
@@ -146,6 +149,7 @@ import {Daterangepicker} from 'ng2-daterangepicker';
 		PatientsService,
 		RadiographsService,
 		ReportsService,
+		RolesService,
 		SignsService,
 		SignTypesService,
 		{

@@ -216,5 +216,15 @@
 	"Functionality edited": "Funcionalidade editada",
 	"Functionality edited successfully": "Funcionalidade editada con éxito",
 	"Functionality removed": "Funcionalidade eliminada",
-	"Functionality removed successfully": "Funcionalidade eliminada con éxito"
+	"Functionality removed successfully": "Funcionalidade eliminada con éxito",
+	"Roles": "Roles",
+	"Role management": "Xestión de roles",
+	"Add role": "Engadir rol",
+	"Edit role": "Editar rol",
+	"Role registered": "Rol rexistrado",
+	"Role registered successfully": "Rol rexistrado con éxito",
+	"Role edited": "Rol editado",
+	"Role edited successfully": "Rol editado con éxito",
+	"Role removed": "Rol eliminado",
+	"Role removed successfully": "Rol eliminado con éxito"
 }

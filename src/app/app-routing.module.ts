@@ -29,10 +29,14 @@ import {FunctionalityComponent} from './components/functionality/functionality.c
 import {LoginComponent} from './components/login/login.component';
 import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
 import {ProfileComponent} from './components/profile/profile.component';
+import {RoleComponent} from './components/role/role.component';
 import {SigntypeComponent} from './components/signtype/signtype.component';
 import {UserComponent} from './components/user/user.component';
 
 const routes: Routes = [
+	{
+		path: 'roles', component: RoleComponent, canActivate: [AuthGuard]
+	},
 	{
 		path: 'functionalities', component: FunctionalityComponent, canActivate: [AuthGuard]
 	},
