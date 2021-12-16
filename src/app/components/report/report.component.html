@@ -125,7 +125,7 @@
 					<p class="text-nowrap fw-bold">{{'Birthdate' | translate}}</p>
 				</div>
 				<div class="col-md-3 col-sm-6 col-xs-12">
-					<p>{{patient.hasOwnProperty("birthdate") ? (patient.birthdate | date:'dd/MM/yyyy') : ""}}</p>
+					<p>{{patient.hasOwnProperty("birthdate") ? (patient.birthdate | date: currentFormatDate) : ""}}</p>
 				</div>
 				<div class="col-md-3 col-sm-6 col-xs-12">
 					<p class="fw-bold">{{'Sex' | translate}}</p>
@@ -140,7 +140,7 @@
 				<p class="fw-bold">{{'Completion date' | translate}}</p>
 			</div>
 			<div class="col-md-3 col-sm-6 col-xs-12">
-				<p>{{report.hasOwnProperty("completionDate") ? (report.completionDate | date:'dd/MM/yyyy') : ""}}</p>
+				<p>{{report.hasOwnProperty("completionDate") ? (report.completionDate | date: currentFormatDate) : ""}}</p>
 			</div>
 			<div class="col-md-3 col-sm-6 col-xs-12">
 				<p class="fw-bold">{{'Report number' | translate}}</p>
@@ -197,7 +197,7 @@
 						<tr *ngFor="let exploration of report.requestedExplorations">
 							<td>{{exploration.code}}</td>
 							<td>{{exploration.description}}</td>
-							<td>{{exploration.date | date:'dd/MM/yyyy'}}</td>
+							<td>{{exploration.date | date: currentFormatDate}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -224,7 +224,7 @@
 						<tr *ngFor="let exploration of report.performedExplorations;">
 							<td>{{exploration.code}}</td>
 							<td>{{exploration.description}}</td>
-							<td>{{exploration.date | date:'dd/MM/yyyy'}}</td>
+							<td>{{exploration.date | date: currentFormatDate}}</td>
 							<td>{{exploration.portable}}</td>
 							<td>{{exploration.surgery}}</td>
 						</tr>

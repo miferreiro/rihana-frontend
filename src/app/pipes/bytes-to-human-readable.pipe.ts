@@ -19,7 +19,9 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
+import {DecimalPipe} from '@angular/common';
 import {Pipe, PipeTransform} from '@angular/core';
+import {LocalizationService} from '../modules/internationalization/localization.service';
 
 @Pipe({
 	name: 'humanFileSize'
@@ -28,6 +30,7 @@ export class BytesToHumanReadablePipe implements PipeTransform {
 
 	private units = ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
+	constructor(private locationService: LocalizationService) { }
 
 	/**
 	 * Format bytes as human-readable text.
@@ -52,6 +55,6 @@ export class BytesToHumanReadablePipe implements PipeTransform {
 			++u;
 		} while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < this.units.length - 1);
 
-		return bytes.toFixed(dp) + ' ' + this.units[u];
+		return new DecimalPipe(this.locationService.getCurrentLocaleId()).transform(bytes.toFixed(dp)) + ' ' + this.units[u];
 	}
 }

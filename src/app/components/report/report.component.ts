@@ -27,6 +27,7 @@ import {PerformedExploration, Report, RequestedExploration} from '../../models/R
 import {Patient, SEX} from '../../models/Patient';
 import {ExplorationsService} from '../../services/explorations.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
+import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {EnumUtils} from '../../utils/enum.utils';
 
 export class ReportResult {
@@ -49,6 +50,10 @@ export enum STATE {
 })
 export class ReportComponent implements OnInit, OnDestroy {
 
+	public currentFormatDate: string = 'dd/MM/yyyy';
+	public readonly formatDateEs: string = 'dd/MM/yyyy';
+	public readonly formatDateEn: string = 'MM/dd/yyyy';
+
 	private readonly extensionValid = ['pdf'];
 	public STATEValues: STATE[];
 
@@ -66,12 +71,20 @@ export class ReportComponent implements OnInit, OnDestroy {
 	public report: Report;
 	public patient: Patient;
 
-	constructor(private notificationService: NotificationService,
-				private explorationsService: ExplorationsService) {
+	constructor(private explorationsService: ExplorationsService,
+				private locationService: LocalizationService,
+				private notificationService: NotificationService) {
 		GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.js`;
 	}
 
 	ngOnInit(): void {
+
+		if (this.locationService.getCurrentLocaleId() === 'en') {
+			this.currentFormatDate = this.formatDateEn;
+		} else {
+			this.currentFormatDate = this.formatDateEs;
+		}
+
 		this.STATEValues = EnumUtils.enumValues(STATE);
 
 		if (this.exploration.title != undefined) {

@@ -89,7 +89,7 @@
 				 (cancelDaterangepicker)="cancelDate()">
 				<div class="d-flex justify-content-between h-100">
 					<span *ngIf="initialDate != undefined" class="ps-2 align-self-center">
-						{{initialDate | date:'dd/MM/YYYY'}} - {{finalDate | date:'dd/MM/YYYY'}}
+						{{initialDate | date: currentFormatDate}} - {{finalDate | date: currentFormatDate}}
 					</span>
 					<span *ngIf="initialDate == undefined" class="placeholder align-self-center">
 						{{'Select a range' | translate}}
@@ -112,8 +112,8 @@
 					<div class="d-flex flex-column card-header">
 						<small class="text-capitalize card-category">{{getRadiographType(exploration)}}</small>
 						<h5 class="card-title">{{exploration.title}}</h5>
-						<h6 *ngIf="!isAdmin()"class="card-subtitle text-muted">{{exploration.explorationDate | date:'dd/MM/yyyy'}}</h6>
-						<h6 *ngIf="isAdmin()" class="card-subtitle text-muted"> <span class="text-capitalize">{{'by' | translate}} </span> <span class="text-capitalize">{{exploration.user}}</span>, {{'at' | translate}} {{exploration.explorationDate | date:'dd/MM/yyyy'}}</h6>
+						<h6 *ngIf="!isAdmin()"class="card-subtitle text-muted">{{exploration.explorationDate | date: currentFormatDate}}</h6>
+						<h6 *ngIf="isAdmin()" class="card-subtitle text-muted"> <span class="text-capitalize">{{'by' | translate}} </span> <span class="text-capitalize">{{exploration.user}}</span>, {{'at' | translate}} {{exploration.explorationDate | date: currentFormatDate}}</h6>
 					</div>
 					<div class="row card-body mr-0 ml-0">
 						<div *ngIf="getExplorationSigns(exploration).length != 0" class="row d-flex">

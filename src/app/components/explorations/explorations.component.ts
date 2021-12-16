@@ -40,6 +40,9 @@ import {Role} from '../../models/User';
 export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	private readonly formatDate: string = 'DD/MM/yyyy_HH:mm:ss';
+	public currentFormatDate: string = 'dd/MM/yyyy';
+	public readonly formatDateEs: string = 'dd/MM/yyyy';
+	public readonly formatDateEn: string = 'MM/dd/yyyy';
 	private _currentPage: number;
 
 	public loggedUser: string;
@@ -113,6 +116,14 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 	ngOnInit() {
 		if (this.authenticationService.getUser().authenticated) {
 			this.loggedUser = this.authenticationService.getUser().login;
+		}
+
+		if (this.locationService.getCurrentLocaleId() === 'en') {
+			this.options.locale.format = 'MM/DD/yyyy';
+			this.currentFormatDate = this.formatDateEn;
+		} else {
+			this.options.locale.format = 'DD/MM/yyyy';
+			this.currentFormatDate = this.formatDateEs;
 		}
 
 		this.pageSize = 6;
