@@ -240,6 +240,12 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		this.router.navigate(['/exploration']);
 	}
 
+	public addExploration() {
+		this.explorationsService.setExplorationId(undefined);
+		this.explorationsService.setEditingExploration(false);
+		this.router.navigate(['/exploration'])
+	}
+
 	public editExploration(exploration: Exploration) {
 		this.explorationsService.setExplorationId(exploration.id);
 		this.explorationsService.setEditingExploration(true);
