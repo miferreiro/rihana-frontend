@@ -37,7 +37,7 @@
 					<div class="file-drop-zone" file-drop-zone [control]="controlReport">
 						<label *ngIf="checkState('NOT_LOADED')" class="upload-input ng-trigger ng-trigger-zoomAnimation">
 							<div class="col text-center">
-								<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
+								<i class="las la-file-upload la-lg" style="color: black;"></i>
 							</div>
 							<div class="col text text-center">
 								{{'Drag and Drop the file or click here' | translate}}
@@ -48,7 +48,7 @@
 						<ng-template #placeholder>
 							<div class="overlayCustom">
 								<div class="text-center">
-									<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
+									<i class="las la-file-upload la-lg" style="color: black;"></i>
 								</div>
 								<div class="dragover-text">
 									{{'Drop it here' | translate}}
@@ -59,14 +59,14 @@
 							<div class="upload-list">
 								<div>
 									<div class="file-upload-icon">
-										<i class="bi bi-file-earmark-pdf " style="font-size: 1rem; color: black;"></i>
+										<i class="bi bi-file-earmark-pdf" style="font-size: 1.2rem; color: black;"></i>
 									</div>
 									<div class="file-info">
 										{{controlReport.value[0].name}} ({{controlReport.value[0].size | humanFileSize}})
 									</div>
 									<div class="file-buttons">
 										<span class="remove-btn" (click)="removeReport()">
-											<i class="bi bi-trash-fill" style="color: black;"></i>
+											<i class="las la-trash-alt la-lg" style="color: black;"></i>
 											{{'Remove' | translate}}
 										</span>
 									</div>
@@ -79,7 +79,7 @@
 					 [ngClass]="{'col-6': checkState('NOT_LOADED'),
 								 'col-12': checkState('CLIPBOARD_LOADED')}">
 					<div *ngIf="checkState('NOT_LOADED')" class="file-paste-zone text-center" (click)="onPaste($event)">
-						<i class="bi bi-clipboard"></i>
+						<i class="las la-clipboard la-lg" style="color: black;"></i>
 						<p>
 							{{'Click here to paste from clipboard' | translate}}
 						</p>
@@ -90,7 +90,7 @@
 						</p>
 						<div class="file-buttons">
 							<span class="remove-btn" (click)="removeReport()">
-								<i class="bi bi-trash-fill" style="color: black;"></i>
+								<i class="las la-trash-alt la-lg" style="color: black;"></i>
 								{{'Remove' | translate}}
 							</span>
 						</div>
@@ -109,7 +109,7 @@
 							{{'Report loaded correctly' | translate}}
 						</p>
 						<span (click)="removeReport()">
-							<i class="bi bi-trash-fill" style="color: black;"></i>
+							<i class="las la-trash-alt la-lg" style="color: black;"></i>
 							{{'Remove' | translate}}
 						</span>
 					</div>

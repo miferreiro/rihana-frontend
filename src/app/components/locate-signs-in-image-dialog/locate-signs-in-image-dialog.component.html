@@ -25,8 +25,8 @@
 			<div class="modal-header-custom">
 				<h5 class="modal-title" id="exampleModalLabel">{{'Finding and storing radiological signs' | translate}} </h5>
 				<div class="modal-options">
-					<i *ngIf="!disabled" class="bi bi-check-circle me-2" style="color: green;" (click)="onSave()"></i>
-					<i class="bi bi-x-circle" style="color: red;" (click)="onCancel()"></i>
+					<i *ngIf="!disabled" class="bi bi-check-circle me-2" style="font-size:1.5rem;color: green;" (click)="onSave()"></i>
+					<i class="bi bi-x-circle" style="font-size:1.5rem;color: red;" (click)="onCancel()"></i>
 				</div>
 			</div>
 			<div class="row modal-body-custom">
@@ -50,7 +50,7 @@
 						<div>
 							<span class="resetRadiograph">
 								<div class="btn-group" role="group">
-								<i name="radiograph" class="bi bi-arrow-clockwise" style="font-size: 1rem; color: black;"
+								<i name="radiograph" class="las la-undo-alt la-lg" style="font-size: 1rem; color: black;"
 									(click)="resetRadiography()"></i>
 								</div>
 							</span>
@@ -100,7 +100,8 @@
 														<i *ngIf="signsType(signType).length > 0"
 															[ngClass]="{'bi bi-eye': checkRenderSomeSingType(signType), 'bi bi-eye-slash': !checkRenderSomeSingType(signType)}"
 															(click)="showSignType(signType, $event)"></i>
-														<i *ngIf="signsType(signType).length > 0 && !disabled" class="bi bi-trash"
+														<i *ngIf="signsType(signType).length > 0 && !disabled"
+															class="las la-trash-alt la-lg"
 															(click)="removeSignType(signType)"></i>
 													</div>
 												</div>
@@ -135,7 +136,8 @@
 														<span class="col-auto text-center">
 															<i [ngClass]="{'bi bi-eye': sign.render, 'bi bi-eye-slash': !sign.render}"
 																(click)="showSign(sign, $event)"></i>
-															<i *ngIf="!disabled" class="bi bi-trash" (click)="removeSign(sign)"></i>
+															<i *ngIf="!disabled" class="las la-trash-alt"
+																(click)="removeSign(sign)"></i>
 														</span>
 													</li>
 												</ul>

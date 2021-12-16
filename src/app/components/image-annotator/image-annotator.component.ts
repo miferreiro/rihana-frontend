@@ -267,25 +267,25 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 						let xWidth: number, xHeight: number;
 
 						if (loc.width >= loc.height) {
-							xWidth = loc.width * this.scaleFactorImage / 2 - 10;
-							xHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
+							xWidth = loc.width * this.scaleFactorImage / 2 - 15;
+							xHeight = (loc.height * this.scaleFactorImage) / 2 - 15;
 						} else {
-							xWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
-							xHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
+							xWidth = (loc.width * this.scaleFactorImage) / 2 - 15;
+							xHeight = (loc.height * this.scaleFactorImage) / 2 - 15;
 						}
 
 						let x = document.createElement("i");
-						x.className = "bi bi-trash hoverZoneIcon";
+						x.className = "las la-trash-alt la-lg hoverZoneIcon";
 						x.onclick = () => this.removeSign.emit(sign);
 
-						x.setAttribute("style", "left:" + xWidth + "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
-												"position:absolute;font-size:1rem;visibility:hidden;color:" +
+						x.setAttribute("style", "top:" + xHeight + "px;" +
+												"position:relative;font-size:1.5rem;visibility:hidden;color:" +
 												sign.type.secondaryColor);
 
 						hoverZone.append(x);
 						div.appendChild(hoverZone);
 					}
-				} else if (sign.location.width * this.scaleFactorImage > 25 && sign.location.height * this.scaleFactorImage > 25) {
+				} else if (sign.location.width * this.scaleFactorImage > 30 && sign.location.height * this.scaleFactorImage > 30) {
 					let hoverZone = document.createElement("div");
 					hoverZone.className = "hoverZone";
 					hoverZone.setAttribute("style", "left:" + left + "px;" +
@@ -299,15 +299,15 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 					if (this.canLocate()) {
 						let xWidth: number, xHeight: number;
 
-						xWidth = (loc.width * this.scaleFactorImage) / 2 - 10;
-						xHeight = (loc.height * this.scaleFactorImage) / 2 - 10;
+						xWidth = (loc.width * this.scaleFactorImage) / 2 - 15;
+						xHeight = (loc.height * this.scaleFactorImage) / 2 - 15;
 
 						let x = document.createElement("i");
-						x.className = "bi bi-trash hoverZoneIcon";
+						x.className = "las la-trash-alt la-lg hoverZoneIcon";
 						x.onclick = () => this.removeSign.emit(sign);
 
-						x.setAttribute("style", "left:" + xWidth + "px;top:" + xHeight + "px;width:1rem;height:1rem;" +
-												"position:absolute;font-size:1rem;visibility:hidden;color:" +
+						x.setAttribute("style", "top:" + xHeight + "px;" +
+												"position:relative;font-size:1.5rem;visibility:hidden;color:" +
 												sign.type.secondaryColor);
 
 						hoverZone.append(x);

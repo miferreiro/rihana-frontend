@@ -1,7 +1,7 @@
 {
   "name": "@rihana/frontend",
   "description": "RIHANA - Radiological Image and History Acquisition for Neurocomputing Analysis",
-  "version": "0.1.0-alpha.140",
+  "version": "0.1.0-alpha.141",
   "license": "GPL-3.0",
   "author": {
     "name": "Miguel Ferreiro Díaz",
@@ -47,6 +47,7 @@
     "bootstrap-icons": "^1.5.0",
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^1.0.0",
+    "line-awesome": "^1.3.0",
     "messageformat": "^2.3.0",
     "ng2-charts": "^2.2.3",
     "ng2-daterangepicker": "^3.0.1",

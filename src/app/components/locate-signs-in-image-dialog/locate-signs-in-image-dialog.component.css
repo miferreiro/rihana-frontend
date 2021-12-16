@@ -24,10 +24,6 @@ app-image-annotator {
 	height: 100%;
 }
 
-i {
-	font-size: 1.5rem;
-}
-
 .show {
 	display: block;
 }
@@ -209,10 +205,11 @@ i {
 
 h6 {
 	margin-bottom: 0;
+	align-self: center;
 }
 
 .card-header-custom i {
-	font-size: 1rem;
+	font-size: 1.3rem;
 	letter-spacing: .2rem;
 }
 
@@ -271,8 +268,14 @@ h6 {
 }
 
 .card-body-custom li i {
-	font-size: 1rem;
+	height: 1.5rem;
+	font-size: 1.3rem;
 	letter-spacing: .2rem;
+	width: 1.5rem;
+}
+
+.card-body-custom li details {
+	align-self: center;
 }
 
 .card-body-custom li details span {

@@ -40,7 +40,7 @@
 				<div class="file-drop-zone" file-drop-zone [control]="controlRadiograph">
 					<label *ngIf="checkState('NOT_LOADED')" class="upload-input">
 						<div class="col text-center">
-							<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
+							<i class="las la-file-upload la-lg" style="color: black;"></i>
 						</div>
 						<div class="col text text-center">
 							{{'Drag and Drop the image or click here' | translate}}
@@ -52,7 +52,7 @@
 					<ng-template #placeholder>
 						<div class="overlayCustom">
 							<div class="text-center">
-								<i class="bi bi-upload" style="font-size: 1rem; color: black;"></i>
+								<i class="las la-file-upload la-lg" style="color: black;"></i>
 							</div>
 							<div class="dragover-text">
 								{{'Drop it here' | translate}}
@@ -64,14 +64,14 @@
 						<div class="upload-list">
 							<div>
 								<div class="file-upload-icon">
-									<i class="bi bi-file-image " style="font-size: 1rem; color: black;"></i>
+									<i class="las la-file-image position-relative top-50 start-50 translate-middle" style="font-size: 1.5rem;color: black;"></i>
 								</div>
 								<div class="file-info">
 									{{controlRadiograph.value[0].name}} ({{controlRadiograph.value[0].size | humanFileSize}})
 								</div>
 								<div class="file-buttons">
 									<span class="remove-btn" (click)="removeRadiograph()">
-										<i class="bi bi-trash-fill" style="color: black;"></i>
+										<i class="las la-trash-alt la-lg" style="color: black;"></i>
 										{{'Remove' | translate}}
 									</span>
 								</div>
@@ -84,7 +84,7 @@
 					[ngClass]="{'col-6': checkState('NOT_LOADED'),
 								'col-12': !checkState('NOT_LOADED')}">
 				<div *ngIf="checkState('NOT_LOADED')" class="file-paste-zone text-center" (click)="onPaste($event)">
-					<i class="bi bi-clipboard"></i>
+					<i class="las la-clipboard la-lg" style="color: black;"></i>
 					<p>
 						{{'Click here to paste from clipboard' | translate}}
 					</p>
@@ -95,7 +95,7 @@
 					</p>
 					<div class="file-buttons">
 						<span class="remove-btn" (click)="removeRadiograph()">
-							<i class="bi bi-trash-fill" style="color: black;"></i>
+							<i class="las la-trash-alt la-lg" style="color: black;"></i>
 							{{'Remove' | translate}}
 						</span>
 					</div>
@@ -104,7 +104,7 @@
 			<div *ngIf="checkState('READ_ONLY')" class="file-paste-zone text-left defaultCursor">
 				<div class="upload-list">
 					<div class="file-upload-icon">
-						<i class="bi bi-file-image " style="font-size: 1rem; color: black;"></i>
+						<i class="las la-file-image la-lg position-relative top-50 start-50 translate-middle" style="font-size: 1.5rem;color: black;"></i>
 					</div>
 					<div class="file-info">
 						{{controlRadiograph.value[0].name}} ({{controlRadiograph.value[0].size | humanFileSize}})

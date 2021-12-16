@@ -35,6 +35,7 @@
 							"node_modules/ng2-daterangepicker/assets/daterangepicker.css",
 							"node_modules/bootstrap/dist/css/bootstrap.min.css",
 							"node_modules/bootstrap-icons/font/bootstrap-icons.css",
+							"node_modules/line-awesome/dist/line-awesome/css/line-awesome.min.css",
 							"src/styles.css"
 						],
 						"scripts": [

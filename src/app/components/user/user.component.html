@@ -25,10 +25,10 @@
 	</div>
 
 	<div class="row mb-3">
-		<div class="d-flex justify-content-end">
+		<div class="d-flex justify-content-start">
 			<button type="button" class="input-group-text btn btn-success btn-sm" (click)="creatingUser=true"
 			        data-bs-toggle="modal" data-bs-target="#userModal">
-				<i class="bi bi-plus-lg me-3"></i> {{'Add user' | translate}}
+				<i class="las la-plus la-lg me-1"></i> {{'Add user' | translate}}
 			</button>
 		</div>
 	</div>
@@ -150,9 +150,9 @@
 						<div class="btn-group" role="group">
 							<button class="btn border-end" (click)="edit(user.login)" data-bs-toggle="modal"
 									data-bs-target="#userModal">
-									<i class="bi bi-pencil-square"></i>
+									<i class="las la-edit la-lg"></i>
 							</button>
-							<button class="btn" (click)="remove(user.login)"><i class="bi bi-trash"></i></button>
+							<button class="btn" (click)="remove(user.login)"><i class="las la-trash-alt la-lg"></i></button>
 						</div>
 					</td>
 				</tr>
