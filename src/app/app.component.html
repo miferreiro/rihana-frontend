@@ -72,6 +72,12 @@
 								{{'Functionality-action' | translate}}
 							</a>
 						</li>
+						<li class="nav-item">
+							<a *ngIf="authenticationService.getRole() == role.ADMIN" class="nav-link active"
+								aria-current="page" routerLink="/permissions">
+								{{'Permissions' | translate}}
+							</a>
+						</li>
 					</ul>
 				</div>
 				<div *ngIf="authenticationService.getUser().authenticated == true" class="nav-item user border-end"

@@ -236,5 +236,15 @@
 	"Functionality-action edited": "Funcionalidade-acción editado",
 	"Functionality-action edited successfully": "Funcionalidade-acción editado con éxito",
 	"Functionality-action removed": "Funcionalidade-acción eliminado",
-	"Functionality-action removed successfully": "Funcionalidade-acción eliminado con éxito"
+	"Functionality-action removed successfully": "Funcionalidade-acción eliminado con éxito",
+	"Permissions": "Permisos",
+	"Permission management": "Xestión de permisos",
+	"Add permission": "Engadir permisos",
+	"Edit permission": "Editar permisos",
+	"Permission registered": "Permiso rexistrado",
+	"Permission registered successfully": "Permiso rexistrado con éxito",
+	"Permission edited": "Permiso editado",
+	"Permission edited successfully": "Permiso editado con éxito",
+	"Permission removed": "Permiso eliminado",
+	"Permission removed successfully": "Permiso eliminado con éxito"
 }

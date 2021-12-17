@@ -44,6 +44,7 @@ import {ExplorationsService} from './services/explorations.service';
 import {FunctionalitiesService} from './services/functionalities.service';
 import {FunctionalityActionsService} from './services/functionality-actions.service';
 import {PatientsService} from './services/patients.service';
+import {PermissionsService} from './services/permissions.service';
 import {RadiographsService} from './services/radiographs.service';
 import {ReportsService} from './services/reports.service';
 import {RolesService} from './services/roles.service';
@@ -60,14 +61,15 @@ import {FunctionalityactionComponent} from './components/functionality-action/fu
 import {ImageAnnotatorComponent} from './components/image-annotator/image-annotator.component';
 import {LoginComponent} from './components/login/login.component';
 import {LocateSignsInImageDialogComponent} from './components/locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
+import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
+import {PermissionComponent} from './components/permission/permission.component';
+import {PieChartComponent} from './components/explorations/pie-chart/pie-chart.component';
+import {ProfileComponent} from './components/profile/profile.component';
 import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiology-analysis.component';
 import {RadiographComponent} from './components/radiology-analysis/radiograph/radiograph.component';
 import {ReportComponent} from './components/report/report.component';
 import {RoleComponent} from './components/role/role.component';
 import {SigntypeComponent} from './components/signtype/signtype.component';
-import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
-import {PieChartComponent} from './components/explorations/pie-chart/pie-chart.component';
-import {ProfileComponent} from './components/profile/profile.component';
 import {UserComponent} from './components/user/user.component';
 
 import {LangPipe} from './pipes/lang.pipe';
@@ -98,6 +100,7 @@ import {Daterangepicker} from 'ng2-daterangepicker';
 		ImageAnnotatorComponent,
 		LoginComponent,
 		LocateSignsInImageDialogComponent,
+		PermissionComponent,
 		ProfileComponent,
 		RadiologyAnalysisComponent,
 		RadiographComponent,
@@ -151,6 +154,7 @@ import {Daterangepicker} from 'ng2-daterangepicker';
 		FunctionalitiesService,
 		FunctionalityActionsService,
 		PatientsService,
+		PermissionsService,
 		RadiographsService,
 		ReportsService,
 		RolesService,

@@ -29,12 +29,16 @@ import {FunctionalityComponent} from './components/functionality/functionality.c
 import {FunctionalityactionComponent} from './components/functionality-action/functionality-action.component';
 import {LoginComponent} from './components/login/login.component';
 import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
+import {PermissionComponent} from './components/permission/permission.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {RoleComponent} from './components/role/role.component';
 import {SigntypeComponent} from './components/signtype/signtype.component';
 import {UserComponent} from './components/user/user.component';
 
 const routes: Routes = [
+	{
+		path: 'permissions', component: PermissionComponent, canActivate: [AuthGuard]
+	},
 	{
 		path: 'functionalityactions', component: FunctionalityactionComponent, canActivate: [AuthGuard]
 	},
