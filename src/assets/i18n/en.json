@@ -226,5 +226,15 @@
 	"Role edited": "Role edited",
 	"Role edited successfully": "Role edited successfully",
 	"Role removed": "Role removed",
-	"Role removed successfully": "Role removed successfully"
+	"Role removed successfully": "Role removed successfully",
+	"Functionality-action": "Functionality-action",
+	"Functionality-action management": "Functionality-action management",
+	"Add functionality-action": "Add functionality-action",
+	"Edit functionality-action": "Edit functionality-action",
+	"Functionality-action registered": "Functionality-action registered",
+	"Functionality-action registered successfully": "Functionality-action registered successfully",
+	"Functionality-action edited": "Functionality-action edited",
+	"Functionality-action edited successfully": "Functionality-action edited successfully",
+	"Functionality-action removed": "Functionality-action removed",
+	"Functionality-action removed successfully": "Functionality-action removed successfully"
 }

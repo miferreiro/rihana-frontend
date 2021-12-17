@@ -226,5 +226,15 @@
 	"Role edited": "Rol editado",
 	"Role edited successfully": "Rol editado con éxito",
 	"Role removed": "Rol eliminada",
-	"Role removed successfully": "Rol eliminado con éxito"
+	"Role removed successfully": "Rol eliminado con éxito",
+	"Functionality-action": "Funcionalidad-acción",
+	"Functionality-action management": "Gestión de funcionalidad-acción",
+	"Add functionality-action": "Añadir funcionalidad-acción",
+	"Edit functionality-action": "Editar funcionalidad-acción",
+	"Functionality-action registered": "Funcionalidad-acción registrado",
+	"Functionality-action registered successfully": "Funcionalidad-acción registrado con éxito",
+	"Functionality-action edited": "Funcionalidad-acción editado",
+	"Functionality-action edited successfully": "Funcionalidad-acción editado con éxito",
+	"Functionality-action removed": "Funcionalidad-acción eliminado",
+	"Functionality-action removed successfully": "Funcionalidad-acción eliminado con éxito"
 }

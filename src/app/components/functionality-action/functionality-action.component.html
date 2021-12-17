@@ -1,0 +1,141 @@
+<!--
+  ~ RIHANA Frontend
+  ~
+  ~ Copyright (C) 2021 David A. Ruano Ordás, José Ramón Méndez Reboredo,
+  ~ Miguel Ferreiro Díaz
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public
+  ~ License along with this program.  If not, see
+  ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
+-->
+
+<div class="container pb-2">
+	<div class="row summary mt-2 mb-3 text-center">
+		<h2>{{'Functionality-action management' | translate}}</h2>
+	</div>
+
+	<div class="row mb-3">
+		<div class="d-flex justify-content-end">
+			<button type="button" class="input-group-text btn btn-success btn-sm" (click)="creatingFunctionalityAction=true"
+					data-bs-toggle="modal" data-bs-target="#functionalityActionModal">
+				<i class="bi bi-plus-lg me-3"></i> {{'Add functionality-action' | translate}}
+			</button>
+		</div>
+	</div>
+
+	<form #functionalityActionForm="ngForm" (submit)="save(); functionalityActionForm.reset()" ngNativeValidate>
+		<div id="functionalityActionModal" class="modal fade" tabindex="-1" aria-labelledby="functionalityActionModalLabel"
+			 data-bs-backdrop="static">
+			<div class="modal-dialog modal-lg modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 *ngIf="creatingFunctionalityAction" class="modal-title">{{'Add functionality-action' | translate}}</h5>
+					</div>
+					<div class="modal-body">
+						<section>
+							<div class="row">
+								<label for="functionality-action-form-functionality" class="col-4 col-form-label required">
+									{{'Functionality' | translate}}
+								</label>
+								<div class="col-8">
+									<ng-select id="functionality-action-form-functionality"
+											   name="role"
+											   class="text-center"
+											   [clearable]="false"
+											   [hideSelected]="true"
+											   [searchable]="false"
+											   [(ngModel)]="functionalityAction.functionalityId">
+										<ng-option *ngFor="let functionality of functionalities" [value]="functionality.id" class="text-center">
+											{{functionality.name}}
+										</ng-option>
+										<ng-template ng-label-tmp let-item="item">
+											<span *ngIf="getFunctionality(item) != undefined" class="ng-value-label position-absolute top-50 start-50 translate-middle">
+												{{getFunctionality(item).name}}
+											</span>
+										</ng-template>
+									</ng-select>
+								</div>
+							</div>
+							<div class="row">
+								<label for="functionality-action-form-action" class="col-4 col-form-label required">
+									{{'Action' | translate}}
+								</label>
+								<div class="col-8">
+									<ng-select id="functionality-action-form-action"
+											   name="role"
+											   class="text-center"
+											   [clearable]="false"
+											   [hideSelected]="true"
+											   [searchable]="false"
+											   [(ngModel)]="functionalityAction.actionId">
+										<ng-option *ngFor="let action of actions" [value]="action.id" class="text-center">
+											{{action.name}}
+										</ng-option>
+										<ng-template ng-label-tmp let-item="item">
+											<span *ngIf="getAction(item) != undefined" class="ng-value-label position-absolute top-50 start-50 translate-middle">
+												{{getAction(item).name}}
+											</span>
+										</ng-template>
+									</ng-select>
+								</div>
+							</div>
+						</section>
+					</div>
+					<div class="modal-footer py-1">
+						<button #closeBtn type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal"
+								(click)="cancel(); functionalityActionForm.reset()">
+							{{'Cancel' | translate}}
+						</button>
+						<button *ngIf="creatingFunctionalityAction" type="submit" class="btn btn-primary btn-sm"
+								[disabled]="functionalityActionForm.invalid">
+							{{'Add' | translate}}
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<div class="row table-responsive">
+		<table class="table text-center align-middle">
+			<thead>
+				<tr>
+					<th scope="col">{{'Functionality' | translate}}</th>
+					<th scope="col">{{'Action' | translate}}</th>
+					<th scope="col">{{'Actions' | translate}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let functionalityAction of functionalityActions; let i=index">
+					<td *ngIf="getFunctionality(functionalityAction.functionalityId) != undefined">{{getFunctionality(functionalityAction.functionalityId).name}}</td>
+					<td *ngIf="getAction(functionalityAction.actionId) != undefined">{{getAction(functionalityAction.actionId).name}}</td>
+					<td>
+						<div class="btn-group" role="group">
+							<button class="btn" (click)="delete(functionalityAction.functionalityId, functionalityAction.actionId)"><i class="bi bi-trash"></i></button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="no-data-functionality-actions" [ngStyle]="{'display': functionalityActions.length == 0 ? 'block' : 'none',
+															'opacity': functionalityActions.length == 0 ? '1' : '0',
+															'visibility': functionalityActions.length == 0 ? 'visible' : 'hidden'}"
+			 class="bg-light justify-content-center align-items-center">
+			<span class="alert align-middle" role="alert">
+				{{'No data to display' | translate}}
+			</span>
+		</div>
+	</div>
+</div>
+
+<simple-notifications></simple-notifications>

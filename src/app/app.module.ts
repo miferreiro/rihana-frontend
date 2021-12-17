@@ -42,6 +42,7 @@ import {AuthenticationInterceptor} from './helpers/authentication.interceptor';
 import {ActionsService} from './services/actions.service';
 import {ExplorationsService} from './services/explorations.service';
 import {FunctionalitiesService} from './services/functionalities.service';
+import {FunctionalityActionsService} from './services/functionality-actions.service';
 import {PatientsService} from './services/patients.service';
 import {RadiographsService} from './services/radiographs.service';
 import {ReportsService} from './services/reports.service';
@@ -55,6 +56,7 @@ import {DeleteConfirmationComponent} from './components/delete-confirmation/dele
 import {ExplorationComponent} from './components/exploration/exploration.component';
 import {ExplorationsComponent} from './components/explorations/explorations.component';
 import {FunctionalityComponent} from './components/functionality/functionality.component';
+import {FunctionalityactionComponent} from './components/functionality-action/functionality-action.component';
 import {ImageAnnotatorComponent} from './components/image-annotator/image-annotator.component';
 import {LoginComponent} from './components/login/login.component';
 import {LocateSignsInImageDialogComponent} from './components/locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
@@ -92,6 +94,7 @@ import {Daterangepicker} from 'ng2-daterangepicker';
 		ExplorationComponent,
 		ExplorationsComponent,
 		FunctionalityComponent,
+		FunctionalityactionComponent,
 		ImageAnnotatorComponent,
 		LoginComponent,
 		LocateSignsInImageDialogComponent,
@@ -146,6 +149,7 @@ import {Daterangepicker} from 'ng2-daterangepicker';
 		ActionsService,
 		ExplorationsService,
 		FunctionalitiesService,
+		FunctionalityActionsService,
 		PatientsService,
 		RadiographsService,
 		ReportsService,
