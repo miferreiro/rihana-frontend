@@ -19,16 +19,14 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
 	selector: 'app-pagenotfound',
 	templateUrl: './pagenotfound.component.html',
 	styleUrls: ['./pagenotfound.component.css']
 })
-export class PagenotfoundComponent implements OnInit {
+export class PagenotfoundComponent {
 
 	constructor() { }
-
-	ngOnInit(): void { }
 }

@@ -42,7 +42,7 @@ export class FunctionalityComponent implements OnInit {
 	functionalities: Functionality[] = [];
 
 	constructor(private notificationService: NotificationService,
-				private locationService: LocalizationService,
+				private localizationService: LocalizationService,
 				private functionalitiesService: FunctionalitiesService) { }
 
 	ngOnInit(): void {
@@ -52,6 +52,9 @@ export class FunctionalityComponent implements OnInit {
 	getFunctionalities() {
 		this.functionalitiesService.getFunctionalities().subscribe(functionalities => {
 			this.functionalities = functionalities;
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the functionalities. Reason: ") + error.error,
+										   "Failed to retrieve functionalities");
 		});
 	}
 
@@ -59,16 +62,22 @@ export class FunctionalityComponent implements OnInit {
 		if (this.creatingFunctionality) {
 			this.functionalitiesService.create(this.functionality).subscribe(newFunctionality => {
 				this.getFunctionalities();
-				this.notificationService.success(this.locationService.translate('Functionality registered successfully') + '.',
-												 this.locationService.translate('Functionality registered'));
+				this.notificationService.success("Functionality registered successfully",
+												 "Functionality registered");
 				this.cancel();
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error registering the functionality. Reason: ") + error.error,
+											   "Failed to register the functionality");
 			});
 		} else {
 			this.functionalitiesService.editFunctionality(this.functionality).subscribe(updated => {
 				Object.assign(this.functionalities.find(functionality => functionality.name === this.functionality.name), updated);
-				this.notificationService.success(this.locationService.translate('Functionality edited successfully') + '.',
-												 this.locationService.translate('Functionality edited'));
+				this.notificationService.success("Functionality edited successfully",
+												 "Functionality edited");
 				this.cancel();
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error editing the functionality. Reason: ") + error.error,
+											   "Failed to edit the functionality");
 			});
 		}
 	}
@@ -93,8 +102,11 @@ export class FunctionalityComponent implements OnInit {
 				this.functionalities.find(functionality => functionality.id === Number(id))
 			);
 			this.functionalities.splice(index, 1);
-			this.notificationService.success(this.locationService.translate('Functionality removed successfully') + '.',
-											 this.locationService.translate('Functionality removed'));
+			this.notificationService.success("Functionality removed successfully",
+											 "Functionality removed");
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error removing the functionality. Reason: ") + error.error,
+										   "Failed to remove the functionality");
 		});
 		this.cancel();
 	}

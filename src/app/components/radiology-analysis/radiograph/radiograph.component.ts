@@ -150,7 +150,8 @@ export class RadiographComponent implements OnInit {
 		if (this.extensionValid.includes(file.name.split('.').pop())) {
 			this.controlRadiograph.setValue([file]);
 		} else {
-			this.notificationService.error("The file does not have the correct extension (.png, .jpg or .jpeg)", "File upload failed");
+			this.notificationService.error("The file does not have the correct extension (.png, .jpg or .jpeg)",
+										   "File upload failed");
 		}
 	}
 
@@ -254,9 +255,12 @@ export class RadiographComponent implements OnInit {
 	}
 
 	private getSignTypes() {
-		this.signTypesService.getSignTypes().subscribe(signTypes =>
+		this.signTypesService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes
-		)
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") + error.error,
+										   "Failed to retrieve sign types");
+		});
 	}
 
 	private b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {

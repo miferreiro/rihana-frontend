@@ -22,9 +22,10 @@
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
+import {NotificationService} from '../../modules/notification/services/notification.service';
+import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {Sign} from '../../models/Sign';
 import {SignType} from '../../models/SignType';
-import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {SignTypesService} from '../../services/sign-types.service';
 import {ImageAnnotatorComponent} from '../image-annotator/image-annotator.component';
 
@@ -63,7 +64,8 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 	public signNoFindings: Sign;
 	public other: boolean;
 
-	constructor(public localizationService: LocalizationService,
+	constructor(private notificationService: NotificationService,
+				public localizationService: LocalizationService,
 				private signTypesService: SignTypesService) { }
 
 	ngOnInit(): void {
@@ -76,6 +78,9 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 			this.signTypes = signTypes;
 			this.signNoFindings = new Sign();
 			this.signNoFindings.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") + error.error,
+										   "Failed to retrieve sign types");
 		});
 	}
 

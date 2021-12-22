@@ -22,6 +22,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {NotificationService} from '../../modules/notification/services/notification.service';
+import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ExplorationsService} from '../../services/explorations.service';
 import {Exploration} from '../../models/Exploration';
@@ -54,6 +55,7 @@ export class ExplorationComponent implements OnInit {
 	constructor(private router: Router,
 				private authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
+				private localizationService: LocalizationService,
 				private explorationsService: ExplorationsService) { }
 
 	ngOnInit(): void {
@@ -68,6 +70,21 @@ export class ExplorationComponent implements OnInit {
 				this.exploration = exploration;
 				this.messageOverlay = "Loading the exploration";
 				this.showOverlay = false;
+			}, error => {
+				this.exploration.explorationDate = new Date();
+				this.exploration.user = new Users();
+				this.exploration.user.login = this.loggedUser;
+				this.exploration.report = new Report();
+				this.exploration.patient = new Patient();
+				this.exploration.patient.patientID = null;
+				this.exploration.patient.birthdate = null;
+				this.exploration.patient.sex = null;
+				this.exploration.radiographs = [];
+				this.typeExploration = 'PA-LAT';
+				this.messageOverlay = "Loading the exploration";
+				this.showOverlay = false;
+				this.notificationService.error(this.localizationService.translate("The exploration cannot be loaded. Reason: ") + error.error,
+											   "Not possible load the exploration");
 			});
 		} else {
 			this.exploration.explorationDate = new Date();
@@ -112,6 +129,10 @@ export class ExplorationComponent implements OnInit {
 					this.explorationsService.setExplorationCreated(true);
 					this.showOverlay = false;
 					this.router.navigateByUrl(this.return);
+				}, error => {
+					this.showOverlay = false;
+					this.notificationService.error(this.localizationService.translate("The exploration cannot be created. Reason: ") + error.error,
+												   "Not possible create an exploration");
 				});
 			}
 		} else {
@@ -131,6 +152,10 @@ export class ExplorationComponent implements OnInit {
 					this.explorationsService.setExplorationEdited(true);
 					this.showOverlay = false;
 					this.router.navigateByUrl(this.return);
+				}, error => {
+					this.showOverlay = false;
+					this.notificationService.error(this.localizationService.translate("The exploration cannot be edited. Reason: ") + error.error,
+												   "Not possible edit the exploration");
 				});
 			}
 		}

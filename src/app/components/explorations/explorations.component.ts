@@ -75,27 +75,27 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		locale: {
 			format: 'DD/MM/yyyy',
 			daysOfWeek: [
-				this.locationService.translate("Sunday").substr(0, 2),
-				this.locationService.translate("Monday").substr(0, 2),
-				this.locationService.translate("Tuesday").substr(0, 2),
-				this.locationService.translate("Wednesday").substr(0, 2),
-				this.locationService.translate("Thursday").substr(0, 2),
-				this.locationService.translate("Friday").substr(0, 2),
-				this.locationService.translate("Saturday").substr(0, 2)
+				this.localizationService.translate("Sunday").substr(0, 2),
+				this.localizationService.translate("Monday").substr(0, 2),
+				this.localizationService.translate("Tuesday").substr(0, 2),
+				this.localizationService.translate("Wednesday").substr(0, 2),
+				this.localizationService.translate("Thursday").substr(0, 2),
+				this.localizationService.translate("Friday").substr(0, 2),
+				this.localizationService.translate("Saturday").substr(0, 2)
 			],
 			monthNames: [
-				this.locationService.translate("January"),
-				this.locationService.translate("February"),
-				this.locationService.translate("March"),
-				this.locationService.translate("April"),
-				this.locationService.translate("May"),
-				this.locationService.translate("June"),
-				this.locationService.translate("July"),
-				this.locationService.translate("August"),
-				this.locationService.translate("September"),
-				this.locationService.translate("October"),
-				this.locationService.translate("November"),
-				this.locationService.translate("December")
+				this.localizationService.translate("January"),
+				this.localizationService.translate("February"),
+				this.localizationService.translate("March"),
+				this.localizationService.translate("April"),
+				this.localizationService.translate("May"),
+				this.localizationService.translate("June"),
+				this.localizationService.translate("July"),
+				this.localizationService.translate("August"),
+				this.localizationService.translate("September"),
+				this.localizationService.translate("October"),
+				this.localizationService.translate("November"),
+				this.localizationService.translate("December")
 			],
 			"firstDay": 1
 		},
@@ -108,7 +108,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	constructor(private authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
-				private locationService: LocalizationService,
+				private localizationService: LocalizationService,
 				private explorationsService: ExplorationsService,
 				private signTypesService: SignTypesService,
 				private router: Router) { }
@@ -118,7 +118,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 			this.loggedUser = this.authenticationService.getUser().login;
 		}
 
-		if (this.locationService.getCurrentLocaleId() === 'en') {
+		if (this.localizationService.getCurrentLocaleId() === 'en') {
 			this.options.locale.format = 'MM/DD/yyyy';
 			this.currentFormatDate = this.formatDateEn;
 		} else {
@@ -137,22 +137,25 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	ngAfterViewChecked() {
 		if (this.explorationsService.getExplorationCreated()) {
-			this.notificationService.success('Exploration registered successfully', 'Exploration registered')
+			this.notificationService.success("Exploration registered successfully", "Exploration registered");
 			this.explorationsService.setExplorationCreated(false);
 		}
 
 		if (this.explorationsService.getExplorationEdited()) {
-			this.notificationService.success('Exploration edited successfully', 'Exploration edited')
+			this.notificationService.success("Exploration edited successfully", "Exploration edited");
 			this.explorationsService.setExplorationEdited(false);
 		}
-		document.getElementsByClassName("applyDate")[0].textContent = this.locationService.translate("Apply");
-		document.getElementsByClassName("cancelDate")[0].textContent = this.locationService.translate("Cancel");
+		document.getElementsByClassName("applyDate")[0].textContent = this.localizationService.translate("Apply");
+		document.getElementsByClassName("cancelDate")[0].textContent = this.localizationService.translate("Cancel");
 	}
 
 	private getSignTypes() {
-		this.signTypesService.getSignTypes().subscribe(signTypes =>
+		this.signTypesService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes
-		)
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") + error.error,
+										   "Failed to retrieve sign types");
+		});
 	}
 
 	getPageExplorations() {
@@ -171,6 +174,9 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 			this.paginationTotalItems = explorationPage.totalItems;
 			this.lastPage = Math.ceil(this.paginationTotalItems / this.pageSize);
 			this.explorations = explorationPage.explorations;
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the explorations. Reason: ") + error.error,
+										   "Failed to retrieve explorations");
 		});
 	}
 
@@ -183,7 +189,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 	}
 
 	public getRadiographType(exploration: Exploration): string {
-		return exploration.radiographs.map(radiograph => radiograph.type).join("&");
+		return exploration.radiographs.map(radiograph => radiograph.type).join('&');
 	}
 
 	public searchBySignTypes() {
@@ -195,19 +201,25 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	public delete(id: string) {
 		this.explorationsService.delete(id).subscribe(() => {
-			this.notificationService.success(this.locationService.translate('Exploration removed successfully') + ".",
-											 this.locationService.translate('Exploration removed'));
+			this.notificationService.success("Exploration removed successfully",
+											 "Exploration removed");
 			this.getPageExplorations();
 			this.updateChart.next();
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error removing the exploration. Reason: ") + error.error,
+										   "Failed to remove the exploration");
 		});
 	}
 
 	public recover(id: string) {
 		this.explorationsService.recover(id).subscribe(() => {
-			this.notificationService.success(this.locationService.translate('Exploration recovered successfully') + ".",
-											 this.locationService.translate('Exploration recovered'));
+			this.notificationService.success(this.localizationService.translate("Exploration recovered successfully") + '.',
+											 "Exploration recovered");
 			this.getPageExplorations();
 			this.updateChart.next();
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error recovering the exploration. Reason: ") + error.error,
+										   "Failed to recover the exploration");
 		});
 	}
 

@@ -48,6 +48,9 @@ export class ProfileComponent implements OnInit {
 			this.usersService.getUser(this.authenticationService.getUser().login).subscribe(user => {
 				this.loggedUser = user;
 				this.loggedUser.password = '';
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error retrieving the user info. Reason: ") + error.error,
+											   "Failed to retrieve user info");
 			});
 		}
 	}
@@ -69,8 +72,11 @@ export class ProfileComponent implements OnInit {
 				Object.assign(this.loggedUser, updatedUser);
 				this.loggedUser.password = '';
 				this.confirmPassword = '';
-				this.notificationService.success(this.localizationService.translate('User edited successfully') + '.',
-												 this.localizationService.translate('User edited'));
+				this.notificationService.success("User edited successfully",
+												 "User edited");
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error editing the user. Reason: ") + error.error,
+											   "Failed to edit the user");
 			});
 		} else {
 			this.editingUser = false;

@@ -23,8 +23,10 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ChartOptions, ChartType} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {Observable} from 'rxjs';
-import {AuthenticationService} from '../../../services/authentication.service';
+import {NotificationService} from '../../../modules/notification/services/notification.service';
+import {LocalizationService} from '../../../modules/internationalization/localization.service';
 import {SignType} from '../../../models/SignType';
+import {AuthenticationService} from '../../../services/authentication.service';
 import {SignsService} from '../../../services/signs.service';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
@@ -143,7 +145,9 @@ export class PieChartComponent implements OnInit {
 		}
 	};
 
-	constructor(private authenticationService: AuthenticationService,
+	constructor(private notificationService: NotificationService,
+				private localizationService: LocalizationService,
+				private authenticationService: AuthenticationService,
 				private signsService: SignsService) { }
 
 	ngOnInit(): void {
@@ -174,6 +178,9 @@ export class PieChartComponent implements OnInit {
 			this.pieChartColors = [{
 				backgroundColor: signColors
 			}];
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the user signs. Reason: ") + error.error,
+										   "Failed to retrieve user signs");
 		});
 	}
 }

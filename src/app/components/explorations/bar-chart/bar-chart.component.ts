@@ -23,6 +23,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {Observable} from 'rxjs';
+import {NotificationService} from '../../../modules/notification/services/notification.service';
+import {LocalizationService} from '../../../modules/internationalization/localization.service';
 import {SignType} from '../../../models/SignType';
 import {SignsService} from '../../../services/signs.service';
 
@@ -131,7 +133,9 @@ export class BarChartComponent implements OnInit {
 		}
 	};
 
-	constructor(private signsService: SignsService) { }
+	constructor(private notificationService: NotificationService,
+				private localizationService: LocalizationService,
+				private signsService: SignsService) { }
 
 	ngOnInit(): void {
 		this.getSigns();
@@ -165,6 +169,9 @@ export class BarChartComponent implements OnInit {
 			this.barChartColors = [{
 				backgroundColor: signColors
 			}];
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the signs. Reason: ") + error.error,
+										   "Failed to retrieve signs");
 		});
 	}
 }

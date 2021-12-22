@@ -42,7 +42,7 @@ export class ActionComponent implements OnInit {
 	actions: Action[] = [];
 
 	constructor(private notificationService: NotificationService,
-				private locationService: LocalizationService,
+				private localizationService: LocalizationService,
 				private actionsService: ActionsService) { }
 
 	ngOnInit(): void {
@@ -52,6 +52,9 @@ export class ActionComponent implements OnInit {
 	getActions() {
 		this.actionsService.getActions().subscribe(actions => {
 			this.actions = actions;
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the actions. Reason: ") + error.error,
+										   "Failed to retrieve actions");
 		});
 	}
 
@@ -59,16 +62,22 @@ export class ActionComponent implements OnInit {
 		if (this.creatingAction) {
 			this.actionsService.create(this.action).subscribe(newAction => {
 				this.getActions();
-				this.notificationService.success(this.locationService.translate('Action registered successfully') + '.',
-												 this.locationService.translate('Action registered'));
+				this.notificationService.success("Action registered successfully",
+												 "Action registered");
 				this.cancel();
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error registering the action. Reason: ") + error.error,
+											   "Failed to register the action");
 			});
 		} else {
 			this.actionsService.editAction(this.action).subscribe(updated => {
 				Object.assign(this.actions.find(action => action.name === this.action.name), updated);
-				this.notificationService.success(this.locationService.translate('Action edited successfully') + '.',
-												 this.locationService.translate('Action edited'));
+				this.notificationService.success("Action edited successfully",
+												 "Action edited");
 				this.cancel();
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error editing the action. Reason: ") + error.error,
+											   "Failed to edit the action");
 			});
 		}
 	}
@@ -93,8 +102,11 @@ export class ActionComponent implements OnInit {
 				this.actions.find(action => action.id === Number(id))
 			);
 			this.actions.splice(index, 1);
-			this.notificationService.success(this.locationService.translate('Action removed successfully') + '.',
-											 this.locationService.translate('Action removed'));
+			this.notificationService.success("Action removed successfully",
+											 "Action removed");
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error removing the action. Reason: ") + error.error,
+										   "Failed to remove the action");
 		});
 		this.cancel();
 	}

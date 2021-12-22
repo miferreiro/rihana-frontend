@@ -50,15 +50,22 @@ export class UserComponent implements OnInit {
 
 	constructor(private authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
-				private locationService: LocalizationService,
+				private localizationService: LocalizationService,
 				private usersService: UsersService) { }
 
 	ngOnInit(): void {
 		this.user.role = Role.USER;
+		this.getUsers();
+	}
+
+	getUsers() {
 		this.usersService.getUsers().subscribe(users => {
 			this.users = users;
 			const loggedUser = this.users.find((user) => user.login === this.authenticationService.getUser().login);
 			this.users.splice(this.users.indexOf(loggedUser), 1);
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the users. Reason: ") + error.error,
+										   "Failed to retrieve users");
 		});
 	}
 
@@ -66,16 +73,22 @@ export class UserComponent implements OnInit {
 		if (this.creatingUser) {
 			this.usersService.create(this.user).subscribe((newUser) => {
 				this.users = this.users.concat(newUser);
-				this.notificationService.success(this.locationService.translate('User registered successfully') + '.',
-												 this.locationService.translate('User registered'));
+				this.notificationService.success("User registered successfully",
+												 "User registered");
 				this.cancel();
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error registering the users. Reason: ") + error.error,
+											   "Failed to register the user");
 			});
 		} else {
 			this.usersService.editUser(this.user).subscribe(updated => {
 				Object.assign(this.users.find((user) => user.login === this.user.login), updated);
-				this.notificationService.success(this.locationService.translate('User edited successfully') + '.',
-												 this.locationService.translate('User edited'));
+				this.notificationService.success("User edited successfully",
+												 "User edited");
 				this.cancel();
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error editing the user. Reason: ") + error.error ,
+											   "Failed to edit the user");
 			});
 		}
 	}
@@ -103,8 +116,11 @@ export class UserComponent implements OnInit {
 				this.users.find((user) => user.login === login)
 			);
 			this.users.splice(index, 1);
-			this.notificationService.success(this.locationService.translate('User removed successfully') + '.',
-											 this.locationService.translate('User removed'));
+			this.notificationService.success("User removed successfully",
+											 "User removed");
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error removing the user. Reason: ") + error.error,
+										   "Failed to remove the user");
 		});
 		this.cancel();
 	}

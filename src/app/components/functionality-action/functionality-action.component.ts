@@ -47,7 +47,7 @@ export class FunctionalityactionComponent implements OnInit {
 	actions: Action[] = [];
 
 	constructor(private notificationService: NotificationService,
-				private locationService: LocalizationService,
+				private localizationService: LocalizationService,
 				private functionalityActionsService: FunctionalityActionsService,
 				private functionalitiesService: FunctionalitiesService,
 				private actionsService: ActionsService) { }
@@ -61,18 +61,27 @@ export class FunctionalityactionComponent implements OnInit {
 	getFunctionalityActions() {
 		this.functionalityActionsService.getFunctionalityActions().subscribe(functionalityActions => {
 			this.functionalityActions = functionalityActions;
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the functionality-actions. Reason: ") + error.error,
+										   "Failed to retrieve functionality-actions");
 		});
 	}
 
 	getFunctionalities() {
 		this.functionalitiesService.getFunctionalities().subscribe(functionalities => {
 			this.functionalities = functionalities;
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the functionalities. Reason: ") + error.error,
+										   "Failed to retrieve functionalities");
 		});
 	}
 
 	getActions() {
 		this.actionsService.getActions().subscribe(actions => {
 			this.actions= actions;
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the actions. Reason: ") + error.error,
+										   "Failed to retrieve actions");
 		});
 	}
 
@@ -87,9 +96,12 @@ export class FunctionalityactionComponent implements OnInit {
 	save() {
 		this.functionalityActionsService.create(this.functionalityAction).subscribe(newFunctionalityAction => {
 			this.getFunctionalityActions();
-			this.notificationService.success(this.locationService.translate('Functionality-action registered successfully') + '.',
-											 this.locationService.translate('Functionality-action registered'));
+			this.notificationService.success("Functionality-action registered successfully",
+											 "Functionality-action registered");
 			this.cancel();
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error registering the functionality-action. Reason: ") + error.error,
+										   "Failed to register the functionality-action");
 		});
 	}
 
@@ -106,8 +118,11 @@ export class FunctionalityactionComponent implements OnInit {
 																	  functionalityAction.actionId === Number(actionId))
 			);
 			this.functionalityActions.splice(index, 1);
-			this.notificationService.success(this.locationService.translate('Functionality-action removed successfully') + '.',
-											 this.locationService.translate('Functionality-action removed'));
+			this.notificationService.success("Functionality-action removed successfully",
+											 "Functionality-action removed");
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error removing the functionality-action. Reason: ") + error.error,
+										   "Failed to remove the functionality-action");
 		});
 		this.cancel();
 	}

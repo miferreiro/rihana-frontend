@@ -72,14 +72,14 @@ export class ReportComponent implements OnInit, OnDestroy {
 	public patient: Patient;
 
 	constructor(private explorationsService: ExplorationsService,
-				private locationService: LocalizationService,
+				private localizationService: LocalizationService,
 				private notificationService: NotificationService) {
 		GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.js`;
 	}
 
 	ngOnInit(): void {
 
-		if (this.locationService.getCurrentLocaleId() === 'en') {
+		if (this.localizationService.getCurrentLocaleId() === 'en') {
 			this.currentFormatDate = this.formatDateEn;
 		} else {
 			this.currentFormatDate = this.formatDateEs;

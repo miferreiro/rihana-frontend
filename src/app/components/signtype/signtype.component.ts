@@ -50,20 +50,23 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 	public compactControlSecondaryColor = new ColorPickerControl().hidePresets();
 
 	constructor(private notificationService: NotificationService,
-				private locationService: LocalizationService,
+				private localizationService: LocalizationService,
 				private signTypesService: SignTypesService) { }
 
 	ngOnInit(): void {
 		this.signTypesService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes;
-		})
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") + error.error,
+										   "Failed to retrieve sign types");
+		});
 		this.signType.primaryColor ="#FFFFFF";
 		this.signType.secondaryColor ="#000000";
 	}
 
 	ngAfterViewChecked(): void {
 		document.querySelectorAll("indicator-component").forEach(e =>
-			e.setAttribute("title", this.locationService.translate("Copy color to clipboard"))
+			e.setAttribute("title", this.localizationService.translate("Copy color to clipboard"))
 		);
 	}
 
@@ -71,17 +74,23 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 		if (this.creatingSignType) {
 			this.signTypesService.create(this.signType).subscribe((newSignType) => {
 				this.signTypes = this.signTypes.concat(newSignType);
-				this.notificationService.success(this.locationService.translate('Sign type registered successfully') + '.',
-												 this.locationService.translate('Sign type registered'));
+				this.notificationService.success("Sign type registered successfully",
+												 "Sign type registered");
 				this.cancel();
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error registering the sign types. Reason: ") + error.error,
+											   "Failed to register the sign types");
 			});
 		} else {
 			this.signTypesService.editSignType(this.signType).subscribe((updated) => {
 				Object.assign(this.signTypes.find((signType) => signType.code === this.signType.code), updated);
 
-				this.notificationService.success(this.locationService.translate('Sign type edited successfully') + '.',
-												 this.locationService.translate('Sign type edited'));
+				this.notificationService.success("Sign type edited successfully",
+												 "Sign type edited");
 				this.cancel();
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error editing the sign types. Reason: ") + error.error,
+											   "Failed to edit the sign types");
 			});
 		}
 	}
@@ -108,8 +117,11 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 				this.signTypes.find((signType) => signType.code === code)
 			);
 			this.signTypes.splice(index, 1);
-			this.notificationService.success(this.locationService.translate('Sign type removed successfully') + '.',
-											 this.locationService.translate('Sign type removed'));
+			this.notificationService.success("Sign type removed successfully",
+											 "Sign type removed");
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error removing the user. Reason: ") + error.error,
+										   "Failed to remove the user");
 		});
 		this.cancel();
 	}

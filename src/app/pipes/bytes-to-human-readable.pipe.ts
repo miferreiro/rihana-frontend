@@ -30,7 +30,7 @@ export class BytesToHumanReadablePipe implements PipeTransform {
 
 	private units = ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-	constructor(private locationService: LocalizationService) { }
+	constructor(private localizationService: LocalizationService) { }
 
 	/**
 	 * Format bytes as human-readable text.
@@ -55,6 +55,6 @@ export class BytesToHumanReadablePipe implements PipeTransform {
 			++u;
 		} while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < this.units.length - 1);
 
-		return new DecimalPipe(this.locationService.getCurrentLocaleId()).transform(bytes.toFixed(dp)) + ' ' + this.units[u];
+		return new DecimalPipe(this.localizationService.getCurrentLocaleId()).transform(bytes.toFixed(dp)) + ' ' + this.units[u];
 	}
 }

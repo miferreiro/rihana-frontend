@@ -42,7 +42,7 @@ export class RoleComponent implements OnInit {
 	roles: Role[] = [];
 
 	constructor(private notificationService: NotificationService,
-				private locationService: LocalizationService,
+				private localizationService: LocalizationService,
 				private rolesService: RolesService) { }
 
 	ngOnInit(): void {
@@ -52,6 +52,9 @@ export class RoleComponent implements OnInit {
 	getRoles() {
 		this.rolesService.getRoles().subscribe(roles => {
 			this.roles = roles;
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the roles. Reason: ") + error.error,
+										   "Failed to retrieve roles");
 		});
 	}
 
@@ -59,16 +62,22 @@ export class RoleComponent implements OnInit {
 		if (this.creatingRole) {
 			this.rolesService.create(this.role).subscribe(newRole => {
 				this.getRoles();
-				this.notificationService.success(this.locationService.translate('Role registered successfully') + '.',
-												 this.locationService.translate('Role registered'));
+				this.notificationService.success("Role registered successfully",
+												 "Role registered");
 				this.cancel();
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error registering the role. Reason: ") + error.error,
+											   "Failed to register the role");
 			});
 		} else {
 			this.rolesService.editRole(this.role).subscribe(updated => {
 				Object.assign(this.roles.find(role => role.name === this.role.name), updated);
-				this.notificationService.success(this.locationService.translate('Role edited successfully') + '.',
-												 this.locationService.translate('Role edited'));
+				this.notificationService.success("Role edited successfully",
+												 "Role edited");
 				this.cancel();
+			}, error => {
+				this.notificationService.error(this.localizationService.translate("Error editing the role. Reason: ") + error.error,
+											   "Failed to edit the role");
 			});
 		}
 	}
@@ -93,8 +102,11 @@ export class RoleComponent implements OnInit {
 				this.roles.find(role => role.id === Number(id))
 			);
 			this.roles.splice(index, 1);
-			this.notificationService.success(this.locationService.translate('Role removed successfully') + '.',
-											 this.locationService.translate('Role removed'));
+			this.notificationService.success("Role removed successfully",
+											 "Role removed");
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error removing the role. Reason: ") + error.error,
+										   "Failed to remove the role");
 		});
 		this.cancel();
 	}
