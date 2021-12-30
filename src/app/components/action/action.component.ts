@@ -22,6 +22,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Action} from '../../models/Action';
 import {ActionsService} from '../../services/actions.service';
+import {AuthenticationService} from '../../services/authentication.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
 
@@ -41,7 +42,8 @@ export class ActionComponent implements OnInit {
 
 	actions: Action[] = [];
 
-	constructor(private notificationService: NotificationService,
+	constructor(public authenticationService: AuthenticationService,
+				private notificationService: NotificationService,
 				private localizationService: LocalizationService,
 				private actionsService: ActionsService) { }
 

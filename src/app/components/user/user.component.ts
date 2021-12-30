@@ -48,7 +48,7 @@ export class UserComponent implements OnInit {
 
 	users: Users[] = [];
 
-	constructor(private authenticationService: AuthenticationService,
+	constructor(public authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
 				private localizationService: LocalizationService,
 				private usersService: UsersService) { }

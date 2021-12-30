@@ -21,6 +21,7 @@
 
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Functionality} from '../../models/Functionality';
+import {AuthenticationService} from '../../services/authentication.service';
 import {FunctionalitiesService} from '../../services/functionalities.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
@@ -41,7 +42,8 @@ export class FunctionalityComponent implements OnInit {
 
 	functionalities: Functionality[] = [];
 
-	constructor(private notificationService: NotificationService,
+	constructor(public authenticationService: AuthenticationService,
+				private notificationService: NotificationService,
 				private localizationService: LocalizationService,
 				private functionalitiesService: FunctionalitiesService) { }
 

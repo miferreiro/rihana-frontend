@@ -21,6 +21,7 @@
 
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Role} from '../../models/Role';
+import {AuthenticationService} from '../../services/authentication.service';
 import {RolesService} from '../../services/roles.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
@@ -41,7 +42,8 @@ export class RoleComponent implements OnInit {
 
 	roles: Role[] = [];
 
-	constructor(private notificationService: NotificationService,
+	constructor(public authenticationService: AuthenticationService,
+				private notificationService: NotificationService,
 				private localizationService: LocalizationService,
 				private rolesService: RolesService) { }
 

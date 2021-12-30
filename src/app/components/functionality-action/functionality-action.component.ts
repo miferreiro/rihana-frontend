@@ -24,6 +24,7 @@ import {Action} from '../../models/Action';
 import {Functionality} from '../../models/Functionality';
 import {FunctionalityAction} from '../../models/FunctionalityAction';
 import {ActionsService} from '../../services/actions.service';
+import {AuthenticationService} from '../../services/authentication.service';
 import {FunctionalitiesService} from '../../services/functionalities.service';
 import {FunctionalityActionsService} from '../../services/functionality-actions.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
@@ -46,7 +47,8 @@ export class FunctionalityactionComponent implements OnInit {
 	functionalities: Functionality[] = [];
 	actions: Action[] = [];
 
-	constructor(private notificationService: NotificationService,
+	constructor(public authenticationService: AuthenticationService,
+				private notificationService: NotificationService,
 				private localizationService: LocalizationService,
 				private functionalityActionsService: FunctionalityActionsService,
 				private functionalitiesService: FunctionalitiesService,

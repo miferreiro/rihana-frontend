@@ -24,7 +24,7 @@
 		<h2>{{'Sign types management' | translate}}</h2>
 	</div>
 
-	<div class="row mb-3">
+	<div *ngIf="authenticationService.hasPermission(11, 1)" class="row mb-3">
 		<div class="d-flex justify-content-start">
 			<button type="button" class="input-group-text btn btn-success btn-sm" (click)="creatingSignType=true"
 			        data-bs-toggle="modal" data-bs-target="#signTypeModal">
@@ -180,7 +180,9 @@
 					<th scope="col">{{'Target' | translate}}</th>
 					<th scope="col">{{'Primary color' | translate}}</th>
 					<th scope="col">{{'Secondary color' | translate}}</th>
-					<th scope="col">{{'Actions' | translate}}</th>
+					<th scope="col" *ngIf="authenticationService.hasPermission(11, 2) || authenticationService.hasPermission(11, 3)">
+						{{'Actions' | translate}}
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -199,13 +201,15 @@
 							<input type="color" value="{{signType.secondaryColor}}" disabled>
 						</div>
 					</td>
-					<td>
+					<td *ngIf="authenticationService.hasPermission(11, 2) || authenticationService.hasPermission(11, 3)">
 						<div class="btn-group" role="group">
-							<button class="btn border-end" (click)="edit(signType.code)" data-bs-toggle="modal"
-									data-bs-target="#signTypeModal">
+							<button *ngIf="authenticationService.hasPermission(11, 3)" class="btn border-end"
+									data-bs-toggle="modal" data-bs-target="#signTypeModal"
+									(click)="edit(signType.code)">
 									<i class="las la-edit la-lg"></i>
 							</button>
-							<button class="btn" (click)="remove(signType.code)"><i class="las la-trash-alt la-lg"></i></button>
+							<button *ngIf="authenticationService.hasPermission(11, 2)" class="btn"
+									(click)="remove(signType.code)"><i class="las la-trash-alt la-lg"></i></button>
 						</div>
 					</td>
 				</tr>

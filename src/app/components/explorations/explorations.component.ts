@@ -106,7 +106,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		timePicker: false
 	};
 
-	constructor(private authenticationService: AuthenticationService,
+	constructor(public authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
 				private localizationService: LocalizationService,
 				private explorationsService: ExplorationsService,

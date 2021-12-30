@@ -21,20 +21,22 @@
 
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {Role, User} from '../models/User';
 import {Observable} from 'rxjs';
 import {map} from "rxjs/operators";
+import {environment} from '../../environments/environment';
 import {RihanaError} from '../modules/notification/entities';
+import {Role, User} from '../models/User';
+import {PermissionsService} from './permissions.service';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class AuthenticationService {
 
 	private user: User = new User();
 
-	constructor(private  http: HttpClient) {
+	constructor(private  http: HttpClient,
+				private permissionsService: PermissionsService) {
 	}
 
 	checkCredentials(login: string, password: string): Observable<Role> {
@@ -47,12 +49,13 @@ export class AuthenticationService {
 		);
 	}
 
-	public logIn(login: string, password: string, role: Role) {
+	public async logIn(login: string, password: string, role: Role) {
 		this.user.login = login;
 		this.user.password = password;
 		this.user.role = role;
 		this.user.authHeader = this.getAuthorizationHeader();
 		this.user.authenticated = true;
+		this.user.permissions = await this.permissionsService.getUserPermissions(login).toPromise()
 		this.user.save();
 	}
 
@@ -75,5 +78,29 @@ export class AuthenticationService {
 
 	public isGuest(): boolean {
 		return !this.user.authenticated;
+	}
+
+	public isAdmin(): boolean {
+		return this.user.role == "ADMIN";
+	}
+
+	public hasPermission(functionality: number, action: number): boolean {
+		if (this.user.permissions.length > 0) {
+			return this.isAdmin() || this.user.permissions.filter(function(permission) {
+				return permission.functionalityId === functionality && permission.actionId === action
+			}).length > 0;
+		} else {
+			return this.isAdmin();
+		}
+	}
+
+	public hasFunctionalityPermission(functionality: number): boolean {
+		if (this.user.permissions.length > 0) {
+			return this.isAdmin() || this.user.permissions.filter(function(permission) {
+				return permission.functionalityId === functionality
+			}).length > 0;
+		} else {
+			return this.isAdmin();
+		}
 	}
 }

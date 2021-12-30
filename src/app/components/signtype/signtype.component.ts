@@ -21,6 +21,7 @@
 
 import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SignType} from '../../models/SignType';
+import {AuthenticationService} from '../../services/authentication.service';
 import {SignTypesService} from '../../services/sign-types.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
@@ -49,7 +50,8 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 	public compactControlPrimaryColor = new ColorPickerControl().hidePresets();
 	public compactControlSecondaryColor = new ColorPickerControl().hidePresets();
 
-	constructor(private notificationService: NotificationService,
+	constructor(public authenticationService: AuthenticationService,
+				private notificationService: NotificationService,
 				private localizationService: LocalizationService,
 				private signTypesService: SignTypesService) { }
 

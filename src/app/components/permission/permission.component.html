@@ -24,7 +24,7 @@
 		<h2>{{'Permission management' | translate}}</h2>
 	</div>
 
-	<div class="row mb-3">
+	<div *ngIf="authenticationService.hasPermission(6, 1)" class="row mb-3">
 		<div class="d-flex justify-content-start">
 			<button type="button" class="input-group-text btn btn-success btn-sm" (click)="creatingPermission=true"
 					data-bs-toggle="modal" data-bs-target="#permissionModal">
@@ -117,7 +117,7 @@
 					<th scope="col">{{'Role' | translate}}</th>
 					<th scope="col">{{'Functionality' | translate}}</th>
 					<th scope="col">{{'Action' | translate}}</th>
-					<th scope="col">{{'Actions' | translate}}</th>
+					<th scope="col" *ngIf="authenticationService.hasPermission(6, 2)">{{'Actions' | translate}}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -131,7 +131,7 @@
 					<td *ngIf="getAction(permission.functionalityAction.actionId) != undefined">
 						{{getAction(permission.functionalityAction.actionId).name}}
 					</td>
-					<td>
+					<td *ngIf="authenticationService.hasPermission(6, 2)">
 						<div class="btn-group" role="group">
 							<button class="btn" (click)="delete(permission.roleId, permission.functionalityAction)">
 								<i class="bi bi-trash"></i>

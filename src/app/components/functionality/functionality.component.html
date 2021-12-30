@@ -24,7 +24,7 @@
 		<h2>{{'Functionality management' | translate}}</h2>
 	</div>
 
-	<div class="row mb-3">
+	<div *ngIf="authenticationService.hasPermission(4, 1)" class="row mb-3">
 		<div class="d-flex justify-content-start">
 			<button type="button" class="input-group-text btn btn-success btn-sm" (click)="creatingFunctionality=true"
 			        data-bs-toggle="modal" data-bs-target="#functionalityModal">
@@ -110,7 +110,7 @@
 				<tr>
 					<th scope="col">{{'Name' | translate}}</th>
 					<th scope="col">{{'Description' | translate}}</th>
-					<th scope="col">{{'Actions' | translate}}</th>
+					<th scope="col" *ngIf="authenticationService.hasPermission(4, 2) || authenticationService.hasPermission(4, 3)">{{'Actions' | translate}}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -118,12 +118,16 @@
 					<td>{{functionality.name}}</td>
 					<td>{{functionality.description}}</td>
 					<td>
-						<div class="btn-group" role="group">
-							<button class="btn border-end" (click)="edit(functionality.id)" data-bs-toggle="modal"
-									data-bs-target="#functionalityModal">
+						<div *ngIf="authenticationService.hasPermission(4, 2) || authenticationService.hasPermission(4, 3)"
+							 class="btn-group" role="group">
+							<button *ngIf="authenticationService.hasPermission(4, 3)" class="btn border-end"
+									data-bs-toggle="modal" data-bs-target="#functionalityModal"
+									(click)="edit(functionality.id)">
 									<i class="bi bi-pencil-square"></i>
 							</button>
-							<button class="btn" (click)="remove(functionality.id)"><i class="bi bi-trash"></i></button>
+							<button *ngIf="authenticationService.hasPermission(4, 2)" class="btn"
+									(click)="remove(functionality.id)"><i class="bi bi-trash"></i>
+							</button>
 						</div>
 					</td>
 				</tr>

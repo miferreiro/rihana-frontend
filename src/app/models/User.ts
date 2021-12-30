@@ -19,10 +19,13 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
+import {FunctionalityAction} from "./FunctionalityAction";
+
 export class User {
 	private _login: string;
 	private _password: string;
 	private _role: Role;
+	private _permissions: FunctionalityAction[];
 	private _authHeader: string;
 	private _authenticated: boolean;
 
@@ -32,11 +35,13 @@ export class User {
 			this._role = user._role;
 			this._login = user._login;
 			this._password = user._password;
+			this._permissions = user._permissions;
 			this._authenticated = user._authenticated;
 			this._authHeader = user._authHeader;
 		} else {
 			this._authenticated = false;
 			this._role = null;
+			this._permissions = [];
 		}
 	}
 
@@ -78,6 +83,14 @@ export class User {
 
 	set password(value: string) {
 		this._password = value;
+	}
+
+	get permissions(): FunctionalityAction[] {
+		return this._permissions;
+	}
+
+	set permissions(value: FunctionalityAction[]) {
+		this._permissions = value;
 	}
 
 	public save() {

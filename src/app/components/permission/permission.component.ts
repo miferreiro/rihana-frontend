@@ -26,6 +26,7 @@ import {Permission} from '../../models/Permission';
 import {Role} from '../../models/Role';
 import {FunctionalityAction} from '../../models/FunctionalityAction';
 import {ActionsService} from '../../services/actions.service';
+import {AuthenticationService} from '../../services/authentication.service';
 import {FunctionalitiesService} from '../../services/functionalities.service';
 import {FunctionalityActionsService} from '../../services/functionality-actions.service';
 import {PermissionsService} from '../../services/permissions.service';
@@ -52,7 +53,8 @@ export class PermissionComponent implements OnInit {
 	functionalities: Functionality[] = [];
 	actions: Action[] = [];
 
-	constructor(private notificationService: NotificationService,
+	constructor(public authenticationService: AuthenticationService,
+				private notificationService: NotificationService,
 				private localizationService: LocalizationService,
 				private permissionsService: PermissionsService,
 				private rolesService: RolesService,

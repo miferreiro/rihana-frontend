@@ -58,10 +58,6 @@ export class FunctionalitiesService {
 	editFunctionality(functionality: Functionality): Observable<Functionality> {
 		const functionalityInfo = this.toFunctionalityInfo(functionality);
 
-
-		console.log("functionality.id")
-		console.log(functionality.id)
-
 		return this.http.put<FunctionalityInfo>(`${environment.restApi}/functionality/${functionality.id}`, functionalityInfo).pipe(
 			map(this.mapFunctionalityInfo.bind(this))
 		);

@@ -24,7 +24,9 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
+import {FunctionalityAction} from "../models/FunctionalityAction";
 import {Permission} from "../models/Permission";
+import {FunctionalityActionInfo} from "./entities/FunctionalityActionInfo";
 import {PermissionInfo} from "./entities/PermissionInfo";
 
 @Injectable({
@@ -44,6 +46,12 @@ export class PermissionsService {
 	getPermission(roleId: number, functionalityId: number, actionId: number): Observable<Permission> {
 		return this.http.get<PermissionInfo[]>(`${environment.restApi}/permission/${roleId}/${functionalityId}/${actionId}`).pipe(
 			map(this.mapPermissionInfo.bind(this))
+		);
+	}
+
+	getUserPermissions(login: string): Observable<FunctionalityAction[]> {
+		return this.http.get<FunctionalityAction[]>(`${environment.restApi}/permission/${login}`).pipe(
+			map(functionalityActions => functionalityActions.map(this.mapFunctionalityActionInfo.bind(this)))
 		);
 	}
 
@@ -74,6 +82,13 @@ export class PermissionsService {
 				functionalityId: permisssionInfo.functionalityId,
 				actionId: permisssionInfo.actionId
 			}
+		};
+	}
+
+	private mapFunctionalityActionInfo(functionalityActionInfo: FunctionalityActionInfo): FunctionalityAction {
+		return {
+			functionalityId: functionalityActionInfo.functionalityId,
+			actionId: functionalityActionInfo.actionId
 		};
 	}
 }
