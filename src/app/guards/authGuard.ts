@@ -21,6 +21,7 @@
 
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
+import {User} from '../models/User';
 import {AuthenticationService} from '../services/authentication.service';
 
 @Injectable({providedIn: 'root'})
@@ -32,56 +33,64 @@ export class AuthGuard implements CanActivate {
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
 		if (localStorage.getItem('currentUser')) {
+			let user: User = new User();
+			const now = new Date();
+			if (user.authenticated && now.getTime() < user.expiry) {
+				if (route.url.toString() == "explorations" && this.autheticationService.hasFunctionalityPermission(8)) {
+					return true;
+				}
 
-			if (route.url.toString() == "explorations" && this.autheticationService.hasFunctionalityPermission(8)) {
-				return true;
+				if (route.url.toString() == "exploration" && this.autheticationService.hasFunctionalityPermission(8)) {
+					return true;
+				}
+
+				if (route.url.toString() == "users" && this.autheticationService.hasFunctionalityPermission(1)) {
+					return true;
+				}
+
+				if (route.url.toString() == "singtypes" && this.autheticationService.hasFunctionalityPermission(11)) {
+					return true;
+				}
+
+				if (route.url.toString() == "actions" && this.autheticationService.hasFunctionalityPermission(3)) {
+					return true;
+				}
+
+				if (route.url.toString() == "functionalities" && this.autheticationService.hasFunctionalityPermission(4)) {
+					return true;
+				}
+
+				if (route.url.toString() == "roles" && this.autheticationService.hasFunctionalityPermission(2)) {
+					return true;
+				}
+
+				if (route.url.toString() == "functionalityactions" && this.autheticationService.hasFunctionalityPermission(5)) {
+					return true;
+				}
+
+				if (route.url.toString() == "permissions" && this.autheticationService.hasFunctionalityPermission(6)) {
+					return true;
+				}
+
+				if (route.url.toString() == "profile" && this.autheticationService.hasPermission(1, 5)) {
+					return true;
+				}
+
+				this.router.navigate(['/PageNotFound']);
+				return false;
+			} else {
+				user.clear();
+				this.router.navigate(['/login']);
+				return false;
 			}
 
-			if (route.url.toString() == "exploration" && this.autheticationService.hasFunctionalityPermission(8)) {
-				return true;
-			}
-
-			if (route.url.toString() == "users" && this.autheticationService.hasFunctionalityPermission(1)) {
-				return true;
-			}
-
-			if (route.url.toString() == "singtypes" && this.autheticationService.hasFunctionalityPermission(11)) {
-				return true;
-			}
-
-			if (route.url.toString() == "actions" && this.autheticationService.hasFunctionalityPermission(3)) {
-				return true;
-			}
-
-			if (route.url.toString() == "functionalities" && this.autheticationService.hasFunctionalityPermission(4)) {
-				return true;
-			}
-
-			if (route.url.toString() == "roles" && this.autheticationService.hasFunctionalityPermission(2)) {
-				return true;
-			}
-
-			if (route.url.toString() == "functionalityactions" && this.autheticationService.hasFunctionalityPermission(5)) {
-				return true;
-			}
-
-			if (route.url.toString() == "permissions" && this.autheticationService.hasFunctionalityPermission(6)) {
-				return true;
-			}
-
-			if (route.url.toString() == "profile" && this.autheticationService.hasPermission(1, 5)) {
-				return true;
-			}
-
-			this.router.navigate(['/PageNotFound']);
+		} else {
+			this.router.navigate(['/login'], {
+				queryParams: {
+					return: state.url
+				}
+			});
 			return false;
 		}
-
-		this.router.navigate(['/login'], {
-			queryParams: {
-				return: state.url
-			}
-		});
-		return false;
 	}
 }

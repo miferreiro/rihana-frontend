@@ -28,6 +28,7 @@ export class User {
 	private _permissions: FunctionalityAction[];
 	private _authHeader: string;
 	private _authenticated: boolean;
+	private _expiry: number;
 
 	constructor() {
 		const user: User = JSON.parse(localStorage.getItem('currentUser'));
@@ -38,6 +39,7 @@ export class User {
 			this._permissions = user._permissions;
 			this._authenticated = user._authenticated;
 			this._authHeader = user._authHeader;
+			this._expiry = user._expiry;
 		} else {
 			this._authenticated = false;
 			this._role = null;
@@ -93,7 +95,17 @@ export class User {
 		this._permissions = value;
 	}
 
+	get expiry(): number {
+		return this._expiry;
+	}
+
+	set expiry(expiry: number) {
+		this._expiry = expiry;
+	}
+
 	public save() {
+		const now = new Date();
+		this._expiry = now.getTime() + 604800000;
 		localStorage.setItem('currentUser', JSON.stringify(this));
 	}
 

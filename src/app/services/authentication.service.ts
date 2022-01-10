@@ -35,7 +35,7 @@ export class AuthenticationService {
 
 	private user: User = new User();
 
-	constructor(private  http: HttpClient,
+	constructor(private http: HttpClient,
 				private permissionsService: PermissionsService) {
 	}
 
@@ -81,26 +81,48 @@ export class AuthenticationService {
 	}
 
 	public isAdmin(): boolean {
-		return this.user.role == "ADMIN";
+		if (!this.checkExpiryTime()) {
+			return this.user.role == "ADMIN";
+		} else {
+			return false;
+		}
 	}
 
 	public hasPermission(functionality: number, action: number): boolean {
-		if (this.user.permissions.length > 0) {
-			return this.isAdmin() || this.user.permissions.filter(function(permission) {
-				return permission.functionalityId === functionality && permission.actionId === action
-			}).length > 0;
+		if (!this.checkExpiryTime()) {
+			if (this.user.permissions.length > 0) {
+				return this.isAdmin() || this.user.permissions.filter(function(permission) {
+					return permission.functionalityId === functionality && permission.actionId === action
+				}).length > 0;
+			} else {
+				return this.isAdmin();
+			}
 		} else {
-			return this.isAdmin();
+			return false;
 		}
 	}
 
 	public hasFunctionalityPermission(functionality: number): boolean {
-		if (this.user.permissions.length > 0) {
-			return this.isAdmin() || this.user.permissions.filter(function(permission) {
-				return permission.functionalityId === functionality
-			}).length > 0;
+		if (!this.checkExpiryTime()) {
+			if (this.user.permissions.length > 0) {
+				return this.isAdmin() || this.user.permissions.filter(function(permission) {
+					return permission.functionalityId === functionality
+				}).length > 0;
+			} else {
+				return this.isAdmin();
+			}
 		} else {
-			return this.isAdmin();
+			return false;
+		}
+	}
+
+	private checkExpiryTime(): boolean {
+		const now = new Date();
+		if (now.getTime() > this.user.expiry) {
+			this.logOut();
+			return true;
+		} else {
+			return false;
 		}
 	}
 }
