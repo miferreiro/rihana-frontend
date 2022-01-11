@@ -165,7 +165,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		if (this.finalDate != undefined) finalDate = this.finalDate.format(this.formatDate)
 
 		let user: string = undefined;
-		if (this.loggedUser != "admin") {
+		if (this.loggedUser != "admin" && this.loggedUser != "supervisor") {
 			user = this.loggedUser
 		}
 
@@ -255,6 +255,10 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	public isAdmin(): boolean {
 		return this.authenticationService.getRole() === Role.ADMIN;
+	}
+
+	public isSupervisor(): boolean {
+		return this.authenticationService.getRole() === Role.SUPERVISOR;
 	}
 
 	public infoExploration(exploration: Exploration) {
