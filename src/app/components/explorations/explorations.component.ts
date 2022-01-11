@@ -181,7 +181,8 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 	}
 
 	public getExplorationSigns(exploration: Exploration): Sign[] {
-		return [...new Map(this.explorationSigns(exploration).map(item => [item.type.code, item])).values()];
+		return [...new Map(this.explorationSigns(exploration).map(item => [item.type.code, item])).values()]
+			.sort((a, b) => a.type.code.localeCompare(b.type.code));
 	}
 
 	public getNumExplorationSignType(exploration: Exploration, code: string): number {
