@@ -314,5 +314,6 @@
 	"Failed to retrieve signs": "Failed to retrieve signs",
 	"Error retrieving the signs. Reason: ": "Error retrieving the signs. Reason: ",
 	"Failed to retrieve user signs": "Failed to retrieve user signs",
-	"Error retrieving the user signs. Reason: ": "Error retrieving the user signs. Reason: "
+	"Error retrieving the user signs. Reason: ": "Error retrieving the user signs. Reason: ",
+	"The report already exists": "The report already exists"
 }

@@ -314,5 +314,6 @@
 	"Failed to retrieve signs": "Non se pudo recuperar os signos",
 	"Error retrieving the signs. Reason: ": "Erro ao recuperar os signos. Razón: ",
 	"Failed to retrieve uiser signs": "Non se pudo recuperar os signos do usuario",
-	"Error retrieving the user signs. Reason: ": "Erro ao recuperar os signos do usuario. Razón: "
+	"Error retrieving the user signs. Reason: ": "Erro ao recuperar os signos do usuario. Razón: ",
+	"The report already exists": "O informe xa existe"
 }

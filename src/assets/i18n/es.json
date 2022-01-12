@@ -314,5 +314,6 @@
 	"Failed to retrieve signs": "Fallo al recuperar los signos",
 	"Error retrieving the signs. Reason: ": "Error recuperando los signos. Razón: ",
 	"Failed to retrieve user signs": "Fallo al recuperar los signos del usuario",
-	"Error retrieving the user signs. Reason: ": "Error recuperando los signos del usuario. Razón: "
+	"Error retrieving the user signs. Reason: ": "Error recuperando los signos del usuario. Razón: ",
+	"The report already exists": "El informe ya existe"
 }
