@@ -79,7 +79,8 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 			this.signNoFindings = new Sign();
 			this.signNoFindings.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve sign types");
 		});
 	}

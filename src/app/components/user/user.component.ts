@@ -64,7 +64,7 @@ export class UserComponent implements OnInit {
 			const loggedUser = this.users.find((user) => user.login === this.authenticationService.getUser().login);
 			this.users.splice(this.users.indexOf(loggedUser), 1);
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the users. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the users. Reason: ") + this.localizationService.translate(error.error),
 										   "Failed to retrieve users");
 		});
 	}
@@ -77,7 +77,7 @@ export class UserComponent implements OnInit {
 												 "User registered");
 				this.cancel();
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error registering the users. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("Error registering the users. Reason: ") + this.localizationService.translate(error.error),
 											   "Failed to register the user");
 			});
 		} else {
@@ -87,7 +87,7 @@ export class UserComponent implements OnInit {
 												 "User edited");
 				this.cancel();
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error editing the user. Reason: ") + error.error ,
+				this.notificationService.error(this.localizationService.translate("Error editing the user. Reason: ") + this.localizationService.translate(error.error),
 											   "Failed to edit the user");
 			});
 		}
@@ -119,7 +119,7 @@ export class UserComponent implements OnInit {
 			this.notificationService.success("User removed successfully",
 											 "User removed");
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error removing the user. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error removing the user. Reason: ") + this.localizationService.translate(error.error),
 										   "Failed to remove the user");
 		});
 		this.cancel();

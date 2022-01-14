@@ -55,7 +55,8 @@ export class RoleComponent implements OnInit {
 		this.rolesService.getRoles().subscribe(roles => {
 			this.roles = roles;
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the roles. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the roles. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve roles");
 		});
 	}
@@ -68,7 +69,8 @@ export class RoleComponent implements OnInit {
 												 "Role registered");
 				this.cancel();
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error registering the role. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("Error registering the role. Reason: ") +
+											   this.localizationService.translate(error.error),
 											   "Failed to register the role");
 			});
 		} else {
@@ -78,7 +80,8 @@ export class RoleComponent implements OnInit {
 												 "Role edited");
 				this.cancel();
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error editing the role. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("Error editing the role. Reason: ") +
+											   this.localizationService.translate(error.error),
 											   "Failed to edit the role");
 			});
 		}
@@ -107,7 +110,8 @@ export class RoleComponent implements OnInit {
 			this.notificationService.success("Role removed successfully",
 											 "Role removed");
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error removing the role. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error removing the role. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to remove the role");
 		});
 		this.cancel();

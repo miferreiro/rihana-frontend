@@ -170,7 +170,8 @@ export class BarChartComponent implements OnInit {
 				backgroundColor: signColors
 			}];
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the signs. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the signs. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve signs");
 		});
 	}

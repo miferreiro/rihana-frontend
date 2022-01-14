@@ -55,7 +55,8 @@ export class FunctionalityComponent implements OnInit {
 		this.functionalitiesService.getFunctionalities().subscribe(functionalities => {
 			this.functionalities = functionalities;
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the functionalities. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the functionalities. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve functionalities");
 		});
 	}
@@ -68,7 +69,8 @@ export class FunctionalityComponent implements OnInit {
 												 "Functionality registered");
 				this.cancel();
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error registering the functionality. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("Error registering the functionality. Reason: ") +
+											   this.localizationService.translate(error.error),
 											   "Failed to register the functionality");
 			});
 		} else {
@@ -78,7 +80,8 @@ export class FunctionalityComponent implements OnInit {
 												 "Functionality edited");
 				this.cancel();
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error editing the functionality. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("Error editing the functionality. Reason: ") +
+											   this.localizationService.translate(error.error),
 											   "Failed to edit the functionality");
 			});
 		}
@@ -107,7 +110,8 @@ export class FunctionalityComponent implements OnInit {
 			this.notificationService.success("Functionality removed successfully",
 											 "Functionality removed");
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error removing the functionality. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error removing the functionality. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to remove the functionality");
 		});
 		this.cancel();

@@ -258,7 +258,8 @@ export class RadiographComponent implements OnInit {
 		this.signTypesService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve sign types");
 		});
 	}

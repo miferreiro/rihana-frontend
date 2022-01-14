@@ -83,7 +83,8 @@ export class ExplorationComponent implements OnInit {
 				this.typeExploration = 'PA-LAT';
 				this.messageOverlay = "Loading the exploration";
 				this.showOverlay = false;
-				this.notificationService.error(this.localizationService.translate("The exploration cannot be loaded. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("The exploration cannot be loaded. Reason: ") +
+											   this.localizationService.translate(error.error),
 											   "Not possible load the exploration");
 			});
 		} else {
@@ -131,7 +132,8 @@ export class ExplorationComponent implements OnInit {
 					this.router.navigateByUrl(this.return);
 				}, error => {
 					this.showOverlay = false;
-					this.notificationService.error(this.localizationService.translate("The exploration cannot be created. Reason: ") + error.error,
+					this.notificationService.error(this.localizationService.translate("The exploration cannot be created. Reason: ") +
+												   this.localizationService.translate(error.error),
 												   "Not possible create an exploration");
 				});
 			}
@@ -154,7 +156,8 @@ export class ExplorationComponent implements OnInit {
 					this.router.navigateByUrl(this.return);
 				}, error => {
 					this.showOverlay = false;
-					this.notificationService.error(this.localizationService.translate("The exploration cannot be edited. Reason: ") + error.error,
+					this.notificationService.error(this.localizationService.translate("The exploration cannot be edited. Reason: ") +
+												   this.localizationService.translate(error.error),
 												   "Not possible edit the exploration");
 				});
 			}

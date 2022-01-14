@@ -74,7 +74,8 @@ export class PermissionComponent implements OnInit {
 		this.permissionsService.getPermissions().subscribe(permissions => {
 			this.permissions = permissions;
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the permissions. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the permissions. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve permissions");
 		});
 	}
@@ -87,7 +88,8 @@ export class PermissionComponent implements OnInit {
 			);
 			this.roles.splice(index, 1);
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the roles. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the roles. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve roles");
 		});
 	}
@@ -96,7 +98,8 @@ export class PermissionComponent implements OnInit {
 		this.functionalityActionsService.getFunctionalityActions().subscribe(functionalityActions => {
 			this.functionalityActions = functionalityActions;
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the functionality-actions. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the functionality-actions. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve functionality-actions");
 		});
 	}
@@ -105,7 +108,8 @@ export class PermissionComponent implements OnInit {
 		this.functionalitiesService.getFunctionalities().subscribe(functionalities => {
 			this.functionalities = functionalities;
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the functionalities. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the functionalities. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve functionalities");
 		});
 	}
@@ -114,7 +118,8 @@ export class PermissionComponent implements OnInit {
 		this.actionsService.getActions().subscribe(actions => {
 			this.actions= actions;
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the actions. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the actions. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve actions");
 		});
 	}
@@ -138,7 +143,8 @@ export class PermissionComponent implements OnInit {
 											 "Permission registered");
 			this.cancel();
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error registering the permission. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error registering the permission. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to register the permission");
 		});
 	}
@@ -161,7 +167,8 @@ export class PermissionComponent implements OnInit {
 			this.notificationService.success("Permission removed successfully",
 											 "Permission removed");
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error removing the permission. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error removing the permission. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to remove the permission");
 		});
 		this.cancel();

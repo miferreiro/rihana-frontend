@@ -153,7 +153,8 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		this.signTypesService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve sign types");
 		});
 	}
@@ -175,7 +176,8 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 			this.lastPage = Math.ceil(this.paginationTotalItems / this.pageSize);
 			this.explorations = explorationPage.explorations;
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the explorations. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the explorations. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve explorations");
 		});
 	}
@@ -207,7 +209,8 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 			this.getPageExplorations();
 			this.updateChart.next();
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error removing the exploration. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error removing the exploration. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to remove the exploration");
 		});
 	}
@@ -219,7 +222,8 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 			this.getPageExplorations();
 			this.updateChart.next();
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error recovering the exploration. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error recovering the exploration. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to recover the exploration");
 		});
 	}

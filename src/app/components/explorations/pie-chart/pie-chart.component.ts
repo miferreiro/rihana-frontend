@@ -179,7 +179,8 @@ export class PieChartComponent implements OnInit {
 				backgroundColor: signColors
 			}];
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the user signs. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the user signs. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve user signs");
 		});
 	}

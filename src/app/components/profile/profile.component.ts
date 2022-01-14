@@ -49,7 +49,8 @@ export class ProfileComponent implements OnInit {
 				this.loggedUser = user;
 				this.loggedUser.password = '';
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error retrieving the user info. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("Error retrieving the user info. Reason: ") +
+											   this.localizationService.translate(error.error),
 											   "Failed to retrieve user info");
 			});
 		}
@@ -75,7 +76,8 @@ export class ProfileComponent implements OnInit {
 				this.notificationService.success("User edited successfully",
 												 "User edited");
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error editing the user. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("Error editing the user. Reason: ") +
+											   this.localizationService.translate(error.error),
 											   "Failed to edit the user");
 			});
 		} else {

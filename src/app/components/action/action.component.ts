@@ -55,7 +55,8 @@ export class ActionComponent implements OnInit {
 		this.actionsService.getActions().subscribe(actions => {
 			this.actions = actions;
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the actions. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the actions. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve actions");
 		});
 	}
@@ -68,7 +69,8 @@ export class ActionComponent implements OnInit {
 												 "Action registered");
 				this.cancel();
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error registering the action. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("Error registering the action. Reason: ") +
+											   this.localizationService.translate(error.error),
 											   "Failed to register the action");
 			});
 		} else {
@@ -78,7 +80,8 @@ export class ActionComponent implements OnInit {
 												 "Action edited");
 				this.cancel();
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error editing the action. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("Error editing the action. Reason: ") +
+											   this.localizationService.translate(error.error),
 											   "Failed to edit the action");
 			});
 		}
@@ -107,7 +110,8 @@ export class ActionComponent implements OnInit {
 			this.notificationService.success("Action removed successfully",
 											 "Action removed");
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error removing the action. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error removing the action. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to remove the action");
 		});
 		this.cancel();

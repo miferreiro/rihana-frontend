@@ -59,7 +59,8 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 		this.signTypesService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes;
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to retrieve sign types");
 		});
 		this.signType.primaryColor ="#FFFFFF";
@@ -80,7 +81,8 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 												 "Sign type registered");
 				this.cancel();
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error registering the sign types. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("Error registering the sign types. Reason: ") +
+											   this.localizationService.translate(error.error),
 											   "Failed to register the sign types");
 			});
 		} else {
@@ -91,7 +93,8 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 												 "Sign type edited");
 				this.cancel();
 			}, error => {
-				this.notificationService.error(this.localizationService.translate("Error editing the sign types. Reason: ") + error.error,
+				this.notificationService.error(this.localizationService.translate("Error editing the sign types. Reason: ") +
+											   this.localizationService.translate(error.error),
 											   "Failed to edit the sign types");
 			});
 		}
@@ -122,7 +125,8 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 			this.notificationService.success("Sign type removed successfully",
 											 "Sign type removed");
 		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error removing the user. Reason: ") + error.error,
+			this.notificationService.error(this.localizationService.translate("Error removing the user. Reason: ") +
+										   this.localizationService.translate(error.error),
 										   "Failed to remove the user");
 		});
 		this.cancel();
