@@ -26,54 +26,98 @@
 			<a class="navbar-brand" routerLink="/home">RIHANA</a>
 			<button class="navbar-toggler-custom" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
 					aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
+				<span [ngStyle]="{'visibility': authenticationService.getUser().authenticated == false ? 'hidden' : 'visible'}" class="navbar-toggler-icon"></span>
 			</button>
-			<div id="navbar" class="collapse navbar-collapse">
+			<div *ngIf="authenticationService.getUser().authenticated == true" id="navbar" class="collapse navbar-collapse">
 				<div class="me-auto mb-lg-0">
-					<ul *ngIf="authenticationService.hasPermission(8, 7)" class="navbar-nav ">
-						<li class="nav-item">
+					<ul class="navbar-nav ">
+						<li *ngIf="authenticationService.hasPermission(8, 7)" class="nav-item">
 							<a class="nav-link active" aria-current="page" routerLink="/explorations">
 								{{'Explorations' | translate}}
 							</a>
 						</li>
-						<li class="nav-item">
-							<a *ngIf="authenticationService.hasPermission(1, 6)" class="nav-link active"
-								aria-current="page" routerLink="/users">
-								{{'Users' | translate}}
-							</a>
-						</li>
-						<li class="nav-item">
-							<a *ngIf="authenticationService.hasPermission(11, 6)" class="nav-link active"
+						<li *ngIf="authenticationService.hasPermission(11, 6)" class="nav-item">
+							<a class="nav-link active"
 								aria-current="page" routerLink="/singtypes">
 								{{'Sign types' | translate}}
 							</a>
 						</li>
-						<li class="nav-item">
-							<a *ngIf="authenticationService.hasPermission(3, 6)" class="nav-link active"
+
+						<li class="nav-item dropdown d-none d-md-block">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								ACL
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li *ngIf="authenticationService.hasPermission(1, 6)" class="nav-item dropdown-item">
+									<a class="nav-link active"
+										aria-current="page" routerLink="/users">
+										{{'Users' | translate}}
+									</a>
+								</li>
+								<li *ngIf="authenticationService.hasPermission(3, 6)" class="nav-item dropdown-item">
+									<a class="nav-link active"
+										aria-current="page" routerLink="/actions">
+										{{'Actions' | translate}}
+									</a>
+								</li>
+								<li *ngIf="authenticationService.hasPermission(4, 6)" class="nav-item dropdown-item">
+									<a class="nav-link active"
+										aria-current="page" routerLink="/functionalities">
+										{{'Functionalities' | translate}}
+									</a>
+								</li>
+								<li *ngIf="authenticationService.hasPermission(2, 6)" class="nav-item dropdown-item">
+									<a class="nav-link active"
+										aria-current="page" routerLink="/roles">
+										{{'Roles' | translate}}
+									</a>
+								</li>
+								<li *ngIf="authenticationService.hasPermission(5, 6)" class="nav-item dropdown-item">
+									<a class="nav-link active"
+										aria-current="page" routerLink="/functionalityactions">
+										{{'Functionality-action' | translate}}
+									</a>
+								</li>
+								<li *ngIf="authenticationService.hasPermission(6, 6)" class="nav-item dropdown-item">
+									<a class="nav-link active"
+										aria-current="page" routerLink="/permissions">
+										{{'Permissions' | translate}}
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li *ngIf="authenticationService.hasPermission(1, 6)" class="nav-item d-md-none">
+							<a class="nav-link active"
+								aria-current="page" routerLink="/users">
+								{{'Users' | translate}}
+							</a>
+						</li>
+						<li *ngIf="authenticationService.hasPermission(3, 6)" class="nav-item d-md-none">
+							<a class="nav-link active"
 								aria-current="page" routerLink="/actions">
 								{{'Actions' | translate}}
 							</a>
 						</li>
-						<li class="nav-item">
-							<a *ngIf="authenticationService.hasPermission(4, 6)" class="nav-link active"
+						<li *ngIf="authenticationService.hasPermission(4, 6)" class="nav-item d-md-none">
+							<a class="nav-link active"
 								aria-current="page" routerLink="/functionalities">
 								{{'Functionalities' | translate}}
 							</a>
 						</li>
-						<li class="nav-item">
-							<a *ngIf="authenticationService.hasPermission(2, 6)" class="nav-link active"
+						<li *ngIf="authenticationService.hasPermission(2, 6)" class="nav-item d-md-none">
+							<a class="nav-link active"
 								aria-current="page" routerLink="/roles">
 								{{'Roles' | translate}}
 							</a>
 						</li>
-						<li class="nav-item">
-							<a *ngIf="authenticationService.hasPermission(5, 6)" class="nav-link active"
+						<li *ngIf="authenticationService.hasPermission(5, 6)" class="nav-item d-md-none">
+							<a class="nav-link active"
 								aria-current="page" routerLink="/functionalityactions">
 								{{'Functionality-action' | translate}}
 							</a>
 						</li>
-						<li class="nav-item">
-							<a *ngIf="authenticationService.hasPermission(6, 6)" class="nav-link active"
+						<li *ngIf="authenticationService.hasPermission(6, 6)" class="nav-item d-md-none">
+							<a class="nav-link active"
 								aria-current="page" routerLink="/permissions">
 								{{'Permissions' | translate}}
 							</a>
@@ -86,15 +130,16 @@
 						<i class="bi bi-person-circle"></i>
 					</div>
 					<div class="login">
-						<span>{{'Hello' | translate}}, </span>
+						<span class="d-none d-md-block">{{'Hello' | translate}}, </span>
 						<span class="text-capitalize">{{ authenticationService.getUser().login }}</span>
 					</div>
 				</div>
-				<div class="nav-item">
-					<a *ngIf="authenticationService.getUser().authenticated == true" class="nav-link active"
+				<div *ngIf="authenticationService.getUser().authenticated == true" class="nav-item logout">
+					<a class="nav-link active"
 						aria-current="page" (click)="logOut()">
 						<i class="bi bi-box-arrow-right" style="font-size: 1.5rem; color: black;"></i>
 					</a>
+					<span class="d-md-none">Sign out</span>
 				</div>
 			</div>
 		</div>
