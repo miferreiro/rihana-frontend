@@ -317,5 +317,7 @@
 	"Error retrieving the user signs. Reason: ": "Error retrieving the user signs. Reason: ",
 	"The report already exists": "The report already exists",
 	"Insufficient privileges": "Insufficient privileges",
-	"No exploration have been performed": "No exploration have been performed"
+	"No exploration have been performed": "No exploration have been performed",
+	"Home page": "Home page",
+	"This page is under construction": "This page is under construction"
 }

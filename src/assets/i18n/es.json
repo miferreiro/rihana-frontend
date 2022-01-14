@@ -317,5 +317,7 @@
 	"Error retrieving the user signs. Reason: ": "Error recuperando los signos del usuario. Razón: ",
 	"The report already exists": "El informe ya existe",
 	"Insufficient privileges": "Privilegios insuficientes",
-	"No exploration have been performed": "No se han realizado exploraciones"
+	"No exploration have been performed": "No se han realizado exploraciones",
+	"Home page": "Página de inicio",
+	"This page is under construction": "Esta página está bajo construcción"
 }
