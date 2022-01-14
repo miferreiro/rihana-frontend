@@ -31,8 +31,9 @@
 <footer class="footer mt-auto py-1 fixed-bottom bg-light">
 	<div class="container">
 		<div class="row justify-content-between text-center">
-			<i class="col bi bi-arrow-left-circle" style="color:steelblue;" (click)="closeExploration()"></i>
-			<i *ngIf="exploration.title == undefined || isEditing" class="col bi bi-check-circle" style="color: green;" (click)="saveExploration()"></i>
+			<i title="{{'Back' | translate}}" class="col bi bi-arrow-left-circle" style="color:steelblue;" (click)="closeExploration()"></i>
+			<i *ngIf="exploration.title == undefined || isEditing" title="{{'Confirm' | translate}}" class="col bi bi-check-circle" style="color: green;"
+			   (click)="saveExploration()"></i>
 		</div>
 	</div>
 </footer>

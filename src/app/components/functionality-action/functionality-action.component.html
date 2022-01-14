@@ -123,7 +123,7 @@
 					<td *ngIf="getAction(functionalityAction.actionId) != undefined">{{getAction(functionalityAction.actionId).name}}</td>
 					<td *ngIf="authenticationService.hasPermission(5, 2)">
 						<div class="btn-group" role="group">
-							<button class="btn"
+							<button title="{{'Remove' | translate}}" class="btn"
 									(click)="delete(functionalityAction.functionalityId, functionalityAction.actionId)">
 									<i class="bi bi-trash"></i>
 							</button>

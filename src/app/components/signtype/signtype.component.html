@@ -203,13 +203,13 @@
 					</td>
 					<td *ngIf="authenticationService.hasPermission(11, 2) || authenticationService.hasPermission(11, 3)">
 						<div class="btn-group" role="group">
-							<button *ngIf="authenticationService.hasPermission(11, 3)" class="btn border-end"
-									data-bs-toggle="modal" data-bs-target="#signTypeModal"
+							<button *ngIf="authenticationService.hasPermission(11, 3)" title="{{'Edit' | translate}}"
+									class="btn border-end" data-bs-toggle="modal" data-bs-target="#signTypeModal"
 									(click)="edit(signType.code)">
 									<i class="las la-edit la-lg"></i>
 							</button>
-							<button *ngIf="authenticationService.hasPermission(11, 2)" class="btn"
-									(click)="remove(signType.code)"><i class="las la-trash-alt la-lg"></i></button>
+							<button *ngIf="authenticationService.hasPermission(11, 2)" title="{{'Remove' | translate}}"
+									class="btn" (click)="remove(signType.code)"><i class="las la-trash-alt la-lg"></i></button>
 						</div>
 					</td>
 				</tr>

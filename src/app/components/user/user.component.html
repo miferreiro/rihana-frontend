@@ -151,12 +151,13 @@
 					<td>
 						<div *ngIf="authenticationService.hasPermission(1, 2) || authenticationService.hasPermission(1, 3)"
 							 class="btn-group" role="group">
-							<button *ngIf="authenticationService.hasPermission(1, 3)" class="btn border-end"
-									data-bs-toggle="modal" data-bs-target="#userModal" (click)="edit(user.login)">
+							<button *ngIf="authenticationService.hasPermission(1, 3)" title="{{'Edit' | translate}}"
+									class="btn border-end" data-bs-toggle="modal" data-bs-target="#userModal"
+									(click)="edit(user.login)">
 									<i class="las la-edit la-lg"></i>
 							</button>
-							<button *ngIf="authenticationService.hasPermission(1, 2)" class="btn"
-									(click)="remove(user.login)"><i class="las la-trash-alt la-lg"></i>
+							<button *ngIf="authenticationService.hasPermission(1, 2)" title="{{'Remove' | translate}}"
+									class="btn" (click)="remove(user.login)"><i class="las la-trash-alt la-lg"></i>
 							</button>
 						</div>
 					</td>

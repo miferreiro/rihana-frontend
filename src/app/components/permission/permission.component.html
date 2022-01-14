@@ -133,7 +133,8 @@
 					</td>
 					<td *ngIf="authenticationService.hasPermission(6, 2)">
 						<div class="btn-group" role="group">
-							<button class="btn" (click)="delete(permission.roleId, permission.functionalityAction)">
+							<button title="{{'Remove' | translate}}" class="btn"
+									(click)="delete(permission.roleId, permission.functionalityAction)">
 								<i class="bi bi-trash"></i>
 							</button>
 						</div>

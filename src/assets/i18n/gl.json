@@ -319,5 +319,11 @@
 	"Insufficient privileges": "Privilexios insuficientes",
 	"No exploration have been performed": "Non se realizaron exploracións",
 	"Home page": "Páxina de inicio",
-	"This page is under construction": "Esta páxina está baixo construcción"
+	"This page is under construction": "Esta páxina está baixo construcción",
+	"Show": "Amosar",
+	"Restore": "Restaurar",
+	"Sign out": "Desconectarse",
+	"Confirm": "Confirmar",
+	"Back": "Atrás",
+	"Expand/Collapse": "Mostrar/Ocultar"
 }

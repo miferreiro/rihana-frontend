@@ -118,8 +118,8 @@
 	<div class="row">
 		<h4 class="col">{{'Signs detected' | translate}}: {{radiograph.signs ? radiograph.signs.length : '0' }}</h4>
 		<span class="col text-end">
-			<i *ngIf="!checkState('READ_ONLY')" class="las la-edit la-lg" (click)="openDialogImage()"></i>
-			<i class="las la-eye la-lg" (click)="openDialogImage()"></i>
+			<i *ngIf="!checkState('READ_ONLY')" title="{{'Edit' | translate}}" class="las la-edit la-lg" (click)="openDialogImage()"></i>
+			<i title="{{'Show' | translate}}" class="las la-eye la-lg" (click)="openDialogImage()"></i>
 		</span>
 	</div>
 	<div class="row signs">

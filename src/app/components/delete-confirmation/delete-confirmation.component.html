@@ -26,15 +26,15 @@
 		<div class="modal-content">
 			<div class="modal-header justify-content-center">
 				<h5 class="modal-title">{{'Delete' | translate}} {{modelName | translate}}</h5>
-				<button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+				<button title="{{'Cancel' | translate}}" type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
 			</div>
 			<div class="modal-body">
 				{{'Are you sure you want to delete' | translate}} <strong><b>{{name}}</b></strong>?
 				<div class="warning">{{'This action is permanent and cannot be undone' | translate}}.</div>
 			</div>
 			<div class="modal-footer">
-				<i class="bi bi-x-circle" style="color: red;" (click)="onCancel()"></i>
-				<i class="bi bi-check-circle" style="color: green;" (click)="onConfirm()"></i>
+				<i title="{{'Cancel' | translate}}" class="bi bi-x-circle" style="color: red;" (click)="onCancel()"></i>
+				<i title="{{'Confirm' | translate}}" class="bi bi-check-circle" style="color: green;" (click)="onConfirm()"></i>
 			</div>
 		</div>
 	</div>

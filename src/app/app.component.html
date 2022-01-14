@@ -23,10 +23,11 @@
 	<nav class="navbar navbar-expand-md navbar-light bg-light">
 		<div class="container-fluid">
 			<span></span>
-			<a class="navbar-brand" routerLink="/home">RIHANA</a>
+			<a title="{{'Home page' | translate}}" class="navbar-brand" routerLink="/home">RIHANA</a>
 			<button class="navbar-toggler-custom" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
 					aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-				<span [ngStyle]="{'visibility': authenticationService.getUser().authenticated == false ? 'hidden' : 'visible'}" class="navbar-toggler-icon"></span>
+				<span [ngStyle]="{'visibility': authenticationService.getUser().authenticated == false ? 'hidden' : 'visible'}"
+					  class="navbar-toggler-icon"></span>
 			</button>
 			<div *ngIf="authenticationService.getUser().authenticated == true" id="navbar" class="collapse navbar-collapse">
 				<div class="me-auto mb-lg-0">
@@ -44,7 +45,8 @@
 						</li>
 
 						<li class="nav-item dropdown d-none d-md-block">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+							   data-bs-toggle="dropdown" aria-expanded="false">
 								ACL
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -124,7 +126,8 @@
 						</li>
 					</ul>
 				</div>
-				<div *ngIf="authenticationService.getUser().authenticated == true" class="nav-item user border-end"
+				<div *ngIf="authenticationService.getUser().authenticated == true" title="{{'Profile' | translate}}"
+					  class="nav-item user border-end"
 					 (click)="getProfile()">
 					<div>
 						<i class="bi bi-person-circle"></i>
@@ -134,12 +137,13 @@
 						<span class="text-capitalize">{{ authenticationService.getUser().login }}</span>
 					</div>
 				</div>
-				<div *ngIf="authenticationService.getUser().authenticated == true" class="nav-item logout">
+				<div *ngIf="authenticationService.getUser().authenticated == true" title="{{'Sign out' | translate}}"
+					 class="nav-item logout">
 					<a class="nav-link active"
 						aria-current="page" (click)="logOut()">
 						<i class="bi bi-box-arrow-right" style="font-size: 1.5rem; color: black;"></i>
 					</a>
-					<span class="d-md-none">Sign out</span>
+					<span class="d-md-none">{{'Sign out' | translate}}</span>
 				</div>
 			</div>
 		</div>

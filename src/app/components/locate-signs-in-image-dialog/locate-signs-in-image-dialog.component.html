@@ -25,8 +25,10 @@
 			<div class="modal-header-custom">
 				<h5 class="modal-title" id="exampleModalLabel">{{'Finding and storing radiological signs' | translate}} </h5>
 				<div class="modal-options">
-					<i *ngIf="!disabled" class="bi bi-check-circle me-2" style="font-size:1.5rem;color: green;" (click)="onSave()"></i>
-					<i class="bi bi-x-circle" style="font-size:1.5rem;color: red;" (click)="onCancel()"></i>
+					<i *ngIf="!disabled" title="{{'Confirm' | translate}}" class="bi bi-check-circle me-2"
+					   style="font-size:1.5rem;color: green;" (click)="onSave()"></i>
+					<i title="{{'Cancel' | translate}}" class="bi bi-x-circle" style="font-size:1.5rem;color: red;"
+					   (click)="onCancel()"></i>
 				</div>
 			</div>
 			<div class="row modal-body-custom">
@@ -50,8 +52,8 @@
 						<div>
 							<span class="resetRadiograph">
 								<div class="btn-group" role="group">
-								<i name="radiograph" class="las la-undo-alt la-lg" style="font-size: 1rem; color: black;"
-									(click)="resetRadiography()"></i>
+								<i title="{{'Reset' | translate}}" name="radiograph" class="las la-undo-alt la-lg"
+								   style="font-size: 1rem; color: black;" (click)="resetRadiography()"></i>
 								</div>
 							</span>
 						</div>

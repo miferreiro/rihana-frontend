@@ -319,5 +319,11 @@
 	"Insufficient privileges": "Insufficient privileges",
 	"No exploration have been performed": "No exploration have been performed",
 	"Home page": "Home page",
-	"This page is under construction": "This page is under construction"
+	"This page is under construction": "This page is under construction",
+	"Show": "Show",
+	"Restore": "Restore",
+	"Sign out": "Sign out",
+	"Confirm": "Confirm",
+	"Back": "Back",
+	"Expand/Collapse": "Expand/Collapse"
 }
