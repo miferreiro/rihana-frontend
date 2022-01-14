@@ -102,6 +102,12 @@ export class UserComponent implements OnInit {
 		this.closeBtn.nativeElement.click();
 	}
 
+
+	create() {
+		this.creatingUser = true
+		this.user.role = Role.USER;
+	}
+
 	edit(login: string) {
 		this.editingUser = true;
 		this.user = new Users();
