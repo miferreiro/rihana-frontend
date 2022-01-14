@@ -192,7 +192,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 	}
 
 	public getRadiographType(exploration: Exploration): string {
-		return exploration.radiographs.map(radiograph => radiograph.type).join('&');
+		return exploration.radiographs.map(radiograph => radiograph.type).sort((a, b) => -a.localeCompare(b)).join('&');
 	}
 
 	public searchBySignTypes() {
