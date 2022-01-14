@@ -38,6 +38,12 @@
 	box-shadow: none;
 }
 
+@media (max-width: 1199px) {
+	.btn-add-exploration {
+		width: 100%;
+	}
+}
+
 ng-select {
 	width: 100%;
 }

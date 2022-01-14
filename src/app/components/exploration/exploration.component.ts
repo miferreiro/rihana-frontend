@@ -40,7 +40,7 @@ import {EnumUtils} from '../../utils/enum.utils';
 })
 export class ExplorationComponent implements OnInit {
 
-	readonly return: string = '';
+	readonly return: string = 'explorations';
 	public loggedUser: string;
 
 	public exploration: Exploration = new Exploration();

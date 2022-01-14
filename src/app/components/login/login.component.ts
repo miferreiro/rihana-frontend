@@ -22,6 +22,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Role} from '../../models/User';
 
 @Component({
 	selector: 'app-login',
@@ -47,7 +48,12 @@ export class LoginComponent implements OnInit {
 	logIn() {
 		this.authenticationService.checkCredentials(this.login, this.password).subscribe(async (role) => {
 			await this.authenticationService.logIn(this.login, this.password, role);
-			this.router.navigateByUrl(this.return);
+			if (role == Role.USER) {
+				this.router.navigateByUrl('home');
+			} else {
+				this.router.navigateByUrl('explorations');
+			}
+
 		});
 	}
 }

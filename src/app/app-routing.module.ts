@@ -27,6 +27,7 @@ import {ExplorationComponent} from './components/exploration/exploration.compone
 import {ExplorationsComponent} from './components/explorations/explorations.component';
 import {FunctionalityComponent} from './components/functionality/functionality.component';
 import {FunctionalityactionComponent} from './components/functionality-action/functionality-action.component';
+import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
 import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
 import {PermissionComponent} from './components/permission/permission.component';
@@ -64,13 +65,16 @@ const routes: Routes = [
 		path: 'exploration', component: ExplorationComponent, canActivate: [AuthGuard]
 	},
 	{
+		path: 'home', component: HomeComponent, canActivate: [AuthGuard]
+	},
+	{
 		path: 'login', component: LoginComponent
 	},
 	{
 		path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]
 	},
 	{
-		path: '', redirectTo: 'explorations', pathMatch: 'full'
+		path: '', redirectTo: 'home', pathMatch: 'full'
 	},
 	{
 		path: '**', pathMatch: 'full', redirectTo: 'PageNotFound',

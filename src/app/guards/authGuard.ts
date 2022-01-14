@@ -44,11 +44,11 @@ export class AuthGuard implements CanActivate {
 					return true;
 				}
 
-				if (route.url.toString() == "users" && this.autheticationService.hasFunctionalityPermission(1)) {
+				if (route.url.toString() == "users" && this.autheticationService.hasPermission(1, 6)) {
 					return true;
 				}
 
-				if (route.url.toString() == "singtypes" && this.autheticationService.hasFunctionalityPermission(11)) {
+				if (route.url.toString() == "singtypes" && this.autheticationService.hasPermission(11, 6)) {
 					return true;
 				}
 
@@ -73,6 +73,10 @@ export class AuthGuard implements CanActivate {
 				}
 
 				if (route.url.toString() == "profile" && this.autheticationService.hasPermission(1, 5)) {
+					return true;
+				}
+
+				if (route.url.toString() == "home") {
 					return true;
 				}
 
