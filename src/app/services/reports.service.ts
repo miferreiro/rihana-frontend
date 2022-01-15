@@ -41,6 +41,12 @@ export class ReportsService {
 		);
 	}
 
+	getReportBy(reportN: string): Observable<Report> {
+		return this.http.get<ReportInfo>(`${environment.restApi}/report/reportN/${reportN}`).pipe(
+			map(this.mapReportInfo.bind(this))
+		);
+	}
+
 	private mapReportInfo(reportInfo: ReportInfo): Report {
 		return {
 			id: reportInfo.id,

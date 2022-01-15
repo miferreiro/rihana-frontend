@@ -326,5 +326,6 @@
 	"Confirm": "Confirm",
 	"Back": "Back",
 	"Expand/Collapse": "Expand/Collapse",
-	"Focus": "Focus"
+	"Focus": "Focus",
+	"The report is already assigned to an exploration": "The report is already assigned to an exploration"
 }

@@ -26,6 +26,7 @@ import {getDocument, GlobalWorkerOptions, version} from 'pdfjs-dist';
 import {PerformedExploration, Report, RequestedExploration} from '../../models/Report';
 import {Patient, SEX} from '../../models/Patient';
 import {ExplorationsService} from '../../services/explorations.service';
+import {ReportsService} from '../../services/reports.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {EnumUtils} from '../../utils/enum.utils';
@@ -71,7 +72,10 @@ export class ReportComponent implements OnInit, OnDestroy {
 	public report: Report;
 	public patient: Patient;
 
+	private baseReport: Report;
+
 	constructor(private explorationsService: ExplorationsService,
+				private reportsService: ReportsService,
 				private localizationService: LocalizationService,
 				private notificationService: NotificationService) {
 		GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.js`;
@@ -88,7 +92,8 @@ export class ReportComponent implements OnInit, OnDestroy {
 		this.STATEValues = EnumUtils.enumValues(STATE);
 
 		if (this.exploration.title != undefined) {
-			this.report = this.exploration.report;
+			this.baseReport = this.report = this.exploration.report;
+
 			this.patient = this.exploration.patient;
 			if (this.explorationsService.getEditingExploration()) {
 				this.state = STATE.EXPLORATION_LOADED;
@@ -154,8 +159,19 @@ export class ReportComponent implements OnInit, OnDestroy {
 				var pdfBase64 = atob(fr.result.toString().split(',')[1]);
 				let report = await this.getDocument(pdfBase64);
 				this.loadFieldsReport(report);
-				this.notificationService.success("The file has the correct format", "File upload successfull")
-				this.state = STATE.FILE_LOADED;
+
+				if (this.baseReport != undefined && this.baseReport.reportNumber != this.report.reportNumber) {
+					this.reportsService.getReportBy(this.report.reportNumber).subscribe(report => {
+						this.removeReport();
+						this.notificationService.error("The report is already assigned to an exploration", "File upload failed");
+					}, () => {
+						this.notificationService.success("The file has the correct format", "File upload successfull");
+						this.state = STATE.FILE_LOADED;
+					});
+				} else {
+					this.notificationService.success("The file has the correct format", "File upload successfull");
+					this.state = STATE.FILE_LOADED;
+				}
 			}
 			fr.readAsDataURL(file);
 		}
@@ -167,7 +183,19 @@ export class ReportComponent implements OnInit, OnDestroy {
 				.then(text => {
 					text = text.replace(/(\r\n|\n|\r)/gm, " ");
 					this.loadFieldsReport(text);
-					this.state = STATE.CLIPBOARD_LOADED;
+
+					if (this.baseReport != undefined && this.baseReport.reportNumber != this.report.reportNumber) {
+						this.reportsService.getReportBy(this.report.reportNumber).subscribe(report => {
+							this.removeReport();
+							this.notificationService.error("The report is already assigned to an exploration", "File upload failed");
+						}, () => {
+							this.notificationService.success("The file has the correct format", "File upload successfull");
+							this.state = STATE.FILE_LOADED;
+						});
+					} else {
+						this.notificationService.success("The file has the correct format", "File upload successfull");
+						this.state = STATE.FILE_LOADED;
+					}
 				})
 				.catch(error => {
 					this.notificationService.error("The copied report has not the correct format", "Report loaded failed")

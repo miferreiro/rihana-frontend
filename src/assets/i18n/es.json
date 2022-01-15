@@ -326,5 +326,6 @@
 	"Confirm": "Confirmar",
 	"Back": "Atrás",
 	"Expand/Collapse": "Mostrar/Ocultar",
-	"Focus": "Centrar"
+	"Focus": "Centrar",
+	"The report is already assigned to an exploration": "El informe ya está asignado a una exploración"
 }
