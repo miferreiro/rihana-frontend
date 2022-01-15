@@ -103,10 +103,14 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 		this.contrast = input.value;
 	}
 
+	public resetPositionRadiography(): void {
+		this.imageAnnotatorComponent.resetPanZoom();
+	}
+
 	public resetRadiography(): void {
 		this.brightness = '100';
 		this.contrast = '100';
-		this.imageAnnotatorComponent.resetPanZoom();
+		this.resetPositionRadiography();
 	}
 
 	public listSignTypes(): SignType[] {
