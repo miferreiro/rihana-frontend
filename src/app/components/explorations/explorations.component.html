@@ -44,41 +44,52 @@
 			</button>
 		</div>
 		<form class="col-xl-4 col-12 my-2 px-1 align-self-center text-center">
-			<div class="gx-0">
-				<ng-select  name="signTypesSelect"
-							notFoundText="{{'No sign types found' | translate}}"
-							placeholder="{{'Search by sign types' | translate}}"
-							[clearable]="true"
-							[closeOnSelect]="false"
-							[dropdownPosition]="'top'"
-							[hideSelected]="true"
-							[multiple]="true"
-							[searchable]="false"
-							[(ngModel)]="signTypesFilter"
-							(change)="searchBySignTypes()">
-					<ng-option *ngFor="let signType of signTypes" [value]="signType">
-						{{signType.code}}
-					</ng-option>
-
-					<ng-template ng-label-tmp let-item="item" let-clear="clear">
-						<span class="ng-value-label"
-								[ngStyle]="{'background-color': item.primaryColor + 'CC', 'color': item.secondaryColor}">
-							{{item.code}}
-						</span>
-						<span class="ng-value-icon right"
-								[ngStyle]="{'background-color': item.primaryColor + 'CC', 'color': item.secondaryColor, 'border-left': 'none'}"
-								aria-hidden="true"
-								(click)="clear(item)">
-								×
-						</span>
-					</ng-template>
-
-					<ng-template ng-option-tmp let-item="item">
-						<div class="ng-option" [ngStyle]="{'border-color': item.primaryColor}">
-							{{item.name | translate}} ({{item.code}})
+			<div class="row me-0">
+				<div class="col-6 toggle-button-cover" (click)="changeOperator()">
+					<div class="button b2" id="button-switch">
+						<input type="checkbox" class="checkbox">
+						<div class="knobs">
+							<span>AND</span>
 						</div>
-					</ng-template>
-				</ng-select>
+						<div class="layer"></div>
+					</div>
+				</div>
+				<div class="col gx-0">
+					<ng-select  name="signTypesSelect"
+								notFoundText="{{'No sign types found' | translate}}"
+								placeholder="{{'Search by sign types' | translate}}"
+								[clearable]="true"
+								[closeOnSelect]="false"
+								[dropdownPosition]="'top'"
+								[hideSelected]="true"
+								[multiple]="true"
+								[searchable]="false"
+								[(ngModel)]="signTypesFilter"
+								(change)="searchBySignTypes()">
+						<ng-option *ngFor="let signType of signTypes" [value]="signType">
+							{{signType.code}}
+						</ng-option>
+
+						<ng-template ng-label-tmp let-item="item" let-clear="clear">
+							<span class="ng-value-label"
+									[ngStyle]="{'background-color': item.primaryColor + 'CC', 'color': item.secondaryColor}">
+								{{item.code}}
+							</span>
+							<span class="ng-value-icon right"
+									[ngStyle]="{'background-color': item.primaryColor + 'CC', 'color': item.secondaryColor, 'border-left': 'none'}"
+									aria-hidden="true"
+									(click)="clear(item)">
+									×
+							</span>
+						</ng-template>
+
+						<ng-template ng-option-tmp let-item="item">
+							<div class="ng-option" [ngStyle]="{'border-color': item.primaryColor}">
+								{{item.name | translate}} ({{item.code}})
+							</div>
+						</ng-template>
+					</ng-select>
+				</div>
 			</div>
 		</form>
 		<div class="col-xl-3 col-12 my-2 px-1 d-flex align-items-center">

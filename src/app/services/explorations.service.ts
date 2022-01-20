@@ -119,9 +119,9 @@ export class ExplorationsService {
 				)
 	}
 
-	getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], source: boolean = false,
-						 initialDate: Date, finalDate: Date): Observable<ExplorationPage> {
-		return this.getExplorations(user, page, pageSize, signTypes, source, initialDate, finalDate, new HttpParams());
+	getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], operator: string,
+						 source: boolean = false, initialDate: Date, finalDate: Date): Observable<ExplorationPage> {
+		return this.getExplorations(user, page, pageSize, signTypes, operator, source, initialDate, finalDate, new HttpParams());
 	}
 
 	createExploration(exploration: Exploration): Observable<Exploration> {
@@ -148,14 +148,18 @@ export class ExplorationsService {
 		return this.http.put(`${environment.restApi}/exploration/recover/` + id, null);
 	}
 
-	private getExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], source: boolean = false,
-		initialDate: Date, finalDate: Date, params: HttpParams): Observable<ExplorationPage> {
+	private getExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], operator: string,
+		source: boolean = false, initialDate: Date, finalDate: Date, params: HttpParams): Observable<ExplorationPage> {
 		if (user != undefined) {
 			params = params.append('user', user);
 		}
 		params = params.append('page', page.toString()).append('pageSize', pageSize.toString());
 
-		signTypes.forEach(signType => params = params.append('signType', signType.code));
+		if (operator.match("AND")) {
+			params = params.append('signType', signTypes.map(s => s.code).join(";"));
+		} else {
+			params = params.append('signType', signTypes.map(s => s.code).join(","));
+		}
 
 		if (initialDate != undefined) {
 			params = params.append('initialDate', initialDate.toString());

@@ -31,6 +31,7 @@ import {Exploration} from '../../models/Exploration';
 import {Sign} from '../../models/Sign';
 import {SignType} from '../../models/SignType';
 import {Role} from '../../models/User';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
 	selector: 'app-explorations',
@@ -49,6 +50,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	public signTypes: SignType[];
 	public signTypesFilter: SignType[] = [];
+	public operator: string = "AND";
 
 	public explorations: Exploration[] = [];
 	public exploration: Exploration = new Exploration();
@@ -130,6 +132,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		this.currentPage = 1;
 		this.initialDate = undefined;
 		this.finalDate = undefined;
+		this.operator = "AND";
 		this.getSignTypes();
 		this.getPageExplorations();
 		this.explorationsService.setExplorationId(undefined);
@@ -171,7 +174,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		}
 
 		this.explorationsService.getTotalExplorations(user, this.currentPage, this.pageSize,
-			this.signTypesFilter, false, initialDate, finalDate).subscribe(explorationPage => {
+			this.signTypesFilter, this.operator, false, initialDate, finalDate).subscribe(explorationPage => {
 			this.paginationTotalItems = explorationPage.totalItems;
 			this.lastPage = Math.ceil(this.paginationTotalItems / this.pageSize);
 			this.explorations = explorationPage.explorations;
@@ -250,6 +253,16 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	public handlePageSizeChange(event: any): void {
 		this.pageSize = event.target.value;
+		this.currentPage = 1;
+		this.getPageExplorations();
+	}
+
+	public changeOperator() {
+		if (this.operator.match("AND")) {
+			this.operator = "OR";
+		} else {
+			this.operator = "AND";
+		}
 		this.currentPage = 1;
 		this.getPageExplorations();
 	}

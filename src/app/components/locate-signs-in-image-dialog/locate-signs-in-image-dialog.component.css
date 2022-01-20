@@ -107,6 +107,10 @@ app-image-annotator {
 	cursor: default;
 }
 
+.control-options span i {
+	font-size: 1rem;
+}
+
 .control-options span input {
 	width: 50px;
 	border: none;
@@ -131,7 +135,6 @@ app-image-annotator {
 .img-div {
 	text-align: center;
 	text-align: -webkit-center;
-	font-size: 0rem;
 }
 
 .img-div>div {
