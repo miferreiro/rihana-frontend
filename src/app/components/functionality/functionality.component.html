@@ -21,7 +21,7 @@
 
 <div class="container pb-2">
 	<div class="row summary mt-2 mb-3 text-center">
-		<h2>{{'Functionality management' | translate}}</h2>
+		<h1 class="h2">{{'Functionality management' | translate}}</h1>
 	</div>
 
 	<div *ngIf="authenticationService.hasPermission(4, 1)" class="row mb-3">
@@ -38,8 +38,8 @@
 			<div class="modal-dialog modal-md modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 *ngIf="creatingFunctionality" class="modal-title">{{'Add functionality' | translate}}</h5>
-						<h5 *ngIf="editingFunctionality" class="modal-title">{{'Edit functionality' | translate}}: "{{ functionality.name }}"</h5>
+						<h2 *ngIf="creatingFunctionality" class="modal-title h5">{{'Add functionality' | translate}}</h2>
+						<h2 *ngIf="editingFunctionality" class="modal-title h5">{{'Edit functionality' | translate}}: "{{ functionality.name }}"</h2>
 					</div>
 					<div class="modal-body">
 						<section>

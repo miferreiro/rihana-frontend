@@ -21,8 +21,8 @@
 
 <div class="container pb-5">
 	<div class="row mt-4 mb-4">
-		<h2 *ngIf="exploration.title != undefined || isEditing" class="text-center fw-bold">{{exploration.title}}</h2>
-		<h2 *ngIf="exploration.title == undefined" class="text-center fw-bold">{{'Creating an exploration' | translate}}</h2>
+		<h1 *ngIf="exploration.title != undefined || isEditing" class="h2 text-center fw-bold">{{exploration.title}}</h1>
+		<h1 *ngIf="exploration.title == undefined" class="h2 text-center fw-bold">{{'Creating an exploration' | translate}}</h1>
 	</div>
 	<app-report *ngIf="exploration.explorationDate != undefined" [exploration]="exploration" (reportEvent)="reportHandler($event)"></app-report>
 	<app-radiology-analysis *ngIf="exploration.explorationDate != undefined" [exploration]="exploration" [reportFields]="exploration.report" (radiographs)="radiographsHandler($event)"

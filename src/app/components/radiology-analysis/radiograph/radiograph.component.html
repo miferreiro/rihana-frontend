@@ -23,13 +23,13 @@
 <div class="row align-items-center">
 	<div class="col-xxl-6 col-12">
 		<ng-template [ngIf]="typeExploration === 'PA'">
-			<h3 class="fw-bold">{{'Postero-anterior radiograph (PA)' | translate}}</h3>
+			<h2 class="h3 fw-bold">{{'Postero-anterior radiograph (PA)' | translate}}</h2>
 		</ng-template>
 		<ng-template [ngIf]="typeExploration === 'AP'">
-			<h3 class="fw-bold">{{'Antero-posterior radiograph (AP)' | translate}}</h3>
+			<h2 class="h3 fw-bold">{{'Antero-posterior radiograph (AP)' | translate}}</h2>
 		</ng-template>
 		<ng-template [ngIf]="typeExploration === 'LAT'">
-			<h3 class="fw-bold">{{'Lateral radiograph (LAT)' | translate}}</h3>
+			<h2 class="h3 fw-bold">{{'Lateral radiograph (LAT)' | translate}}</h2>
 		</ng-template>
 	</div>
 	<div class="col-xxl-6 col-12">
@@ -116,7 +116,7 @@
 </div>
 <div *ngIf="controlRadiograph.value.length > 0 && radiograph != undefined" id="radiographInfo" class="row mb-3 mt-3">
 	<div class="row">
-		<h4 class="col">{{'Signs detected' | translate}}: {{radiograph.signs ? radiograph.signs.length : '0' }}</h4>
+		<h3 class="col h4">{{'Signs detected' | translate}}: {{radiograph.signs ? radiograph.signs.length : '0' }}</h3>
 		<span class="col text-end">
 			<i *ngIf="!checkState('READ_ONLY')" title="{{'Edit' | translate}}" class="las la-edit la-lg" (click)="openDialogImage()"></i>
 			<i title="{{'Show' | translate}}" class="las la-eye la-lg" (click)="openDialogImage()"></i>
@@ -141,7 +141,7 @@
 		</ul>
 	</div>
 	<div *ngIf="!checkState('READ_ONLY') || (checkState('READ_ONLY') && radiograph.observations != null)" class="row mt-4">
-		<h4 class="col">{{'Observations' | translate}}: </h4>
+		<h3 class="col h4">{{'Observations' | translate}}: </h3>
 		<textarea *ngIf="!checkState('READ_ONLY')" name="observations" class="form-control" style="max-height:100px"
 				  rows="2" maxlength="3000" [(ngModel)]="radiograph.observations"
 				  placeholder="{{'Add your observations here' | translate}}..."></textarea>

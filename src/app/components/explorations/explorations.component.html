@@ -21,7 +21,7 @@
 
 <div class="container pb-2">
 	<div class="row summary mt-2 mb-3 text-center">
-		<h2>{{'Signs detected' | translate}}</h2>
+		<h1 class="h2">{{'Signs detected' | translate}}</h1>
 		<div class="col-md-6 col-sm-12">
 			<app-pie-chart
 				[updateChart]="updateChart.asObservable()">
@@ -38,7 +38,8 @@
 
 	<div class="row">
 		<div class="col-xl-5 col-12 my-2 px-1 d-flex align-items-center">
-			<button type="button" title="{{'Add' | translate}}" class="input-group-text btn btn-success btn-add-exploration" (click)="addExploration()">
+			<button type="button" title="{{'Add' | translate}}" class="input-group-text btn btn-success btn-add-exploration"
+					(click)="addExploration()">
 				<i class="las la-plus la-lg me-2"></i> {{'Add exploration' | translate}}
 			</button>
 		</div>
@@ -98,7 +99,7 @@
 						<span *ngIf="initialDate != undefined" class="cancel"
 							(click)="cancelDate()">×</span>
 						<span>
-							<button class="btn"><i class="bi bi-calendar"></i></button>
+							<button class="btn" aria-label="Calendar"><i class="bi bi-calendar"></i></button>
 						</span>
 					</div>
 				</div>
@@ -111,9 +112,9 @@
 				<div class="card h-100">
 					<div class="d-flex flex-column card-header">
 						<small class="text-capitalize card-category">{{getRadiographType(exploration)}}</small>
-						<h5 class="card-title">{{exploration.title}}</h5>
-						<h6 *ngIf="!isAdmin() && !isSupervisor()"class="card-subtitle text-muted">{{exploration.explorationDate | date: currentFormatDate}}</h6>
-						<h6 *ngIf="isAdmin() || isSupervisor()" class="card-subtitle text-muted"> <span class="text-capitalize">{{'by' | translate}} </span> <span class="text-capitalize">{{exploration.user}}</span>, {{'at' | translate}} {{exploration.explorationDate | date: currentFormatDate}}</h6>
+						<h3 class="card-title h3">{{exploration.title}}</h3>
+						<h4 *ngIf="!isAdmin() && !isSupervisor()"class="card-subtitle h6 text-muted">{{exploration.explorationDate | date: currentFormatDate}}</h4>
+						<h4 *ngIf="isAdmin() || isSupervisor()" class="card-subtitle h6 text-muted"> <span class="text-capitalize">{{'by' | translate}} </span> <span class="text-capitalize">{{exploration.user}}</span>, {{'at' | translate}} {{exploration.explorationDate | date: currentFormatDate}}</h4>
 					</div>
 					<div class="row card-body mr-0 ml-0">
 						<div *ngIf="getExplorationSigns(exploration).length != 0" class="row d-flex">

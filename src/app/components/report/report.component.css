@@ -23,10 +23,9 @@
 	--bs-gutter-x: 0 !important;
 }
 
-h3 {
+.h3 {
 	width: fit-content;
 	line-height: inherit;
-	font-weight: bold;
 }
 
 .report-title {
@@ -41,7 +40,7 @@ h3 {
 }
 
 @media(max-width: 1399px) {
-	h3 {
+	.h3 {
 		margin: auto;
 		text-align: center;
 	}

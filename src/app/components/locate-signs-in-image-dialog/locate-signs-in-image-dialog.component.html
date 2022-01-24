@@ -23,7 +23,7 @@
 	<div id="modal" class="modal-dialog modal-dialog-centered modal-fullscreen">
 		<div class="modal-content">
 			<div class="modal-header-custom">
-				<h5 class="modal-title" id="exampleModalLabel">{{'Finding and storing radiological signs' | translate}} </h5>
+				<h1 class="modal-title h5" id="exampleModalLabel">{{'Finding and storing radiological signs' | translate}} </h1>
 				<div class="modal-options">
 					<i *ngIf="!disabled" title="{{'Confirm' | translate}}" class="bi bi-check-circle me-2"
 					   style="font-size:1.5rem;color: green;" (click)="onSave()"></i>
@@ -73,9 +73,9 @@
 				</div>
 				<div id="section-signs" class="col-xxl-6 col-lg-12 col-md-12 col-sm-12 m-auto">
 					<div class="row">
-						<h5 class="text-center fw-bold text-dark mt-4 mb-4">
+						<h2 class="mt-4 mb-4 h5 text-center fw-bold text-dark">
 							{{'ModalTitleFindingsSigns' | translate:"{count:" + countSignDetected() + "}"}}
-						</h5>
+						</h2>
 					</div>
 					<div class="row signs">
 						<div class="col">
@@ -84,7 +84,7 @@
 									<div class="card">
 										<div class="card-header-custom">
 											<div class="header d-flex justify-content-between">
-												<h6>{{'Other'| translate}}</h6>
+												<h3 class="h6">{{'Other'| translate}}</h3>
 												<input id="other" type="checkbox" class="check"
 													   [checked]="other" [disabled]="disabled"
 													   (change)="checkOther($event)">
@@ -99,7 +99,7 @@
 										<div class="card">
 											<div class="card-header-custom">
 												<div class="header d-flex justify-content-between">
-													<h6>{{signType.name | translate}}</h6>
+													<h3 class="h6">{{signType.name | translate}}</h3>
 													<div>
 														<i *ngIf="signsType(signType).length > 0"
 															[ngClass]="{'bi bi-eye': checkRenderSomeSingType(signType), 'bi bi-eye-slash': !checkRenderSomeSingType(signType)}"
@@ -163,7 +163,7 @@
 	<div class="modal-dialog modal-dialog-centered modal-md">
 		<div class="modal-content">
 			<div class="modal-header justify-content-center">
-				<h5 class="modal-title">{{'Select the sign type' | translate}}</h5>
+				<h2 class="modal-title h5">{{'Select the sign type' | translate}}</h2>
 				<button type="button" class="btn-close" aria-label="Close" (click)="closeNewSign()"></button>
 			</div>
 			<div class="modal-body">
