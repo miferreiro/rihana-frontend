@@ -89,6 +89,9 @@ import {ColorPickerModule} from '@iplab/ngx-color-picker';
 
 import {Daterangepicker} from 'ng2-daterangepicker';
 
+import {FileSaverModule} from 'ngx-filesaver';
+
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -124,6 +127,7 @@ import {Daterangepicker} from 'ng2-daterangepicker';
 		ChartsModule,
 		ColorPickerModule,
 		Daterangepicker,
+		FileSaverModule,
 		FileUploadModule,
 		FormsModule,
 		HttpClientModule,

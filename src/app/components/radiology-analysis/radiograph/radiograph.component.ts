@@ -282,7 +282,7 @@ export class RadiographComponent implements OnInit {
 
 		const blob = new Blob(byteArrays, {type: contentType});
 		return blob;
-	  }
+	}
 
 	public ngOnDestroy(): void {
 		this.subscription.unsubscribe();

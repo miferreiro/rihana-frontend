@@ -31,7 +31,9 @@ import {Exploration} from '../../models/Exploration';
 import {Sign} from '../../models/Sign';
 import {SignType} from '../../models/SignType';
 import {Role} from '../../models/User';
-import { ThrowStmt } from '@angular/compiler';
+import {FileSaverService} from 'ngx-filesaver';
+import JSZip from 'jszip';
+import FileSaver from 'file-saver';
 
 @Component({
 	selector: 'app-explorations',
@@ -64,6 +66,9 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 	public recoveringExploration: boolean = false;
 
 	public updateChart: Subject<void> = new Subject<void>();
+
+	public dowloading: boolean = false;
+	public explorationDownloading: string = undefined;
 
 	public initialDate;
 	public finalDate;
@@ -113,6 +118,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 				private localizationService: LocalizationService,
 				private explorationsService: ExplorationsService,
 				private signTypesService: SignTypesService,
+				private fileSaverService: FileSaverService,
 				private router: Router) { }
 
 	ngOnInit() {
@@ -310,5 +316,65 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		this.initialDate = undefined;
 		this.finalDate = undefined;
 		this.getPageExplorations();
+	}
+
+	public downloadExploration(id: string) {
+		this.dowloading = true;
+		this.explorationDownloading = id;
+
+		this.notificationService.info("The exploration is being packaged",
+									  "Downloading the exploration");
+
+		this.explorationsService.getExploration(id, true).subscribe(exploration => {
+
+			var zip = new JSZip();
+
+			const imgFolderPath = "files";
+			var imgFolder = zip.folder(imgFolderPath);
+
+			exploration.radiographs.map(radiograph => {
+				let contentType = radiograph.source.split(",")[0];
+				let b64Data = radiograph.source.split(",")[1];
+				let blob = this.b64toBlob(b64Data, contentType);
+				imgFolder.file(radiograph.type + '.png', blob);
+				radiograph.source = imgFolderPath + '/' + radiograph.type + '.png';
+			});
+
+			let blob:any = new Blob([JSON.stringify(exploration)], {type: 'text/json'});
+
+			zip.file(exploration.id + '.json', blob);
+
+			zip.generateAsync({ type: "blob" }).then(content => {
+				FileSaver.saveAs(content, exploration.id + '.zip');
+				this.dowloading = false;
+				this.explorationDownloading = undefined;
+				this.notificationService.success("Exploration downloaded successfully",
+												 "Exploration downloaded");
+			});
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error downloading the exploration. Reason: ") +
+										   this.localizationService.translate(error.error),
+										   "Failed to download the exploration");
+		});
+	}
+
+	private b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
+		const byteCharacters = atob(b64Data);
+		const byteArrays = [];
+
+		for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+			const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+			const byteNumbers = new Array(slice.length);
+			for (let i = 0; i < slice.length; i++) {
+				byteNumbers[i] = slice.charCodeAt(i);
+			}
+
+			const byteArray = new Uint8Array(byteNumbers);
+			byteArrays.push(byteArray);
+		}
+
+		const blob = new Blob(byteArrays, {type: contentType});
+		return blob;
 	}
 }

@@ -143,10 +143,32 @@
 					</div>
 					<div class="card-footer">
 						<div class="btn-group" role="group">
-							<button title="{{'Edit' | translate}}" class="btn" (click)="editExploration(exploration)"><i class="las la-edit la-lg"></i></button>
-							<button title="{{'Show' | translate}}" class="btn border-start border-end" (click)="infoExploration(exploration)"><i class="las la-eye la-lg"></i></button>
-							<button *ngIf="!exploration.deleted" title="{{'Remove' | translate}}" class="btn" (click)="remove(exploration.id)" alt="Delete"><i class="las la-trash-alt la-lg"></i></button>
-							<button *ngIf="exploration.deleted" title="{{'Restore' | translate}}" class="btn" (click)="recover(exploration.id)"><i class="las la-trash-restore-alt la-lg"></i></button>
+							<button title="{{'Edit' | translate}}" class="btn" (click)="editExploration(exploration)">
+								<i class="las la-edit la-lg"></i>
+							</button>
+							<button title="{{'Show' | translate}}" class="btn border-start border-end"
+									(click)="infoExploration(exploration)">
+								<i class="las la-eye la-lg"></i>
+							</button>
+							<button *ngIf="!exploration.deleted" title="{{'Remove' | translate}}" class="btn border-start border-end"
+									(click)="remove(exploration.id)" alt="Delete">
+									<i class="las la-trash-alt la-lg"></i>
+							</button>
+							<button *ngIf="exploration.deleted" title="{{'Restore' | translate}}" class="btn border-start border-end"
+									(click)="recover(exploration.id)">
+									<i class="las la-trash-restore-alt la-lg"></i>
+							</button>
+							<button *ngIf="(authenticationService.hasPermission(8, 12) && !dowloading && explorationDownloading == undefined) ||
+										   (authenticationService.hasPermission(8, 12) && dowloading && explorationDownloading != exploration.id)"
+									title="{{'Download' | translate}}" class="btn" (click)="downloadExploration(exploration.id)">
+									<i class="las la-download la-lg"></i>
+							</button>
+							<div *ngIf="authenticationService.hasPermission(8, 12) && dowloading && explorationDownloading == exploration.id"
+								 class="d-flex justify-content-center text-center downloading">
+								<div class="spinner-border" role="status">
+									<span class="visually-hidden">{{'Loading' | translate}}...</span>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

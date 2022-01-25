@@ -327,5 +327,12 @@
 	"Back": "Back",
 	"Expand/Collapse": "Expand/Collapse",
 	"Focus": "Focus",
-	"The report is already assigned to an exploration": "The report is already assigned to an exploration"
+	"The report is already assigned to an exploration": "The report is already assigned to an exploration",
+	"Download": "Download",
+	"Failed to download the exploration": "Failed to download the exploration",
+	"Error downloading the exploration. Reason: ": "Error downloading the exploration. Reason: ",
+	"Downloading the exploration": "Downloading the exploration",
+	"The exploration is being packaged": "The exploration is being packaged",
+	"Exploration downloaded":  "Exploration downloaded",
+	"Exploration downloaded successfully": "Exploration downloaded successfully"
 }

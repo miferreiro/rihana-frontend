@@ -327,5 +327,12 @@
 	"Back": "Atrás",
 	"Expand/Collapse": "Mostrar/Ocultar",
 	"Focus": "Centrar",
-	"The report is already assigned to an exploration": "O informe xa está asignado a unha exploración"
+	"The report is already assigned to an exploration": "O informe xa está asignado a unha exploración",
+	"Download": "Descargar",
+	"Failed to download the exploration": "Erro ao descargar a exploración",
+	"Error downloading the exploration. Reason: ": "Erro descargando a exploración. Razón: ",
+	"Downloading the exploration": "Descargando a exploración",
+	"The exploration is being packaged": "Estase preparando a exploración",
+	"Exploration downloaded":  "Exploración descargada",
+	"Exploration downloaded successfully": "Exploración descargada con éxito"
 }
