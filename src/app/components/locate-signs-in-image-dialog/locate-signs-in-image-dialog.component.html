@@ -33,38 +33,22 @@
 			</div>
 			<div class="row modal-body-custom">
 				<div id="section-radiograph" class="col-xxl-6 col-lg-8 col-md-12 col-sm-12 align-self-start m-auto">
-					<div class="col-11">
-						<div class="img-div">
-							<div>
-								<app-image-annotator id="image-annotator" [src]="src" [signs]="signs" [disabled]="disabled"
-														(newSign)="setLocationNewSign($event)"
-														[(contrast)]="contrast" [(brightness)]="brightness"
-														(newSetScaleFactorImage)="setScaleFactorImage($event)"
-														(removeSign)="removeSign($event)">
-								</app-image-annotator>
-							</div>
-						</div>
-					</div>
-					<span class="col-1 control-options d-flex justify-content-between">
-						<div class="">
-							<span class="row">
-								<!-- {{'Brightness' | translate}}: -->
-
-								<label for="radiograph"><i class="bi bi-brightness-high"></i></label>
+					<span class="control-options d-flex justify-content-between">
+						<div>
+							<span>
+								<label for="radiograph"><i class="bi bi-brightness-high align-middle"></i></label>
 								<input name="radiograph" type="number" min="0" max="200" value="{{brightness}}"
 										(input)="changeBrightness($event)">
 								%
 							</span>
-
-							<span class="row">
-								<!-- {{'Contrast' | translate}}: -->
-								<label for="radiograph"><i class="bi bi-circle-half"></i></label>
+							<span>
+								<label for="radiograph"><i class="bi bi-circle-half align-middle"></i></label>
 								<input name="radiograph" type="number" min="0" max="200" value="{{contrast}}"
 										(input)="changeContrast($event)">
 								%
 							</span>
 						</div>
-						<div class="row" style="place-self: center">
+						<div class="align-self-center">
 							<span class="resetRadiograph">
 								<div class="btn-group" role="group">
 									<i title="{{'Focus' | translate}}" name="radiograph" class="las la-compress-arrows-alt la-lg me-2"
@@ -75,6 +59,16 @@
 							</span>
 						</div>
 					</span>
+					<div class="img-div">
+						<div>
+							<app-image-annotator id="image-annotator" [src]="src" [signs]="signs" [disabled]="disabled"
+													(newSign)="setLocationNewSign($event)"
+													[(contrast)]="contrast" [(brightness)]="brightness"
+													(newSetScaleFactorImage)="setScaleFactorImage($event)"
+													(removeSign)="removeSign($event)">
+							</app-image-annotator>
+						</div>
+					</div>
 				</div>
 				<div id="section-signs" class="col-xxl-6 col-lg-12 col-md-12 col-sm-12 m-auto">
 					<div class="row">
