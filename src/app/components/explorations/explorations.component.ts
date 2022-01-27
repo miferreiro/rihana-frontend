@@ -31,7 +31,6 @@ import {Exploration} from '../../models/Exploration';
 import {Sign} from '../../models/Sign';
 import {SignType} from '../../models/SignType';
 import {Role} from '../../models/User';
-import {FileSaverService} from 'ngx-filesaver';
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
 
@@ -67,8 +66,12 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 	public updateChart: Subject<void> = new Subject<void>();
 
-	public dowloading: boolean = false;
+	public isdownloadingExploration: boolean = false;
+	public downloadingExplorations: boolean = false;
+	public downloadingSelectExplorations: boolean = false;
+	public selectToDownload: boolean = false;
 	public explorationDownloading: string = undefined;
+	public explorationsToDownload = new Map();
 
 	public initialDate;
 	public finalDate;
@@ -118,7 +121,6 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 				private localizationService: LocalizationService,
 				private explorationsService: ExplorationsService,
 				private signTypesService: SignTypesService,
-				private fileSaverService: FileSaverService,
 				private router: Router) { }
 
 	ngOnInit() {
@@ -318,8 +320,129 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		this.getPageExplorations();
 	}
 
+	public getIdExplorationsToDownload(): string[] {
+		return Array.from(this.explorationsToDownload.keys());
+	}
+
+	public getTitleExplorationsToDownload(id: string): string {
+		return this.explorationsToDownload.get(id);
+	}
+
+	public isExplorationSelected(): boolean {
+		return this.explorationsToDownload.size != 0;
+	}
+
+	public checkMark(exploration: Exploration) {
+
+		if (this.explorationsToDownload.has(exploration.id)) {
+			this.explorationsToDownload.delete(exploration.id);
+		} else {
+			this.explorationsToDownload.set(exploration.id, exploration.title);
+		}
+	}
+
+	public uncheckMark(id: string) {
+		this.explorationsToDownload.delete(id);
+	}
+
+	public isCardChecked(id: string): boolean {
+		return this.explorationsToDownload.has(id);
+	}
+
+	public activateSelection(): void {
+		if (!this.selectToDownload) {
+			this.explorationsToDownload = new Map()
+		}
+		this.selectToDownload = true;
+	}
+
+	public downloadSelectedExplorations() {
+		this.downloadingSelectExplorations = true;
+		this.notificationService.info("The selected explorations are being packaged",
+									  "Downloading the selected explorations");
+
+		let zip: JSZip = new JSZip();
+		const imgFolderPath: string = "files";
+		let calls = Array.from(this.explorationsToDownload.keys()).map(id => {
+			return this.explorationsService.getExploration(id, true).toPromise();
+		});
+
+		Promise.all(calls)
+			.then(async (explorations) => {
+				explorations.forEach(exploration => {
+					let explorationFolder: JSZip = zip.folder(exploration.title);
+					let imgFolder: JSZip = explorationFolder.folder(imgFolderPath);
+					exploration.radiographs.map(radiograph => {
+						let contentType: string = radiograph.source.split(",")[0];
+						let b64Data: string = radiograph.source.split(",")[1];
+						let blob: Blob = this.b64toBlob(b64Data, contentType);
+						imgFolder.file(radiograph.type + '.png', blob);
+						radiograph.source = imgFolderPath + '/' + radiograph.type + '.png';
+					});
+					let blob: any = new Blob([JSON.stringify(exploration)], {type: 'text/json'});
+					explorationFolder.file(exploration.title + '.json', blob);
+				})
+			})
+			.then(async () => {
+				zip.generateAsync({ type: "blob" }).then(content => {
+					FileSaver.saveAs(content, 'explorations.zip');
+					this.notificationService.success("Selected explorations downloaded successfully",
+													 "Selected explorations downloaded");
+					this.selectToDownload = false;
+					this.downloadingSelectExplorations = false;
+				});
+			});
+	}
+
+	public downloadExplorations() {
+		this.downloadingExplorations = true;
+		this.notificationService.info("The explorations are being packaged",
+									  "Downloading the explorations");
+		let initialDate: Date = undefined;
+		let finalDate: Date = undefined;
+		if (this.initialDate != undefined) initialDate = this.initialDate.format(this.formatDate)
+		if (this.finalDate != undefined) finalDate = this.finalDate.format(this.formatDate)
+
+		let user: string = undefined;
+		if (this.loggedUser != "admin" && this.loggedUser != "supervisor") {
+			user = this.loggedUser
+		}
+
+		this.explorationsService.getTotalExplorations(user, undefined, undefined,
+			this.signTypesFilter, this.operator, false, initialDate, finalDate).subscribe(explorationPage => {
+				let zip: JSZip = new JSZip();
+				const imgFolderPath: string = "files";
+				explorationPage.explorations.forEach(exploration => {
+					let explorationFolder: JSZip = zip.folder(exploration.title);
+					let imgFolder: JSZip = explorationFolder.folder(imgFolderPath);
+					exploration.radiographs.map(radiograph => {
+						let contentType: string = radiograph.source.split(",")[0];
+						let b64Data: string = radiograph.source.split(",")[1];
+						let blob: Blob = this.b64toBlob(b64Data, contentType);
+						imgFolder.file(radiograph.type + '.png', blob);
+						radiograph.source = imgFolderPath + '/' + radiograph.type + '.png';
+					});
+					let blob: any = new Blob([JSON.stringify(exploration)], {type: 'text/json'});
+					explorationFolder.file(exploration.title + '.json', blob);
+				});
+
+				zip.generateAsync({ type: "blob" }).then(content => {
+					FileSaver.saveAs(content, 'explorations.zip');
+					this.notificationService.success("Explorations downloaded successfully",
+														"Explorations downloaded");
+					this.selectToDownload = false;
+					this.downloadingExplorations = false;
+				});
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error downloading the explorations. Reason: ") +
+											this.localizationService.translate(error.error),
+											"Failed to download the explorations");
+			this.selectToDownload = false;
+		});
+	}
+
 	public downloadExploration(id: string) {
-		this.dowloading = true;
+		this.isdownloadingExploration = true;
 		this.explorationDownloading = id;
 
 		this.notificationService.info("The exploration is being packaged",
@@ -327,10 +450,10 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 		this.explorationsService.getExploration(id, true).subscribe(exploration => {
 
-			var zip = new JSZip();
+			let zip: JSZip = new JSZip();
 
-			const imgFolderPath = "files";
-			var imgFolder = zip.folder(imgFolderPath);
+			const imgFolderPath: string = "files";
+			let imgFolder: JSZip = zip.folder(imgFolderPath);
 
 			exploration.radiographs.map(radiograph => {
 				let contentType = radiograph.source.split(",")[0];
@@ -342,11 +465,11 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
 			let blob:any = new Blob([JSON.stringify(exploration)], {type: 'text/json'});
 
-			zip.file(exploration.id + '.json', blob);
+			zip.file(exploration.title + '.json', blob);
 
 			zip.generateAsync({ type: "blob" }).then(content => {
 				FileSaver.saveAs(content, exploration.id + '.zip');
-				this.dowloading = false;
+				this.isdownloadingExploration = false;
 				this.explorationDownloading = undefined;
 				this.notificationService.success("Exploration downloaded successfully",
 												 "Exploration downloaded");

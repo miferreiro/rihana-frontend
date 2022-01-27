@@ -24,11 +24,7 @@
 	border-bottom: 1px solid lightgray;
 }
 
-.form-control:focus {
-	box-shadow: none;
-}
-
-.btn-group .btn {
+.card-footer .btn-group .btn {
 	padding: 1px 6px;
 	color: black;
 	font-size: 1.3rem;
@@ -38,10 +34,20 @@
 	box-shadow: none;
 }
 
+.btn-add-exploration > button {
+	width: inherit;
+}
+
 @media (max-width: 1199px) {
-	.btn-add-exploration {
+	.btn-add-exploration, .btn-download-exploration {
 		width: 100%;
 	}
+}
+
+.btn-group .download {
+	padding: 1px 6px;
+	color: black;
+	font-size: 1rem;
 }
 
 ng-select {
@@ -96,6 +102,27 @@ ng-select {
 	padding: 0 0 .5rem 0;
 }
 
+.form-check-input {
+	margin-top: 0;
+}
+
+.form-check-input:focus {
+	outline: none;
+	box-shadow: none;
+}
+
+.form-check-input:checked {
+	background-color: #251F47;
+	border-color: #251F47;
+}
+
+.card-checked {
+	position: absolute;
+	top: 0;
+	left: 0;
+	transition: 0.2s all ease-in-out;
+}
+
 .card-category {
 	width: fit-content;
 	top: 0;
@@ -110,12 +137,12 @@ ng-select {
 
 .card-title {
 	margin-top: -.9rem;
-	padding: 0 1rem;
+	padding: 0 1.5rem;
 	font-size: 1.2rem;
 }
 
 .card-subtitle {
-	padding: 0 1rem;
+	padding: 0 1.5rem;
 	font-size: .7rem;
 }
 
@@ -205,24 +232,6 @@ ng-select {
 	font-size: .7rem;
 }
 
-.button-cover {
-	height: 100px;
-	margin: 20px;
-	background-color: #FFF;
-	box-shadow: 0 10px 20px -8px #C5D6D6;
-	border-radius: 4px;
-}
-
-.button-cover:before {
-	counter-increment: button-counter;
-	content: counter(button-counter);
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	color: #D7E3E3;
-	padding: 5px;
-}
-
 .button-cover, .knobs, .layer {
 	position: absolute;
 	top: 0;
@@ -241,7 +250,7 @@ ng-select {
 	border-radius: 100px;
 }
 
-.button.b2 {
+.button .b2 {
 	border-radius: 2px;
 }
 
@@ -325,4 +334,104 @@ ng-select {
 	height: 1.5rem;
 	vertical-align: middle;
 	border-width: 0.2rem;
+}
+
+.dropdown-menu {
+	padding: 0 0;
+}
+
+.dropdown-item {
+	padding: .25rem .25rem;
+}
+
+.dropdown-item:active {
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
+}
+
+.explorations-selected {
+	position: relative;
+	border: 1px solid #92B0B3;
+	border-radius: 0.25rem;
+}
+
+.explorations-selected legend {
+	width: max-content;
+	transform: translatey(-50%);
+	padding: .1rem;
+	margin-left: 4rem;
+	margin-bottom: 0;
+	background: white;
+	font-size: 0.9rem;
+	line-height: .8rem;
+}
+
+.explorations-selected ul {
+	flex-wrap: wrap;
+}
+
+@media(max-width:991px) {
+	.explorations-selected ul {
+		padding-left: 2rem;
+	}
+}
+
+.explorations-selected ul li {
+	padding: 0 0;
+}
+
+.list-group-item {
+	border-left-width: 1px !important;
+}
+
+.tag {
+	font-size: .8rem;
+	padding: .25rem .25rem;
+	margin: 0 .1em;
+}
+
+.tag > span {
+	padding-right: .1rem;
+}
+
+.tag .uncheck {
+	cursor: pointer;
+	opacity: 0.6;
+	font-weight: bold;
+}
+
+.tag a:hover {
+	opacity: 1.0;
+}
+
+.tag .remove {
+	vertical-align: bottom;
+	top: 0;
+}
+
+.tag a {
+	margin: 0 0 0 .3em;
+}
+
+.tag a .glyphicon-white {
+	color: #FFF;
+	margin-bottom: 2px;
+}
+
+.explorations-select-download {
+	height: 100%;
+	border: 1px solid;
+}
+
+.btn-close {
+	border: 1px solid transparent;
+	border-radius: 50%;
+	background-color: white;
+	color: gray;
+	opacity: 1;
+}
+
+.btn-close:focus {
+	box-shadow: none;
 }

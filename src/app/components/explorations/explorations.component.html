@@ -37,12 +37,45 @@
 	<h2 class="text-center m-4">{{'Latest explorations' | translate}}</h2>
 
 	<div class="row">
-		<div class="col-xl-5 col-12 my-2 px-1 d-flex align-items-center">
-			<button type="button" title="{{'Add' | translate}}" class="input-group-text btn btn-success btn-add-exploration"
-					(click)="addExploration()">
-				<i class="las la-plus la-lg me-2"></i> {{'Add exploration' | translate}}
-			</button>
+		<div class="col-xl-5 col-12 my-2 px-1 d-flex">
+			<div class="btn-add-exploration pe-1">
+				<button type="button" title="{{'Add' | translate}}" class="input-group-text btn btn-success"
+						(click)="addExploration()">
+					<i class="las la-plus la-lg me-2"></i> {{'Add exploration' | translate}}
+				</button>
+			</div>
+			<div *ngIf="authenticationService.hasPermission(8, 12) && !downloadingExplorations"
+				 class="btn-group download btn-download-exploration" role="group">
+				<button title="{{'Download' | translate}}" class="input-group-text btn btn-secondary"
+						[ngClass]="{'disabled': !downloadingExplorations && (downloadingSelectExplorations || isdownloadingExploration)}"
+						(click)="downloadExplorations()">
+					<i class="las la-download la-lg"></i> {{'Download' | translate}}
+				</button>
+				<div class="btn-group dropup dropdown-menu-end" role="group">
+					<button id="selectExploration" type="button" class="btn btn-secondary dropdown-toggle"
+							[ngClass]="{'disabled': !downloadingExplorations && (downloadingSelectExplorations || isdownloadingExploration)}"
+							data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false"></button>
+					<ul class="dropdown-menu" aria-labelledby="selectExploration">
+					 	<li>
+							<button class="dropdown-item" type="button" (click)="activateSelection()">
+								{{'Select explorations' | translate}}
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div *ngIf="authenticationService.hasPermission(8, 12)  && downloadingExplorations"
+				 class="btn-group download btn-download-exploration" role="group">
+				<button title="{{'Downloading' | translate}}" class="input-group-text btn btn-secondary">
+					<div class="d-flex justify-content-center text-center downloading">
+						<div class="spinner-border" role="status">
+							<span class="visually-hidden">{{'Loading' | translate}}...</span>
+						</div>
+					</div>
+				</button>
+			</div>
 		</div>
+
 		<form class="col-xl-4 col-12 my-2 px-1 align-self-center text-center">
 			<div class="row me-0">
 				<div class="col-6 toggle-button-cover" (click)="changeOperator()">
@@ -117,11 +150,49 @@
 			</div>
 		</div>
 	</div>
+	<div *ngIf="authenticationService.hasPermission(8, 12) && selectToDownload" class="row mt-3">
+		<div class="explorations-selected">
+			<legend class="fw-bold">{{'Selected explorations' | translate}}</legend>
+			<div class="row">
+				<div class="col-1"></div>
+				<ul class="col-11 list-group list-group-horizontal d-flex align-items-center pb-1">
+					<li *ngFor="let id of getIdExplorationsToDownload()" class="list-group-item list-group-item-light">
+						<span class="tag label label-info">
+							<span>{{getTitleExplorationsToDownload(id)}}</span>
+							<span class="uncheck" (click)="uncheckMark(id)">×</span>
+						</span>
+					</li>
+				</ul>
+			</div>
+			<button *ngIf="isExplorationSelected() && !downloadingSelectExplorations"title="{{'Download' | translate}}"
+					class="explorations-select-download position-absolute top-50 start-0 translate-middle-y input-group-text btn btn-secondary"
+					[ngClass]="{'disabled': !downloadingSelectExplorations && (downloadingExplorations || isdownloadingExploration)}"
+					(click)="downloadSelectedExplorations()">
+				<i class="las la-download la-lg"></i>
+			</button>
+			<button *ngIf="downloadingSelectExplorations"
+					title="{{'Downloading' | translate}}"
+					class="explorations-select-download position-absolute top-50 start-0 translate-middle-y input-group-text btn btn-secondary">
+				<div class="d-flex justify-content-center text-center downloading">
+					<div class="spinner-border" role="status">
+						<span class="visually-hidden">{{'Loading' | translate}}...</span>
+					</div>
+				</div>
+			</button>
+			<button *ngIf="isExplorationSelected()" type="button"
+					class="btn-close position-absolute top-0 start-100 translate-middle"
+					aria-label="Close">
+			</button>
+		</div>
+	</div>
 	<div class="row d-flex justify-content-center" [ngClass]="{'mb-4': !(pageSize < paginationTotalItems && explorations.length != 0)}">
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-0 px-1">
 			<div *ngFor="let exploration of explorations; let i=index" class="col px-1">
-				<div class="card h-100">
-					<div class="d-flex flex-column card-header">
+				<div class="card card-flip h-100">
+					<div class="d-flex flex-column card-header" (click)="checkMark(exploration)">
+						<input *ngIf="authenticationService.hasPermission(8, 12) && selectToDownload"
+							   class="form-check-input card-checked" type="checkbox" value=""
+							   [checked]="isCardChecked(exploration.id)">
 						<small class="text-capitalize card-category">{{getRadiographType(exploration)}}</small>
 						<h3 class="card-title h3">{{exploration.title}}</h3>
 						<h4 *ngIf="!isAdmin() && !isSupervisor()"class="card-subtitle h6 text-muted">{{exploration.explorationDate | date: currentFormatDate}}</h4>
@@ -158,17 +229,19 @@
 									(click)="recover(exploration.id)">
 									<i class="las la-trash-restore-alt la-lg"></i>
 							</button>
-							<button *ngIf="(authenticationService.hasPermission(8, 12) && !dowloading && explorationDownloading == undefined) ||
-										   (authenticationService.hasPermission(8, 12) && dowloading && explorationDownloading != exploration.id)"
+							<button *ngIf="(authenticationService.hasPermission(8, 12) && !isdownloadingExploration && explorationDownloading == undefined) ||
+										   (authenticationService.hasPermission(8, 12) && isdownloadingExploration && explorationDownloading != exploration.id)"
+									[ngClass]="{'disabled': !isdownloadingExploration && (downloadingSelectExplorations || downloadingExplorations)}"
 									title="{{'Download' | translate}}" class="btn" (click)="downloadExploration(exploration.id)">
 									<i class="las la-download la-lg"></i>
 							</button>
-							<div *ngIf="authenticationService.hasPermission(8, 12) && dowloading && explorationDownloading == exploration.id"
-								 class="d-flex justify-content-center text-center downloading">
+							<button *ngIf="authenticationService.hasPermission(8, 12) && isdownloadingExploration && explorationDownloading == exploration.id"
+									class="btn d-flex justify-content-center text-center isdownloadingExploration"
+									title="{{'Downloading' | translate}}">
 								<div class="spinner-border" role="status">
 									<span class="visually-hidden">{{'Loading' | translate}}...</span>
 								</div>
-							</div>
+							</button>
 						</div>
 					</div>
 				</div>

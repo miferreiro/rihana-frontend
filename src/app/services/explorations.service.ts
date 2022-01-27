@@ -153,7 +153,14 @@ export class ExplorationsService {
 		if (user != undefined) {
 			params = params.append('user', user);
 		}
-		params = params.append('page', page.toString()).append('pageSize', pageSize.toString());
+
+		if (page != undefined) {
+			params = params.append('page', page.toString())
+		}
+
+		if (pageSize != undefined) {
+			params = params.append('pageSize', pageSize.toString())
+		}
 
 		if (operator.match("AND")) {
 			params = params.append('signType', signTypes.map(s => s.code).join(";"));

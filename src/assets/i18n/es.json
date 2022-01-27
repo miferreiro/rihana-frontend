@@ -334,5 +334,17 @@
 	"Downloading the exploration": "Descargando la exploración",
 	"The exploration is being packaged": "La exploración está siendo preparada",
 	"Exploration downloaded":  "Exploración descargada",
-	"Exploration downloaded successfully": "Exploración descargada con éxito"
+	"Exploration downloaded successfully": "Exploración descargada con éxito",
+	"Failed to download the explorations": "Fallo al descargar las exploraciones",
+	"Error downloading the explorations. Reason: ": "Error descargando la exploraciones. Razón: ",
+	"Downloading the explorations": "Descargando las exploraciones",
+	"The explorations are being packaged": "Las exploraciones está siendo preparada",
+	"Explorations downloaded":  "Exploraciones descargadas",
+	"Explorations downloaded successfully": "Exploraciones descargada con éxito",
+	"Downloading the selected explorations": "Descargando las exploraciones seleccionadas",
+	"Selected explorations downloaded":  "Exploraciones seleccionadas descargadas",
+	"Selected explorations downloaded successfully": "Exploraciones seleccionadas descargadas con éxito",
+	"Select explorations": "Escojer exploraciones",
+	"Selected explorations": "Exploraciones seleccionadas",
+	"Downloading": "Descargando"
 }

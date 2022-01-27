@@ -334,5 +334,18 @@
 	"Downloading the exploration": "Downloading the exploration",
 	"The exploration is being packaged": "The exploration is being packaged",
 	"Exploration downloaded":  "Exploration downloaded",
-	"Exploration downloaded successfully": "Exploration downloaded successfully"
+	"Exploration downloaded successfully": "Exploration downloaded successfully",
+	"Failed to download the explorations": "Failed to download the explorations",
+	"Error downloading the explorations. Reason: ": "Error downloading the explorations. Reason: ",
+	"Downloading the explorations": "Downloading the explorations",
+	"The explorations are being packaged": "The explorations are being packaged",
+	"Explorations downloaded":  "Explorations downloaded",
+	"Explorations downloaded successfully": "Explorations downloaded successfully",
+	"Downloading the selected explorations": "Downloading the selected explorations",
+	"The selected explorations are being packaged": "The selected explorations are being packaged",
+	"Selected explorations downloaded":  "Selected explorations downloaded",
+	"Selected explorations downloaded successfully": "Selected explorations downloaded successfully",
+	"Select explorations": "Select explorations",
+	"Selected explorations": "Selected explorations",
+	"Downloading": "Downloading"
 }
