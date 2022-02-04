@@ -119,7 +119,7 @@
 		<h3 class="col h4">{{'Signs detected' | translate}}: {{radiograph.signs ? radiograph.signs.length : '0' }}</h3>
 		<span class="col text-end">
 			<i *ngIf="!checkState('READ_ONLY')" title="{{'Edit' | translate}}" class="las la-edit la-lg" (click)="openDialogImage()"></i>
-			<i title="{{'Show' | translate}}" class="las la-eye la-lg" (click)="openDialogImage()"></i>
+			<i *ngIf="checkState('READ_ONLY')" title="{{'Show' | translate}}" class="las la-eye la-lg" (click)="openDialogImage()"></i>
 		</span>
 	</div>
 	<div class="row signs">
