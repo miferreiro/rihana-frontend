@@ -85,6 +85,7 @@ app-image-annotator {
 #section-radiograph {
 	padding-left: 2rem !important;
 	padding-right: 2rem !important;
+	background-color: white;
 }
 
 .reset-button {
@@ -152,6 +153,7 @@ app-image-annotator {
 #section-signs {
 	padding-left: 2rem !important;
 	padding-right: 2rem !important;
+	background-color: white;
 }
 
 .signs {
