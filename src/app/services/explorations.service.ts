@@ -203,7 +203,7 @@ export class ExplorationsService {
 						)),
 						forkJoin(explorationInfos.map(explorationInfo =>
 							forkJoin(explorationInfo.radiographs.map(radiograph => {
-								return this.radiographsService.getRadiograph((<IdAndUri>radiograph).id);
+								return this.radiographsService.getRadiograph((<IdAndUri>radiograph).id, source);
 							}))
 						))
 					])

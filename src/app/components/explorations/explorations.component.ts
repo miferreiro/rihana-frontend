@@ -409,7 +409,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		}
 
 		this.explorationsService.getTotalExplorations(user, undefined, undefined,
-			this.signTypesFilter, this.operator, false, initialDate, finalDate).subscribe(explorationPage => {
+			this.signTypesFilter, this.operator, true, initialDate, finalDate).subscribe(explorationPage => {
 				let zip: JSZip = new JSZip();
 				const imgFolderPath: string = "files";
 				explorationPage.explorations.forEach(exploration => {

@@ -229,8 +229,9 @@
 									(click)="recover(exploration.id)">
 									<i class="las la-trash-restore-alt la-lg"></i>
 							</button>
-							<button *ngIf="(authenticationService.hasPermission(8, 12) && !isdownloadingExploration && explorationDownloading == undefined) ||
-										   (authenticationService.hasPermission(8, 12) && isdownloadingExploration && explorationDownloading != exploration.id)"
+							<button *ngIf="((authenticationService.hasPermission(8, 12) && !isdownloadingExploration && explorationDownloading == undefined) ||
+										   (authenticationService.hasPermission(8, 12) && isdownloadingExploration && explorationDownloading != exploration.id)) &&
+										   !exploration.deleted"
 									[ngClass]="{'disabled': !isdownloadingExploration && (downloadingSelectExplorations || downloadingExplorations)}"
 									title="{{'Download' | translate}}" class="btn" (click)="downloadExploration(exploration.id)">
 									<i class="las la-download la-lg"></i>
