@@ -25,7 +25,7 @@
 
 export const environment = {
 	production: false,
-	restApi: 'http://localhost:8080/rihana-backend/rest/api'
+	restApi: 'http://localhost:8081/rihana-backend/rest/api'
 };
 
 /*
