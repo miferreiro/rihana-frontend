@@ -35,12 +35,11 @@ export class ActionComponent implements OnInit {
 
 	@ViewChild('closeBtn') closeBtn: ElementRef;
 
-	creatingAction = false;
-	editingAction = false;
-	deletingAction = false;
-	action: Action = new Action();
-
-	actions: Action[] = [];
+	public creatingAction = false;
+	public editingAction = false;
+	public deletingAction = false;
+	public action: Action = new Action();
+	public actions: Action[] = [];
 
 	constructor(public authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
@@ -51,7 +50,7 @@ export class ActionComponent implements OnInit {
 		this.getActions();
 	}
 
-	getActions() {
+	public getActions() {
 		this.actionsService.getActions().subscribe(actions => {
 			this.actions = actions;
 		}, error => {
@@ -61,7 +60,7 @@ export class ActionComponent implements OnInit {
 		});
 	}
 
-	save() {
+	public save() {
 		if (this.creatingAction) {
 			this.actionsService.create(this.action).subscribe(newAction => {
 				this.getActions();
@@ -87,7 +86,7 @@ export class ActionComponent implements OnInit {
 		}
 	}
 
-	cancel() {
+	public cancel() {
 		this.creatingAction = false;
 		this.editingAction = false;
 		this.deletingAction = false;
@@ -95,13 +94,13 @@ export class ActionComponent implements OnInit {
 		this.closeBtn.nativeElement.click();
 	}
 
-	edit(id: number) {
+	public edit(id: number) {
 		this.editingAction = true;
 		this.action = new Action();
 		Object.assign(this.action, this.actions.find(action => action.id === id));
 	}
 
-	delete(id: number | string) {
+	public delete(id: number | string) {
 		this.actionsService.deleteAction(Number(id)).subscribe(() => {
 			const index = this.actions.indexOf(
 				this.actions.find(action => action.id === Number(id))
@@ -117,7 +116,7 @@ export class ActionComponent implements OnInit {
 		this.cancel();
 	}
 
-	remove(id: number) {
+	public remove(id: number) {
 		this.deletingAction = true;
 		this.action = this.actions.find(action => action.id === id);
 	}

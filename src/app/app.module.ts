@@ -62,7 +62,7 @@ import {HomeComponent} from './components/home/home.component';
 import {ImageAnnotatorComponent} from './components/image-annotator/image-annotator.component';
 import {LoginComponent} from './components/login/login.component';
 import {LocateSignsInImageDialogComponent} from './components/locate-signs-in-image-dialog/locate-signs-in-image-dialog.component';
-import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
+import {PagenotfoundComponent} from './components/page-not-found/page-not-found.component';
 import {PermissionComponent} from './components/permission/permission.component';
 import {PieChartComponent} from './components/explorations/pie-chart/pie-chart.component';
 import {ProfileComponent} from './components/profile/profile.component';
@@ -70,7 +70,7 @@ import {RadiologyAnalysisComponent} from './components/radiology-analysis/radiol
 import {RadiographComponent} from './components/radiology-analysis/radiograph/radiograph.component';
 import {ReportComponent} from './components/report/report.component';
 import {RoleComponent} from './components/role/role.component';
-import {SigntypeComponent} from './components/signtype/signtype.component';
+import {SigntypeComponent} from './components/sign-type/sign-type.component';
 import {UserComponent} from './components/user/user.component';
 
 import {LangPipe} from './pipes/lang.pipe';

@@ -29,11 +29,11 @@ import {FunctionalityComponent} from './components/functionality/functionality.c
 import {FunctionalityactionComponent} from './components/functionality-action/functionality-action.component';
 import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
-import {PagenotfoundComponent} from './components/pagenotfound/pagenotfound.component';
+import {PagenotfoundComponent} from './components/page-not-found/page-not-found.component';
 import {PermissionComponent} from './components/permission/permission.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {RoleComponent} from './components/role/role.component';
-import {SigntypeComponent} from './components/signtype/signtype.component';
+import {SigntypeComponent} from './components/sign-type/sign-type.component';
 import {UserComponent} from './components/user/user.component';
 
 const routes: Routes = [

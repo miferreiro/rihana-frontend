@@ -28,19 +28,15 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class DeleteConfirmationComponent {
 
-	private _open = false;
-
-	// id that is used to delete the object
 	@Input() id: any;
-	// identifying name that will be shown
 	@Input() name: string;
-	// type of model to delete
 	@Input() modelName: string;
 
 	@Output() openChange = new EventEmitter<boolean>();
-
 	@Output() confirm = new EventEmitter<any>();
 	@Output() cancel = new EventEmitter<void>();
+
+	private _open = false;
 
 	@Input()
 	public set open(open: boolean) {

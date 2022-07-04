@@ -32,22 +32,21 @@ import {ActionInfo} from "./entities/ActionInfo";
 })
 export class ActionsService {
 
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
-	getActions(): Observable<Action[]> {
+	public getActions(): Observable<Action[]> {
 		return this.http.get<ActionInfo[]>(`${environment.restApi}/action/`).pipe(
 		  	map(actions => actions.map(this.mapActionInfo.bind(this)))
 		);
 	}
 
-	getAction(id: number): Observable<Action> {
+	public getAction(id: number): Observable<Action> {
 		return this.http.get<ActionInfo[]>(`${environment.restApi}/action/${id}`).pipe(
 			map(this.mapActionInfo.bind(this))
 		);
 	}
 
-	create(action: Action): Observable<Action> {
+	public create(action: Action): Observable<Action> {
 		const actionInfo = this.toActionInfo(action);
 
 		return this.http.post<ActionInfo>(`${environment.restApi}/action`, actionInfo).pipe(
@@ -55,14 +54,14 @@ export class ActionsService {
 		);
 	}
 
-	editAction(action: Action): Observable<Action> {
+	public editAction(action: Action): Observable<Action> {
 		const actionInfo = this.toActionInfo(action);
 		return this.http.put<ActionInfo>(`${environment.restApi}/action/${action.id}`, actionInfo).pipe(
 			map(this.mapActionInfo.bind(this))
 		);
 	}
 
-	deleteAction(id: number) {
+	public deleteAction(id: number) {
 		return this.http.delete(`${environment.restApi}/action/${id}`);
 	}
 

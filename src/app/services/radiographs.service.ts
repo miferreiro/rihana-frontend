@@ -36,20 +36,9 @@ import {SignLocation} from "../models/SignLocation";
 })
 export class RadiographsService {
 
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
-	private static arrayBufferToBase64(buffer: ArrayBuffer): string {
-		let binary = '';
-		const bytes = new Uint8Array(buffer);
-		const len = bytes.byteLength;
-		for (let i = 0; i < len; i++) {
-		  binary += String.fromCharCode(bytes[i]);
-		}
-		return window.btoa(binary);
-	}
-
-	getRadiograph(id: string, source: boolean = false): Observable<Radiograph> {
+	public getRadiograph(id: string, source: boolean = false): Observable<Radiograph> {
 		return this.http.get<RadiographInfo>(`${environment.restApi}/radiograph/${id}/metadata`).pipe(
 			concatMap((radiographInfo: RadiographInfo) => {
 				if(source) {
@@ -68,9 +57,19 @@ export class RadiographsService {
 		);
 	}
 
-	getRadiographContents(id: string): Observable<string> {
+	public getRadiographContents(id: string): Observable<string> {
 		return this.http.get(`${environment.restApi}/radiograph/${id}`, { responseType: 'arraybuffer' })
 			.pipe(map(RadiographsService.arrayBufferToBase64));
+	}
+
+	private static arrayBufferToBase64(buffer: ArrayBuffer): string {
+		let binary = '';
+		const bytes = new Uint8Array(buffer);
+		const len = bytes.byteLength;
+		for (let i = 0; i < len; i++) {
+		  binary += String.fromCharCode(bytes[i]);
+		}
+		return window.btoa(binary);
 	}
 
 	private mapRadiographInfo(radiographInfo: RadiographInfo): Radiograph {

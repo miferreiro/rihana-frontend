@@ -32,16 +32,15 @@ import {ReportInfo} from "./entities/ReportInfo";
 })
 export class ReportsService {
 
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
-	getReport(id: string): Observable<Report> {
+	public getReport(id: string): Observable<Report> {
 		return this.http.get<ReportInfo>(`${environment.restApi}/report/${id}`).pipe(
 			map(this.mapReportInfo.bind(this))
 		);
 	}
 
-	getReportBy(reportN: string): Observable<Report> {
+	public getReportBy(reportN: string): Observable<Report> {
 		return this.http.get<ReportInfo>(`${environment.restApi}/report/reportN/${reportN}`).pipe(
 			map(this.mapReportInfo.bind(this))
 		);

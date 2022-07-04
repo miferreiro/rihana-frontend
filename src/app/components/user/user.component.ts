@@ -36,17 +36,14 @@ export class UserComponent implements OnInit {
 
 	@ViewChild('closeBtn') closeBtn: ElementRef;
 
-	creatingUser = false;
-	editingUser = false;
-	deletingUser = false;
-	user: Users = new Users();
-	confirmPassword: string;
-
-	roles = Role;
-	// to show the value of the enum
-	keys = Object.keys;
-
-	users: Users[] = [];
+	public creatingUser = false;
+	public editingUser = false;
+	public deletingUser = false;
+	public user: Users = new Users();
+	public confirmPassword: string;
+	public roles = Role;
+	public keys = Object.keys; 	// to show the value of the enum
+	public users: Users[] = [];
 
 	constructor(public authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
@@ -58,7 +55,7 @@ export class UserComponent implements OnInit {
 		this.getUsers();
 	}
 
-	getUsers() {
+	public getUsers() {
 		this.usersService.getUsers().subscribe(users => {
 			this.users = users;
 			const loggedUser = this.users.find((user) => user.login === this.authenticationService.getUser().login);
@@ -69,7 +66,7 @@ export class UserComponent implements OnInit {
 		});
 	}
 
-	save() {
+	public save() {
 		if (this.creatingUser) {
 			this.usersService.create(this.user).subscribe((newUser) => {
 				this.users = this.users.concat(newUser);
@@ -93,7 +90,7 @@ export class UserComponent implements OnInit {
 		}
 	}
 
-	cancel() {
+	public cancel() {
 		this.creatingUser = false;
 		this.editingUser = false;
 		this.deletingUser = false;
@@ -102,13 +99,12 @@ export class UserComponent implements OnInit {
 		this.closeBtn.nativeElement.click();
 	}
 
-
-	create() {
+	public create() {
 		this.creatingUser = true
 		this.user.role = Role.USER;
 	}
 
-	edit(login: string) {
+	public edit(login: string) {
 		this.editingUser = true;
 		this.user = new Users();
 		Object.assign(this.user, this.users.find((user) => user.login === login));
@@ -116,7 +112,7 @@ export class UserComponent implements OnInit {
 		this.user.password = '';
 	}
 
-	delete(login: string) {
+	public delete(login: string) {
 		this.usersService.deleteUser(login).subscribe(() => {
 			const index = this.users.indexOf(
 				this.users.find((user) => user.login === login)
@@ -131,7 +127,7 @@ export class UserComponent implements OnInit {
 		this.cancel();
 	}
 
-	remove(login: string) {
+	public remove(login: string) {
 		this.deletingUser = true;
 		this.user = this.users.find((user) => user.login === login);
 	}

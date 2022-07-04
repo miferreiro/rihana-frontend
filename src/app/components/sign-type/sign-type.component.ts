@@ -25,12 +25,12 @@ import {AuthenticationService} from '../../services/authentication.service';
 import {SignTypesService} from '../../services/sign-types.service';
 import {NotificationService} from '../../modules/notification/services/notification.service';
 import {LocalizationService} from '../../modules/internationalization/localization.service';
-import {ColorPickerControl, ColorsTable} from '@iplab/ngx-color-picker';
+import {ColorPickerControl} from '@iplab/ngx-color-picker';
 
 @Component({
-	selector: 'app-signtype',
-	templateUrl: './signtype.component.html',
-	styleUrls: ['./signtype.component.css']
+	selector: 'app-sign-type',
+	templateUrl: './sign-type.component.html',
+	styleUrls: ['./sign-type.component.css']
 })
 export class SigntypeComponent implements OnInit, AfterViewChecked {
 
@@ -73,7 +73,7 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 		);
 	}
 
-	save() {
+	public save() {
 		if (this.creatingSignType) {
 			this.signTypesService.create(this.signType).subscribe((newSignType) => {
 				this.signTypes = this.signTypes.concat(newSignType);
@@ -100,7 +100,7 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 		}
 	}
 
-	cancel() {
+	public cancel() {
 		this.creatingSignType = false;
 		this.editingSignType = false;
 		this.deletingSignType = false;
@@ -110,13 +110,13 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 		this.closeBtn.nativeElement.click();
 	}
 
-	edit(code: string) {
+	public edit(code: string) {
 		this.editingSignType = true;
 		this.signType = new SignType();
 		Object.assign(this.signType, this.signTypes.find((signType) => signType.code === code));
 	}
 
-	delete(code: string) {
+	public delete(code: string) {
 		this.signTypesService.deleteSignType(code).subscribe(() => {
 			const index = this.signTypes.indexOf(
 				this.signTypes.find((signType) => signType.code === code)
@@ -132,7 +132,7 @@ export class SigntypeComponent implements OnInit, AfterViewChecked {
 		this.cancel();
 	}
 
-	remove(code: string) {
+	public remove(code: string) {
 		this.deletingSignType = true;
 		this.signType = this.signTypes.find((signType) => signType.code === code);
 	}

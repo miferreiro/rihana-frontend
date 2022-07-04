@@ -32,22 +32,21 @@ import {RoleInfo} from "./entities/RoleInfo";
 })
 export class RolesService {
 
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
-	getRoles(): Observable<Role[]> {
+	public getRoles(): Observable<Role[]> {
 		return this.http.get<RoleInfo[]>(`${environment.restApi}/role/`).pipe(
 		  	map(roles => roles.map(this.mapRoleInfo.bind(this)))
 		);
 	}
 
-	getRole(id: number): Observable<Role> {
+	public getRole(id: number): Observable<Role> {
 		return this.http.get<RoleInfo[]>(`${environment.restApi}/role/${id}`).pipe(
 			map(this.mapRoleInfo.bind(this))
 		);
 	}
 
-	create(role: Role): Observable<Role> {
+	public create(role: Role): Observable<Role> {
 		const roleInfo = this.toRoleInfo(role);
 
 		return this.http.post<RoleInfo>(`${environment.restApi}/role`, roleInfo).pipe(
@@ -55,14 +54,14 @@ export class RolesService {
 		);
 	}
 
-	editRole(role: Role): Observable<Role> {
+	public editRole(role: Role): Observable<Role> {
 		const roleInfo = this.toRoleInfo(role);
 		return this.http.put<RoleInfo>(`${environment.restApi}/role/${role.id}`, roleInfo).pipe(
 			map(this.mapRoleInfo.bind(this))
 		);
 	}
 
-	deleteRole(id: number) {
+	public deleteRole(id: number) {
 		return this.http.delete(`${environment.restApi}/role/${id}`);
 	}
 

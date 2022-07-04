@@ -19,7 +19,6 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {NotificationService} from '../../modules/notification/services/notification.service';
@@ -45,24 +44,21 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 
 	@Input() src: string;
 	@Input() disabled: boolean;
+
 	@Output() close = new EventEmitter<AnnotationResult>();
+
+	public showSelectSignType: boolean = false;
+	public isLoadingRadiology: boolean = false;
+	public scaleFactorImage: number = 1;
+	public brightness: string;
+	public contrast: string;
+	public signTypes: SignType[];
+	public newSign: Sign;
+	public signNoFindings: Sign;
+	public other: boolean;
 
 	private _signs: Sign[];
 	private subscription: Subscription;
-
-	public showSelectSignType: boolean = false;
-
-	public isLoadingRadiology: boolean = false;
-	public scaleFactorImage: number = 1;
-
-	public brightness: string;
-	public contrast: string;
-
-	public signTypes: SignType[];
-	public newSign: Sign;
-
-	public signNoFindings: Sign;
-	public other: boolean;
 
 	constructor(private notificationService: NotificationService,
 				public localizationService: LocalizationService,

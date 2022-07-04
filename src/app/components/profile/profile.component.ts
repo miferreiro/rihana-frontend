@@ -33,10 +33,10 @@ import {NotificationService} from '../../modules/notification/services/notificat
 })
 export class ProfileComponent implements OnInit {
 
-	loggedUser: Users = new Users();
-	password: string;
-	confirmPassword: string;
-	editingUser = false;
+	public loggedUser: Users = new Users();
+	public password: string;
+	public confirmPassword: string;
+	public editingUser = false;
 
 	constructor(private authenticationService: AuthenticationService,
 				public localizationService: LocalizationService,
@@ -56,13 +56,13 @@ export class ProfileComponent implements OnInit {
 		}
 	}
 
-	edit() {
+	public edit() {
 		this.editingUser = true;
 		// to not show the password in the edition
 		this.loggedUser.password = '';
 	}
 
-	editUser() {
+	public editUser() {
 		if (this.loggedUser.password !== '') {
 			this.usersService.editUser(this.loggedUser).subscribe(updatedUser => {
 				this.editingUser = false;
@@ -85,7 +85,7 @@ export class ProfileComponent implements OnInit {
 		}
 	}
 
-	switchLang(lang: string) {
+	public switchLang(lang: string) {
 		this.localizationService.useLanguage(lang);
 		localStorage.setItem('language', lang);
 		window.location.reload()

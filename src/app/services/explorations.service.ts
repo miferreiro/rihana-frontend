@@ -45,7 +45,9 @@ import {Sign} from '../models/Sign';
 import {SignType} from '../models/SignType';
 import {Users} from '../models/Users';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class ExplorationsService {
 
 	private explorationCreated: boolean = false;
@@ -60,39 +62,39 @@ export class ExplorationsService {
 				private radiographsService: RadiographsService) {
 	}
 
-	getExplorationCreated(): boolean {
+	public getExplorationCreated(): boolean {
 		return this.explorationCreated;
 	}
 
-	setExplorationCreated(explorationCreated: boolean): void {
+	public setExplorationCreated(explorationCreated: boolean): void {
 		this.explorationCreated = explorationCreated;
 	}
 
-	getExplorationEdited(): boolean {
+	public getExplorationEdited(): boolean {
 		return this.explorationEdited;
 	}
 
-	setExplorationEdited(explorationEdited: boolean): void {
+	public setExplorationEdited(explorationEdited: boolean): void {
 		this.explorationEdited = explorationEdited;
 	}
 
-	getExplorationId(): string {
+	public getExplorationId(): string {
 		return this.explorationId;
 	}
 
-	setExplorationId(explorationId: string): void {
+	public setExplorationId(explorationId: string): void {
 		this.explorationId = explorationId;
 	}
 
-	getEditingExploration(): boolean {
+	public getEditingExploration(): boolean {
 		return this.editingExploration;
 	}
 
-	setEditingExploration(editingExploration: boolean): void {
+	public setEditingExploration(editingExploration: boolean): void {
 		this.editingExploration = editingExploration;
 	}
 
-	getExploration(uuid: string, source: boolean = false): Observable<Exploration> {
+	public getExploration(uuid: string, source: boolean = false): Observable<Exploration> {
 		return this.http.get<ExplorationInfo>(`${environment.restApi}/exploration/${uuid}`)
 			.pipe(
 				concatMap(explorationInfo =>
@@ -119,12 +121,12 @@ export class ExplorationsService {
 				)
 	}
 
-	getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], operator: string,
+	public getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], operator: string,
 						 source: boolean = false, initialDate: Date, finalDate: Date): Observable<ExplorationPage> {
 		return this.getExplorations(user, page, pageSize, signTypes, operator, source, initialDate, finalDate, new HttpParams());
 	}
 
-	createExploration(exploration: Exploration): Observable<Exploration> {
+	public createExploration(exploration: Exploration): Observable<Exploration> {
 		const newExplorationInfo = this.toNewExplorationInfo(exploration);
 		return this.http.post<NewExplorationInfo>(`${environment.restApi}/exploration`, newExplorationInfo)
 			.pipe(
@@ -132,7 +134,7 @@ export class ExplorationsService {
 			);
 	}
 
-	editExploration(exploration: Exploration): Observable<Exploration> {
+	public editExploration(exploration: Exploration): Observable<Exploration> {
 		const explorationInfo = this.toEditExplorationInfo(exploration);
 		return this.http.put<ExplorationInfo>(`${environment.restApi}/exploration/${explorationInfo.id}`, explorationInfo)
 			.pipe(
@@ -140,11 +142,11 @@ export class ExplorationsService {
 			);
 	}
 
-	delete(id: string): Observable<Object> {
+	public delete(id: string): Observable<Object> {
 		return this.http.delete(`${environment.restApi}/exploration/` + id);
 	}
 
-	recover(id: string): Observable<Object> {
+	public recover(id: string): Observable<Object> {
 		return this.http.put(`${environment.restApi}/exploration/recover/` + id, null);
 	}
 

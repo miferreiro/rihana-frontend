@@ -29,19 +29,20 @@ import {SignLocationInfo} from "./entities/SignLocationInfo";
 import {Sign} from "../models/Sign";
 import {SignLocation} from "../models/SignLocation";
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class SignsService {
 
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
-	getSigns(): Observable<Sign[]> {
+	public getSigns(): Observable<Sign[]> {
 		return this.http.get<SignInfo[]>(`${environment.restApi}/sign`).pipe(
 			map((signs) => signs.map(this.mapSignInfo.bind(this)))
 		);
 	}
 
-	getSignsByUser(user: string): Observable<Sign[]> {
+	public getSignsByUser(user: string): Observable<Sign[]> {
 		return this.http.get<SignInfo[]>(`${environment.restApi}/sign?user=${user}`).pipe(
 			map((signs) => signs.map(this.mapSignInfo.bind(this)))
 		);

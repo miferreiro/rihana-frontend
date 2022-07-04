@@ -27,13 +27,14 @@ import {environment} from "../../environments/environment";
 import {Patient, SEX} from "../models/Patient";
 import {PatientInfo} from "./entities/PatientInfo";
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class PatientsService {
 
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
-	getPatient(id: string): Observable<Patient> {
+	public getPatient(id: string): Observable<Patient> {
 		return this.http.get<PatientInfo>(`${environment.restApi}/patient/${id}`).pipe(
 			map(this.mapPatientInfo.bind(this))
 		);

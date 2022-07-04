@@ -35,12 +35,11 @@ export class RoleComponent implements OnInit {
 
 	@ViewChild('closeBtn') closeBtn: ElementRef;
 
-	creatingRole = false;
-	editingRole = false;
-	deletingRole = false;
-	role: Role = new Role();
-
-	roles: Role[] = [];
+	public creatingRole = false;
+	public editingRole = false;
+	public deletingRole = false;
+	public role: Role = new Role();
+	public roles: Role[] = [];
 
 	constructor(public authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
@@ -51,7 +50,7 @@ export class RoleComponent implements OnInit {
 		this.getRoles();
 	}
 
-	getRoles() {
+	public getRoles() {
 		this.rolesService.getRoles().subscribe(roles => {
 			this.roles = roles;
 		}, error => {
@@ -61,7 +60,7 @@ export class RoleComponent implements OnInit {
 		});
 	}
 
-	save() {
+	public save() {
 		if (this.creatingRole) {
 			this.rolesService.create(this.role).subscribe(newRole => {
 				this.getRoles();
@@ -87,7 +86,7 @@ export class RoleComponent implements OnInit {
 		}
 	}
 
-	cancel() {
+	public cancel() {
 		this.creatingRole = false;
 		this.editingRole = false;
 		this.deletingRole = false;
@@ -95,13 +94,13 @@ export class RoleComponent implements OnInit {
 		this.closeBtn.nativeElement.click();
 	}
 
-	edit(id: number) {
+	public edit(id: number) {
 		this.editingRole = true;
 		this.role = new Role();
 		Object.assign(this.role, this.roles.find(role => role.id === id));
 	}
 
-	delete(id: number | string) {
+	public delete(id: number | string) {
 		this.rolesService.deleteRole(Number(id)).subscribe(() => {
 			const index = this.roles.indexOf(
 				this.roles.find(role => role.id === Number(id))
@@ -117,7 +116,7 @@ export class RoleComponent implements OnInit {
 		this.cancel();
 	}
 
-	remove(id: number) {
+	public remove(id: number) {
 		this.deletingRole = true;
 		this.role = this.roles.find(role => role.id === id);
 	}

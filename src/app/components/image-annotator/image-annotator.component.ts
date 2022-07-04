@@ -35,28 +35,25 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 
 	private static readonly STROKE_SIZE = 2;
 
+	@ViewChild('canvasElement') private canvasElementRef: ElementRef<HTMLCanvasElement>;
+	@ViewChild('imageElement') private imageElementRef: ElementRef<HTMLImageElement>;
+
 	@Input() disabled: boolean;
 
 	@Output() newSign = new EventEmitter<Sign>();
 	@Output() newSetScaleFactorImage = new EventEmitter<number>();
 	@Output() removeSign = new EventEmitter<Sign>();
-
 	@Output() brightnessChange = new EventEmitter<string>();
 	@Output() contrastChange = new EventEmitter<string>();
-
-	@ViewChild('canvasElement') private canvasElementRef: ElementRef<HTMLCanvasElement>;
-	@ViewChild('imageElement') private imageElementRef: ElementRef<HTMLImageElement>;
 
 	private defaultColor: string = "yellow";
 	private newSignLocation: SignLocation = null;
 	private scaleFactorImage: number;
-
 	private _src: SafeUrl;
 	private _signs: Sign[];
 	private _brightness: string;
 	private _contrast: string;
 	private zoom: number;
-
 	private panZoomConfigOptions: PanZoomConfigOptions = {
 		zoomLevels: 5,
 		scalePerZoomLevel: 2.0,
@@ -130,32 +127,28 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	get context2D(): CanvasRenderingContext2D {
+	public get context2D(): CanvasRenderingContext2D {
 		return this.canvasElement.getContext('2d');
 	}
 
-	get canvasElement(): HTMLCanvasElement {
+	public get canvasElement(): HTMLCanvasElement {
 		return Boolean(this.canvasElementRef) ? this.canvasElementRef.nativeElement : null;
 	}
 
-	get imageElement(): HTMLImageElement {
+	public get imageElement(): HTMLImageElement {
 		return this.imageElementRef.nativeElement;
 	}
 
-	get dataUrl(): string {
+	public get dataUrl(): string {
 		return Boolean(this.canvasElement) ? this.canvasElement.toDataURL() : '#';
 	}
 
-	get isDrawing(): boolean {
+	public get isDrawing(): boolean {
 		return this.newSignLocation !== null;
 	}
 
-	get signLocationToPaint(): SignLocation {
+	public get signLocationToPaint(): SignLocation {
 		return this.newSignLocation;
-	}
-
-	private canLocate(): boolean {
-		return !this.disabled;
 	}
 
 	public resetPanZoom() {
@@ -163,6 +156,91 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 			this.panZoomAPI.resetView();
 		}
 		this.zoom = 2;
+	}
+
+	public onImageLoad() {
+		this.resizeCanvas();
+	}
+
+	public onRightClick() {
+		return false;
+	}
+
+	public onMouseDown(event: MouseEvent) {
+		if (event.which == 1) {
+			if (this.canLocate()) {
+				this.canvasElement.className = "cursor";
+				const location = this.adjustMouseLocation(event);
+
+				location.x = location.x / this.getCssScale(this.zoom);
+				location.y = location.y / this.getCssScale(this.zoom);
+
+				this.newSignLocation = new SignLocation(location.x / this.scaleFactorImage, location.y / this.scaleFactorImage, 0, 0);
+			} else {
+				this.canvasElement.className = "disabled";
+			}
+		} else if (event.which === 2) {
+			const location = this.adjustMouseLocation(event);
+			this.canvasElement.className = "cursorGrabbing";
+		} else if (event.which == 3) {
+			const location = this.adjustMouseLocation(event);
+			this.canvasElement.className = "cursorBC";
+			this.brightness = (Math.round((location.y / this.canvasElement.height) * 200)).toString();
+			this.contrast = (Math.round((location.x / this.canvasElement.width) * 200)).toString();
+		}
+	}
+
+	public onModelChanged(model: PanZoomModel): void {
+		this.changeDetector.markForCheck();
+		this.changeDetector.detectChanges();
+
+		if (!(model.pan == null || model.zoomLevel == null)) {
+			this.zoom = model.zoomLevel;
+		}
+		this.repaint(false);
+	}
+
+	public onMouseMove(event: MouseEvent) {
+		if (event.which == 1) {
+			if (this.canLocate() && this.isDrawing) {
+				const location = this.adjustMouseLocation(event);
+
+				location.x = location.x / this.getCssScale(this.zoom);
+				location.y = location.y / this.getCssScale(this.zoom);
+
+				this.newSignLocation.width = (location.x / this.scaleFactorImage) - this.newSignLocation.x;
+				this.newSignLocation.height = (location.y / this.scaleFactorImage) - this.newSignLocation.y;
+				this.repaint(false);
+				this.paintLocation();
+			}
+		} else if (event.which == 3) {
+			const location = this.adjustMouseLocation(event);
+			this.brightness = (Math.round((location.y / this.canvasElement.height) * 200)).toString();
+			this.contrast = (Math.round((location.x / this.canvasElement.width) * 200)).toString();
+		}
+	}
+
+	// Global listener is used to detect mouse up outside the canvas
+	@HostListener('window:mouseup')
+	public onMouseUp() {
+		if (this.canLocate() && this.isDrawing) {
+			let sign = new Sign();
+			sign.location = this.newSignLocation.regularize();
+
+			sign.type = null;
+			this.newSign.emit(sign);
+			this.newSignLocation = null;
+			this.repaint(false);
+		}
+		if (this.canLocate()) {
+			this.canvasElement.className = "cursor";
+		} else {
+			this.canvasElement.className = "disabled";
+		}
+	}
+
+	private canLocate(): boolean {
+		return !this.disabled;
 	}
 
 	private repaint(paintSignsInfo: boolean = false): void {
@@ -200,16 +278,8 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 	}
 
 	private paintSignsInfo(): void {
-		let div = document.getElementById("canvasZone");
-		let removeElements = (elements: HTMLCollectionOf<Element>) => {
-			for (var i = elements.length; i--; ){
-				elements[i].remove();
-			}
-		};
-		removeElements(div.getElementsByTagName("i"));
-		removeElements(div.getElementsByClassName("hoverZone"));
-		removeElements(div.getElementsByClassName("signIdDiv"));
 
+		this.cleanCanvasZone();
 		let indexSignTypes = new Map();
 
 		for (let sign of this.signs) {
@@ -219,6 +289,7 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 				indexSignTypes.set(sign.type.code, 0);
 			}
 			if (sign.location != null && sign.render) {
+				let div = document.getElementById("canvasZone");
 				let loc = sign.location;
 				let canvasDim = document.querySelector("canvas");
 
@@ -252,7 +323,8 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 				}
 
 				if (((sign.location.width * this.scaleFactorImage > 60 && sign.location.height * this.scaleFactorImage > 30) ||
-					(sign.location.width * this.scaleFactorImage > 30 && sign.location.height * this.scaleFactorImage > 60))) {
+					(sign.location.width * this.scaleFactorImage > 30 && sign.location.height * this.scaleFactorImage > 60)) ||
+					(sign.location.width * this.scaleFactorImage > 30 && sign.location.height * this.scaleFactorImage > 30)) {
 
 					let hoverZone = document.createElement("div");
 					hoverZone.className = "hoverZone";
@@ -264,13 +336,17 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 													";opacity:0")
 
 					if (this.canLocate()) {
-						let xWidth: number, xHeight: number;
+						let xHeight: number;
 
-						if (loc.width >= loc.height) {
-							xWidth = loc.width * this.scaleFactorImage / 2 - 15;
-							xHeight = (loc.height * this.scaleFactorImage) / 2 - 15;
-						} else {
-							xWidth = (loc.width * this.scaleFactorImage) / 2 - 15;
+						if ((sign.location.width * this.scaleFactorImage > 60 && sign.location.height * this.scaleFactorImage > 30) ||
+						(sign.location.width * this.scaleFactorImage > 30 && sign.location.height * this.scaleFactorImage > 60)) {
+							if (loc.width >= loc.height) {
+								xHeight = (loc.height * this.scaleFactorImage) / 2 - 15;
+							} else {
+								xHeight = (loc.height * this.scaleFactorImage) / 2 - 15;
+							}
+
+						} else if (sign.location.width * this.scaleFactorImage > 30 && sign.location.height * this.scaleFactorImage > 30) {
 							xHeight = (loc.height * this.scaleFactorImage) / 2 - 15;
 						}
 
@@ -284,38 +360,23 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 
 						hoverZone.append(x);
 						div.appendChild(hoverZone);
-					}
-				} else if (sign.location.width * this.scaleFactorImage > 30 && sign.location.height * this.scaleFactorImage > 30) {
-					let hoverZone = document.createElement("div");
-					hoverZone.className = "hoverZone";
-					hoverZone.setAttribute("style", "left:" + left + "px;" +
-													"top:" + (canvasDim.offsetTop + (loc.y * this.scaleFactorImage)) + "px;" +
-													"width:" + (loc.width * this.scaleFactorImage) + "px;" +
-													"height:" + (loc.height * this.scaleFactorImage) + "px;" +
-													"position:absolute;background-color:" + sign.type.primaryColor +
-													";opacity:0")
 
-
-					if (this.canLocate()) {
-						let xWidth: number, xHeight: number;
-
-						xWidth = (loc.width * this.scaleFactorImage) / 2 - 15;
-						xHeight = (loc.height * this.scaleFactorImage) / 2 - 15;
-
-						let x = document.createElement("i");
-						x.className = "las la-trash-alt la-lg hoverZoneIcon";
-						x.onclick = () => this.removeSign.emit(sign);
-
-						x.setAttribute("style", "top:" + xHeight + "px;" +
-												"position:relative;font-size:1.5rem;visibility:hidden;color:" +
-												sign.type.secondaryColor);
-
-						hoverZone.append(x);
-						div.appendChild(hoverZone);
 					}
 				}
 			}
 		}
+	}
+
+	private cleanCanvasZone(): void {
+		let div = document.getElementById("canvasZone");
+		let removeElements = (elements: HTMLCollectionOf<Element>) => {
+			for (var i = elements.length; i--; ){
+				elements[i].remove();
+			}
+		};
+		removeElements(div.getElementsByTagName("i"));
+		removeElements(div.getElementsByClassName("hoverZone"));
+		removeElements(div.getElementsByClassName("signIdDiv"));
 	}
 
 	private paintLocation(): void {
@@ -343,87 +404,6 @@ export class ImageAnnotatorComponent implements OnInit, OnDestroy {
 			x: x,
 			y: y
 		};
-	}
-
-	onImageLoad() {
-		this.resizeCanvas();
-	}
-
-	onRightClick() {
-		return false;
-	}
-
-	onMouseDown(event: MouseEvent) {
-		if (event.which == 1) {
-			if (this.canLocate()) {
-				this.canvasElement.className = "cursor";
-				const location = this.adjustMouseLocation(event);
-
-				location.x = location.x / this.getCssScale(this.zoom);
-				location.y = location.y / this.getCssScale(this.zoom);
-
-				this.newSignLocation = new SignLocation(location.x / this.scaleFactorImage, location.y / this.scaleFactorImage, 0, 0);
-			} else {
-				this.canvasElement.className = "disabled";
-			}
-		} else if (event.which === 2) {
-			const location = this.adjustMouseLocation(event);
-			this.canvasElement.className = "cursorGrabbing";
-		} else if (event.which == 3) {
-			const location = this.adjustMouseLocation(event);
-			this.canvasElement.className = "cursorBC";
-			this.brightness = (Math.round((location.y / this.canvasElement.height) * 200)).toString();
-			this.contrast = (Math.round((location.x / this.canvasElement.width) * 200)).toString();
-		}
-	}
-
-	onModelChanged(model: PanZoomModel): void {
-		this.changeDetector.markForCheck();
-		this.changeDetector.detectChanges();
-
-		if (!(model.pan == null || model.zoomLevel == null)) {
-			this.zoom = model.zoomLevel;
-		}
-		this.repaint(false);
-	}
-
-	onMouseMove(event: MouseEvent) {
-		if (event.which == 1) {
-			if (this.canLocate() && this.isDrawing) {
-				const location = this.adjustMouseLocation(event);
-
-				location.x = location.x / this.getCssScale(this.zoom);
-				location.y = location.y / this.getCssScale(this.zoom);
-
-				this.newSignLocation.width = (location.x / this.scaleFactorImage) - this.newSignLocation.x;
-				this.newSignLocation.height = (location.y / this.scaleFactorImage) - this.newSignLocation.y;
-				this.repaint(false);
-				this.paintLocation();
-			}
-		} else if (event.which == 3) {
-			const location = this.adjustMouseLocation(event);
-			this.brightness = (Math.round((location.y / this.canvasElement.height) * 200)).toString();
-			this.contrast = (Math.round((location.x / this.canvasElement.width) * 200)).toString();
-		}
-	}
-
-	// Global listener is used to detect mouse up outside the canvas
-	@HostListener('window:mouseup')
-	onMouseUp() {
-		if (this.canLocate() && this.isDrawing) {
-			let sign = new Sign();
-			sign.location = this.newSignLocation.regularize();
-
-			sign.type = null;
-			this.newSign.emit(sign);
-			this.newSignLocation = null;
-			this.repaint(false);
-		}
-		if (this.canLocate()) {
-			this.canvasElement.className = "cursor";
-		} else {
-			this.canvasElement.className = "disabled";
-		}
 	}
 
 	@HostListener('window:resize', ['$event'])

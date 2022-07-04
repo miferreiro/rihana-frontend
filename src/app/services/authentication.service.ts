@@ -39,7 +39,7 @@ export class AuthenticationService {
 				private permissionsService: PermissionsService) {
 	}
 
-	checkCredentials(login: string, password: string): Observable<Role> {
+	public checkCredentials(login: string, password: string): Observable<Role> {
 		this.user.login = login;
 		this.user.password = password;
 		return this.http.get<string>(`${environment.restApi}/user/${login}/role`, {responseType: 'text' as 'json'})

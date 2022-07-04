@@ -31,9 +31,9 @@ import {Role} from '../../models/User';
 })
 export class LoginComponent implements OnInit {
 
-	login: string;
-	password: string;
-	return = '';
+	public login: string;
+	public password: string;
+	public return = '';
 
 	constructor(private authenticationService: AuthenticationService,
 				private route: ActivatedRoute,
@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
 		  .subscribe(params => this.return = params['return'] || '');
 	}
 
-	logIn() {
+	public logIn(): void {
 		this.authenticationService.checkCredentials(this.login, this.password).subscribe(async (role) => {
 			await this.authenticationService.logIn(this.login, this.password, role);
 			if (role == Role.USER) {

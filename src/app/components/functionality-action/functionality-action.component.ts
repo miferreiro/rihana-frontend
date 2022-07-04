@@ -39,13 +39,11 @@ export class FunctionalityactionComponent implements OnInit {
 
 	@ViewChild('closeBtn') closeBtn: ElementRef;
 
-	creatingFunctionalityAction = false;
-	functionalityAction: FunctionalityAction = new FunctionalityAction();
-
-	functionalityActions: FunctionalityAction[] = [];
-
-	functionalities: Functionality[] = [];
-	actions: Action[] = [];
+	public creatingFunctionalityAction = false;
+	public functionalityAction: FunctionalityAction = new FunctionalityAction();
+	public functionalityActions: FunctionalityAction[] = [];
+	public functionalities: Functionality[] = [];
+	public actions: Action[] = [];
 
 	constructor(public authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
@@ -60,7 +58,7 @@ export class FunctionalityactionComponent implements OnInit {
 		this.getActions();
 	}
 
-	getFunctionalityActions() {
+	public getFunctionalityActions() {
 		this.functionalityActionsService.getFunctionalityActions().subscribe(functionalityActions => {
 			this.functionalityActions = functionalityActions;
 		}, error => {
@@ -70,7 +68,7 @@ export class FunctionalityactionComponent implements OnInit {
 		});
 	}
 
-	getFunctionalities() {
+	public getFunctionalities() {
 		this.functionalitiesService.getFunctionalities().subscribe(functionalities => {
 			this.functionalities = functionalities;
 		}, error => {
@@ -80,7 +78,7 @@ export class FunctionalityactionComponent implements OnInit {
 		});
 	}
 
-	getActions() {
+	public getActions() {
 		this.actionsService.getActions().subscribe(actions => {
 			this.actions= actions;
 		}, error => {
@@ -90,15 +88,15 @@ export class FunctionalityactionComponent implements OnInit {
 		});
 	}
 
-	getFunctionality(id: number): Functionality {
+	public getFunctionality(id: number): Functionality {
 		return this.functionalities.find(functionality => functionality.id === id);
 	}
 
-	getAction(id: number): Action {
+	public getAction(id: number): Action {
 		return this.actions.find(action => action.id === id);
 	}
 
-	save() {
+	public save() {
 		this.functionalityActionsService.create(this.functionalityAction).subscribe(newFunctionalityAction => {
 			this.getFunctionalityActions();
 			this.notificationService.success("Functionality-action registered successfully",
@@ -111,13 +109,13 @@ export class FunctionalityactionComponent implements OnInit {
 		});
 	}
 
-	cancel() {
+	public cancel() {
 		this.creatingFunctionalityAction = false;
 		this.functionalityAction = new FunctionalityAction();
 		this.closeBtn.nativeElement.click();
 	}
 
-	delete(functionalityId: number | string, actionId: number | string) {
+	public delete(functionalityId: number | string, actionId: number | string) {
 		this.functionalityActionsService.deleteFunctionalityAction(Number(functionalityId), Number(actionId)).subscribe(() => {
 			const index = this.functionalityActions.indexOf(
 				this.functionalityActions.find(functionalityAction => functionalityAction.functionalityId === Number(functionalityId) &&

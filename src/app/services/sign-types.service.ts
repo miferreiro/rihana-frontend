@@ -28,18 +28,20 @@ import {SignType} from "../models/SignType";
 import {SignInfo} from "./entities/SignInfo";
 import {SignTypeInfo} from "./entities/SignTypeInfo";
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class SignTypesService {
 
-  	constructor(private http: HttpClient) { }
+  	constructor(private http: HttpClient) {}
 
-	getSignTypes(): Observable<SignType[]> {
+	  public getSignTypes(): Observable<SignType[]> {
 		return this.http.get<SignInfo[]>(`${environment.restApi}/sign/type`).pipe(
 			map((signTypes) => signTypes.map(this.mapSignTypeInfo.bind(this)))
 		);
 	}
 
-	create(signType: SignType): Observable<SignType> {
+	public create(signType: SignType): Observable<SignType> {
 		const signTypeInfo = this.toSignTypeInfo(signType);
 
 		return this.http.post<SignTypeInfo>(`${environment.restApi}/sign/type`, signTypeInfo).pipe(
@@ -47,14 +49,14 @@ export class SignTypesService {
 		);
 	}
 
-	editSignType(signType: SignType): Observable<SignType> {
+	public editSignType(signType: SignType): Observable<SignType> {
 		const signTypeInfo = this.toSignTypeInfo(signType);
 		return this.http.put<SignTypeInfo>(`${environment.restApi}/sign/type/${signType.code}`, signTypeInfo).pipe(
 			map(this.mapSignTypeInfo.bind(this))
 		);
 	}
 
-	deleteSignType(code: string) {
+	public deleteSignType(code: string) {
 		return this.http.delete(`${environment.restApi}/sign/type/${code}`);
 	}
 

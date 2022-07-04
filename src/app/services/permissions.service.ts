@@ -34,28 +34,27 @@ import {PermissionInfo} from "./entities/PermissionInfo";
 })
 export class PermissionsService {
 
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
-	getPermissions(): Observable<Permission[]> {
+	public getPermissions(): Observable<Permission[]> {
 		return this.http.get<PermissionInfo[]>(`${environment.restApi}/permission/`).pipe(
 		  	map(permissions => permissions.map(this.mapPermissionInfo.bind(this)))
 		);
 	}
 
-	getPermission(roleId: number, functionalityId: number, actionId: number): Observable<Permission> {
+	public getPermission(roleId: number, functionalityId: number, actionId: number): Observable<Permission> {
 		return this.http.get<PermissionInfo[]>(`${environment.restApi}/permission/${roleId}/${functionalityId}/${actionId}`).pipe(
 			map(this.mapPermissionInfo.bind(this))
 		);
 	}
 
-	getUserPermissions(login: string): Observable<FunctionalityAction[]> {
+	public getUserPermissions(login: string): Observable<FunctionalityAction[]> {
 		return this.http.get<FunctionalityAction[]>(`${environment.restApi}/permission/${login}`).pipe(
 			map(functionalityActions => functionalityActions.map(this.mapFunctionalityActionInfo.bind(this)))
 		);
 	}
 
-	create(permission: Permission): Observable<Permission> {
+	public create(permission: Permission): Observable<Permission> {
 		const permissionInfo = this.toPermissionInfo(permission);
 
 		return this.http.post<PermissionInfo>(`${environment.restApi}/permission`, permissionInfo).pipe(
@@ -63,7 +62,7 @@ export class PermissionsService {
 		);
 	}
 
-	deletePermission(roleId: number, functionalityId: number, actionId: number) {
+	public deletePermission(roleId: number, functionalityId: number, actionId: number) {
 		return this.http.delete(`${environment.restApi}/permission/${roleId}/${functionalityId}/${actionId}`);
 	}
 

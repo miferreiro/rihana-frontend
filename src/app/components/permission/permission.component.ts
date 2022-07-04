@@ -43,15 +43,13 @@ export class PermissionComponent implements OnInit {
 
 	@ViewChild('closeBtn') closeBtn: ElementRef;
 
-	creatingPermission = false;
-	permission: Permission = new Permission();
-
-	permissions: Permission[] = [];
-
-	roles: Role[] = [];
-	functionalityActions: FunctionalityAction[] = [];
-	functionalities: Functionality[] = [];
-	actions: Action[] = [];
+	public creatingPermission = false;
+	public permission: Permission = new Permission();
+	public permissions: Permission[] = [];
+	public roles: Role[] = [];
+	public functionalityActions: FunctionalityAction[] = [];
+	public functionalities: Functionality[] = [];
+	public actions: Action[] = [];
 
 	constructor(public authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
@@ -70,7 +68,7 @@ export class PermissionComponent implements OnInit {
 		this.getActions();
 	}
 
-	getPermissions() {
+	public getPermissions() {
 		this.permissionsService.getPermissions().subscribe(permissions => {
 			this.permissions = permissions;
 		}, error => {
@@ -80,7 +78,7 @@ export class PermissionComponent implements OnInit {
 		});
 	}
 
-	getRoles() {
+	public getRoles() {
 		this.rolesService.getRoles().subscribe(roles => {
 			this.roles = roles;
 			const index = this.roles.indexOf(
@@ -94,7 +92,7 @@ export class PermissionComponent implements OnInit {
 		});
 	}
 
-	getFunctionalityActions() {
+	public getFunctionalityActions() {
 		this.functionalityActionsService.getFunctionalityActions().subscribe(functionalityActions => {
 			this.functionalityActions = functionalityActions;
 		}, error => {
@@ -104,7 +102,7 @@ export class PermissionComponent implements OnInit {
 		});
 	}
 
-	getFunctionalities() {
+	public getFunctionalities() {
 		this.functionalitiesService.getFunctionalities().subscribe(functionalities => {
 			this.functionalities = functionalities;
 		}, error => {
@@ -114,7 +112,7 @@ export class PermissionComponent implements OnInit {
 		});
 	}
 
-	getActions() {
+	public getActions() {
 		this.actionsService.getActions().subscribe(actions => {
 			this.actions= actions;
 		}, error => {
@@ -124,19 +122,19 @@ export class PermissionComponent implements OnInit {
 		});
 	}
 
-	getRole(id: number): Role {
+	public getRole(id: number): Role {
 		return this.roles.find(role => role.id === id);
 	}
 
-	getFunctionality(id: number): Functionality {
+	public getFunctionality(id: number): Functionality {
 		return this.functionalities.find(functionality => functionality.id === id);
 	}
 
-	getAction(id: number): Action {
+	public getAction(id: number): Action {
 		return this.actions.find(action => action.id === id);
 	}
 
-	save() {
+	public save() {
 		this.permissionsService.create(this.permission).subscribe(newPermission => {
 			this.getPermissions();
 			this.notificationService.success("Permission registered successfully",
@@ -149,13 +147,13 @@ export class PermissionComponent implements OnInit {
 		});
 	}
 
-	cancel() {
+	public cancel() {
 		this.creatingPermission = false;
 		this.permission = new Permission();
 		this.closeBtn.nativeElement.click();
 	}
 
-	delete(roleId: number | string, functionalityAction: FunctionalityAction) {
+	public delete(roleId: number | string, functionalityAction: FunctionalityAction) {
 		this.permissionsService.deletePermission(Number(roleId), Number(functionalityAction.functionalityId),
 												 Number(functionalityAction.actionId)).subscribe(() => {
 			const index = this.permissions.indexOf(

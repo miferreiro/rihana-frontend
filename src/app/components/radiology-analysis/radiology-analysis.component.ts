@@ -31,14 +31,14 @@ import {Report} from '../../models/Report';
 })
 export class RadiologyAnalysisComponent implements OnInit {
 
-	public _typeExploration: string;
-	public showImageDialog = false;
-
 	@Input() exploration: Exploration;
-	public report: Report = new Report();
 
 	@Output() radiographs = new EventEmitter<Radiograph[]>();
 	@Output() typeExploration = new EventEmitter<string>();
+
+	public _typeExploration: string;
+	public showImageDialog = false;
+	public report: Report = new Report();
 
 	private _radiographs: Radiograph[];
 

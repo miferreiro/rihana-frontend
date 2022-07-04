@@ -33,22 +33,21 @@ import {UserInfo} from "./entities/UserInfo";
 })
 export class UsersService {
 
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
-	getUsers(): Observable<Users[]> {
+	public getUsers(): Observable<Users[]> {
 		return this.http.get<UserInfo[]>(`${environment.restApi}/user/`).pipe(
 		  	map((users) => users.map(this.mapUserInfo.bind(this)))
 		);
 	}
 
-	getUser(login: string): Observable<Users> {
+	public getUser(login: string): Observable<Users> {
 		return this.http.get<UserInfo[]>(`${environment.restApi}/user/${login}`).pipe(
 			map(this.mapUserInfo.bind(this))
 		);
 	}
 
-	create(user: Users): Observable<Users> {
+	public create(user: Users): Observable<Users> {
 		const userInfo = this.toUserInfo(user);
 
 		return this.http.post<UserInfo>(`${environment.restApi}/user`, userInfo).pipe(
@@ -56,14 +55,14 @@ export class UsersService {
 		);
 	}
 
-	editUser(user: Users): Observable<User> {
+	public editUser(user: Users): Observable<User> {
 		const userInfo = this.toEditUserInfo(user);
 		return this.http.put<UserInfo>(`${environment.restApi}/user/${user.login}`, userInfo).pipe(
 			map(this.mapUserInfo.bind(this))
 		);
 	}
 
-	deleteUser(login: string) {
+	public deleteUser(login: string) {
 		return this.http.delete(`${environment.restApi}/user/${login}`);
 	}
 

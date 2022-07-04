@@ -19,14 +19,28 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-import {Component} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-@Component({
-	selector: 'app-pagenotfound',
-	templateUrl: './pagenotfound.component.html',
-	styleUrls: ['./pagenotfound.component.css']
-})
-export class PagenotfoundComponent {
+import {PagenotfoundComponent} from './page-not-found.component';
 
-	constructor() { }
-}
+describe('PagenotfoundComponent', () => {
+	let component: PagenotfoundComponent;
+	let fixture: ComponentFixture<PagenotfoundComponent>;
+
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [PagenotfoundComponent]
+		})
+		.compileComponents();
+	});
+
+	beforeEach(() => {
+		fixture = TestBed.createComponent(PagenotfoundComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

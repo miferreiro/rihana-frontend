@@ -41,7 +41,6 @@ export class BarChartComponent implements OnInit {
 	public barChartLabels: Label[] = [];
 	public barChartData: ChartDataSets[] = [];
 	public barChartColors: any[] = [];
-
 	public barChartOptions: ChartOptions = {
 		legend: {
 			display: false

@@ -32,22 +32,21 @@ import {FunctionalityActionInfo} from "./entities/FunctionalityActionInfo";
 })
 export class FunctionalityActionsService {
 
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
-	getFunctionalityActions(): Observable<FunctionalityAction[]> {
+	public getFunctionalityActions(): Observable<FunctionalityAction[]> {
 		return this.http.get<FunctionalityActionInfo[]>(`${environment.restApi}/functionalityaction/`).pipe(
 			map(functionalityactions => functionalityactions.map(this.mapFunctionalityActionInfo.bind(this)))
 		);
 	}
 
-	getFunctionalityAction(functionalityId: number, actionId: number): Observable<FunctionalityAction> {
+	public getFunctionalityAction(functionalityId: number, actionId: number): Observable<FunctionalityAction> {
 		return this.http.get<FunctionalityActionInfo[]>(`${environment.restApi}/functionalityaction/${functionalityId}/${actionId}`).pipe(
 			map(this.mapFunctionalityActionInfo.bind(this))
 		);
 	}
 
-	create(functionalityAction: FunctionalityAction): Observable<FunctionalityAction> {
+	public create(functionalityAction: FunctionalityAction): Observable<FunctionalityAction> {
 		const functionalityActionInfo = this.toFunctionalityActionInfo(functionalityAction);
 
 		return this.http.post<FunctionalityActionInfo>(`${environment.restApi}/functionalityaction`, functionalityActionInfo).pipe(
@@ -55,7 +54,7 @@ export class FunctionalityActionsService {
 		);
 	}
 
-	deleteFunctionalityAction(functionalityId: number, actionId: number) {
+	public deleteFunctionalityAction(functionalityId: number, actionId: number) {
 		return this.http.delete(`${environment.restApi}/functionalityaction/${functionalityId}/${actionId}`);
 	}
 

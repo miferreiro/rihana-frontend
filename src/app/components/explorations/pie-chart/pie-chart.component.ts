@@ -40,13 +40,11 @@ export class PieChartComponent implements OnInit {
 	@Input() updateChart: Observable<void>;
 
 	public loggedUser: string;
-
 	public pieChartType: ChartType = 'pie';
 	public pieChartLabels: Label[] = [];
 	public pieChartData: number[] = [];
 	public pieChartColors: any[] = [];
 	public pieChartPlugins: any[] = [pluginDataLabels];
-
 	public pieChartOptions: ChartOptions = {
 		layout: {
             padding: {

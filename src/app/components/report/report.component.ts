@@ -51,27 +51,24 @@ export enum STATE {
 })
 export class ReportComponent implements OnInit, OnDestroy {
 
-	public currentFormatDate: string = 'dd/MM/yyyy';
-	public readonly formatDateEs: string = 'dd/MM/yyyy';
-	public readonly formatDateEn: string = 'MM/dd/yyyy';
-
-	private readonly extensionValid = ['pdf'];
-	public STATEValues: STATE[];
-
 	@Input() exploration;
+
 	@Output() reportEvent = new EventEmitter<ReportResult>();
 
-	private subscriptionReport: Subscription;
-
+	private readonly extensionValid = ['pdf'];
 	public readonly controlReport = new FileUploadControl(
 		{listVisible: true, discardInvalid: true, multiple: false},
 		[FileUploadValidators.filesLimit(2)]
 	);
-
+	public readonly formatDateEs: string = 'dd/MM/yyyy';
+	public readonly formatDateEn: string = 'MM/dd/yyyy';
+	public currentFormatDate: string = 'dd/MM/yyyy';
+	public STATEValues: STATE[];
 	public state: STATE = STATE.NOT_LOADED;
 	public report: Report;
 	public patient: Patient;
 
+	private subscriptionReport: Subscription;
 	private baseReport: Report;
 
 	constructor(private explorationsService: ExplorationsService,
@@ -152,31 +149,6 @@ export class ReportComponent implements OnInit, OnDestroy {
 		this.state = STATE.NOT_LOADED;
 	}
 
-	private loadReport(file: File): void {
-		if (file != undefined) {
-			let fr = new FileReader();
-			fr.onload = async (e) => {
-				var pdfBase64 = atob(fr.result.toString().split(',')[1]);
-				let report = await this.getDocument(pdfBase64);
-				this.loadFieldsReport(report);
-
-				if (this.baseReport != undefined && this.baseReport.reportNumber != this.report.reportNumber) {
-					this.reportsService.getReportBy(this.report.reportNumber).subscribe(report => {
-						this.removeReport();
-						this.notificationService.error("The report is already assigned to an exploration", "File upload failed");
-					}, () => {
-						this.notificationService.success("The file has the correct format", "File upload successfull");
-						this.state = STATE.FILE_LOADED;
-					});
-				} else {
-					this.notificationService.success("The file has the correct format", "File upload successfull");
-					this.state = STATE.FILE_LOADED;
-				}
-			}
-			fr.readAsDataURL(file);
-		}
-	}
-
 	public onPaste(event: Event): void {
 		if (navigator.clipboard) {
 			navigator.clipboard.readText()
@@ -202,6 +174,49 @@ export class ReportComponent implements OnInit, OnDestroy {
 				});
 		} else {
 			this.notificationService.error("The clipboard is not enabled", "Failed to access the clipboard")
+		}
+	}
+
+	public expandReport() {
+		if (document.getElementById("dataReport").className.includes("open")) {
+			document.getElementById("dataReport").className = document.getElementById("dataReport").className.replace(" open", "");
+			document.getElementById("expandControl").className = "las la-eye-slash la-lg";
+		} else {
+			document.getElementById("dataReport").className += " open";
+			document.getElementById("expandControl").className = "las la-eye la-lg";
+		}
+	}
+
+	public checkState(state: string) {
+		return this.state == EnumUtils.findKeyForValue(STATE, state);
+	}
+
+	public ngOnDestroy(): void {
+		this.subscriptionReport.unsubscribe();
+	}
+
+	private loadReport(file: File): void {
+		if (file != undefined) {
+			let fr = new FileReader();
+			fr.onload = async (e) => {
+				var pdfBase64 = atob(fr.result.toString().split(',')[1]);
+				let report = await this.getDocument(pdfBase64);
+				this.loadFieldsReport(report);
+
+				if (this.baseReport != undefined && this.baseReport.reportNumber != this.report.reportNumber) {
+					this.reportsService.getReportBy(this.report.reportNumber).subscribe(report => {
+						this.removeReport();
+						this.notificationService.error("The report is already assigned to an exploration", "File upload failed");
+					}, () => {
+						this.notificationService.success("The file has the correct format", "File upload successfull");
+						this.state = STATE.FILE_LOADED;
+					});
+				} else {
+					this.notificationService.success("The file has the correct format", "File upload successfull");
+					this.state = STATE.FILE_LOADED;
+				}
+			}
+			fr.readAsDataURL(file);
 		}
 	}
 
@@ -328,23 +343,5 @@ export class ReportComponent implements OnInit, OnDestroy {
 				return texts.join('');
 			});
 		});
-	}
-
-	public expandReport() {
-		if (document.getElementById("dataReport").className.includes("open")) {
-			document.getElementById("dataReport").className = document.getElementById("dataReport").className.replace(" open", "");
-			document.getElementById("expandControl").className = "las la-eye-slash la-lg";
-		} else {
-			document.getElementById("dataReport").className += " open";
-			document.getElementById("expandControl").className = "las la-eye la-lg";
-		}
-	}
-
-	public checkState(state: string) {
-		return this.state == EnumUtils.findKeyForValue(STATE, state);
-	}
-
-	public ngOnDestroy(): void {
-		this.subscriptionReport.unsubscribe();
 	}
 }

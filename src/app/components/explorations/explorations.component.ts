@@ -41,38 +41,28 @@ import FileSaver from 'file-saver';
 })
 export class ExplorationsComponent implements OnInit, AfterViewChecked {
 
-	private readonly formatDate: string = 'DD/MM/yyyy_HH:mm:ss';
-	public currentFormatDate: string = 'dd/MM/yyyy';
 	public readonly formatDateEs: string = 'dd/MM/yyyy';
 	public readonly formatDateEn: string = 'MM/dd/yyyy';
-	private _currentPage: number;
-
+	public currentFormatDate: string = 'dd/MM/yyyy';
 	public loggedUser: string;
-
 	public signTypes: SignType[];
 	public signTypesFilter: SignType[] = [];
 	public operator: string = "AND";
-
 	public explorations: Exploration[] = [];
 	public exploration: Exploration = new Exploration();
-
 	public paginationTotalItems: number;
 	public pageSize: number;
 	public pageChangeEvent = new Subject<string>();
 	public lastPage: number;
-
 	public deletingExploration: boolean = false;
 	public recoveringExploration: boolean = false;
-
 	public updateChart: Subject<void> = new Subject<void>();
-
 	public isdownloadingExploration: boolean = false;
 	public downloadingExplorations: boolean = false;
 	public downloadingSelectExplorations: boolean = false;
 	public selectToDownload: boolean = false;
 	public explorationDownloading: string = undefined;
 	public explorationsToDownload = new Map();
-
 	public initialDate;
 	public finalDate;
 	public options: any = {
@@ -115,6 +105,9 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		showDropdowns: true,
 		timePicker: false
 	};
+
+	private readonly formatDate: string = 'DD/MM/yyyy_HH:mm:ss';
+	private _currentPage: number;
 
 	constructor(public authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
@@ -160,17 +153,7 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		document.getElementsByClassName("cancelDate")[0].textContent = this.localizationService.translate("Cancel");
 	}
 
-	private getSignTypes() {
-		this.signTypesService.getSignTypes().subscribe(signTypes => {
-			this.signTypes = signTypes
-		}, error => {
-			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") +
-										   this.localizationService.translate(error.error),
-										   "Failed to retrieve sign types");
-		});
-	}
-
-	getPageExplorations() {
+	public getPageExplorations() {
 		let initialDate: Date = undefined;
 		let finalDate: Date = undefined;
 		if (this.initialDate != undefined) initialDate = this.initialDate.format(this.formatDate)
@@ -273,10 +256,6 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		}
 		this.currentPage = 1;
 		this.getPageExplorations();
-	}
-
-	private explorationSigns(exploration: Exploration): Sign[] {
-		return exploration.radiographs.map(radiograph => radiograph.signs.map(sign => sign)).reduce((acc, val) => acc.concat(val), []);
 	}
 
 	public isAdmin(): boolean {
@@ -429,14 +408,14 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 				zip.generateAsync({ type: "blob" }).then(content => {
 					FileSaver.saveAs(content, 'explorations.zip');
 					this.notificationService.success("Explorations downloaded successfully",
-														"Explorations downloaded");
+													 "Explorations downloaded");
 					this.selectToDownload = false;
 					this.downloadingExplorations = false;
 				});
 		}, error => {
 			this.notificationService.error(this.localizationService.translate("Error downloading the explorations. Reason: ") +
-											this.localizationService.translate(error.error),
-											"Failed to download the explorations");
+										   this.localizationService.translate(error.error),
+										   "Failed to download the explorations");
 			this.selectToDownload = false;
 		});
 	}
@@ -478,6 +457,20 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 			this.notificationService.error(this.localizationService.translate("Error downloading the exploration. Reason: ") +
 										   this.localizationService.translate(error.error),
 										   "Failed to download the exploration");
+		});
+	}
+
+	private explorationSigns(exploration: Exploration): Sign[] {
+		return exploration.radiographs.map(radiograph => radiograph.signs.map(sign => sign)).reduce((acc, val) => acc.concat(val), []);
+	}
+
+	private getSignTypes() {
+		this.signTypesService.getSignTypes().subscribe(signTypes => {
+			this.signTypes = signTypes
+		}, error => {
+			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") +
+										   this.localizationService.translate(error.error),
+										   "Failed to retrieve sign types");
 		});
 	}
 

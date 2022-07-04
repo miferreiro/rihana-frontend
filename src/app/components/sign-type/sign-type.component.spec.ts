@@ -21,7 +21,7 @@
 
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {SigntypeComponent} from './signtype.component';
+import {SigntypeComponent} from './sign-type.component';
 
 describe('SigntypeComponent', () => {
 	let component: SigntypeComponent;

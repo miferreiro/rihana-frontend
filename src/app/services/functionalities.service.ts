@@ -32,22 +32,21 @@ import {FunctionalityInfo} from "./entities/FunctionalityInfo";
 })
 export class FunctionalitiesService {
 
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
-	getFunctionalities(): Observable<Functionality[]> {
+	public getFunctionalities(): Observable<Functionality[]> {
 		return this.http.get<FunctionalityInfo[]>(`${environment.restApi}/functionality/`).pipe(
 		  	map(functionalities => functionalities.map(this.mapFunctionalityInfo.bind(this)))
 		);
 	}
 
-	getFunctionality(id: number): Observable<Functionality> {
+	public getFunctionality(id: number): Observable<Functionality> {
 		return this.http.get<FunctionalityInfo[]>(`${environment.restApi}/functionality/${id}`).pipe(
 			map(this.mapFunctionalityInfo.bind(this))
 		);
 	}
 
-	create(functionality: Functionality): Observable<Functionality> {
+	public create(functionality: Functionality): Observable<Functionality> {
 		const functionalityInfo = this.toFunctionalityInfo(functionality);
 
 		return this.http.post<FunctionalityInfo>(`${environment.restApi}/functionality`, functionalityInfo).pipe(
@@ -55,7 +54,7 @@ export class FunctionalitiesService {
 		);
 	}
 
-	editFunctionality(functionality: Functionality): Observable<Functionality> {
+	public editFunctionality(functionality: Functionality): Observable<Functionality> {
 		const functionalityInfo = this.toFunctionalityInfo(functionality);
 
 		return this.http.put<FunctionalityInfo>(`${environment.restApi}/functionality/${functionality.id}`, functionalityInfo).pipe(
@@ -63,7 +62,7 @@ export class FunctionalitiesService {
 		);
 	}
 
-	deleteFunctionality(id: number) {
+	public deleteFunctionality(id: number) {
 		return this.http.delete(`${environment.restApi}/functionality/${id}`);
 	}
 

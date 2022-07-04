@@ -35,12 +35,11 @@ export class FunctionalityComponent implements OnInit {
 
 	@ViewChild('closeBtn') closeBtn: ElementRef;
 
-	creatingFunctionality = false;
-	editingFunctionality = false;
-	deletingFunctionality = false;
-	functionality: Functionality = new Functionality();
-
-	functionalities: Functionality[] = [];
+	public creatingFunctionality = false;
+	public editingFunctionality = false;
+	public deletingFunctionality = false;
+	public functionality: Functionality = new Functionality();
+	public functionalities: Functionality[] = [];
 
 	constructor(public authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
@@ -51,7 +50,7 @@ export class FunctionalityComponent implements OnInit {
 		this.getFunctionalities();
 	}
 
-	getFunctionalities() {
+	public getFunctionalities() {
 		this.functionalitiesService.getFunctionalities().subscribe(functionalities => {
 			this.functionalities = functionalities;
 		}, error => {
@@ -61,7 +60,7 @@ export class FunctionalityComponent implements OnInit {
 		});
 	}
 
-	save() {
+	public save() {
 		if (this.creatingFunctionality) {
 			this.functionalitiesService.create(this.functionality).subscribe(newFunctionality => {
 				this.getFunctionalities();
@@ -87,7 +86,7 @@ export class FunctionalityComponent implements OnInit {
 		}
 	}
 
-	cancel() {
+	public cancel() {
 		this.creatingFunctionality = false;
 		this.editingFunctionality = false;
 		this.deletingFunctionality = false;
@@ -95,13 +94,13 @@ export class FunctionalityComponent implements OnInit {
 		this.closeBtn.nativeElement.click();
 	}
 
-	edit(id: number) {
+	public edit(id: number) {
 		this.editingFunctionality = true;
 		this.functionality = new Functionality();
 		Object.assign(this.functionality, this.functionalities.find(functionality => functionality.id === id));
 	}
 
-	delete(id: number | string) {
+	public delete(id: number | string) {
 		this.functionalitiesService.deleteFunctionality(Number(id)).subscribe(() => {
 			const index = this.functionalities.indexOf(
 				this.functionalities.find(functionality => functionality.id === Number(id))
@@ -117,7 +116,7 @@ export class FunctionalityComponent implements OnInit {
 		this.cancel();
 	}
 
-	remove(id: number) {
+	public remove(id: number) {
 		this.deletingFunctionality = true;
 		this.functionality = this.functionalities.find(functionality => functionality.id === id);
 	}

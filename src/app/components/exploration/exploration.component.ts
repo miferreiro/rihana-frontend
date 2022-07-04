@@ -41,15 +41,13 @@ import {EnumUtils} from '../../utils/enum.utils';
 export class ExplorationComponent implements OnInit {
 
 	readonly return: string = 'explorations';
-	public loggedUser: string;
 
+	public loggedUser: string;
 	public exploration: Exploration = new Exploration();
 	public typeExploration: string;
 	public SEXValues: SEX[];
-
 	public messageOverlay: string = "Loading the exploration";
 	public showOverlay: boolean = true;
-
 	public isEditing: boolean = false;
 
 	constructor(private router: Router,
@@ -114,53 +112,9 @@ export class ExplorationComponent implements OnInit {
 
 	public saveExploration(): void {
 		if (!this.isEditing) {
-			if (this.exploration.patient.patientID === null ||
-				this.exploration.patient.patientID === "" ||
-				this.exploration.report.reportNumber === null) {
-				this.notificationService.warning("Upload a report", "Not possible create an exploration");
-			} else if (this.exploration.radiographs.length == 0) {
-				this.notificationService.warning("Upload a radiograph", "Not possible create an exploration");
-			} else if (this.typeExploration == 'PA-LAT' && this.exploration.radiographs.length < 2) {
-				this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
-												 "Not possible create an exploration");
-			} else {
-				this.messageOverlay = "Saving the exploration";
-				this.showOverlay = true;
-				this.explorationsService.createExploration(this.exploration).subscribe(exploration => {
-					this.explorationsService.setExplorationCreated(true);
-					this.showOverlay = false;
-					this.router.navigateByUrl(this.return);
-				}, error => {
-					this.showOverlay = false;
-					this.notificationService.error(this.localizationService.translate("The exploration cannot be created. Reason: ") +
-												   this.localizationService.translate(error.error),
-												   "Not possible create an exploration");
-				});
-			}
+			this.saveNewExploration();
 		} else {
-			if (this.exploration.patient.patientID === null ||
-				this.exploration.patient.patientID === "" ||
-				this.exploration.report.reportNumber === null) {
-				this.notificationService.warning("Upload a report", "Not possible edit the exploration");
-			} else if (this.exploration.radiographs.length == 0) {
-				this.notificationService.warning("Upload a radiograph", "Not possible edit the exploration");
-			} else if (this.typeExploration == 'PA-LAT' && this.exploration.radiographs.length < 2) {
-				this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
-												 "Not possible edit the exploration");
-			} else {
-				this.messageOverlay = "Saving the changes made";
-				this.showOverlay = true;
-				this.explorationsService.editExploration(this.exploration).subscribe(exploration => {
-					this.explorationsService.setExplorationEdited(true);
-					this.showOverlay = false;
-					this.router.navigateByUrl(this.return);
-				}, error => {
-					this.showOverlay = false;
-					this.notificationService.error(this.localizationService.translate("The exploration cannot be edited. Reason: ") +
-												   this.localizationService.translate(error.error),
-												   "Not possible edit the exploration");
-				});
-			}
+			this.saveExistentExploration();
 		}
 	}
 
@@ -175,5 +129,57 @@ export class ExplorationComponent implements OnInit {
 
 	public setTypeExploration(typeExploration: string): void {
 		this.typeExploration = typeExploration;
+	}
+
+	private saveNewExploration() {
+		if (this.exploration.patient.patientID === null ||
+			this.exploration.patient.patientID === "" ||
+			this.exploration.report.reportNumber === null) {
+			this.notificationService.warning("Upload a report", "Not possible create an exploration");
+		} else if (this.exploration.radiographs.length == 0) {
+			this.notificationService.warning("Upload a radiograph", "Not possible create an exploration");
+		} else if (this.typeExploration == 'PA-LAT' && this.exploration.radiographs.length < 2) {
+			this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
+											 "Not possible create an exploration");
+		} else {
+			this.messageOverlay = "Saving the exploration";
+			this.showOverlay = true;
+			this.explorationsService.createExploration(this.exploration).subscribe(exploration => {
+				this.explorationsService.setExplorationCreated(true);
+				this.showOverlay = false;
+				this.router.navigateByUrl(this.return);
+			}, error => {
+				this.showOverlay = false;
+				this.notificationService.error(this.localizationService.translate("The exploration cannot be created. Reason: ") +
+											   this.localizationService.translate(error.error),
+											   "Not possible create an exploration");
+			});
+		}
+	}
+
+	private saveExistentExploration() {
+		if (this.exploration.patient.patientID === null ||
+			this.exploration.patient.patientID === "" ||
+			this.exploration.report.reportNumber === null) {
+			this.notificationService.warning("Upload a report", "Not possible edit the exploration");
+		} else if (this.exploration.radiographs.length == 0) {
+			this.notificationService.warning("Upload a radiograph", "Not possible edit the exploration");
+		} else if (this.typeExploration == 'PA-LAT' && this.exploration.radiographs.length < 2) {
+			this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
+											 "Not possible edit the exploration");
+		} else {
+			this.messageOverlay = "Saving the changes made";
+			this.showOverlay = true;
+			this.explorationsService.editExploration(this.exploration).subscribe(exploration => {
+				this.explorationsService.setExplorationEdited(true);
+				this.showOverlay = false;
+				this.router.navigateByUrl(this.return);
+			}, error => {
+				this.showOverlay = false;
+				this.notificationService.error(this.localizationService.translate("The exploration cannot be edited. Reason: ") +
+											   this.localizationService.translate(error.error),
+											   "Not possible edit the exploration");
+			});
+		}
 	}
 }

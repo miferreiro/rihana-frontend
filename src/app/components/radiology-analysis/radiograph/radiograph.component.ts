@@ -48,32 +48,27 @@ export enum STATE {
 })
 export class RadiographComponent implements OnInit {
 
-	private readonly extensionValid = ['png', 'jpg', 'jpeg'];
-	public STATEValues: STATE[];
+	@Input() typeExploration: string;
 
 	@Output() radiographHandler = new EventEmitter<Radiograph>();
-	@Input() typeExploration: string;
+
+	public STATEValues: STATE[];
 	public _radiograph: Radiograph;
-
-	private subscription: Subscription;
-
 	public isRadiographLoaded: boolean;
-
-	private signTypes: SignType[];
 	public signTypesRadiograph: SignType[];
-
 	public readonly controlRadiograph = new FileUploadControl(
 		{listVisible: true, discardInvalid: true, multiple: false},
 		[FileUploadValidators.filesLimit(2)]
 	);
-
 	public uploadedFile: BehaviorSubject<string> = new BehaviorSubject(null);
-
 	public isLoadingRadiograph: boolean = false;
 	public showImageDialog: boolean = false;
 	public watchMode: boolean;
-
 	public state: STATE = STATE.NOT_LOADED;
+
+	private readonly extensionValid = ['png', 'jpg', 'jpeg'];
+	private subscription: Subscription;
+	private signTypes: SignType[];
 
 	constructor(public localizationService: LocalizationService,
 				private notificationService: NotificationService,
@@ -163,36 +158,6 @@ export class RadiographComponent implements OnInit {
 		this.state = STATE.NOT_LOADED;
 	}
 
-	private loadRadiograph(file: File): BehaviorSubject<string> {
-		let uploadedFile: BehaviorSubject<string> = new BehaviorSubject(null);
-		if (file != undefined) {
-			const fr = new FileReader();
-			fr.onload = async (e) =>  {
-				uploadedFile.next(e.target.result.toString());
-				if (this.radiograph == undefined) {
-					this.radiograph = new Radiograph();
-					this.radiograph.type = this.typeExploration;
-					this.radiograph.source = e.target.result.toString();
-					let signInitial = new Sign();
-					signInitial.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
-
-					this.radiograph.signs = [signInitial];
-
-					this.isRadiographLoaded = true;
-
-					this.radiographHandler.emit(this.radiograph);
-					this.state = STATE.RADIOGRAPH_LOADED;
-				}
-				this.updateSignTypesRadiograph();
-			};
-			fr.readAsDataURL(file);
-		} else {
-			uploadedFile.next(null);
-			this.radiographHandler.emit(null);
-		}
-		return uploadedFile;
-	}
-
 	public onPaste(event: any): any {
 		if (navigator.clipboard) {
 			let anyNavigator: any;
@@ -262,6 +227,36 @@ export class RadiographComponent implements OnInit {
 										   this.localizationService.translate(error.error),
 										   "Failed to retrieve sign types");
 		});
+	}
+
+	private loadRadiograph(file: File): BehaviorSubject<string> {
+		let uploadedFile: BehaviorSubject<string> = new BehaviorSubject(null);
+		if (file != undefined) {
+			const fr = new FileReader();
+			fr.onload = async (e) =>  {
+				uploadedFile.next(e.target.result.toString());
+				if (this.radiograph == undefined) {
+					this.radiograph = new Radiograph();
+					this.radiograph.type = this.typeExploration;
+					this.radiograph.source = e.target.result.toString();
+					let signInitial = new Sign();
+					signInitial.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
+
+					this.radiograph.signs = [signInitial];
+
+					this.isRadiographLoaded = true;
+
+					this.radiographHandler.emit(this.radiograph);
+					this.state = STATE.RADIOGRAPH_LOADED;
+				}
+				this.updateSignTypesRadiograph();
+			};
+			fr.readAsDataURL(file);
+		} else {
+			uploadedFile.next(null);
+			this.radiographHandler.emit(null);
+		}
+		return uploadedFile;
 	}
 
 	private b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
