@@ -64,27 +64,52 @@ export class ExplorationComponent implements OnInit {
 
 		this.isEditing = this.explorationsService.getEditingExploration();
 		if (this.isEditing || this.explorationsService.getExplorationId() != undefined) {
-			this.explorationsService.getExploration(this.explorationsService.getExplorationId(), true).subscribe(exploration => {
-				this.exploration = exploration;
-				this.messageOverlay = "Loading the exploration";
-				this.showOverlay = false;
-			}, error => {
-				this.exploration.explorationDate = new Date();
-				this.exploration.user = new Users();
-				this.exploration.user.login = this.loggedUser;
-				this.exploration.report = new Report();
-				this.exploration.patient = new Patient();
-				this.exploration.patient.patientID = null;
-				this.exploration.patient.birthdate = null;
-				this.exploration.patient.sex = null;
-				this.exploration.radiographs = [];
-				this.typeExploration = 'PA-LAT';
-				this.messageOverlay = "Loading the exploration";
-				this.showOverlay = false;
-				this.notificationService.error(this.localizationService.translate("The exploration cannot be loaded. Reason: ") +
-											   this.localizationService.translate(error.error),
-											   "Not possible load the exploration");
-			});
+
+			if (this.explorationsService.getDeletedExploration()) {
+				this.explorationsService.getExplorationDeleted(this.explorationsService.getExplorationId(), true).subscribe(exploration => {
+					this.exploration = exploration;
+					this.messageOverlay = "Loading the exploration";
+					this.showOverlay = false;
+				}, error => {
+					this.exploration.explorationDate = new Date();
+					this.exploration.user = new Users();
+					this.exploration.user.login = this.loggedUser;
+					this.exploration.report = new Report();
+					this.exploration.patient = new Patient();
+					this.exploration.patient.patientID = null;
+					this.exploration.patient.birthdate = null;
+					this.exploration.patient.sex = null;
+					this.exploration.radiographs = [];
+					this.typeExploration = 'PA-LAT';
+					this.messageOverlay = "Loading the exploration";
+					this.showOverlay = false;
+					this.notificationService.error(this.localizationService.translate("The exploration cannot be loaded. Reason: ") +
+												   this.localizationService.translate(error.error),
+												   "Not possible load the exploration");
+				});
+			} else {
+				this.explorationsService.getExploration(this.explorationsService.getExplorationId(), true).subscribe(exploration => {
+					this.exploration = exploration;
+					this.messageOverlay = "Loading the exploration";
+					this.showOverlay = false;
+				}, error => {
+					this.exploration.explorationDate = new Date();
+					this.exploration.user = new Users();
+					this.exploration.user.login = this.loggedUser;
+					this.exploration.report = new Report();
+					this.exploration.patient = new Patient();
+					this.exploration.patient.patientID = null;
+					this.exploration.patient.birthdate = null;
+					this.exploration.patient.sex = null;
+					this.exploration.radiographs = [];
+					this.typeExploration = 'PA-LAT';
+					this.messageOverlay = "Loading the exploration";
+					this.showOverlay = false;
+					this.notificationService.error(this.localizationService.translate("The exploration cannot be loaded. Reason: ") +
+												   this.localizationService.translate(error.error),
+												   "Not possible load the exploration");
+				});
+			}
 		} else {
 			this.exploration.explorationDate = new Date();
 			this.exploration.user = new Users();

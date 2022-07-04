@@ -214,7 +214,8 @@
 					</div>
 					<div class="card-footer">
 						<div class="btn-group" role="group">
-							<button title="{{'Edit' | translate}}" class="btn" (click)="editExploration(exploration)">
+							<button *ngIf="!exploration.deleted" title="{{'Edit' | translate}}" class="btn"
+									(click)="editExploration(exploration)">
 								<i class="las la-edit la-lg"></i>
 							</button>
 							<button title="{{'Show' | translate}}" class="btn border-start border-end"

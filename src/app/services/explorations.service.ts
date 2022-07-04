@@ -55,6 +55,7 @@ export class ExplorationsService {
 
 	private explorationId: string;
 	private editingExploration: boolean = false;
+	private deletedExploration: boolean = false;
 
 	constructor(private http: HttpClient,
 				private patientsService: PatientsService,
@@ -94,6 +95,14 @@ export class ExplorationsService {
 		this.editingExploration = editingExploration;
 	}
 
+	public getDeletedExploration(): boolean {
+		return this.deletedExploration;
+	}
+
+	public setDeletedExploration(deletedExploration: boolean): void {
+		this.deletedExploration = deletedExploration;
+	}
+
 	public getExploration(uuid: string, source: boolean = false): Observable<Exploration> {
 		return this.http.get<ExplorationInfo>(`${environment.restApi}/exploration/${uuid}`)
 			.pipe(
@@ -119,6 +128,33 @@ export class ExplorationsService {
 						)
 					)
 				)
+	}
+
+	getExplorationDeleted(uuid: string, source: boolean = false): Observable<Exploration> {
+		return this.http.get<ExplorationInfo>(`${environment.restApi}/exploration/recover/${uuid}`)
+		.pipe(
+			concatMap(explorationInfo =>
+				forkJoin(
+					this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id),
+					this.reportsService.getReport((<IdAndUri>explorationInfo.report).id),
+					forkJoin(explorationInfo.radiographs.map(radiograph => {
+						return this.radiographsService.getRadiograph((<IdAndUri>radiograph).id, source).pipe(
+							map(radiograph => radiograph)
+						);
+					}))
+				)
+				.pipe(
+					map(patientReportAndRadiographs => {
+						return this.mapExplorationInfo(
+							explorationInfo,
+							explorationInfo.user,
+							patientReportAndRadiographs[0],
+							patientReportAndRadiographs[1],
+							patientReportAndRadiographs[2])
+					})
+					)
+				)
+			)
 	}
 
 	public getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], operator: string,

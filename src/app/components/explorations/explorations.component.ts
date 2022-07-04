@@ -137,6 +137,8 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 		this.getSignTypes();
 		this.getPageExplorations();
 		this.explorationsService.setExplorationId(undefined);
+		this.explorationsService.setDeletedExploration(false);
+		this.explorationsService.setEditingExploration(false);
 	}
 
 	ngAfterViewChecked() {
@@ -269,6 +271,11 @@ export class ExplorationsComponent implements OnInit, AfterViewChecked {
 	public infoExploration(exploration: Exploration) {
 		this.explorationsService.setExplorationId(exploration.id);
 		this.explorationsService.setEditingExploration(false);
+		if (exploration.deleted != undefined) {
+			this.explorationsService.setDeletedExploration(exploration.deleted);
+		} else {
+			this.explorationsService.setDeletedExploration(false);
+		}
 		this.router.navigate(['/exploration']);
 	}
 
