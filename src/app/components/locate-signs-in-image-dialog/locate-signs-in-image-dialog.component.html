@@ -94,7 +94,7 @@
 							</div>
 							<div class="row">
 								<ng-container *ngFor="let signType of listSignTypes()">
-									<div *ngIf="signType.code != 'NOF' && signType.code != 'OTH' && signsType(signType).length > 0" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
+									<div *ngIf="signType.code != getDefaultSign() && signType.code != 'OTH' && signsType(signType).length > 0" class="p-3 col-custom-6 col-xxl-12 col-lg-6 col-md-12 col-sm-12">
 										<div class="card">
 											<div class="card-header-custom">
 												<div class="header d-flex justify-content-between">
@@ -168,7 +168,7 @@
 			<div class="modal-body">
 				<ul class="list-group list-group-flush">
 					<ng-container *ngFor="let signType of listSignTypes()">
-						<li *ngIf="signType.code != 'NOF' && signType.code != 'OTH'" (click)="addSign(signType)" class="list-group-item">
+						<li *ngIf="signType.code != getDefaultSign() && signType.code != 'OTH'" (click)="addSign(signType)" class="list-group-item">
 							{{signType.name | translate}}
 						</li>
 					</ng-container>

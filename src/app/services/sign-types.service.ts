@@ -33,9 +33,15 @@ import {SignTypeInfo} from "./entities/SignTypeInfo";
 })
 export class SignTypesService {
 
-  	constructor(private http: HttpClient) {}
+	private defaultSign: string = "NOP";
 
-	  public getSignTypes(): Observable<SignType[]> {
+	constructor(private http: HttpClient) {}
+
+	public getDefaultSign(): string {
+		return this.defaultSign;
+	}
+
+	public getSignTypes(): Observable<SignType[]> {
 		return this.http.get<SignInfo[]>(`${environment.restApi}/sign/type`).pipe(
 			map((signTypes) => signTypes.map(this.mapSignTypeInfo.bind(this)))
 		);

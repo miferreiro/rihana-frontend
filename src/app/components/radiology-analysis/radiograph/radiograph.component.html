@@ -125,7 +125,7 @@
 	<div class="row signs">
 		<ul>
 			<li *ngFor="let signType of signTypesRadiograph" class="col-lg-4 col-md-6 col-12 align-self-center">
-				<div *ngIf="signType.code != 'NOF' && signType.code != 'OTH'" class="signType my-1"
+				<div *ngIf="signType.code != getDefaultSign() && signType.code != 'OTH'" class="signType my-1"
 					 [ngStyle]="{'border-color': signType.primaryColor}">
 					<span>{{signType.name | translate}}</span>
 					<span class="numSignType badge rounded-pill"
@@ -133,7 +133,7 @@
 							{{getNumSignType(signType)}}
 					</span>
 				</div>
-				<div *ngIf="signType.code == 'NOF' || signType.code == 'OTH'" class="signType my-1"
+				<div *ngIf="signType.code == getDefaultSign() || signType.code == 'OTH'" class="signType my-1"
 				   [ngStyle]="{'border-color': signType.primaryColor}">
 					{{signType.name | translate}}
 				</div>

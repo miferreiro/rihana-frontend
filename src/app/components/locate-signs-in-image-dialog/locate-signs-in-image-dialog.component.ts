@@ -54,7 +54,7 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 	public contrast: string;
 	public signTypes: SignType[];
 	public newSign: Sign;
-	public signNoFindings: Sign;
+	public signDefault: Sign;
 	public other: boolean;
 
 	private _signs: Sign[];
@@ -72,8 +72,8 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 
 		this.subscription = this.signTypesService.getSignTypes().subscribe(signTypes => {
 			this.signTypes = signTypes;
-			this.signNoFindings = new Sign();
-			this.signNoFindings.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
+			this.signDefault = new Sign();
+			this.signDefault.type = this.signTypes.filter(signType => signType.code.includes(this.getDefaultSign()))[0];
 		}, error => {
 			this.notificationService.error(this.localizationService.translate("Error retrieving the sign types. Reason: ") +
 										   this.localizationService.translate(error.error),
@@ -133,7 +133,7 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 	}
 
 	public addSign(signType: SignType): void {
-		if (this.signs.filter(sing => sing.type.code == "NOF").length > 0) {
+		if (this.signs.filter(sing => sing.type.code == this.getDefaultSign()).length > 0) {
 			this.signs = [];
 		}
 
@@ -154,7 +154,7 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 	public removeSignType(signType: SignType): void {
 		this.signs = this.signs.filter(sign => sign.type.code !== signType.code);
 		if (this.signs.length == 0) {
-			this.signs = [this.signNoFindings];
+			this.signs = [this.signDefault];
 		}
 	}
 
@@ -173,7 +173,7 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 	public removeSign(sign: Sign): void {
 		this.signs = this.signs.filter(s => s !== sign);
 		if (this.signs.length == 0) {
-			this.signs = [this.signNoFindings];
+			this.signs = [this.signDefault];
 		}
 	}
 
@@ -207,7 +207,7 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 	}
 
 	public countSignDetected(): number {
-		return this.signs.filter(sign => sign.type.code != 'NOF' && sign.type.code != 'OTH').length;
+		return this.signs.filter(sign => sign.type.code != this.getDefaultSign() && sign.type.code != 'OTH').length;
 	}
 
 	public checkOther(event: any): void {
@@ -216,7 +216,7 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 			let otherSigns = new Sign();
 			otherSigns.type = this.signTypes.filter(signType => signType.code.includes("OTH"))[0];
 
-			if (this.signs.filter(sign => sign.type.code.includes("NOF")).length == 1) {
+			if (this.signs.filter(sign => sign.type.code.includes(this.getDefaultSign())).length == 1) {
 				this.signs = [otherSigns];
 			} else {
 				this.signs.push(otherSigns);
@@ -225,9 +225,13 @@ export class LocateSignsInImageDialogComponent implements OnInit, OnDestroy {
 			this.other = false;
 			this.signs = this.signs.filter(sign => !sign.type.code.includes("OTH"));
 			if (this.signs.length == 0) {
-				this.signs = [this.signNoFindings];
+				this.signs = [this.signDefault];
 			}
 		}
+	}
+
+	public getDefaultSign(): string {
+		return this.signTypesService.getDefaultSign();
 	}
 
 	ngOnDestroy(): void {

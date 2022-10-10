@@ -229,6 +229,10 @@ export class RadiographComponent implements OnInit {
 		});
 	}
 
+	public getDefaultSign(): string {
+		return this.signTypesService.getDefaultSign();
+	}
+
 	private loadRadiograph(file: File): BehaviorSubject<string> {
 		let uploadedFile: BehaviorSubject<string> = new BehaviorSubject(null);
 		if (file != undefined) {
@@ -240,7 +244,7 @@ export class RadiographComponent implements OnInit {
 					this.radiograph.type = this.typeExploration;
 					this.radiograph.source = e.target.result.toString();
 					let signInitial = new Sign();
-					signInitial.type = this.signTypes.filter(signType => signType.code.includes("NOF"))[0];
+					signInitial.type = this.signTypes.filter(signType => signType.code.includes(this.getDefaultSign()))[0];
 
 					this.radiograph.signs = [signInitial];
 
