@@ -24,6 +24,25 @@
 		<h1 *ngIf="exploration.title != undefined || isEditing" class="h2 text-center fw-bold">{{exploration.title}}</h1>
 		<h1 *ngIf="exploration.title == undefined" class="h2 text-center fw-bold">{{'Creating an exploration' | translate}}</h1>
 	</div>
+	<div *ngIf="exploration.explorationDate != undefined" class="row mt-4 mb-4">
+		<div class="row align-items-center">
+			<div class="col-xxl-6 col-12">
+				<div class="row source-title">
+					<h2 class="h3 fw-bold">Source</h2>
+				</div>
+			</div>
+			<div class="col-xxl-6 col-12">
+				<form class ="row text-center" action="">
+					<div class="col-6">
+						<input type="radio" name="source" value="SERGAS" (click)="setSergasSource()" [checked]="exploration.source === 'SERGAS'" [disabled]="isDisabled()"> SERGAS
+					</div>
+					<div class="col-6">
+						<input type="radio" name="source" value="PADCHEST" (click)="setPadchestSource()" [checked]="exploration.source === 'PADCHEST'" [disabled]="isDisabled()"> PADCHEST
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 	<app-report *ngIf="exploration.explorationDate != undefined" [exploration]="exploration" (reportEvent)="reportHandler($event)"></app-report>
 	<app-radiology-analysis *ngIf="exploration.explorationDate != undefined" [exploration]="exploration" [reportFields]="exploration.report" (radiographs)="radiographsHandler($event)"
 		(typeExploration)=setTypeExploration($event)></app-radiology-analysis>

@@ -25,6 +25,7 @@ import {Report} from "../../models/Report";
 
 export interface NewExplorationInfo {
 	explorationDate: Date;
+	source: string;
 	user: string;
 	patient: NewPatientInfo;
 	report: Report;

@@ -195,8 +195,8 @@
 							   [checked]="isCardChecked(exploration.id)">
 						<small class="text-capitalize card-category">{{getRadiographType(exploration)}}</small>
 						<h3 class="card-title h3">{{exploration.title}}</h3>
-						<h4 *ngIf="!isAdmin() && !isSupervisor()"class="card-subtitle h6 text-muted">{{exploration.explorationDate | date: currentFormatDate}}</h4>
-						<h4 *ngIf="isAdmin() || isSupervisor()" class="card-subtitle h6 text-muted"> <span class="text-capitalize">{{'by' | translate}} </span> <span class="text-capitalize">{{exploration.user}}</span>, {{'at' | translate}} {{exploration.explorationDate | date: currentFormatDate}}</h4>
+						<h4 *ngIf="!isAdmin() && !isSupervisor()"class="card-subtitle h6 text-muted">{{exploration.explorationDate | date: currentFormatDate}} {{'from' | translate}} {{exploration.source}}</h4>
+						<h4 *ngIf="isAdmin() || isSupervisor()" class="card-subtitle h6 text-muted"> <span class="text-capitalize">{{'by' | translate}} </span> <span class="text-capitalize">{{exploration.user}}</span>, {{'at' | translate}} {{exploration.explorationDate | date: currentFormatDate}}, {{'from' | translate}} {{exploration.source}}</h4>
 					</div>
 					<div class="row card-body mr-0 ml-0">
 						<div *ngIf="getExplorationSigns(exploration).length != 0" class="row d-flex">

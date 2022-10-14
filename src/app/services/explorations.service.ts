@@ -37,7 +37,7 @@ import {NewSignInfo} from './entities/NewSignInfo';
 import {PatientsService} from './patients.service';
 import {ReportsService} from './reports.service';
 import {RadiographsService} from './radiographs.service';
-import {Exploration} from '../models/Exploration';
+import {Exploration, Source} from '../models/Exploration';
 import {Patient, SEX} from '../models/Patient';
 import {Radiograph} from '../models/Radiograph';
 import {PerformedExploration, Report, RequestedExploration} from '../models/Report';
@@ -130,7 +130,7 @@ export class ExplorationsService {
 				)
 	}
 
-	getExplorationDeleted(uuid: string, source: boolean = false): Observable<Exploration> {
+	public getExplorationDeleted(uuid: string, source: boolean = false): Observable<Exploration> {
 		return this.http.get<ExplorationInfo>(`${environment.restApi}/exploration/recover/${uuid}`)
 		.pipe(
 			concatMap(explorationInfo =>
@@ -266,6 +266,7 @@ export class ExplorationsService {
 				id: explorationInfo.id,
 				title: explorationInfo.title,
 				explorationDate: explorationInfo.explorationDate,
+				source: Source[explorationInfo.source],
 				user: user,
 				patient: patient,
 				report: report,
@@ -277,6 +278,7 @@ export class ExplorationsService {
 				id: explorationInfo.id,
 				title: explorationInfo.title,
 				explorationDate: explorationInfo.explorationDate,
+				source: Source[explorationInfo.source],
 				user: user,
 				patient: patient,
 				report: report,
@@ -296,6 +298,7 @@ export class ExplorationsService {
 		return {
 			id: exploration.id,
 			explorationDate: exploration.explorationDate,
+			source: exploration.source,
 			user: exploration.user.login,
 			patient: patient,
 			report: report,
@@ -313,6 +316,7 @@ export class ExplorationsService {
 
 		return {
 			explorationDate: exploration.explorationDate,
+			source: exploration.source,
 			user: exploration.user.login,
 			patient: patient,
 			report: report,

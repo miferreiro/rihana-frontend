@@ -26,6 +26,7 @@ import {NewReportInfo} from "./NewReportInfo";
 export interface EditExplorationInfo {
 	id: string;
 	explorationDate: Date;
+	source: string;
 	user: string;
 	patient: NewPatientInfo;
 	report: NewReportInfo;

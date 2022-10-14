@@ -28,9 +28,15 @@ export class Exploration {
 	id: string;
 	title: string;
 	explorationDate: Date;
+	source: Source;
 	user: Users;
 	patient: Patient;
 	report: Report;
 	radiographs: Radiograph[];
 	deleted?: boolean;
+}
+
+export enum Source {
+	SERGAS = 'SERGAS',
+	PADCHEST = 'PADCHEST'
 }

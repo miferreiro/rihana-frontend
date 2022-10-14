@@ -19,6 +19,26 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
+.row {
+	--bs-gutter-x: 0 !important;
+}
+
+.h3 {
+	width: fit-content;
+	line-height: inherit;
+}
+
+@media(max-width: 1399px) {
+	.h3 {
+		margin: auto;
+		text-align: center;
+	}
+}
+
+.source-title {
+	justify-content: flex-start!important;
+}
+
 i {
 	font-size: 1.5rem;
 }
@@ -31,7 +51,7 @@ footer {
 	z-index: 999;
 }
 
-input {
+app-report > input, app-radiology-analysis > input {
 	flex: 0 1 auto;
 	margin-left: 0;
 	margin-right: .5rem;
@@ -57,25 +77,25 @@ input {
 	overflow: visible;
 }
 
-input[type=date] {
+app-report > input[type=date], app-radiology-analysis > input[type=date] {
 	border: none;
 }
 
-input:focus-visible {
+app-report > input:focus-visible, app-radiology-analysis > input:focus-visible {
 	outline-offset: 0px;
 }
 
-input[type=date]:focus-visible {
+app-report > input[type=date]:focus-visible, app-radiology-analysis > input[type=date]:focus-visible {
 	border: none;
 }
 
-input:focus {
+app-report > input:focus, app-radiology-analysis > input:focus {
 	border-bottom: 1px solid #0094d2;
 	background-size: 100% 100%;
 	outline: 0;
 }
 
-input[type=date]:focus {
+app-report > input[type=date]:focus, app-radiology-analysis > input[type=date]:focus {
 	border: none;
 	background: none;
 }

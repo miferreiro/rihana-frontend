@@ -154,6 +154,7 @@
 	"Copy color to clipboard": "Copiar a cor ao portapapeis",
 	"by": "por",
 	"at": "en",
+	"from": "del",
 	"Exploration recovered": "Exploración recuperada",
 	"Exploration recovered successfully": "Exploración recuperada con éxito",
 	"Sorry, an error has occurred. Requested page not found!": "Sentímolo, produciuse un erro. Non se atopou a páxina solicitada",
@@ -347,5 +348,6 @@
 	"Selected explorations downloaded successfully": "Exploracións seleccionadas descargadas con éxito",
 	"Select explorations": "Escoller exploracións",
 	"Selected explorations": "Exploracións seleccionadas",
-	"Downloading": "Descargando"
+	"Downloading": "Descargando",
+	"Source": "Orixe"
 }

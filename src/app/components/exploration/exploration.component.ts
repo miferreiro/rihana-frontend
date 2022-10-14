@@ -25,7 +25,7 @@ import {NotificationService} from '../../modules/notification/services/notificat
 import {LocalizationService} from '../../modules/internationalization/localization.service';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ExplorationsService} from '../../services/explorations.service';
-import {Exploration} from '../../models/Exploration';
+import {Exploration, Source} from '../../models/Exploration';
 import {Radiograph} from '../../models/Radiograph';
 import {Report} from '../../models/Report';
 import {Patient, SEX} from '../../models/Patient';
@@ -50,6 +50,9 @@ export class ExplorationComponent implements OnInit {
 	public showOverlay: boolean = true;
 	public isEditing: boolean = false;
 
+	public sources = Source;
+	public keys = Object.keys; 	// to show the value of the enum
+
 	constructor(private router: Router,
 				private authenticationService: AuthenticationService,
 				private notificationService: NotificationService,
@@ -72,6 +75,7 @@ export class ExplorationComponent implements OnInit {
 					this.showOverlay = false;
 				}, error => {
 					this.exploration.explorationDate = new Date();
+					this.exploration.source = Source.PADCHEST;
 					this.exploration.user = new Users();
 					this.exploration.user.login = this.loggedUser;
 					this.exploration.report = new Report();
@@ -94,6 +98,7 @@ export class ExplorationComponent implements OnInit {
 					this.showOverlay = false;
 				}, error => {
 					this.exploration.explorationDate = new Date();
+					this.exploration.source = Source.PADCHEST;
 					this.exploration.user = new Users();
 					this.exploration.user.login = this.loggedUser;
 					this.exploration.report = new Report();
@@ -112,6 +117,7 @@ export class ExplorationComponent implements OnInit {
 			}
 		} else {
 			this.exploration.explorationDate = new Date();
+			this.exploration.source = Source.PADCHEST;
 			this.exploration.user = new Users();
 			this.exploration.user.login = this.loggedUser;
 			this.exploration.report = new Report();
@@ -154,6 +160,18 @@ export class ExplorationComponent implements OnInit {
 
 	public setTypeExploration(typeExploration: string): void {
 		this.typeExploration = typeExploration;
+	}
+
+	public setSergasSource(): void {
+		this.exploration.source = Source.SERGAS;
+	}
+
+	public setPadchestSource(): void {
+		this.exploration.source = Source.PADCHEST;
+	}
+
+	public isDisabled(): boolean {
+		return !this.isEditing && this.explorationsService.getExplorationId() != undefined;
 	}
 
 	private saveNewExploration() {

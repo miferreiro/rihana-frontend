@@ -26,6 +26,7 @@ export interface ExplorationInfo {
 	id: string;
 	title: string;
 	explorationDate: Date;
+	source: string;
 	user: Users;
 	patient: string | IdAndUri;
 	report: string | IdAndUri;
