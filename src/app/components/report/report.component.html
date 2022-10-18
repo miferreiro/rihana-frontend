@@ -173,12 +173,13 @@
 				</p>
 			</div>
 			<div class="col-md-3 col-sm-4 col-xs-12">
-				<p class="fw-bold">{{'Admitted' | translate}}</p>
+				<p class="fw-bold">{{report.hasOwnProperty("status") ? report.status : ""}}</p>
+
 			</div>
 			<div class="col-md-3 col-sm-4 col-xs-12">
-				<p>
+				<p *ngIf="report.hasOwnProperty('bed') && report.bed != undefined && report.bed != ''">
 					<span class="fw-bold">{{'Bed' | translate}}</span>
-					{{report.hasOwnProperty("bed") ? report.bed : ""}}
+					{{report.bed}}
 				</p>
 			</div>
 		</div>
@@ -236,7 +237,7 @@
 			<p class="fw-bold text-uppercase">{{'Findings' | translate}}</p>
 			<p>{{report.hasOwnProperty("findings") ? report.findings : ""}}</p>
 		</div>
-		<div class="row">
+		<div *ngIf="report.hasOwnProperty('bed') && report.bed != undefined && report.bed != ''" class="row">
 			<p class="fw-bold text-uppercase">{{'Conclusions' | translate}}</p>
 			<p>{{report.hasOwnProperty("conclusions") ? report.conclusions : ""}}</p>
 		</div>
