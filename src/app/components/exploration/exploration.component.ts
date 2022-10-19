@@ -44,7 +44,7 @@ export class ExplorationComponent implements OnInit {
 
 	public loggedUser: string;
 	public exploration: Exploration = new Exploration();
-	public typeExploration: string;
+	public explorationType: string;
 	public SEXValues: SEX[];
 	public messageOverlay: string = "Loading the exploration";
 	public showOverlay: boolean = true;
@@ -84,7 +84,7 @@ export class ExplorationComponent implements OnInit {
 					this.exploration.patient.birthdate = null;
 					this.exploration.patient.sex = null;
 					this.exploration.radiographs = [];
-					this.typeExploration = 'PA-LAT';
+					this.explorationType = 'PA-LAT';
 					this.messageOverlay = "Loading the exploration";
 					this.showOverlay = false;
 					this.notificationService.error(this.localizationService.translate("The exploration cannot be loaded. Reason: ") +
@@ -107,7 +107,7 @@ export class ExplorationComponent implements OnInit {
 					this.exploration.patient.birthdate = null;
 					this.exploration.patient.sex = null;
 					this.exploration.radiographs = [];
-					this.typeExploration = 'PA-LAT';
+					this.explorationType = 'PA-LAT';
 					this.messageOverlay = "Loading the exploration";
 					this.showOverlay = false;
 					this.notificationService.error(this.localizationService.translate("The exploration cannot be loaded. Reason: ") +
@@ -126,7 +126,7 @@ export class ExplorationComponent implements OnInit {
 			this.exploration.patient.birthdate = null;
 			this.exploration.patient.sex = null;
 			this.exploration.radiographs = [];
-			this.typeExploration = 'PA-LAT';
+			this.explorationType = 'PA-LAT';
 			this.messageOverlay = "Loading the exploration";
 			this.showOverlay = false;
 		}
@@ -158,8 +158,8 @@ export class ExplorationComponent implements OnInit {
 		this.router.navigateByUrl(this.return);
 	}
 
-	public setTypeExploration(typeExploration: string): void {
-		this.typeExploration = typeExploration;
+	public setExplorationType(explorationType: string): void {
+		this.explorationType = explorationType;
 	}
 
 	public setSergasSource(): void {
@@ -181,7 +181,7 @@ export class ExplorationComponent implements OnInit {
 			this.notificationService.warning("Upload a report", "Not possible create an exploration");
 		} else if (this.exploration.radiographs.length == 0) {
 			this.notificationService.warning("Upload a radiograph", "Not possible create an exploration");
-		} else if (this.typeExploration == 'PA-LAT' && this.exploration.radiographs.length < 2) {
+		} else if (this.explorationType == 'PA-LAT' && this.exploration.radiographs.length < 2) {
 			this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
 											 "Not possible create an exploration");
 		} else {
@@ -207,7 +207,7 @@ export class ExplorationComponent implements OnInit {
 			this.notificationService.warning("Upload a report", "Not possible edit the exploration");
 		} else if (this.exploration.radiographs.length == 0) {
 			this.notificationService.warning("Upload a radiograph", "Not possible edit the exploration");
-		} else if (this.typeExploration == 'PA-LAT' && this.exploration.radiographs.length < 2) {
+		} else if (this.explorationType == 'PA-LAT' && this.exploration.radiographs.length < 2) {
 			this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
 											 "Not possible edit the exploration");
 		} else {

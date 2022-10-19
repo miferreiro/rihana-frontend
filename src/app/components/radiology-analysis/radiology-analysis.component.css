@@ -18,3 +18,14 @@
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
+
+.row {
+	--bs-gutter-x: 0 !important;
+}
+
+@media(max-width: 1399px) {
+	.h3 {
+		margin: auto;
+		text-align: center;
+	}
+}

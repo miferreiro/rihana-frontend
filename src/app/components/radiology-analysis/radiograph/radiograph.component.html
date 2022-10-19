@@ -22,13 +22,13 @@
 
 <div class="row align-items-center">
 	<div class="col-xxl-6 col-12">
-		<ng-template [ngIf]="typeExploration === 'PA'">
+		<ng-template [ngIf]="explorationType === 'PA'">
 			<h2 class="h3 fw-bold">{{'Postero-anterior radiograph (PA)' | translate}}</h2>
 		</ng-template>
-		<ng-template [ngIf]="typeExploration === 'AP'">
+		<ng-template [ngIf]="explorationType === 'AP'">
 			<h2 class="h3 fw-bold">{{'Antero-posterior radiograph (AP)' | translate}}</h2>
 		</ng-template>
-		<ng-template [ngIf]="typeExploration === 'LAT'">
+		<ng-template [ngIf]="explorationType === 'LAT'">
 			<h2 class="h3 fw-bold">{{'Lateral radiograph (LAT)' | translate}}</h2>
 		</ng-template>
 	</div>

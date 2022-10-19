@@ -48,7 +48,7 @@ export enum STATE {
 })
 export class RadiographComponent implements OnInit {
 
-	@Input() typeExploration: string;
+	@Input() explorationType: string;
 
 	@Output() radiographHandler = new EventEmitter<Radiograph>();
 
@@ -93,7 +93,7 @@ export class RadiographComponent implements OnInit {
 							this.isLoadingRadiograph = (event == null);
 						});
 						if (!this.watchMode) {
-							this.notificationService.success("The " + this.typeExploration + " radiograph has been upload correctly", "Radiograph upload successfull")
+							this.notificationService.success("The " + this.explorationType + " radiograph has been upload correctly", "Radiograph upload successfull")
 						}
 					} else {
 						this.notificationService.error("The file does not have the correct extension (.png, .jpg or .jpeg)", "File upload failed");
@@ -169,7 +169,7 @@ export class RadiographComponent implements OnInit {
 					if (item.types.includes("image/png")) {
 						item.getType("image/png").then((imagePasted): void => {
 							imagePasted.lastModifiedDate = new Date();
-							imagePasted.name = this.typeExploration.concat(".png");
+							imagePasted.name = this.explorationType.concat(".png");
 							let file: File = <File> imagePasted;
 							this.controlRadiograph.setValue([file]);
 							this.state = STATE.CLIPBOARD_LOADED;
@@ -241,7 +241,7 @@ export class RadiographComponent implements OnInit {
 				uploadedFile.next(e.target.result.toString());
 				if (this.radiograph == undefined) {
 					this.radiograph = new Radiograph();
-					this.radiograph.type = this.typeExploration;
+					this.radiograph.type = this.explorationType;
 					this.radiograph.source = e.target.result.toString();
 					let signInitial = new Sign();
 					signInitial.type = this.signTypes.filter(signType => signType.code.includes(this.getDefaultSign()))[0];

@@ -44,8 +44,7 @@
 		</div>
 	</div>
 	<app-report *ngIf="exploration.explorationDate != undefined" [exploration]="exploration" (reportEvent)="reportHandler($event)"></app-report>
-	<app-radiology-analysis *ngIf="exploration.explorationDate != undefined" [exploration]="exploration" [reportFields]="exploration.report" (radiographs)="radiographsHandler($event)"
-		(typeExploration)=setTypeExploration($event)></app-radiology-analysis>
+	<app-radiology-analysis *ngIf="exploration.explorationDate != undefined" [exploration]="exploration" [isEditing]="isEditing" (radiographs)="radiographsHandler($event)" (explorationType)="setExplorationType($event)"></app-radiology-analysis>
 </div>
 <footer class="footer mt-auto py-1 fixed-bottom bg-light">
 	<div class="container">

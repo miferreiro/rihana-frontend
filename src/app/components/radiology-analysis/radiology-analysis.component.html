@@ -19,12 +19,25 @@
   ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
 -->
 
-<div *ngIf="showRadiograph('PA-LAT')" class="row mt-4 mb-4">
-	<app-radiograph [radiograph]="getTypeRadiograph('PA')" [typeExploration]="'PA'" (radiographHandler)="radiographHandler($event, 'PA')"></app-radiograph>
+<div *ngIf="exploration.title == undefined || isEditing" class="row align-items-center">
+	<div class="col-xxl-6 col-12">
+		<h2 class="h4 fw-bold">{{'Nº de radiografías' | translate}}</h2>
+	</div>
+	<div class="col-xxl-6 col-12">
+		<div class="w-100 btn-group" role="group" aria-label="Set exploration type">
+			<input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" [checked]="getExplorationType() === 'AP'" (click)="setExplorationType('AP')">
+			<label class="btn btn-outline-primary" for="btnradio1">1</label>
+			<input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" [checked]="getExplorationType() === 'PA-LAT'" (click)="setExplorationType('PA-LAT')">
+			<label class="btn btn-outline-primary" for="btnradio2">2</label>
+		</div>
+	</div>
 </div>
 <div *ngIf="showRadiograph('PA-LAT')" class="row mt-4 mb-4">
-	<app-radiograph [radiograph]="getTypeRadiograph('LAT')" [typeExploration]="'LAT'" (radiographHandler)="radiographHandler($event, 'LAT')"></app-radiograph>
+	<app-radiograph [radiograph]="getRadiographType('PA')" [explorationType]="'PA'" (radiographHandler)="radiographHandler($event, 'PA')"></app-radiograph>
+</div>
+<div *ngIf="showRadiograph('PA-LAT')" class="row mt-4 mb-4">
+	<app-radiograph [radiograph]="getRadiographType('LAT')" [explorationType]="'LAT'" (radiographHandler)="radiographHandler($event, 'LAT')"></app-radiograph>
 </div>
 <div *ngIf="showRadiograph('AP')" class="row mt-4 mb-4">
-	<app-radiograph [radiograph]="getTypeRadiograph('AP')" [typeExploration]="'AP'" (radiographHandler)="radiographHandler($event, 'AP')"></app-radiograph>
+	<app-radiograph [radiograph]="getRadiographType('AP')" [explorationType]="'AP'" (radiographHandler)="radiographHandler($event, 'AP')"></app-radiograph>
 </div>

@@ -32,59 +32,42 @@ import {Report} from '../../models/Report';
 export class RadiologyAnalysisComponent implements OnInit {
 
 	@Input() exploration: Exploration;
+	@Input() isEditing: boolean;
 
 	@Output() radiographs = new EventEmitter<Radiograph[]>();
-	@Output() typeExploration = new EventEmitter<string>();
+	@Output() explorationType = new EventEmitter<string>();
 
-	public _typeExploration: string;
+
+	public _explorationType: string;
 	public showImageDialog = false;
 	public report: Report = new Report();
 
 	private _radiographs: Radiograph[];
 
 	ngOnInit(): void {
-
 		if (this.exploration.title != undefined) {
 			this._radiographs = this.exploration.radiographs;
 			if (this._radiographs.length == 2) {
-				this._typeExploration = 'PA-LAT';
-				this.typeExploration.emit(this._typeExploration);
+				this._explorationType = 'PA-LAT';
 			} else {
-				this._typeExploration = 'AP';
-				this.typeExploration.emit(this._typeExploration);
+				this._explorationType = 'AP';
 			}
 		} else {
-			this._typeExploration = 'PA-LAT';
-			this.typeExploration.emit(this._typeExploration);
+			this._explorationType = 'PA-LAT';
 			this._radiographs = [];
 		}
+		this.explorationType.emit(this._explorationType);
 	}
 
-	@Input() set reportFields(report: Report) {
-		this.report = report;
-		if (this.report.hasOwnProperty("performedExplorations")) {
-			let codes: string[] = this.report.performedExplorations.map(function(exploration) { return exploration.code; });
-			if (codes.includes('70102')) {
-				this._typeExploration = 'PA-LAT';
-			} else if (codes.includes('70101') || codes.includes('70121')) {
-				this._typeExploration = 'AP';
-			} else {
-				this._typeExploration = 'PA-LAT';
-			}
-		} else {
-			this._typeExploration = 'PA-LAT';
-		}
-		this.typeExploration.emit(this._typeExploration);
-	};
-
 	public radiographHandler(event: Radiograph, type: string): void {
-
 		if (event == undefined) {
 			event = null;
 		}
 
-		if (type == 'PA' || type == 'AP') {
+		if (type == 'PA') {
 			this._radiographs[0] = event;
+		} else if (type == 'AP') {
+			this._radiographs = [event];
 		} else {
 			this._radiographs[1] = event;
 		}
@@ -92,11 +75,20 @@ export class RadiologyAnalysisComponent implements OnInit {
 		this.radiographs.emit(this._radiographs);
 	}
 
-	public showRadiograph(type: string): boolean {
-		return type === this._typeExploration;
+	public getExplorationType(): string {
+		return this._explorationType;
 	}
 
-	public getTypeRadiograph(type: string): Radiograph {
+	public setExplorationType(type: string): void {
+		this._explorationType = type;
+		this.explorationType.emit(this._explorationType);
+	}
+
+	public showRadiograph(type: string): boolean {
+		return type === this._explorationType;
+	}
+
+	public getRadiographType(type: string): Radiograph {
 		return this._radiographs.find(radiograph => radiograph.type == type)
 	}
 }
