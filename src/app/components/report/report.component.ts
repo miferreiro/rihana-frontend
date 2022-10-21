@@ -160,14 +160,14 @@ export class ReportComponent implements OnInit, OnDestroy {
 					if (this.baseReport != undefined && this.baseReport.reportNumber != this.report.reportNumber) {
 						this.reportsService.getReportBy(this.report.reportNumber).subscribe(report => {
 							this.removeReport();
-							this.notificationService.error("The report is already assigned to an exploration", "File upload failed");
+							this.notificationService.error("The report is already assigned to an exploration", "Report loaded failed");
 						}, () => {
-							this.notificationService.success("The file has the correct format", "File upload successfull");
-							this.state = STATE.FILE_LOADED;
+							this.notificationService.success("The file has the correct format", "Report upload successfull");
+							this.state = STATE.CLIPBOARD_LOADED;
 						});
 					} else {
-						this.notificationService.success("The file has the correct format", "File upload successfull");
-						this.state = STATE.FILE_LOADED;
+						this.notificationService.success("The file has the correct format", "Report upload successfull");
+						this.state = STATE.CLIPBOARD_LOADED;
 					}
 				})
 				.catch(error => {
