@@ -52,6 +52,7 @@ export enum STATE {
 export class ReportComponent implements OnInit, OnDestroy {
 
 	@Input() exploration;
+	@Input() isEditing: boolean;
 
 	@Output() reportEvent = new EventEmitter<ReportResult>();
 
@@ -88,7 +89,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 
 		this.STATEValues = EnumUtils.enumValues(STATE);
 
-		if (this.exploration.title != undefined) {
+		if (this.exploration.title != undefined && this.exploration.report != null) {
 			this.baseReport = this.report = this.exploration.report;
 
 			this.patient = this.exploration.patient;

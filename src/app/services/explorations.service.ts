@@ -108,8 +108,8 @@ export class ExplorationsService {
 			.pipe(
 				concatMap(explorationInfo =>
 					forkJoin(
-						this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id),
-						this.reportsService.getReport((<IdAndUri>explorationInfo.report).id),
+						explorationInfo.patient != null ? this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id) : of(null),
+						explorationInfo.report != null ? this.reportsService.getReport((<IdAndUri>explorationInfo.report).id) : of(null),
 						forkJoin(explorationInfo.radiographs.map(radiograph => {
 							return this.radiographsService.getRadiograph((<IdAndUri>radiograph).id, source).pipe(
 								map(radiograph => radiograph)
@@ -118,16 +118,30 @@ export class ExplorationsService {
 					)
 					.pipe(
 						map(patientReportAndRadiographs => {
+							let report: Report, patient: Patient;
+
+							if (patientReportAndRadiographs[0] === null) {
+								patient = null;
+							} else {
+								patient = patientReportAndRadiographs[0]
+							}
+
+							if (patientReportAndRadiographs[1] === null) {
+								report = null;
+							} else {
+								report = patientReportAndRadiographs[1]
+							}
+
 							return this.mapExplorationInfo(
 								explorationInfo,
 								explorationInfo.user,
-								patientReportAndRadiographs[0],
-								patientReportAndRadiographs[1],
+								patient,
+								report,
 								patientReportAndRadiographs[2])
 						})
-						)
 					)
 				)
+			)
 	}
 
 	public getExplorationDeleted(uuid: string, source: boolean = false): Observable<Exploration> {
@@ -135,8 +149,8 @@ export class ExplorationsService {
 		.pipe(
 			concatMap(explorationInfo =>
 				forkJoin(
-					this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id),
-					this.reportsService.getReport((<IdAndUri>explorationInfo.report).id),
+					explorationInfo.patient != null ? this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id) : of(null),
+					explorationInfo.report != null ? this.reportsService.getReport((<IdAndUri>explorationInfo.report).id) : of(null),
 					forkJoin(explorationInfo.radiographs.map(radiograph => {
 						return this.radiographsService.getRadiograph((<IdAndUri>radiograph).id, source).pipe(
 							map(radiograph => radiograph)
@@ -145,16 +159,31 @@ export class ExplorationsService {
 				)
 				.pipe(
 					map(patientReportAndRadiographs => {
+
+						let report: Report, patient: Patient;
+
+						if (patientReportAndRadiographs[0] === null) {
+							patient = null;
+						} else {
+							patient = patientReportAndRadiographs[0]
+						}
+
+						if (patientReportAndRadiographs[1] === null) {
+							report = null;
+						} else {
+							report = patientReportAndRadiographs[1]
+						}
+
 						return this.mapExplorationInfo(
 							explorationInfo,
 							explorationInfo.user,
-							patientReportAndRadiographs[0],
-							patientReportAndRadiographs[1],
+							patient,
+							report,
 							patientReportAndRadiographs[2])
 					})
-					)
 				)
 			)
+		)
 	}
 
 	public getTotalExplorations(user: string, page: number, pageSize: number, signTypes: SignType[], operator: string,
@@ -235,9 +264,10 @@ export class ExplorationsService {
 					explorationInfos.length === 0 ? of([]) :
 					forkJoin([
 						forkJoin(explorationInfos.map(explorationInfo =>
-							this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id))),
+							explorationInfo.patient != null ? this.patientsService.getPatient((<IdAndUri>explorationInfo.patient).id) : of(null)
+						)),
 						forkJoin(explorationInfos.map(explorationInfo =>
-							this.reportsService.getReport((<IdAndUri>explorationInfo.report).id)
+							explorationInfo.report != null ? this.reportsService.getReport((<IdAndUri>explorationInfo.report).id) : of(null)
 						)),
 						forkJoin(explorationInfos.map(explorationInfo =>
 							forkJoin(explorationInfo.radiographs.map(radiograph => {
@@ -247,13 +277,27 @@ export class ExplorationsService {
 					])
 					.pipe(
 						map(userPatientReportAndRadiographs =>
-							explorationInfos.map((explorationInfo, index) =>
-								this.mapExplorationInfo(explorationInfo,
+							explorationInfos.map((explorationInfo, index) => {
+								let report: Report, patient: Patient;
+
+								if (userPatientReportAndRadiographs[0][index] === null) {
+									patient = null;
+								} else {
+									patient = userPatientReportAndRadiographs[0][index]
+								}
+
+								if (userPatientReportAndRadiographs[1][index] === null) {
+									report = null;
+								} else {
+									report = userPatientReportAndRadiographs[1][index]
+								}
+
+								return this.mapExplorationInfo(explorationInfo,
 									explorationInfo.user,
-									userPatientReportAndRadiographs[0][index],
-									userPatientReportAndRadiographs[1][index],
+									patient,
+									report,
 									userPatientReportAndRadiographs[2][index])
-							)
+							})
 						)
 					)
 				)
@@ -288,12 +332,19 @@ export class ExplorationsService {
 	}
 
 	private toEditExplorationInfo(exploration: Exploration): EditExplorationInfo {
+		let report: NewReportInfo, patient: NewPatientInfo;
 
-		let report: NewReportInfo;
-		let patient: NewPatientInfo;
+		if (exploration.report != null) {
+			report = this.toNewReportInfo(exploration.report);
+		} else {
+			report = null
+		}
 
-		report = this.toNewReportInfo(exploration.report);
-		patient = this.toNewPatientInfo(exploration.patient)
+		if (exploration.patient != null) {
+			patient = this.toNewPatientInfo(exploration.patient);
+		} else {
+			patient = null
+		}
 
 		return {
 			id: exploration.id,
@@ -307,12 +358,19 @@ export class ExplorationsService {
 	}
 
 	private toNewExplorationInfo(exploration: Exploration): NewExplorationInfo {
+		let report: Report, patient: NewPatientInfo;
 
-		let report: Report;
-		let patient: NewPatientInfo;
+		if (exploration.report != null) {
+			report = exploration.report;
+		} else {
+			report = null
+		}
 
-		report = exploration.report;
-		patient = this.toNewPatientInfo(exploration.patient)
+		if (exploration.patient != null) {
+			patient = this.toNewPatientInfo(exploration.patient);
+		} else {
+			patient = null
+		}
 
 		return {
 			explorationDate: exploration.explorationDate,
@@ -346,7 +404,6 @@ export class ExplorationsService {
 				patientID: patient.patientID
 			};
 		}
-
 	}
 
 	private toNewRadiographInfo(radiograph: Radiograph): NewRadiographInfo {

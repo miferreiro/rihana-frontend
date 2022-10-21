@@ -175,11 +175,7 @@ export class ExplorationComponent implements OnInit {
 	}
 
 	private saveNewExploration() {
-		if (this.exploration.patient.patientID === null ||
-			this.exploration.patient.patientID === "" ||
-			this.exploration.report.reportNumber === null) {
-			this.notificationService.warning("Upload a report", "Not possible create an exploration");
-		} else if (this.exploration.radiographs.length == 0) {
+		if (this.exploration.radiographs.length == 0) {
 			this.notificationService.warning("Upload a radiograph", "Not possible create an exploration");
 		} else if (this.explorationType == 'PA-LAT' && this.exploration.radiographs.length < 2) {
 			this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
@@ -201,11 +197,7 @@ export class ExplorationComponent implements OnInit {
 	}
 
 	private saveExistentExploration() {
-		if (this.exploration.patient.patientID === null ||
-			this.exploration.patient.patientID === "" ||
-			this.exploration.report.reportNumber === null) {
-			this.notificationService.warning("Upload a report", "Not possible edit the exploration");
-		} else if (this.exploration.radiographs.length == 0) {
+		if (this.exploration.radiographs.length == 0) {
 			this.notificationService.warning("Upload a radiograph", "Not possible edit the exploration");
 		} else if (this.explorationType == 'PA-LAT' && this.exploration.radiographs.length < 2) {
 			this.notificationService.warning("The exploration is 'PA-LAT' type, therefore two loaded radiographs are required",
