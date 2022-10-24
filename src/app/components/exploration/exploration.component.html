@@ -32,12 +32,19 @@
 				</div>
 			</div>
 			<div class="col-xxl-6 col-12">
-				<form class ="row text-center" action="">
-					<div class="col-6">
-						<input type="radio" name="source" value="SERGAS" (click)="setSergasSource()" [checked]="exploration.source === 'SERGAS'" [disabled]="isDisabled()"> SERGAS
+				<form class ="row" action="">
+					<div class="row">
+						<div class="col-6">
+							<input type="radio" name="source" value="SERGAS" (click)="setSergasSource()" [checked]="exploration.source === 'SERGAS'" [disabled]="isDisabled()"> SERGAS
+						</div>
+						<div class="col-6">
+							<input type="radio" name="source" value="MANUAL_PADCHEST" (click)="setManualPadchestSource()" [checked]="exploration.source === 'MANUAL_PADCHEST'" [disabled]="isDisabled()"> MANUAL PADCHEST
+						</div>
 					</div>
-					<div class="col-6">
-						<input type="radio" name="source" value="PADCHEST" (click)="setPadchestSource()" [checked]="exploration.source === 'PADCHEST'" [disabled]="isDisabled()"> PADCHEST
+					<div class="row">
+						<div class="col-6">
+							<input type="radio" name="source" value="AUTOMATIC_PADCHEST" (click)="setAutomaticPadchestSource()" [checked]="exploration.source === 'AUTOMATIC_PADCHEST'" [disabled]="isDisabled()"> AUTOMATIC PADCHEST
+						</div>
 					</div>
 				</form>
 			</div>

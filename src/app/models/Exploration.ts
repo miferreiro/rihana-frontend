@@ -38,5 +38,6 @@ export class Exploration {
 
 export enum Source {
 	SERGAS = 'SERGAS',
-	PADCHEST = 'PADCHEST'
+	MANUAL_PADCHEST = 'MANUAL_PADCHEST',
+	AUTOMATIC_PADCHEST = 'AUTOMATIC_PADCHEST'
 }

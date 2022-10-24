@@ -75,7 +75,7 @@ export class ExplorationComponent implements OnInit {
 					this.showOverlay = false;
 				}, error => {
 					this.exploration.explorationDate = new Date();
-					this.exploration.source = Source.PADCHEST;
+					this.exploration.source = Source.MANUAL_PADCHEST;
 					this.exploration.user = new Users();
 					this.exploration.user.login = this.loggedUser;
 					this.exploration.report = new Report();
@@ -98,7 +98,7 @@ export class ExplorationComponent implements OnInit {
 					this.showOverlay = false;
 				}, error => {
 					this.exploration.explorationDate = new Date();
-					this.exploration.source = Source.PADCHEST;
+					this.exploration.source = Source.MANUAL_PADCHEST;
 					this.exploration.user = new Users();
 					this.exploration.user.login = this.loggedUser;
 					this.exploration.report = new Report();
@@ -117,7 +117,7 @@ export class ExplorationComponent implements OnInit {
 			}
 		} else {
 			this.exploration.explorationDate = new Date();
-			this.exploration.source = Source.PADCHEST;
+			this.exploration.source = Source.MANUAL_PADCHEST;
 			this.exploration.user = new Users();
 			this.exploration.user.login = this.loggedUser;
 			this.exploration.report = new Report();
@@ -166,8 +166,12 @@ export class ExplorationComponent implements OnInit {
 		this.exploration.source = Source.SERGAS;
 	}
 
-	public setPadchestSource(): void {
-		this.exploration.source = Source.PADCHEST;
+	public setManualPadchestSource(): void {
+		this.exploration.source = Source.MANUAL_PADCHEST;
+	}
+
+	public setAutomaticPadchestSource(): void {
+		this.exploration.source = Source.AUTOMATIC_PADCHEST;
 	}
 
 	public isDisabled(): boolean {
