@@ -34,15 +34,15 @@
 			<div class="col-xxl-6 col-12">
 				<form class ="row" action="">
 					<div class="row">
-						<div class="col-6">
+						<div *ngIf="exploration.title == undefined || isEditing || exploration.source === 'SERGAS'" class="col-xxl-6 col-12">
 							<input type="radio" name="source" value="SERGAS" (click)="setSergasSource()" [checked]="exploration.source === 'SERGAS'" [disabled]="isDisabled()"> SERGAS
 						</div>
-						<div class="col-6">
+						<div *ngIf="exploration.title == undefined || isEditing || exploration.source === 'MANUAL_PADCHEST'" class="col-xxl-6 col-12">
 							<input type="radio" name="source" value="MANUAL_PADCHEST" (click)="setManualPadchestSource()" [checked]="exploration.source === 'MANUAL_PADCHEST'" [disabled]="isDisabled()"> MANUAL PADCHEST
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-6">
+						<div *ngIf="exploration.title == undefined || isEditing || exploration.source === 'AUTOMATIC_PADCHEST'"  class="col-xxl-6 col-12">
 							<input type="radio" name="source" value="AUTOMATIC_PADCHEST" (click)="setAutomaticPadchestSource()" [checked]="exploration.source === 'AUTOMATIC_PADCHEST'" [disabled]="isDisabled()"> AUTOMATIC PADCHEST
 						</div>
 					</div>

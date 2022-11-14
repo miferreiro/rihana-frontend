@@ -21,6 +21,7 @@
 
 export class Report {
 	id: string;
+	type: string;
 	completionDate: Date;
 	reportNumber: string;
 	applicant: string;

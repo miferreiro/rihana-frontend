@@ -386,13 +386,15 @@ export class ExplorationsService {
 		if (patient.sex != null && patient.birthdate != null) {
 			return {
 				patientID: patient.patientID,
-				sex: EnumUtils.findKeyForValue(SEX, patient.sex),
+				sex: EnumUtils.findKeyForValue(SEX,
+					patient.sex.toLowerCase().charAt(0).toUpperCase() + patient.sex.toLowerCase().slice(1)),
 				birthdate: new Date(patient.birthdate)
 			};
 		} else if (patient.sex != null) {
 			return {
 				patientID: patient.patientID,
-				sex: EnumUtils.findKeyForValue(SEX, patient.sex)
+				sex: EnumUtils.findKeyForValue(SEX,
+					patient.sex.toLowerCase().charAt(0).toUpperCase() + patient.sex.toLowerCase().slice(1))
 			};
 		} else if (patient.birthdate != null) {
 			return {
@@ -426,6 +428,7 @@ export class ExplorationsService {
 
 	private toNewReportInfo(report: Report): NewReportInfo {
 		return {
+			type: report.type,
 			completionDate: report.completionDate,
 			reportNumber: report.reportNumber,
 			applicant: report.applicant,

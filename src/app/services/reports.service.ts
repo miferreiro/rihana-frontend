@@ -49,6 +49,7 @@ export class ReportsService {
 	private mapReportInfo(reportInfo: ReportInfo): Report {
 		return {
 			id: reportInfo.id,
+			type: reportInfo.type,
 			completionDate: reportInfo.completionDate,
 			reportNumber: reportInfo.reportNumber,
 			applicant: reportInfo.applicant,

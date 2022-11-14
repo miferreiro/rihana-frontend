@@ -26,6 +26,8 @@
 	"Sex": "Sex",
 	"Female": "Female",
 	"Male": "Male",
+	"FEMALE": "FEMALE",
+	"MALE": "MALE",
 	"Completion date": "Completion date",
 	"Report number": "Report Nº",
 	"Applicant": "Applicant",
@@ -34,6 +36,7 @@
 	"Priority": "Priority",
 	"Admitted": "Admitted",
 	"Bed": "Bed",
+	"Clinical data": "Clinical data",
 	"Clinical data/Diagnostic suspicion of the application": "Clinical data/Diagnostic suspicion of the application",
 	"Requested explorations": "Requested explorations",
 	"Performed explorations": "Performed explorations",
@@ -352,5 +355,12 @@
 	"Select explorations": "Select explorations",
 	"Selected explorations": "Selected explorations",
 	"Downloading": "Downloading",
-	"Source": "Source"
+	"Source": "Source",
+	"No. of radiographs": "No. of radiographs",
+	"Exploration data": "Exploration data",
+	"Add the conclusions here": "Add the conclusions here",
+	"Add the findings here": "Add the findings here",
+	"Add the clinical data here": "Add the clinical data here",
+	"Select a date": "Select a date"
+
 }

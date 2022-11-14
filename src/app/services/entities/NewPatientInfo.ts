@@ -20,7 +20,7 @@
  */
 
 export interface NewPatientInfo {
-	patientID: string;
+	patientID?: string;
 	sex?: string;
 	birthdate?: Date;
 }

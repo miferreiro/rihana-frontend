@@ -22,6 +22,7 @@
 import {RequestedExploration, PerformedExploration} from "../../models/Report";
 
 export interface NewReportInfo {
+	type: string;
 	completionDate: Date;
 	reportNumber: string;
 	applicant: string;

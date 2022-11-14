@@ -69,6 +69,51 @@ export class ReportComponent implements OnInit, OnDestroy {
 	public report: Report;
 	public patient: Patient;
 
+	public sexes = SEX;
+	public keys = Object.keys; 	// to show the value of the enum
+
+	public options: any = {
+		autoApply: false,
+		alwaysShowCalendars: true,
+		applyButtonClasses: "btn-primary applyDate",
+		buttonClasses: "btn btn-sm",
+		cancelClass: "btn-default cancelDate",
+		drops: "up",
+		locale: {
+			format: 'DD/MM/yyyy',
+			daysOfWeek: [
+				this.localizationService.translate("Sunday").substr(0, 2),
+				this.localizationService.translate("Monday").substr(0, 2),
+				this.localizationService.translate("Tuesday").substr(0, 2),
+				this.localizationService.translate("Wednesday").substr(0, 2),
+				this.localizationService.translate("Thursday").substr(0, 2),
+				this.localizationService.translate("Friday").substr(0, 2),
+				this.localizationService.translate("Saturday").substr(0, 2)
+			],
+			monthNames: [
+				this.localizationService.translate("January"),
+				this.localizationService.translate("February"),
+				this.localizationService.translate("March"),
+				this.localizationService.translate("April"),
+				this.localizationService.translate("May"),
+				this.localizationService.translate("June"),
+				this.localizationService.translate("July"),
+				this.localizationService.translate("August"),
+				this.localizationService.translate("September"),
+				this.localizationService.translate("October"),
+				this.localizationService.translate("November"),
+				this.localizationService.translate("December")
+			],
+			"firstDay": 1
+		},
+		minDate: '01/01/1900',
+		maxDate: new Date(),
+		opens: 'left',
+		showDropdowns: true,
+		singleDatePicker: true,
+		timePicker: false
+	};
+
 	private subscriptionReport: Subscription;
 	private baseReport: Report;
 
@@ -98,8 +143,10 @@ export class ReportComponent implements OnInit, OnDestroy {
 			} else {
 				this.state = STATE.READ_ONLY;
 			}
+			this.setReportType(this.report.type);
 		} else {
 			this.report = new Report();
+			this.setReportType("FILE");
 			this.patient = new Patient();
 			this.state = STATE.NOT_LOADED;
 		}
@@ -122,6 +169,13 @@ export class ReportComponent implements OnInit, OnDestroy {
 				}
 			}
 		});
+	}
+
+	ngAfterViewChecked() {
+		if (this.getReportType() == "MANUAL" && !this.isDisabled()) {
+			document.getElementsByClassName("applyDate")[0].textContent = this.localizationService.translate("Apply");
+		 	document.getElementsByClassName("cancelDate")[0].textContent = this.localizationService.translate("Cancel");
+		}
 	}
 
 	public addFile(event: Event): void {
@@ -188,8 +242,46 @@ export class ReportComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	public checkState(state: string) {
+	public checkState(state: string): boolean {
 		return this.state == EnumUtils.findKeyForValue(STATE, state);
+	}
+
+	public isDisabled(): boolean {
+		return !this.isEditing && this.explorationsService.getExplorationId() != undefined;
+	}
+
+	public update(): void {
+		this.reportEvent.emit({
+			report: this.report,
+			patient: this.patient
+		});
+	}
+
+	public getReportType(): string {
+		return this.report.type;
+	}
+
+	public setReportType(type: string): void {
+		this.report.type = type;
+		this.update();
+	}
+
+	public applyDate(): void {
+
+	}
+
+	public selectedDate(value: any): void {
+		this.patient.birthdate = new Date(value.start);
+		this.update();
+	}
+
+	public cancelDate(): void {
+		this.patient.birthdate = undefined;
+		this.update();
+	}
+
+	public showReport(type: string): boolean {
+		return type === this.report.type;
 	}
 
 	public ngOnDestroy(): void {
@@ -341,7 +433,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 		} else {
 			this.report.conclusions = report.match(dictRegex["regexConclusions"])[1];
 		}
-
+		this.setReportType("FILE");
 		this.reportEvent.emit({
 			report: this.report,
 			patient: this.patient

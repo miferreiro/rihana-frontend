@@ -24,8 +24,12 @@
 }
 
 @media(max-width: 1399px) {
-	.h3 {
+	.h4 {
 		margin: auto;
 		text-align: center;
 	}
+}
+
+.n-radiography-title {
+	justify-content: flex-start!important;
 }

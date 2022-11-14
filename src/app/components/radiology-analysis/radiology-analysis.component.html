@@ -19,16 +19,22 @@
   ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
 -->
 
-<div *ngIf="exploration.title == undefined || isEditing" class="row align-items-center">
-	<div class="col-xxl-6 col-12">
-		<h2 class="h4 fw-bold">{{'Nº de radiografías' | translate}}</h2>
-	</div>
-	<div class="col-xxl-6 col-12">
-		<div class="w-100 btn-group" role="group" aria-label="Set exploration type">
-			<input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" [checked]="getExplorationType() === 'AP'" (click)="setExplorationType('AP')">
-			<label class="btn btn-outline-primary" for="btnradio1">1</label>
-			<input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" [checked]="getExplorationType() === 'PA-LAT'" (click)="setExplorationType('PA-LAT')">
-			<label class="btn btn-outline-primary" for="btnradio2">2</label>
+<div *ngIf="exploration.title == undefined || isEditing" class="row mt-4 mb-4">
+	<div class="row align-items-center">
+		<div class="col-xxl-6 col-12">
+			<div class="row n-radiography-title">
+				<h2 class="h4 fw-bold">{{'No. of radiographs' | translate}}</h2>
+			</div>
+		</div>
+		<div class="col-xxl-6 col-12">
+			<div class="row mt-2 mb-2">
+				<div class="w-100 btn-group" role="group" aria-label="Set exploration type">
+					<input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" [checked]="getExplorationType() === 'AP'" (click)="setExplorationType('AP')">
+					<label class="btn btn-outline-primary" for="btnradio1">1</label>
+					<input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" [checked]="getExplorationType() === 'PA-LAT'" (click)="setExplorationType('PA-LAT')">
+					<label class="btn btn-outline-primary" for="btnradio2">2</label>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

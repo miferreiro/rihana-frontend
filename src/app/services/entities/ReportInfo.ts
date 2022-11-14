@@ -24,6 +24,7 @@ import {IdAndUri} from "./IdAndUri";
 
 export interface ReportInfo {
 	id: string;
+	type: string;
 	exploration: string | IdAndUri;
 	completionDate: Date;
 	reportNumber: string;

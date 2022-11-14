@@ -102,6 +102,7 @@ export class ExplorationComponent implements OnInit {
 					this.exploration.user = new Users();
 					this.exploration.user.login = this.loggedUser;
 					this.exploration.report = new Report();
+					this.exploration.report.type = "FILE";
 					this.exploration.patient = new Patient();
 					this.exploration.patient.patientID = null;
 					this.exploration.patient.birthdate = null;
@@ -121,6 +122,7 @@ export class ExplorationComponent implements OnInit {
 			this.exploration.user = new Users();
 			this.exploration.user.login = this.loggedUser;
 			this.exploration.report = new Report();
+			this.exploration.report.type = "FILE";
 			this.exploration.patient = new Patient();
 			this.exploration.patient.patientID = null;
 			this.exploration.patient.birthdate = null;

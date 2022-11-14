@@ -19,13 +19,36 @@
   ~ <http://www.gnu.org/licenses/gpl-3.0.html>.
 -->
 
-<div *ngIf="exploration.report != null || isEditing" class="row mt-4 mb-4">
+<div *ngIf="(exploration.report != undefined && isEditing) || !checkState('READ_ONLY')" class="row mt-4 mb-4">
+	<div class="row align-items-center">
+		<div class="col-xxl-6 col-12">
+			<div class="row type-report-title">
+				<h2 class="h4 fw-bold">{{'Report type' | translate}}</h2>
+			</div>
+		</div>
+		<div class="col-xxl-6 col-12">
+			<div class="row mt-2 mb-2">
+				<div class="w-100 btn-group" role="group" aria-label="Set report type">
+					<input type="radio" class="btn-check" name="btnradioManual" id="btnradioManual" autocomplete="off"
+					[checked]="getReportType() === 'MANUAL'" (click)="setReportType('MANUAL')">
+					<label class="btn btn-outline-primary" for="btnradioManual">{{'MANUAL' | translate}}</label>
+					<input type="radio" class="btn-check" name="btnradioFile" id="btnradioFile" autocomplete="off"
+					[checked]="getReportType() === 'FILE'" (click)="setReportType('FILE')">
+					<label class="btn btn-outline-primary" for="btnradioFile">{{'FILE' | translate}}</label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div *ngIf="(exploration.report != null || isEditing) && showReport('FILE')" class="row mt-4 mb-4">
 	<div class="row align-items-center">
 		<div class="col-xxl-6 col-12">
 			<div class="row report-title">
 				<h2 class="h3 fw-bold">{{'Radiology report' | translate}}</h2>
 				<div *ngIf="!checkState('NOT_LOADED')">
-					<i title="{{'Expand/Collapse' | translate}}" id="expandControl" class="las la-eye-slash la-lg" (click)="expandReport()"></i>
+					<i title="{{'Expand/Collapse' | translate}}" id="expandControl" class="las la-eye-slash la-lg"
+					(click)="expandReport()"></i>
 				</div>
 			</div>
 		</div>
@@ -240,6 +263,87 @@
 		<div *ngIf="report.hasOwnProperty('bed') && report.bed != undefined && report.bed != ''" class="row">
 			<p class="fw-bold text-uppercase">{{'Conclusions' | translate}}</p>
 			<p>{{report.hasOwnProperty("conclusions") ? report.conclusions : ""}}</p>
+		</div>
+	</div>
+</div>
+<div *ngIf="(exploration.report != null || isEditing) && showReport('MANUAL')" class="row mt-4 mb-4">
+	<div class="row align-items-center">
+		<div class="col-xxl-6 col-12">
+			<div class="row report-title">
+				<h2 class="h3 fw-bold">{{'Exploration data' | translate}}</h2>
+			</div>
+		</div>
+		<div class="col-xxl-6 col-12 report-manual">
+			<div *ngIf="exploration.title == undefined || isEditing || patient.sex != undefined" class="row mb-3">
+				<p class="fw-bold my-2">{{'Sex' | translate}}</p>
+				<ng-select id="report-form-sex"
+						name="sex"
+						[clearable]="true"
+						[disabled] ="isDisabled()"
+						[hideSelected]="true"
+						[searchable]="false"
+						[(ngModel)]="patient.sex"
+						(ngModelChange)="update()">
+					<ng-option *ngFor="let sex of keys(sexes)" [value]="sex">
+						{{sex | translate | titlecase}}
+					</ng-option>
+				</ng-select>
+			</div>
+			<div *ngIf="exploration.title == undefined || isEditing || patient.birthdate != undefined" class="row my-3">
+				<p class="fw-bold my-2">{{'Birthdate' | translate}}</p>
+				<div *ngIf="!isDisabled()"
+					 class="daterangerpicker"
+					 daterangepicker
+					 [options]="options"
+					 (selected)="selectedDate($event)"
+					 (applyDaterangepicker)="applyDate()"
+					 (cancelDaterangepicker)="cancelDate()">
+					<div class="d-flex justify-content-between h-100">
+						<span *ngIf="patient.birthdate != undefined" class="ps-2 align-self-center">
+							{{patient.birthdate | date: currentFormatDate}}
+						</span>
+						<span *ngIf="patient.birthdate == undefined" class="placeholder align-self-center">
+							{{'Select a date' | translate}}
+						</span>
+						<div class="align-self-center">
+						<span *ngIf="patient.birthdate != undefined" class="cancel" (click)="cancelDate()">×</span>
+						<span>
+							<button class="btn" aria-label="Calendar"><i class="bi bi-calendar"></i></button>
+						</span>
+						</div>
+					</div>
+				</div>
+				<p *ngIf="isDisabled()">
+					{{patient.birthdate | date: currentFormatDate}}
+				</p>
+			</div>
+			<div *ngIf="exploration.title == undefined || isEditing || report.clinicalData != undefined" class="row my-3">
+				<p class="fw-bold my-2">{{'Clinical data' | translate}}</p>
+				<textarea *ngIf="!isDisabled()" name="clinicalData" class="form-control" style="max-height:100px" rows="2" maxlength="3000"
+				[(ngModel)]="report.clinicalData" (ngModelChange)="update()"
+				placeholder="{{'Add the clinical data here' | translate}}..."></textarea>
+				<p *ngIf="isDisabled()">
+					{{report.clinicalData}}
+				</p>
+			</div>
+			<div *ngIf="exploration.title == undefined || isEditing || report.findings != undefined" class="row my-3">
+				<p class="fw-bold my-2">{{'Findings' | translate}}</p>
+				<textarea *ngIf="!isDisabled()" name="findings" class="form-control" style="max-height:100px" rows="2" maxlength="3000"
+				[(ngModel)]="report.findings" (ngModelChange)="update()"
+				placeholder="{{'Add the findings here' | translate}}..."></textarea>
+				<p *ngIf="isDisabled()">
+					{{report.findings}}
+				</p>
+			</div>
+			<div *ngIf="exploration.title == undefined || isEditing || report.conclusions != undefined" class="row my-3">
+				<p class="fw-bold my-2">{{'Conclusions' | translate}}</p>
+				<textarea *ngIf="!isDisabled()" name="conclusions" class="form-control" style="max-height:100px" rows="2" maxlength="3000"
+				[(ngModel)]="report.conclusions" (ngModelChange)="update()"
+				placeholder="{{'Add the conclusions here' | translate}}..."></textarea>
+				<p *ngIf="isDisabled()">
+					{{report.conclusions}}
+				</p>
+			</div>
 		</div>
 	</div>
 </div>

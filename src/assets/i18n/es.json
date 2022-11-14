@@ -26,6 +26,8 @@
 	"Sex": "Sexo",
 	"Female": "Mujer",
 	"Male": "Hombre",
+	"FEMALE": "MUJER",
+	"MALE": "HOMBRE",
 	"Completion date": "Fecha realización",
 	"Report number": "Informe Nº",
 	"Applicant": "Solicitante",
@@ -34,6 +36,7 @@
 	"Priority": "Prioridad",
 	"Admitted": "Ingresado",
 	"Bed": "Cama",
+	"Clinical data": "Datos clínicos",
 	"Clinical data/Diagnostic suspicion of the application": "Datos clínicos/Sospecha diagnóstica de la solicitud",
 	"Requested explorations": "Exploraciones solicitadas",
 	"Performed explorations": "Explocariones realizadas",
@@ -351,5 +354,11 @@
 	"Select explorations": "Escojer exploraciones",
 	"Selected explorations": "Exploraciones seleccionadas",
 	"Downloading": "Descargando",
-	"Source": "Origen"
+	"Source": "Origen",
+	"No. of radiographs": "Nº de radiografías",
+	"Exploration data": "Datos de la exploración",
+	"Add the conclusions here": "Añade las conclusiones aquí",
+	"Add the findings here": "Añade los hallazgos aquí",
+	"Add the clinical data here": "Añade los datos clínicos aquí",
+	"Select a date": "Selecciona una fecha"
 }
